@@ -1,5 +1,3 @@
-import { fontVariables } from "@/lib/fonts";
-
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
@@ -28,7 +26,7 @@ type RootLayoutProps = Readonly<{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={fontVariables}>
+    <html lang="en">
       <body>
         <AppProviders>{children}</AppProviders>
       </body>

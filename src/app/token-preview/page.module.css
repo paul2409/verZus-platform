@@ -1,0 +1,367 @@
+.page {
+  min-height: 100svh;
+  padding: var(--vz-space-page-mobile);
+  color: var(--vz-color-text-primary);
+  background:
+    radial-gradient(circle at 14% 4%, rgb(0 255 135 / 10%), transparent 28rem),
+    radial-gradient(circle at 90% 96%, rgb(0 229 255 / 7%), transparent 28rem),
+    var(--vz-color-background-deep);
+}
+
+.shell {
+  width: min(100%, var(--vz-container-xl));
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--vz-color-surface-base);
+  border: var(--vz-border-width-1) solid var(--vz-color-border-default);
+  border-radius: var(--vz-radius-card);
+  box-shadow: var(--vz-shadow-panel);
+}
+
+.header {
+  display: grid;
+  gap: var(--vz-space-4);
+  padding: var(--vz-space-6);
+  background:
+    linear-gradient(120deg, rgb(0 255 135 / 7%), transparent 34%), var(--vz-color-background-deep);
+  border-bottom: var(--vz-border-width-1) solid var(--vz-color-border-default);
+}
+
+.eyebrow,
+.controlLabel {
+  margin: 0;
+  color: var(--vz-color-green-500);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-letter-spacing-widest);
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-heading-lg);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-letter-spacing-wide);
+  line-height: var(--vz-line-height-tight);
+  text-transform: uppercase;
+}
+
+.description {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--vz-color-text-secondary);
+  line-height: var(--vz-line-height-relaxed);
+}
+
+.section {
+  display: grid;
+  gap: var(--vz-space-5);
+  padding: var(--vz-space-6);
+  border-bottom: var(--vz-border-width-1) solid var(--vz-color-border-default);
+}
+
+.section:last-child {
+  border-bottom: 0;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--vz-color-green-500);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-lg);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.swatchGrid,
+.semanticGrid,
+.surfaceGrid,
+.geometryGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--vz-space-3);
+}
+
+.swatchCard {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--vz-space-4);
+  min-width: 0;
+  padding: var(--vz-space-3);
+  background: var(--vz-color-background-deep);
+  border: var(--vz-border-width-1) solid var(--vz-color-border-default);
+  border-radius: var(--vz-radius-control);
+}
+
+.swatch {
+  width: 4rem;
+  height: 4rem;
+  border: var(--vz-border-width-1) solid rgb(255 255 255 / 18%);
+  border-radius: var(--vz-radius-control);
+}
+
+.backgroundDeep {
+  background: var(--vz-color-background-deep);
+}
+
+.surfaceBase {
+  background: var(--vz-color-surface-base);
+}
+
+.surfaceElevated {
+  background: var(--vz-color-surface-elevated);
+}
+
+.green {
+  background: var(--vz-color-green-500);
+  box-shadow: var(--vz-glow-green-subtle);
+}
+
+.cyan {
+  background: var(--vz-color-cyan-500);
+  box-shadow: var(--vz-glow-cyan-subtle);
+}
+
+.red {
+  background: var(--vz-color-red-500);
+  box-shadow: var(--vz-glow-red-subtle);
+}
+
+.textPrimary {
+  background: var(--vz-color-text-primary);
+}
+
+.textSecondary {
+  background: var(--vz-color-text-secondary);
+}
+
+.swatchName {
+  margin: 0;
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-md);
+  font-weight: var(--vz-font-weight-semibold);
+}
+
+.tokenName,
+.tokenValue {
+  margin: var(--vz-space-1) 0 0;
+  overflow: hidden;
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-mono);
+  font-size: var(--vz-font-size-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tokenValue {
+  color: var(--vz-color-text-tertiary);
+}
+
+.primaryAction,
+.secondaryAction,
+.dangerAction {
+  display: grid;
+  gap: var(--vz-space-2);
+  min-height: 7rem;
+  align-content: center;
+  justify-items: center;
+  padding: var(--vz-space-4);
+  border-radius: var(--vz-radius-control);
+  font-family: var(--vz-font-display);
+  letter-spacing: var(--vz-letter-spacing-wide);
+  text-align: center;
+}
+
+.primaryAction {
+  color: var(--vz-color-text-inverse);
+  background: var(--vz-gradient-primary);
+  border: var(--vz-border-width-1) solid var(--vz-color-green-500);
+  box-shadow: var(--vz-glow-green-subtle);
+}
+
+.primaryAction .controlLabel {
+  color: rgb(8 10 12 / 72%);
+}
+
+.secondaryAction {
+  color: var(--vz-color-cyan-500);
+  background: var(--vz-color-background-deep);
+  border: var(--vz-border-width-1) solid var(--vz-color-cyan-500);
+}
+
+.secondaryAction .controlLabel {
+  color: var(--vz-color-cyan-500);
+}
+
+.dangerAction {
+  color: var(--vz-color-red-500);
+  background: var(--vz-color-background-deep);
+  border: var(--vz-border-width-1) solid var(--vz-color-red-500);
+}
+
+.dangerAction .controlLabel {
+  color: var(--vz-color-red-500);
+}
+
+.baseCard,
+.elevatedCard,
+.liveCard {
+  display: grid;
+  gap: var(--vz-space-3);
+  min-height: 11rem;
+  align-content: start;
+  padding: var(--vz-space-5);
+  border-radius: var(--vz-radius-card);
+}
+
+.baseCard {
+  background: var(--vz-color-surface-base);
+  border: var(--vz-border-width-1) solid var(--vz-color-border-default);
+}
+
+.elevatedCard {
+  background: var(--vz-color-surface-elevated);
+  border: var(--vz-border-width-1) solid var(--vz-color-cyan-500);
+}
+
+.liveCard {
+  background: var(--vz-color-surface-danger);
+  border: var(--vz-border-width-1) solid var(--vz-color-red-500);
+}
+
+.baseCard h3,
+.elevatedCard h3,
+.liveCard h3,
+.baseCard p,
+.elevatedCard p,
+.liveCard p {
+  margin: 0;
+}
+
+.baseCard h3,
+.elevatedCard h3,
+.liveCard h3 {
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xl);
+  text-transform: uppercase;
+}
+
+.baseCard p,
+.elevatedCard p,
+.liveCard p {
+  color: var(--vz-color-text-secondary);
+  line-height: var(--vz-line-height-normal);
+}
+
+.statusOnline,
+.statusInfo,
+.statusLive {
+  justify-self: start;
+  padding: var(--vz-space-1) var(--vz-space-2);
+  border-radius: var(--vz-radius-badge);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-letter-spacing-wide);
+}
+
+.statusOnline {
+  color: var(--vz-color-green-500);
+  background: rgb(0 255 135 / 8%);
+  border: var(--vz-border-width-1) solid var(--vz-color-green-500);
+}
+
+.statusInfo {
+  color: var(--vz-color-cyan-500);
+  background: rgb(0 229 255 / 8%);
+  border: var(--vz-border-width-1) solid var(--vz-color-cyan-500);
+}
+
+.statusLive {
+  color: var(--vz-color-red-500);
+  background: rgb(255 59 48 / 9%);
+  border: var(--vz-border-width-1) solid var(--vz-color-red-500);
+}
+
+.controlGeometry,
+.cardGeometry,
+.glowGeometry {
+  display: grid;
+  gap: var(--vz-space-2);
+  min-height: 8rem;
+  place-content: center;
+  padding: var(--vz-space-4);
+  color: var(--vz-color-text-primary);
+  background: var(--vz-color-background-deep);
+  border: var(--vz-border-width-1) solid var(--vz-color-border-default);
+  text-align: center;
+}
+
+.controlGeometry {
+  border-radius: var(--vz-radius-control);
+}
+
+.cardGeometry {
+  border-radius: var(--vz-radius-card);
+}
+
+.glowGeometry {
+  border-color: var(--vz-color-green-500);
+  border-radius: var(--vz-radius-card);
+  box-shadow: var(--vz-glow-green-operational);
+}
+
+.controlGeometry span,
+.cardGeometry span,
+.glowGeometry span {
+  color: var(--vz-color-green-500);
+  font-family: var(--vz-font-numeric);
+  font-size: var(--vz-font-size-2xl);
+  font-weight: var(--vz-font-weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.controlGeometry p,
+.cardGeometry p,
+.glowGeometry p {
+  margin: 0;
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-font-size-sm);
+}
+
+@media (min-width: 48rem) {
+  .page {
+    padding: var(--vz-space-page-tablet);
+  }
+
+  .header,
+  .section {
+    padding: var(--vz-space-8);
+  }
+
+  .swatchGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .semanticGrid,
+  .surfaceGrid,
+  .geometryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 80rem) {
+  .page {
+    padding: var(--vz-space-page-desktop);
+  }
+
+  .swatchGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

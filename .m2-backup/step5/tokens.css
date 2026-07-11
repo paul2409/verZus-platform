@@ -325,19 +325,15 @@
   --vz-font-size-7xl: 4.5rem;
 
   --vz-font-size-display-xl: 2.5rem;
-  --vz-font-size-display-lg: 2rem;
+  --vz-font-size-display-lg: clamp(2rem, 5vw, 4rem);
   --vz-font-size-heading-lg: 1.5rem;
-  --vz-font-size-heading-md: 1.25rem;
-  --vz-font-size-heading-sm: 1rem;
+  --vz-font-size-heading-md: clamp(1.25rem, 2vw, 1.5rem);
+  --vz-font-size-heading-sm: 1.125rem;
 
   --vz-font-size-numeric-lg: 1.75rem;
   --vz-font-size-numeric-md: 1.25rem;
-  --vz-font-size-numeric-sm: 0.875rem;
-  --vz-font-size-body-lg: 1rem;
   --vz-font-size-body-md: 0.875rem;
-  --vz-font-size-body-sm: 0.75rem;
   --vz-font-size-label-cap: 0.6875rem;
-  --vz-font-size-caption: 0.75rem;
 
   /* ================================================================
      TYPOGRAPHY — LINE HEIGHT

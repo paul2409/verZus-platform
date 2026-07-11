@@ -1,39 +1,29 @@
 /*
  * VERZUS Typography System
  *
- * Milestone: M2 — Design System and Visual Language
+ * Approved core hierarchy:
+ * - Display XL: 40px / Rajdhani 700 / uppercase
+ * - Heading LG: 24px / Rajdhani 600
+ * - Body MD: 14px / Inter 400
+ * - Numeric LG: 28px / Inter 700 / tabular
+ * - Label CAP: 11px / Rajdhani 500 / tracked uppercase
  *
- * Public classes:
- * - .vz-display-xl
- * - .vz-display-lg
- * - .vz-heading-lg
- * - .vz-heading-md
- * - .vz-heading-sm
- * - .vz-body-lg
- * - .vz-body-md
- * - .vz-body-sm
- * - .vz-label
- * - .vz-caption
- * - .vz-eyebrow
- * - .vz-numeric
- * - .vz-link
- *
- * Components may use these global classes or reproduce the same token
- * combinations inside CSS Modules when a component requires isolation.
+ * Typography classes control presentation only.
+ * Components must still use semantically correct HTML elements.
  */
 
-/* ================================================================
+/* ==================================================================
    DISPLAY
-   ================================================================ */
+   ================================================================== */
 
 .vz-display-xl {
   margin: 0;
   color: var(--vz-color-text-primary);
   font-family: var(--vz-font-display);
   font-size: var(--vz-font-size-display-xl);
-  font-weight: var(--vz-font-weight-extrabold);
+  font-weight: 700;
   letter-spacing: var(--vz-letter-spacing-display);
-  line-height: var(--vz-line-height-none);
+  line-height: 0.95;
   text-transform: uppercase;
   text-wrap: balance;
 }
@@ -43,25 +33,25 @@
   color: var(--vz-color-text-primary);
   font-family: var(--vz-font-display);
   font-size: var(--vz-font-size-display-lg);
-  font-weight: var(--vz-font-weight-extrabold);
-  letter-spacing: var(--vz-letter-spacing-widest);
-  line-height: var(--vz-line-height-tight);
+  font-weight: 700;
+  letter-spacing: var(--vz-letter-spacing-wide);
+  line-height: 1;
   text-transform: uppercase;
   text-wrap: balance;
 }
 
-/* ================================================================
+/* ==================================================================
    HEADINGS
-   ================================================================ */
+   ================================================================== */
 
 .vz-heading-lg {
   margin: 0;
   color: var(--vz-color-text-primary);
   font-family: var(--vz-font-display);
   font-size: var(--vz-font-size-heading-lg);
-  font-weight: var(--vz-font-weight-bold);
+  font-weight: 600;
   letter-spacing: var(--vz-letter-spacing-wide);
-  line-height: var(--vz-line-height-tight);
+  line-height: 1.05;
   text-transform: uppercase;
   text-wrap: balance;
 }
@@ -71,9 +61,9 @@
   color: var(--vz-color-text-primary);
   font-family: var(--vz-font-display);
   font-size: var(--vz-font-size-heading-md);
-  font-weight: var(--vz-font-weight-bold);
+  font-weight: 600;
   letter-spacing: var(--vz-letter-spacing-wide);
-  line-height: var(--vz-line-height-snug);
+  line-height: 1.1;
   text-transform: uppercase;
   text-wrap: balance;
 }
@@ -83,24 +73,24 @@
   color: var(--vz-color-text-primary);
   font-family: var(--vz-font-display);
   font-size: var(--vz-font-size-heading-sm);
-  font-weight: var(--vz-font-weight-semibold);
+  font-weight: 600;
   letter-spacing: var(--vz-letter-spacing-wide);
-  line-height: var(--vz-line-height-snug);
+  line-height: 1.15;
   text-transform: uppercase;
   text-wrap: balance;
 }
 
-/* ================================================================
+/* ==================================================================
    BODY
-   ================================================================ */
+   ================================================================== */
 
 .vz-body-lg {
   margin: 0;
   color: var(--vz-color-text-secondary);
   font-family: var(--vz-font-body);
-  font-size: var(--vz-font-size-lg);
-  font-weight: var(--vz-font-weight-regular);
-  line-height: var(--vz-line-height-relaxed);
+  font-size: var(--vz-font-size-body-lg);
+  font-weight: 400;
+  line-height: 1.6;
   text-wrap: pretty;
 }
 
@@ -108,9 +98,9 @@
   margin: 0;
   color: var(--vz-color-text-secondary);
   font-family: var(--vz-font-body);
-  font-size: var(--vz-font-size-md);
-  font-weight: var(--vz-font-weight-regular);
-  line-height: var(--vz-line-height-normal);
+  font-size: var(--vz-font-size-body-md);
+  font-weight: 400;
+  line-height: 1.5;
   text-wrap: pretty;
 }
 
@@ -118,93 +108,124 @@
   margin: 0;
   color: var(--vz-color-text-tertiary);
   font-family: var(--vz-font-body);
-  font-size: var(--vz-font-size-sm);
-  font-weight: var(--vz-font-weight-regular);
-  line-height: var(--vz-line-height-normal);
+  font-size: var(--vz-font-size-body-sm);
+  font-weight: 400;
+  line-height: 1.45;
   text-wrap: pretty;
 }
 
-/* ================================================================
-   LABELS AND CAPTIONS
-   ================================================================ */
+/* ==================================================================
+   NUMERICAL DATA
+   ================================================================== */
 
-.vz-label {
+.vz-numeric,
+.vz-numeric-lg,
+.vz-numeric-md,
+.vz-numeric-sm {
+  margin: 0;
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings:
+    "tnum" 1,
+    "lnum" 1;
+  letter-spacing: var(--vz-letter-spacing-normal);
+}
+
+.vz-numeric-lg {
+  color: var(--vz-color-green-500);
+  font-size: var(--vz-font-size-numeric-lg);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.vz-numeric-md {
+  color: var(--vz-color-text-primary);
+  font-size: var(--vz-font-size-numeric-md);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.vz-numeric-sm,
+.vz-numeric {
+  color: var(--vz-color-text-primary);
+  font-size: var(--vz-font-size-numeric-sm);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.vz-numeric--positive {
+  color: var(--vz-color-green-500);
+}
+
+.vz-numeric--negative {
+  color: var(--vz-color-red-500);
+}
+
+.vz-numeric--information {
+  color: var(--vz-color-cyan-500);
+}
+
+.vz-numeric--warning {
+  color: var(--vz-color-warning-400);
+}
+
+.vz-numeric--neutral {
+  color: var(--vz-color-text-secondary);
+}
+
+/* ==================================================================
+   LABELS, EYEBROWS, AND CAPTIONS
+   ================================================================== */
+
+.vz-label,
+.vz-label-cap {
   margin: 0;
   color: var(--vz-color-text-secondary);
   font-family: var(--vz-font-display);
-  font-size: var(--vz-font-size-xs);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-wider);
-  line-height: var(--vz-line-height-snug);
+  font-size: var(--vz-font-size-label-cap);
+  font-weight: 500;
+  letter-spacing: var(--vz-letter-spacing-widest);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.vz-eyebrow {
+  margin: 0;
+  color: var(--vz-color-green-500);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-label-cap);
+  font-weight: 600;
+  letter-spacing: var(--vz-letter-spacing-widest);
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
 .vz-caption {
   margin: 0;
-  color: var(--vz-color-text-muted);
+  color: var(--vz-color-text-tertiary);
   font-family: var(--vz-font-body);
-  font-size: var(--vz-font-size-xs);
-  font-weight: var(--vz-font-weight-medium);
-  line-height: var(--vz-line-height-normal);
+  font-size: var(--vz-font-size-caption);
+  font-weight: 400;
+  line-height: 1.4;
 }
 
-.vz-eyebrow {
-  margin: 0;
-  color: var(--vz-color-text-brand);
-  font-family: var(--vz-font-display);
-  font-size: var(--vz-font-size-xs);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-widest);
-  line-height: var(--vz-line-height-snug);
-  text-transform: uppercase;
-}
-
-/* ================================================================
-   NUMERICAL DATA
-   ================================================================ */
-
-.vz-numeric {
-  margin: 0;
-  color: var(--vz-color-text-primary);
-  font-family: var(--vz-font-mono);
-  font-variant-numeric: tabular-nums lining-nums;
-  font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-letter-spacing-wide);
-  line-height: var(--vz-line-height-snug);
-}
-
-.vz-numeric--positive {
-  color: var(--vz-color-text-success);
-}
-
-.vz-numeric--negative {
-  color: var(--vz-color-text-danger);
-}
-
-.vz-numeric--warning {
-  color: var(--vz-color-text-warning);
-}
-
-.vz-numeric--brand {
-  color: var(--vz-color-brand-secondary-300);
-}
-
-/* ================================================================
+/* ==================================================================
    LINKS
-   ================================================================ */
+   ================================================================== */
 
 .vz-link {
-  color: var(--vz-color-text-link);
-  font-weight: var(--vz-font-weight-semibold);
+  color: var(--vz-color-cyan-500);
+  font-family: var(--vz-font-body);
+  font-weight: 600;
   text-decoration-line: underline;
-  text-decoration-color: rgb(82 231 251 / 48%);
+  text-decoration-color: rgb(0 229 255 / 48%);
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.2em;
   transition: var(--vz-transition-colour);
 }
 
 .vz-link:hover {
-  color: var(--vz-color-brand-secondary-300);
+  color: var(--vz-color-cyan-300);
   text-decoration-color: currentColor;
 }
 
@@ -212,9 +233,9 @@
   border-radius: var(--vz-radius-xs);
 }
 
-/* ================================================================
-   MUTED AND EMPHASIS HELPERS
-   ================================================================ */
+/* ==================================================================
+   TEXT COLOUR HELPERS
+   ================================================================== */
 
 .vz-text-primary {
   color: var(--vz-color-text-primary);
@@ -233,24 +254,44 @@
 }
 
 .vz-text-brand {
-  color: var(--vz-color-text-brand);
+  color: var(--vz-color-green-500);
+}
+
+.vz-text-information {
+  color: var(--vz-color-cyan-500);
 }
 
 .vz-text-success {
-  color: var(--vz-color-text-success);
+  color: var(--vz-color-green-500);
 }
 
 .vz-text-warning {
-  color: var(--vz-color-text-warning);
+  color: var(--vz-color-warning-400);
 }
 
 .vz-text-danger {
-  color: var(--vz-color-text-danger);
+  color: var(--vz-color-red-500);
 }
 
-/* ================================================================
+/* ==================================================================
+   NUMERIC ALIGNMENT
+   ================================================================== */
+
+.vz-text-align-start {
+  text-align: start;
+}
+
+.vz-text-align-center {
+  text-align: center;
+}
+
+.vz-text-align-end {
+  text-align: end;
+}
+
+/* ==================================================================
    TRUNCATION
-   ================================================================ */
+   ================================================================== */
 
 .vz-truncate {
   overflow: hidden;
@@ -272,29 +313,34 @@
   -webkit-line-clamp: 3;
 }
 
-/* ================================================================
-   RESPONSIVE ADJUSTMENTS
-   ================================================================ */
+/* ==================================================================
+   NARROW VIEWPORTS
+   ================================================================== */
 
 @media (max-width: 30rem) {
   .vz-display-xl,
   .vz-display-lg {
-    letter-spacing: var(--vz-letter-spacing-wider);
+    letter-spacing: 0.02em;
   }
 
   .vz-heading-lg,
   .vz-heading-md,
   .vz-heading-sm {
-    letter-spacing: var(--vz-letter-spacing-wide);
+    letter-spacing: 0.03em;
   }
 }
+
+/* ==================================================================
+   HIGH CONTRAST
+   ================================================================== */
 
 @media (prefers-contrast: more) {
   .vz-body-lg,
   .vz-body-md,
   .vz-body-sm,
   .vz-caption,
-  .vz-label {
+  .vz-label,
+  .vz-label-cap {
     color: var(--vz-color-text-primary);
   }
 }
