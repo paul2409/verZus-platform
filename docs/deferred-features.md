@@ -3,6 +3,7 @@
 These features are intentionally excluded from V1. They must not influence initial architecture beyond leaving clean extension points.
 
 ## Media and broadcasting
+
 - Live video streaming.
 - Native live spectating for all games.
 - Full broadcast production tools.
@@ -10,12 +11,14 @@ These features are intentionally excluded from V1. They must not influence initi
 - Creator streaming overlays.
 
 ## Communication
+
 - Voice chat.
 - Full direct messaging.
 - Large community chat rooms.
 - Advanced moderation automation for chat.
 
 ## Marketplaces
+
 - Coaching marketplace.
 - Vendor marketplace.
 - Player-for-hire marketplace.
@@ -23,6 +26,7 @@ These features are intentionally excluded from V1. They must not influence initi
 - Digital item marketplace.
 
 ## Financial expansion
+
 - General-purpose wallet withdrawals.
 - Peer-to-peer transfers.
 - Betting or wagering.
@@ -31,6 +35,7 @@ These features are intentionally excluded from V1. They must not influence initi
 - Cryptocurrency or NFT features.
 
 ## Competition expansion
+
 - Fully automated anti-cheat.
 - Open organiser marketplace.
 - Community-created competitions without approval.
@@ -39,6 +44,7 @@ These features are intentionally excluded from V1. They must not influence initi
 - Cross-region competition orchestration.
 
 ## Platform expansion
+
 - Native iOS application.
 - Native Android application.
 - Desktop launcher.
@@ -46,12 +52,14 @@ These features are intentionally excluded from V1. They must not influence initi
 - Third-party plugin marketplace.
 
 ## Advanced intelligence
+
 - AI coaching.
 - AI match analysis.
 - Automated fraud scoring beyond basic rules.
 - Automated dispute decisions.
 
 ## Games deferred
+
 - Tekken or Mortal Kombat.
 - Valorant.
 - PUBG Mobile.
@@ -60,6 +68,7 @@ These features are intentionally excluded from V1. They must not influence initi
 - Other games pending community demand and verification feasibility.
 
 ## Re-entry rule
+
 A deferred feature may be reconsidered only when:
 
 - V1 critical journeys are stable;

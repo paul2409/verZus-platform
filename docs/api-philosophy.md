@@ -1,9 +1,11 @@
 # VERZUS API Philosophy
 
 ## Contract
+
 HTTP response → schema validation → domain adapter → query cache → view model → UI.
 
 ## Design rules
+
 - Version public contracts.
 - Use UTC timestamps in ISO 8601.
 - Return opaque IDs.
@@ -16,6 +18,7 @@ HTTP response → schema validation → domain adapter → query cache → view 
 - Separate commands from read models where useful.
 
 ## Endpoint shape
+
 Preferred:
 
 ```text
@@ -36,6 +39,7 @@ GET /v1/dashboard
 An aggregated endpoint may exist as an optimization, but every section must tolerate missing data and have a stable independent contract.
 
 ## Error contract
+
 ```ts
 type ApiError = {
   code: string;
@@ -48,6 +52,7 @@ type ApiError = {
 ```
 
 ## Mutation requirements
+
 - Authorization checked server-side.
 - Idempotency key for check-in, registration, result submission, reward claim, and financial commands.
 - Expected resource version for stateful updates.
@@ -55,6 +60,7 @@ type ApiError = {
 - Clear retryable versus terminal failure classification.
 
 ## Caching
+
 Each resource documents:
 
 - freshness window;
@@ -66,6 +72,7 @@ Each resource documents:
 - invalidation events.
 
 ## Third-party adapters
+
 Each game integration is hidden behind a domain adapter. The rest of the platform consumes a normalized verification result.
 
 ```text
@@ -78,6 +85,7 @@ COD Mobile evidence adapter
 Third-party failure must not corrupt Match state. Use pending verification and retry queues.
 
 ## Observability
+
 Every request includes:
 
 - request ID;

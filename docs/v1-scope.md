@@ -1,11 +1,13 @@
 # VERZUS V1 Scope
 
 ## Scope objective
+
 Ship the smallest complete platform that supports a trustworthy competitive loop from identity creation to verified result, ranking update, Crew participation, and basic reward visibility.
 
 ## In scope
 
 ### Authentication and account access
+
 - Register with email and password.
 - Login and logout.
 - Email verification.
@@ -14,6 +16,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Suspended and banned account states.
 
 ### Onboarding
+
 - Create player identity.
 - Select supported games.
 - Set location.
@@ -23,6 +26,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Resume interrupted onboarding.
 
 ### Play command centre
+
 - Next match.
 - Check-in status and action.
 - Current rank summary.
@@ -32,6 +36,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Independent widget loading and failure states.
 
 ### Competitions
+
 - Competition discovery.
 - Search and filters.
 - Competition detail.
@@ -43,6 +48,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Registration closed, full, cancelled, and ineligible states.
 
 ### Match operations
+
 - Match detail.
 - Check-in.
 - Lobby information.
@@ -54,6 +60,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Result pending, confirmed, disputed, forfeited, cancelled, and completed states.
 
 ### Leaderboards
+
 - Weekly player standings.
 - Weekly pool standings.
 - Game lane rankings.
@@ -62,6 +69,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Search, filters, sorting, stale data indicator, and update timestamp.
 
 ### Crews
+
 - Crew discovery.
 - Crew profile.
 - Create Crew.
@@ -75,6 +83,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Disband with guardrails.
 
 ### Player profiles
+
 - Public player profile.
 - Own profile.
 - Edit identity and game handles.
@@ -82,6 +91,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Privacy controls for sensitive fields.
 
 ### Rewards
+
 - Reward overview.
 - Progress summary.
 - Claimable, claimed, locked, expired, and revoked states.
@@ -89,6 +99,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Reward history.
 
 ### Notifications
+
 - Notification centre.
 - Unread badge.
 - Mark read.
@@ -96,6 +107,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Expired notifications.
 
 ### Search
+
 - Search players.
 - Search Crews.
 - Search competitions.
@@ -103,6 +115,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Partial-domain failure handling.
 
 ### Trust and moderation
+
 - Trust score display.
 - Penalty summary.
 - Reports.
@@ -111,6 +124,7 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Audit log access for authorized roles.
 
 ### Operational baseline
+
 - Feature flags.
 - Health status view.
 - Structured logs.
@@ -121,21 +135,25 @@ Ship the smallest complete platform that supports a trustworthy competitive loop
 - Rollback documentation.
 
 ## Launch games
+
 - EA FC.
 - League of Legends.
 - Clash Royale.
 - COD Mobile.
 
 ## Supported result verification in V1
+
 - League of Legends: API-backed result retrieval when integration access is available.
 - Clash Royale: API-backed battle-log verification when integration access is available.
 - EA FC: dual confirmation plus evidence workflow.
 - COD Mobile: dual confirmation plus evidence; stronger review requirements for high-stakes fixtures.
 
 ## Explicitly out of scope
+
 See `deferred-features.md`.
 
 ## Scope freeze rule
+
 A feature can enter V1 only if:
 
 1. it is required for a complete critical journey;
@@ -145,9 +163,11 @@ A feature can enter V1 only if:
 5. adding it does not delay the critical launch loop without explicit approval.
 
 ## V1 critical journey
+
 Register → complete onboarding → discover competition → register → check in → play match → submit or verify result → leaderboard updates → player sees progression → Crew and reward summaries remain available.
 
 ## V1 exit criteria
+
 - All critical journeys pass E2E tests.
 - All primary screens have approved mobile references.
 - Desktop references exist where layout materially changes.

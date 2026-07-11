@@ -1,9 +1,11 @@
 # VERZUS Failure Isolation Strategy
 
 ## Objective
+
 No single component, API, adapter, queue, or third-party integration should disable unrelated player actions.
 
 ## Frontend isolation unit
+
 One major widget = one query boundary = one error boundary = one fallback.
 
 Examples:
@@ -14,9 +16,11 @@ Examples:
 - Notifications failure does not disable the rest of the shell.
 
 ## Route shell rule
+
 Top navigation, bottom navigation, session controls, offline indicator, and route-level fallback must not depend on feature-page data.
 
 ## Data strategy
+
 - Independent queries for independently useful widgets.
 - Cached data remains visible during background refresh failure.
 - Stale data is labelled instead of blanked.
@@ -24,6 +28,7 @@ Top navigation, bottom navigation, session controls, offline indicator, and rout
 - Timeouts prevent one slow dependency from blocking the full page.
 
 ## Service strategy
+
 - Domain services own their data and commands.
 - Cross-domain communication uses APIs and events, not direct table writes.
 - Queue consumers are idempotent.
@@ -31,6 +36,7 @@ Top navigation, bottom navigation, session controls, offline indicator, and rout
 - Circuit breakers protect unstable third-party dependencies where appropriate.
 
 ## Game adapter failures
+
 If Riot or Supercell verification is unavailable:
 
 1. Match result enters pending verification.
@@ -40,9 +46,11 @@ If Riot or Supercell verification is unavailable:
 5. Unrelated games remain operational.
 
 ## Storage failures
+
 Evidence upload failure must not erase submitted score input. The UI preserves local progress where safe and allows retry.
 
 ## Ranking failure
+
 If ranking calculation fails:
 
 - previous finalized snapshot remains available;
@@ -51,12 +59,15 @@ If ranking calculation fails:
 - recalculation can replay from authoritative results.
 
 ## Notification failure
+
 Domain commands still complete even if notification delivery fails. Notifications are retried asynchronously.
 
 ## Feature flags
+
 Unstable or incomplete modules can be disabled by environment, cohort, or user without redeploying the application.
 
 ## Required fallback states
+
 - loading;
 - retrying;
 - stale;
@@ -66,6 +77,7 @@ Unstable or incomplete modules can be disabled by environment, cohort, or user w
 - unavailable with request ID.
 
 ## Failure injection tests
+
 - one endpoint returns 500;
 - one endpoint times out;
 - malformed response;
@@ -78,6 +90,7 @@ Unstable or incomplete modules can be disabled by environment, cohort, or user w
 - leaderboard projection delayed.
 
 ## Recovery objectives
+
 Exact RTO and RPO are defined later, but M0 establishes:
 
 - authoritative relational data requires backups;

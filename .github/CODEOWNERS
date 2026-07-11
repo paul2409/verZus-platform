@@ -1,0 +1,7 @@
+# Replace the placeholder below with the repository owner's GitHub username.
+* @your-github-username
+
+/docs/ @your-github-username
+/.github/ @your-github-username
+/scripts/ @your-github-username
+/src/lib/config/ @your-github-username

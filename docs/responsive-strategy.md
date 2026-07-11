@@ -1,6 +1,7 @@
 # VERZUS Responsive Strategy
 
 ## Supported widths
+
 - 360px.
 - 390px primary mobile reference.
 - 430px large mobile.
@@ -12,6 +13,7 @@
 320px may receive a basic overflow and usability check but is not the primary target unless launch analytics require it.
 
 ## Design order
+
 1. Generate and approve the 390px mobile reference.
 2. Implement and verify mobile anatomy.
 3. Generate tablet only where the composition materially changes.
@@ -19,6 +21,7 @@
 5. Verify intermediate widths.
 
 ## Core rules
+
 - Mobile is not a compressed desktop.
 - Dense tables use separate mobile presentation.
 - Primary actions remain visible without horizontal scrolling.
@@ -29,12 +32,14 @@
 - Desktop uses available space without creating excessively long line lengths.
 
 ## Leaderboard rule
+
 Shared data model, distinct presentation:
 
 - Desktop: semantic table or CSS grid with complete columns.
 - Mobile: ranking cards or two-band rows showing the most important values first.
 
 ## Content priority
+
 Mobile order:
 
 1. immediate state;
@@ -44,9 +49,11 @@ Mobile order:
 5. secondary history and explanation.
 
 ## Breakpoint behaviour
+
 Breakpoints respond to content pressure rather than device names. Components may switch presentation earlier than the page shell.
 
 ## Verification
+
 At each relevant width check:
 
 - no overflow;
