@@ -1,0 +1,73 @@
+.icon {
+  display: block;
+  flex: 0 0 auto;
+  stroke-width: var(--vz-icon-stroke-width);
+}
+
+.icon * {
+  vector-effect: non-scaling-stroke;
+}
+
+.xs {
+  width: var(--vz-icon-size-xs);
+  height: var(--vz-icon-size-xs);
+}
+
+.sm {
+  width: var(--vz-icon-size-sm);
+  height: var(--vz-icon-size-sm);
+}
+
+.md {
+  width: var(--vz-icon-size-md);
+  height: var(--vz-icon-size-md);
+}
+
+.lg {
+  width: var(--vz-icon-size-lg);
+  height: var(--vz-icon-size-lg);
+}
+
+.xl {
+  width: var(--vz-icon-size-xl);
+  height: var(--vz-icon-size-xl);
+}
+
+.xxl {
+  width: var(--vz-icon-size-2xl);
+  height: var(--vz-icon-size-2xl);
+}
+
+.inherit {
+  color: inherit;
+}
+
+.neutral {
+  color: var(--vz-color-text-secondary);
+}
+
+.muted {
+  color: var(--vz-color-text-muted);
+}
+
+.primary {
+  color: var(--vz-color-green-500);
+}
+
+.secondary {
+  color: var(--vz-color-cyan-500);
+}
+
+.danger {
+  color: var(--vz-color-red-500);
+}
+
+.warning {
+  color: var(--vz-color-warning-400);
+}
+
+@media (prefers-contrast: more) {
+  .icon {
+    stroke-width: var(--vz-icon-stroke-width-strong);
+  }
+}

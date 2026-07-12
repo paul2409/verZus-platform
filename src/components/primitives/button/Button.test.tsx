@@ -5,72 +5,101 @@ import { describe, expect, it, vi } from "vitest";
 import { Button } from "./Button";
 
 describe("Button", () => {
-  it("renders its label", () => {
-    render(<Button>Play now</Button>);
+  it("renders a native button with a safe default type", () => {
+    render(<Button>Check in now</Button>);
 
-    expect(screen.getByRole("button", { name: "Play now" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: "Check in now",
+      }),
+    ).toHaveAttribute("type", "button");
   });
 
-  it("calls the click handler", async () => {
+  it("supports an explicit submit type", () => {
+    render(<Button type="submit">Save profile</Button>);
+
+    expect(
+      screen.getByRole("button", {
+        name: "Save profile",
+      }),
+    ).toHaveAttribute("type", "submit");
+  });
+
+  it("calls its click handler", async () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
 
-    render(<Button onClick={onClick}>Join competition</Button>);
+    render(<Button onClick={onClick}>Open match</Button>);
 
-    await user.click(screen.getByRole("button", { name: "Join competition" }));
+    await user.click(
+      screen.getByRole("button", {
+        name: "Open match",
+      }),
+    );
 
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  it("does not call the click handler while disabled", async () => {
+  it("supports leading and trailing icons", () => {
+    const { container } = render(
+      <Button leadingIcon="trophy" trailingIcon="chevron-right">
+        View rankings
+      </Button>,
+    );
+
+    expect(container.querySelector('[data-icon="trophy"]')).toBeInTheDocument();
+
+    expect(container.querySelector('[data-icon="chevron-right"]')).toBeInTheDocument();
+  });
+
+  it("blocks interaction while disabled", async () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
 
     render(
       <Button disabled onClick={onClick}>
-        Disabled action
+        Unavailable
       </Button>,
     );
 
-    await user.click(screen.getByRole("button", { name: "Disabled action" }));
+    const button = screen.getByRole("button", {
+      name: "Unavailable",
+    });
 
+    await user.click(button);
+
+    expect(button).toBeDisabled();
     expect(onClick).not.toHaveBeenCalled();
   });
 
-  it("disables interaction while loading", () => {
-    render(<Button loading>Saving</Button>);
+  it("exposes an accessible loading state", () => {
+    render(
+      <Button loading loadingLabel="Checking in">
+        Check in now
+      </Button>,
+    );
 
-    const button = screen.getByRole("button", { name: "Saving" });
+    const button = screen.getByRole("button", {
+      name: "Checking in",
+    });
 
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("aria-busy", "true");
   });
 
-  it("forwards native button attributes", () => {
+  it("exposes stable variant and size attributes", () => {
     render(
-      <Button type="submit" name="match-action" value="check-in" variant="secondary">
-        Check in
+      <Button size="lg" variant="danger">
+        Report issue
       </Button>,
     );
 
-    const button = screen.getByRole("button", { name: "Check in" });
+    const button = screen.getByRole("button", {
+      name: "Report issue",
+    });
 
-    expect(button).toHaveAttribute("type", "submit");
-    expect(button).toHaveAttribute("name", "match-action");
-    expect(button).toHaveAttribute("value", "check-in");
-  });
+    expect(button).toHaveAttribute("data-button-variant", "danger");
 
-  it("renders leading and trailing icons", () => {
-    render(
-      <Button
-        leadingIcon={<span data-testid="leading-icon">L</span>}
-        trailingIcon={<span data-testid="trailing-icon">R</span>}
-      >
-        Continue
-      </Button>,
-    );
-
-    expect(screen.getByTestId("leading-icon")).toBeInTheDocument();
-    expect(screen.getByTestId("trailing-icon")).toBeInTheDocument();
+    expect(button).toHaveAttribute("data-button-size", "lg");
   });
 });

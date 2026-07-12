@@ -520,6 +520,8 @@
   --vz-icon-size-lg: 1.5rem;
   --vz-icon-size-xl: 2rem;
   --vz-icon-size-2xl: 2.5rem;
+  --vz-icon-stroke-width: 1.75;
+  --vz-icon-stroke-width-strong: 2;
 
   --vz-avatar-size-xs: 1.5rem;
   --vz-avatar-size-sm: 2rem;

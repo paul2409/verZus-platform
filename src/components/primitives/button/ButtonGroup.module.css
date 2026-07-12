@@ -1,0 +1,35 @@
+.group {
+  display: flex;
+  min-width: 0;
+  gap: var(--vz-space-3);
+}
+
+.horizontal {
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.responsive {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.fullWidth > * {
+  flex: 1 1 0;
+}
+
+@media (min-width: 48rem) {
+  .responsive {
+    flex-flow: row wrap;
+    align-items: center;
+  }
+}
