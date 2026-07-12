@@ -1,32 +1,23 @@
 /*
  * VERZUS Font System
  *
- * Generated variables:
- * - --font-rajdhani
- * - --font-inter
+ * Font assets are provided through version-locked Fontsource
+ * dependencies imported by the root application layout.
  *
- * Components must consume the semantic --vz-font-* tokens rather
- * than the generated next/font variables directly.
+ * Components consume semantic --vz-font-* tokens only.
  */
 
 :root {
-  --vz-font-display: var(--font-rajdhani, "Rajdhani"), "Arial Narrow", "Segoe UI", sans-serif;
+  --vz-font-display: "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
 
   --vz-font-body:
-    var(--font-inter, "Inter"), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
 
   --vz-font-numeric:
-    var(--font-inter, "Inter"), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
 }
-
-/*
- * Default numerical behavior.
- *
- * Individual components may override alignment or size, but should
- * retain tabular figures for values that update or align in columns.
- */
 
 [data-numeric],
 .vz-numeric {
@@ -36,13 +27,6 @@
     "tnum" 1,
     "lnum" 1;
 }
-
-/*
- * Explicit font-role hooks.
- *
- * These are useful for previews and rare semantic compositions.
- * Normal components should prefer their own CSS Module classes.
- */
 
 [data-font-role="display"] {
   font-family: var(--vz-font-display);

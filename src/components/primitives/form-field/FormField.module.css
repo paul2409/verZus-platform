@@ -1,0 +1,70 @@
+.field {
+  display: grid;
+  min-width: 0;
+  gap: var(--vz-space-2);
+}
+
+.labelRow {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--vz-space-3);
+}
+
+.label {
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-label-cap);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-letter-spacing-widest);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.required {
+  margin-left: var(--vz-space-1);
+  color: var(--vz-color-red-500);
+}
+
+.optional {
+  color: var(--vz-color-text-muted);
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-caption);
+}
+
+.hint,
+.error {
+  margin: 0;
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-caption);
+  line-height: var(--vz-line-height-normal);
+}
+
+.hint {
+  color: var(--vz-color-text-tertiary);
+}
+
+.error {
+  color: var(--vz-color-red-400);
+}
+
+.disabled {
+  opacity: var(--vz-opacity-disabled);
+}
+
+.invalid {
+  min-width: 0;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}

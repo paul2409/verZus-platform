@@ -1,0 +1,820 @@
+.panel {
+  --vz-panel-accent: var(--vz-surface-accent-silver, #c7d0d6);
+  --vz-panel-shape: var(--vz-shape-panel);
+  --vz-panel-content-padding: var(--vz-space-5);
+  --vz-panel-content-gap: var(--vz-space-4);
+  --vz-panel-surface-inset: calc(var(--vz-panel-frame-width) + var(--vz-panel-inner-gap));
+  --vz-panel-current-shadow: var(--vz-panel-shadow);
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  color: var(--vz-color-text-primary);
+}
+
+.panel,
+.panel * {
+  box-sizing: border-box;
+}
+
+/* ==================================================================
+   PANEL FRAME
+   ================================================================== */
+
+.outerFrame,
+.innerFrame,
+.railTop,
+.railBottom,
+.cornerTopLeft,
+.cornerTopRight,
+.cornerBottomLeft,
+.cornerBottomRight {
+  position: absolute;
+  pointer-events: none;
+}
+
+.outerFrame {
+  z-index: 0;
+  inset: 0;
+  background:
+    linear-gradient(
+      135deg,
+      var(--vz-panel-accent) 0%,
+      transparent 11%,
+      transparent 39%,
+      color-mix(in srgb, var(--vz-panel-accent) 72%, white) 50%,
+      transparent 61%,
+      transparent 89%,
+      var(--vz-panel-accent) 100%
+    ),
+    var(--vz-panel-frame-background);
+  clip-path: var(--vz-panel-shape);
+  box-shadow: var(--vz-panel-current-shadow);
+}
+
+.innerFrame {
+  z-index: 1;
+  inset: var(--vz-panel-frame-width);
+  background:
+    linear-gradient(
+      145deg,
+      rgb(255 255 255 / 9%),
+      transparent 17%,
+      transparent 83%,
+      rgb(0 0 0 / 68%)
+    ),
+    var(--vz-panel-frame-inner);
+  clip-path: var(--vz-panel-shape);
+  box-shadow:
+    inset 0 0 0 1px var(--vz-panel-frame-highlight),
+    inset 0 0 0 2px var(--vz-panel-frame-shadow-line);
+}
+
+.panelSurface {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  gap: var(--vz-panel-content-gap);
+  margin: var(--vz-panel-surface-inset);
+  overflow: hidden;
+  background: var(--vz-texture-scanline), var(--vz-panel-body-background);
+  border: 1px solid color-mix(in srgb, var(--vz-panel-accent) 30%, var(--vz-panel-frame-line));
+  clip-path: var(--vz-panel-shape);
+  box-shadow:
+    inset 0 1px 0 var(--vz-panel-frame-highlight),
+    inset 0 0 0 1px var(--vz-panel-frame-shadow-line),
+    inset 0 0 4rem rgb(0 0 0 / 22%);
+}
+
+.railTop,
+.railBottom {
+  z-index: 4;
+  right: 2.5rem;
+  left: 2.5rem;
+  height: 0.125rem;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--vz-panel-accent) 18%,
+    color-mix(in srgb, var(--vz-panel-accent) 70%, white) 50%,
+    var(--vz-panel-accent) 82%,
+    transparent
+  );
+  opacity: 0.72;
+  box-shadow: 0 0 0.75rem color-mix(in srgb, var(--vz-panel-accent) 36%, transparent);
+}
+
+.railTop {
+  top: 0.25rem;
+}
+
+.railBottom {
+  bottom: 0.25rem;
+}
+
+/* ==================================================================
+   MECHANICAL CORNERS
+   ================================================================== */
+
+.cornerTopLeft,
+.cornerTopRight,
+.cornerBottomLeft,
+.cornerBottomRight {
+  z-index: 5;
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0.92;
+}
+
+.cornerTopLeft {
+  top: 0.2rem;
+  left: 0.2rem;
+  border-top: 2px solid var(--vz-panel-accent);
+  border-left: 2px solid var(--vz-panel-accent);
+}
+
+.cornerTopRight {
+  top: 0.2rem;
+  right: 0.2rem;
+  border-top: 2px solid var(--vz-panel-accent);
+  border-right: 2px solid var(--vz-panel-accent);
+}
+
+.cornerBottomLeft {
+  bottom: 0.2rem;
+  left: 0.2rem;
+  border-bottom: 2px solid var(--vz-panel-accent);
+  border-left: 2px solid var(--vz-panel-accent);
+}
+
+.cornerBottomRight {
+  right: 0.2rem;
+  bottom: 0.2rem;
+  border-right: 2px solid var(--vz-panel-accent);
+  border-bottom: 2px solid var(--vz-panel-accent);
+}
+
+/* ==================================================================
+   FRAME OPTION
+   ================================================================== */
+
+.panel:not(.framed) .panelSurface {
+  margin: 0;
+  border-color: var(--vz-panel-frame-line);
+  clip-path: none;
+  box-shadow: inset 0 1px 0 var(--vz-panel-frame-highlight);
+}
+
+/* ==================================================================
+   TONES
+   ================================================================== */
+
+.toneNeutral {
+  --vz-panel-accent: var(--vz-surface-accent-silver);
+}
+
+.tonePrimary {
+  --vz-panel-accent: var(--vz-surface-accent-green);
+}
+
+.toneSecondary {
+  --vz-panel-accent: var(--vz-surface-accent-cyan);
+}
+
+.toneAccent {
+  --vz-panel-accent: var(--vz-surface-accent-violet);
+}
+
+.toneWarning {
+  --vz-panel-accent: var(--vz-surface-accent-gold);
+}
+
+.toneDanger {
+  --vz-panel-accent: var(--vz-surface-accent-red);
+}
+
+/* ==================================================================
+   DENSITY
+   ================================================================== */
+
+.densityCompact {
+  --vz-panel-content-padding: var(--vz-space-3);
+  --vz-panel-content-gap: var(--vz-space-3);
+}
+
+.densityRegular {
+  --vz-panel-content-padding: var(--vz-space-5);
+  --vz-panel-content-gap: var(--vz-space-4);
+}
+
+.densitySpacious {
+  --vz-panel-content-padding: var(--vz-space-7);
+  --vz-panel-content-gap: var(--vz-space-6);
+}
+
+/* ==================================================================
+   ELEVATION
+   ================================================================== */
+
+.elevationFlat {
+  --vz-panel-current-shadow: 0 0 0 1px rgb(255 255 255 / 3%);
+}
+
+.elevationRaised {
+  --vz-panel-current-shadow: var(--vz-panel-shadow);
+}
+
+.elevationFloating {
+  --vz-panel-current-shadow:
+    0 2rem 4.5rem rgb(0 0 0 / 58%), 0 0.5rem 1.25rem rgb(0 0 0 / 74%),
+    0 0 2rem color-mix(in srgb, var(--vz-panel-accent) 10%, transparent);
+}
+
+/* ==================================================================
+   ROOT LAYOUTS
+   ================================================================== */
+
+.layoutStack .panelSurface {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.layoutGrid .panelSurface {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.layoutSplit .panelSurface {
+  grid-template-columns:
+    minmax(0, 1.25fr)
+    minmax(16rem, 0.75fr);
+}
+
+/* ==================================================================
+   PANEL HEADER
+   ================================================================== */
+
+.header {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vz-space-5);
+  padding: var(--vz-panel-content-padding);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--vz-panel-accent) 9%, transparent),
+      transparent 52%
+    ),
+    var(--vz-panel-header-background);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--vz-panel-accent) 38%, var(--vz-panel-frame-line));
+}
+
+.header::after {
+  position: absolute;
+  right: var(--vz-panel-content-padding);
+  bottom: -1px;
+  left: var(--vz-panel-content-padding);
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, transparent, var(--vz-panel-accent), transparent);
+  opacity: 0.58;
+}
+
+.headingGroup {
+  display: grid;
+  min-width: 0;
+  gap: var(--vz-space-2);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--vz-panel-accent);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-label-cap);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-letter-spacing-widest);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-heading-lg);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-letter-spacing-wide);
+  line-height: 1.02;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px 0 rgb(0 0 0 / 92%),
+    0 0 1.25rem color-mix(in srgb, var(--vz-panel-accent) 14%, transparent);
+}
+
+.description {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-body-sm);
+  line-height: var(--vz-line-height-normal);
+}
+
+.actions {
+  display: flex;
+  min-width: 0;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--vz-space-3);
+}
+
+/* ==================================================================
+   BODY AND GRID
+   ================================================================== */
+
+.body {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: var(--vz-panel-content-gap);
+  padding: 0 var(--vz-panel-content-padding);
+}
+
+.header + .body,
+.header + .grid {
+  padding-top: var(--vz-panel-content-padding);
+}
+
+.body:last-child,
+.grid:last-child {
+  padding-bottom: var(--vz-panel-content-padding);
+}
+
+.grid {
+  display: grid;
+  min-width: 0;
+  align-items: stretch;
+  gap: var(--vz-panel-content-gap);
+  padding-inline: var(--vz-panel-content-padding);
+}
+
+.gridColumnsOne {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.gridColumnsTwo {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.gridColumnsThree {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gridColumnsFour {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.gridColumnsAuto {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+/* ==================================================================
+   ISOLATED MODULES
+   ================================================================== */
+
+.module {
+  --vz-module-accent: var(--vz-panel-accent);
+  --vz-module-state-border: var(--vz-module-border);
+  --vz-module-state-background: transparent;
+
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 8rem;
+  align-content: start;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, var(--vz-module-state-background), transparent 52%),
+    var(--vz-module-background);
+  border: 1px solid var(--vz-module-state-border);
+  clip-path: var(--vz-shape-card-compact);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 5%),
+    inset 0 0 0 1px rgb(0 0 0 / 48%);
+  transition: var(--vz-trading-surface-transition);
+}
+
+.module::before {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.1875rem;
+  content: "";
+  background: var(--vz-module-accent);
+  box-shadow: 0 0 0.75rem color-mix(in srgb, var(--vz-module-accent) 42%, transparent);
+}
+
+.module::after {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, var(--vz-module-accent), transparent 68%);
+  opacity: 0.58;
+}
+
+.moduleHeader {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vz-space-3);
+  padding: var(--vz-space-4) var(--vz-space-4) var(--vz-space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--vz-module-accent) 24%, var(--vz-module-border));
+}
+
+.moduleBody {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: var(--vz-space-3);
+  padding: var(--vz-space-4);
+}
+
+/* ==================================================================
+   MODULE INTERACTION
+   ================================================================== */
+
+.moduleInteractive:hover {
+  border-color: color-mix(in srgb, var(--vz-module-accent) 68%, var(--vz-module-border));
+  box-shadow:
+    0 0.75rem 1.75rem rgb(0 0 0 / 28%),
+    0 0 1.25rem color-mix(in srgb, var(--vz-module-accent) 12%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 7%);
+  transform: translateY(-0.125rem);
+}
+
+.moduleInteractive:focus-within {
+  outline: 2px solid var(--vz-module-accent);
+  outline-offset: var(--vz-space-1);
+}
+
+.moduleSelected {
+  border-color: var(--vz-module-accent);
+  box-shadow:
+    0 0 0 1px var(--vz-module-accent),
+    0 0 1.5rem color-mix(in srgb, var(--vz-module-accent) 22%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 7%);
+}
+
+/* ==================================================================
+   MODULE STATES
+   ================================================================== */
+
+.moduleStateIdle {
+  --vz-module-state-border: var(--vz-module-border);
+}
+
+.moduleStateLoading,
+.moduleStateRetrying {
+  --vz-module-accent: var(--vz-surface-accent-cyan);
+  --vz-module-state-border: rgb(0 229 255 / 42%);
+  --vz-module-state-background: rgb(0 229 255 / 5%);
+}
+
+.moduleStateSuccess {
+  --vz-module-accent: var(--vz-surface-accent-green);
+  --vz-module-state-border: rgb(0 255 135 / 42%);
+  --vz-module-state-background: rgb(0 255 135 / 4%);
+}
+
+.moduleStateEmpty {
+  --vz-module-accent: var(--vz-surface-accent-silver);
+  --vz-module-state-border: rgb(199 208 214 / 26%);
+  --vz-module-state-background: rgb(199 208 214 / 3%);
+}
+
+.moduleStateStale {
+  --vz-module-accent: var(--vz-surface-accent-gold);
+  --vz-module-state-border: var(--vz-module-stale-border);
+  --vz-module-state-background: var(--vz-module-stale-background);
+}
+
+.moduleStateError,
+.moduleStateUnauthorized,
+.moduleStateForbidden {
+  --vz-module-accent: var(--vz-surface-accent-red);
+  --vz-module-state-border: var(--vz-module-error-border);
+  --vz-module-state-background: var(--vz-module-error-background);
+}
+
+.moduleStateOffline {
+  --vz-module-accent: var(--vz-surface-accent-silver);
+  --vz-module-state-border: rgb(199 208 214 / 38%);
+  --vz-module-state-background: rgb(199 208 214 / 4%);
+}
+
+.moduleStateNotFound {
+  --vz-module-accent: var(--vz-surface-accent-violet);
+  --vz-module-state-border: rgb(138 79 255 / 46%);
+  --vz-module-state-background: rgb(138 79 255 / 5%);
+}
+
+.moduleStateMaintenance {
+  --vz-module-accent: var(--vz-surface-accent-gold);
+  --vz-module-state-border: rgb(255 194 71 / 48%);
+  --vz-module-state-background: rgb(255 194 71 / 5%);
+}
+
+.moduleStatePartialFailure {
+  --vz-module-accent: var(--vz-surface-accent-magenta);
+  --vz-module-state-border: rgb(255 79 216 / 48%);
+  --vz-module-state-background: rgb(255 79 216 / 5%);
+}
+
+.moduleStateLoading::before,
+.moduleStateRetrying::before {
+  background: linear-gradient(180deg, transparent, var(--vz-module-accent), transparent);
+  background-size: 100% 200%;
+  animation: vz-panel-module-pulse 1.4s linear infinite;
+}
+
+.moduleStateLoading::after,
+.moduleStateRetrying::after {
+  opacity: 0.85;
+}
+
+@keyframes vz-panel-module-pulse {
+  from {
+    background-position: 0 -100%;
+  }
+
+  to {
+    background-position: 0 100%;
+  }
+}
+
+/* ==================================================================
+   STATUS
+   ================================================================== */
+
+.status {
+  --vz-status-accent: var(--vz-surface-accent-silver);
+
+  display: inline-flex;
+  min-width: 0;
+  width: fit-content;
+  align-items: center;
+  gap: var(--vz-space-2);
+  padding: var(--vz-space-1) var(--vz-space-3);
+  color: var(--vz-status-accent);
+  background: color-mix(in srgb, var(--vz-status-accent) 8%, var(--vz-material-deep));
+  border: 1px solid color-mix(in srgb, var(--vz-status-accent) 48%, transparent);
+  clip-path: polygon(
+    0.35rem 0,
+    100% 0,
+    100% calc(100% - 0.35rem),
+    calc(100% - 0.35rem) 100%,
+    0 100%
+  );
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-label-cap);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-letter-spacing-wide);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.status::before {
+  width: 0.375rem;
+  height: 0.375rem;
+  flex: 0 0 auto;
+  content: "";
+  background: currentColor;
+  border-radius: 50%;
+  box-shadow: 0 0 0.5rem currentColor;
+}
+
+.statusNeutral {
+  --vz-status-accent: var(--vz-surface-accent-silver);
+}
+
+.statusPositive {
+  --vz-status-accent: var(--vz-surface-accent-green);
+}
+
+.statusWarning {
+  --vz-status-accent: var(--vz-surface-accent-gold);
+}
+
+.statusNegative {
+  --vz-status-accent: var(--vz-surface-accent-red);
+}
+
+.statusInformation {
+  --vz-status-accent: var(--vz-surface-accent-cyan);
+}
+
+/* ==================================================================
+   FOOTER
+   ================================================================== */
+
+.footer {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vz-space-4);
+  margin-top: auto;
+  padding: var(--vz-panel-content-padding);
+  background: var(--vz-panel-footer-background);
+  border-top: 1px solid color-mix(in srgb, var(--vz-panel-accent) 30%, var(--vz-panel-frame-line));
+}
+
+.footer > * {
+  min-width: 0;
+}
+
+/* ==================================================================
+   DENSITY OVERRIDES
+   ================================================================== */
+
+.densityCompact .title {
+  font-size: var(--vz-font-size-heading-md);
+}
+
+.densityCompact .moduleHeader,
+.densityCompact .moduleBody {
+  padding: var(--vz-space-3);
+}
+
+.densitySpacious .title {
+  font-size: var(--vz-font-size-display-sm);
+}
+
+.densitySpacious .moduleHeader,
+.densitySpacious .moduleBody {
+  padding: var(--vz-space-5);
+}
+
+/* ==================================================================
+   RESPONSIVE BEHAVIOUR
+   ================================================================== */
+
+@media (max-width: 47.999rem) {
+  .panel {
+    --vz-panel-content-padding: var(--vz-space-4);
+    --vz-panel-content-gap: var(--vz-space-3);
+  }
+
+  .densityCompact {
+    --vz-panel-content-padding: var(--vz-space-3);
+  }
+
+  .densitySpacious {
+    --vz-panel-content-padding: var(--vz-space-5);
+  }
+
+  .layoutSplit .panelSurface,
+  .layoutGrid .panelSurface {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .gridColumnsTwo,
+  .gridColumnsThree,
+  .gridColumnsFour {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer {
+    align-items: stretch;
+  }
+
+  .footer > button,
+  .footer > a {
+    flex: 1 1 100%;
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 63.999rem) {
+  .gridColumnsThree,
+  .gridColumnsFour {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .layoutSplit .panelSurface {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(15rem, 0.8fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .densitySpacious {
+    --vz-panel-content-padding: var(--vz-space-8);
+  }
+}
+
+/* ==================================================================
+   ACCESSIBILITY
+   ================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .module {
+    transition: none;
+  }
+
+  .moduleInteractive:hover {
+    transform: none;
+  }
+
+  .moduleStateLoading::before,
+  .moduleStateRetrying::before {
+    animation: none;
+    background: var(--vz-module-accent);
+  }
+}
+
+@media (prefers-contrast: more) {
+  .panelSurface {
+    border-width: 2px;
+    border-color: var(--vz-panel-accent);
+  }
+
+  .module {
+    border-width: 2px;
+    border-color: var(--vz-module-accent);
+  }
+
+  .description {
+    color: var(--vz-color-text-primary);
+  }
+
+  .status {
+    border-width: 2px;
+  }
+}
+
+@media (forced-colors: active) {
+  .outerFrame,
+  .innerFrame,
+  .panelSurface,
+  .header,
+  .body,
+  .grid,
+  .module,
+  .moduleHeader,
+  .moduleBody,
+  .status,
+  .footer {
+    color: CanvasText;
+    background: Canvas;
+    border-color: CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+
+  .railTop,
+  .railBottom,
+  .cornerTopLeft,
+  .cornerTopRight,
+  .cornerBottomLeft,
+  .cornerBottomRight {
+    display: none;
+  }
+
+  .eyebrow,
+  .status {
+    color: LinkText;
+  }
+}

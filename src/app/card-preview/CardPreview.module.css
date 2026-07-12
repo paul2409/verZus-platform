@@ -1,0 +1,368 @@
+.page {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 100svh;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  overflow-x: hidden;
+  padding: clamp(1rem, 3vw, 3rem) clamp(0.75rem, 4vw, 4.5rem) clamp(4rem, 8vw, 7rem);
+  color: var(--vz-color-text-primary, #f4f7f8);
+  background:
+    radial-gradient(circle at 12% 8%, rgb(0 255 135 / 12%), transparent 31rem),
+    radial-gradient(circle at 88% 18%, rgb(138 79 255 / 11%), transparent 28rem),
+    radial-gradient(circle at 55% 88%, rgb(0 229 255 / 8%), transparent 32rem), #030506;
+}
+
+.atmosphere {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgb(255 255 255 / 2%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 2%) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  mask-image: linear-gradient(180deg, black, transparent 88%);
+}
+
+.pageHeader {
+  display: grid;
+  width: min(100%, 72rem);
+  gap: 0.75rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.kicker,
+.moduleKicker {
+  margin: 0;
+  color: var(--vz-surface-accent-green, #00ff87);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-label-cap, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pageTitle {
+  margin: 0;
+  font-family: var(--vz-font-display);
+  font-size: clamp(2.4rem, 7vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 1.75rem rgb(0 255 135 / 15%),
+    0 0.125rem 0 rgb(0 0 0 / 90%);
+}
+
+.pageDescription {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+  color: var(--vz-color-text-secondary, #aeb8bf);
+  font-family: var(--vz-font-body);
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
+  line-height: 1.65;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding: 0 var(--vz-panel-content-padding, 1.25rem) var(--vz-panel-content-padding, 1.25rem);
+}
+
+.collectibleCard {
+  width: 100%;
+  max-width: 22rem;
+  justify-self: center;
+}
+
+.emblemStage {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 11rem;
+  place-items: center;
+  overflow: hidden;
+}
+
+.emblemStage::before,
+.emblemStage::after {
+  position: absolute;
+  content: "";
+  border-radius: 50%;
+}
+
+.emblemStage::before {
+  width: 74%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgb(255 255 255 / 22%), transparent 66%);
+  filter: blur(0.2rem);
+}
+
+.emblemStage::after {
+  width: 92%;
+  aspect-ratio: 1;
+  border: 1px solid rgb(255 255 255 / 9%);
+  box-shadow:
+    inset 0 0 2rem rgb(255 255 255 / 5%),
+    0 0 2rem rgb(0 0 0 / 46%);
+}
+
+.emblemStageRaven {
+  background:
+    radial-gradient(circle at 50% 45%, rgb(138 79 255 / 30%), transparent 50%),
+    linear-gradient(145deg, #22133d, #07070d);
+}
+
+.emblemStageVoltage {
+  background:
+    radial-gradient(circle at 50% 42%, rgb(0 229 255 / 32%), transparent 50%),
+    linear-gradient(145deg, #082d3b, #05090d);
+}
+
+.emblemStageWolf {
+  background:
+    radial-gradient(circle at 50% 42%, rgb(255 194 71 / 34%), transparent 50%),
+    linear-gradient(145deg, #3b250a, #090705);
+}
+
+.emblem {
+  position: relative;
+  z-index: 2;
+  width: min(74%, 10.5rem);
+  overflow: visible;
+  filter: drop-shadow(0 0.75rem 0 rgb(0 0 0 / 42%)) drop-shadow(0 0 1.25rem rgb(0 0 0 / 48%));
+}
+
+.emblemBack {
+  fill: #11171b;
+  stroke: #dde5ea;
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+
+.emblemAccent {
+  fill: var(--vz-card-accent);
+  stroke: #07090a;
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+
+.emblemCore {
+  fill: #20282e;
+  stroke: #060809;
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+
+.emblemEye,
+.emblemFang {
+  fill: #f7fbfd;
+}
+
+.emblemRing {
+  fill: none;
+  stroke: var(--vz-card-accent);
+  stroke-width: 8;
+}
+
+.cardAction,
+.secondaryAction,
+.moduleAction {
+  min-height: 2.75rem;
+  cursor: pointer;
+  color: #031008;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-card-accent, #00ff87) 78%, white),
+    var(--vz-card-accent, #00ff87)
+  );
+  border: 1px solid color-mix(in srgb, var(--vz-card-accent, #00ff87) 72%, white);
+  clip-path: polygon(
+    0.55rem 0,
+    100% 0,
+    100% calc(100% - 0.55rem),
+    calc(100% - 0.55rem) 100%,
+    0 100%,
+    0 0.55rem
+  );
+  font-family: var(--vz-font-display);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition:
+    transform 140ms ease,
+    filter 140ms ease;
+}
+
+.cardAction {
+  width: 100%;
+}
+
+.secondaryAction,
+.moduleAction {
+  padding-inline: 1.25rem;
+  color: var(--vz-color-text-primary, white);
+  background: rgb(8 14 17 / 92%);
+  border-color: var(--vz-surface-accent-cyan, #00e5ff);
+}
+
+.cardAction:hover,
+.secondaryAction:hover,
+.moduleAction:hover {
+  filter: brightness(1.12);
+  transform: translateY(-0.125rem);
+}
+
+.cardAction:focus-visible,
+.secondaryAction:focus-visible,
+.moduleAction:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 0.2rem;
+}
+
+.moduleTitle {
+  margin: 0.2rem 0 0;
+  font-family: var(--vz-font-display);
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.moduleMetric,
+.largeRank {
+  margin: 0;
+  color: var(--vz-surface-accent-green, #00ff87);
+  font-family: var(--vz-font-numeric, var(--vz-font-display));
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.moduleMetric {
+  font-size: clamp(1.25rem, 4vw, 2rem);
+}
+
+.largeRank {
+  font-size: clamp(3rem, 9vw, 5.5rem);
+  line-height: 0.9;
+}
+
+.moduleCopy {
+  margin: 0;
+  color: var(--vz-color-text-secondary, #aeb8bf);
+  font-family: var(--vz-font-body);
+  line-height: 1.55;
+}
+
+.skeleton,
+.skeletonShort {
+  height: 1rem;
+  background: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 5%),
+    rgb(0 229 255 / 18%),
+    rgb(255 255 255 / 5%)
+  );
+  background-size: 200% 100%;
+  animation: preview-skeleton 1.4s linear infinite;
+}
+
+.skeletonShort {
+  width: 64%;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes preview-skeleton {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 29.999rem) {
+  .page {
+    gap: 1.5rem;
+    padding-inline: 0.625rem;
+  }
+
+  .pageHeader {
+    padding-inline: 0.5rem;
+  }
+
+  .cardGrid {
+    padding-inline: 0.75rem;
+  }
+
+  .collectibleCard {
+    max-width: none;
+  }
+
+  .moduleAction,
+  .secondaryAction {
+    width: 100%;
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 63.999rem) {
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .collectibleCard:last-child {
+    grid-column: 1 / -1;
+    width: min(100%, 22rem);
+  }
+}
+
+@media (min-width: 64rem) {
+  .cardGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardAction,
+  .secondaryAction,
+  .moduleAction,
+  .skeleton,
+  .skeletonShort {
+    animation: none;
+    transition: none;
+  }
+
+  .cardAction:hover,
+  .secondaryAction:hover,
+  .moduleAction:hover {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .cardAction,
+  .secondaryAction,
+  .moduleAction {
+    color: ButtonText;
+    background: ButtonFace;
+    border: 2px solid ButtonText;
+    forced-color-adjust: auto;
+  }
+}

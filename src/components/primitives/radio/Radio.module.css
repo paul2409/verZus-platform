@@ -1,0 +1,133 @@
+.group {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  padding: 0;
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-label-cap);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-letter-spacing-widest);
+  text-transform: uppercase;
+}
+
+.required {
+  margin-left: var(--vz-space-1);
+  color: var(--vz-color-red-500);
+}
+
+.groupHint,
+.groupError {
+  margin: var(--vz-space-2) 0 0;
+  color: var(--vz-color-text-tertiary);
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-caption);
+}
+
+.groupError {
+  color: var(--vz-color-red-400);
+}
+
+.options {
+  display: flex;
+  gap: var(--vz-space-3);
+  margin-top: var(--vz-space-3);
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.horizontal {
+  flex-flow: row wrap;
+}
+
+.option {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: var(--vz-space-3);
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.indicator {
+  position: relative;
+  display: inline-grid;
+  width: var(--vz-icon-size-md);
+  height: var(--vz-icon-size-md);
+  flex: 0 0 auto;
+  place-items: center;
+  margin-top: 0.0625rem;
+  background: var(--vz-input-background);
+  border: var(--vz-border-width-1) solid var(--vz-input-border);
+  border-radius: var(--vz-radius-full);
+  box-shadow: var(--vz-shadow-xs);
+  transition: var(--vz-transition-interactive);
+}
+
+.indicator::after {
+  width: 0.625rem;
+  height: 0.625rem;
+  background: var(--vz-color-text-inverse);
+  border-radius: var(--vz-radius-full);
+  content: "";
+  opacity: 0;
+  transform: scale(0.5);
+  transition: var(--vz-transition-interactive);
+}
+
+.input:checked + .indicator {
+  background: var(--vz-color-green-500);
+  border-color: var(--vz-color-green-500);
+  box-shadow: var(--vz-glow-green-subtle);
+}
+
+.input:checked + .indicator::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.input:focus-visible + .indicator {
+  outline: var(--vz-border-width-2) solid var(--vz-color-focus-ring);
+  outline-offset: var(--vz-space-1);
+}
+
+.option:hover .indicator {
+  border-color: var(--vz-color-green-500);
+}
+
+.content {
+  display: grid;
+  min-width: 0;
+  gap: var(--vz-space-1);
+}
+
+.label {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-body-md);
+}
+
+.description {
+  color: var(--vz-color-text-tertiary);
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-caption);
+}
+
+.option[data-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--vz-opacity-disabled);
+}

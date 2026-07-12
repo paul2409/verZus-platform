@@ -880,3 +880,300 @@
     --vz-color-focus-ring: #ffffff;
   }
 }
+
+/* M2 STEP 9 START */
+/* ==================================================================
+   TRADING-CARD AND MECHANICAL PANEL SYSTEM
+   Approved visual direction:
+   dark, competitive, comic-mechanical, collectible and data-first.
+   ================================================================== */
+
+:root {
+  /* ================================================================
+     SHARED ACCENTS
+     ================================================================ */
+
+  --vz-surface-accent-green: var(--vz-color-green-500, #00ff87);
+  --vz-surface-accent-cyan: var(--vz-color-cyan-500, #00e5ff);
+  --vz-surface-accent-violet: #8a4fff;
+  --vz-surface-accent-magenta: #ff4fd8;
+  --vz-surface-accent-gold: #ffc247;
+  --vz-surface-accent-red: var(--vz-color-red-500, #ff3b30);
+  --vz-surface-accent-silver: #c7d0d6;
+
+  /* ================================================================
+     MATERIAL PALETTE
+     ================================================================ */
+
+  --vz-material-void: #030506;
+  --vz-material-ink: #060809;
+  --vz-material-deep: #090d10;
+  --vz-material-base: #10161a;
+  --vz-material-raised: #182026;
+  --vz-material-metal-dark: #293239;
+  --vz-material-metal-mid: #56626b;
+  --vz-material-metal-light: #aeb8bf;
+  --vz-material-glass: rgb(10 15 18 / 88%);
+
+  /* ================================================================
+     TEXTURES
+     ================================================================ */
+
+  --vz-texture-grid:
+    linear-gradient(rgb(255 255 255 / 2.4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 2.4%) 1px, transparent 1px);
+
+  --vz-texture-carbon:
+    linear-gradient(
+      45deg,
+      rgb(255 255 255 / 1.8%) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgb(255 255 255 / 1.8%) 75%
+    ),
+    linear-gradient(
+      45deg,
+      rgb(255 255 255 / 1.8%) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgb(255 255 255 / 1.8%) 75%
+    );
+
+  --vz-texture-scanline: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 3px,
+    rgb(255 255 255 / 1.2%) 4px
+  );
+
+  --vz-texture-noise-opacity: 0.035;
+  --vz-texture-grid-size: 2rem 2rem;
+  --vz-texture-carbon-size: 0.75rem 0.75rem;
+
+  /* ================================================================
+     MECHANICAL GEOMETRY
+     ================================================================ */
+
+  --vz-cut-control: 0.375rem;
+  --vz-cut-card-sm: 0.625rem;
+  --vz-cut-card-md: 0.875rem;
+  --vz-cut-card-lg: 1.125rem;
+  --vz-cut-panel: 1rem;
+
+  --vz-shape-card: polygon(
+    var(--vz-cut-card-md) 0,
+    calc(100% - var(--vz-cut-card-md)) 0,
+    100% var(--vz-cut-card-md),
+    100% calc(100% - var(--vz-cut-card-md)),
+    calc(100% - var(--vz-cut-card-md)) 100%,
+    var(--vz-cut-card-md) 100%,
+    0 calc(100% - var(--vz-cut-card-md)),
+    0 var(--vz-cut-card-md)
+  );
+
+  --vz-shape-card-compact: polygon(
+    var(--vz-cut-card-sm) 0,
+    calc(100% - var(--vz-cut-card-sm)) 0,
+    100% var(--vz-cut-card-sm),
+    100% calc(100% - var(--vz-cut-card-sm)),
+    calc(100% - var(--vz-cut-card-sm)) 100%,
+    var(--vz-cut-card-sm) 100%,
+    0 calc(100% - var(--vz-cut-card-sm)),
+    0 var(--vz-cut-card-sm)
+  );
+
+  --vz-shape-feature-card: polygon(
+    var(--vz-cut-card-lg) 0,
+    calc(100% - var(--vz-cut-card-lg)) 0,
+    100% var(--vz-cut-card-lg),
+    100% calc(100% - var(--vz-cut-card-lg)),
+    calc(100% - var(--vz-cut-card-lg)) 100%,
+    var(--vz-cut-card-lg) 100%,
+    0 calc(100% - var(--vz-cut-card-lg)),
+    0 var(--vz-cut-card-lg)
+  );
+
+  --vz-shape-panel: polygon(
+    var(--vz-cut-panel) 0,
+    calc(100% - var(--vz-cut-panel)) 0,
+    100% var(--vz-cut-panel),
+    100% calc(100% - var(--vz-cut-panel)),
+    calc(100% - var(--vz-cut-panel)) 100%,
+    var(--vz-cut-panel) 100%,
+    0 calc(100% - var(--vz-cut-panel)),
+    0 var(--vz-cut-panel)
+  );
+
+  /* ================================================================
+     CARD DIMENSIONS
+     ================================================================ */
+
+  --vz-card-min-inline-size: 13rem;
+  --vz-card-max-inline-size: 26rem;
+  --vz-card-aspect-portrait: 5 / 7;
+  --vz-card-aspect-landscape: 16 / 9;
+  --vz-card-aspect-square: 1 / 1;
+
+  --vz-card-frame-width: 0.125rem;
+  --vz-card-frame-width-featured: 0.1875rem;
+  --vz-card-inner-gap: 0.375rem;
+  --vz-card-slot-gap: 0.5rem;
+
+  /* ================================================================
+     CARD FRAME
+     ================================================================ */
+
+  --vz-card-frame-background: linear-gradient(
+    135deg,
+    var(--vz-material-metal-mid) 0%,
+    var(--vz-material-ink) 18%,
+    var(--vz-material-metal-dark) 34%,
+    var(--vz-material-metal-light) 50%,
+    var(--vz-material-metal-dark) 66%,
+    var(--vz-material-ink) 82%,
+    var(--vz-material-metal-mid) 100%
+  );
+
+  --vz-card-frame-inner: linear-gradient(180deg, rgb(24 32 38 / 98%), rgb(5 8 10 / 100%));
+
+  --vz-card-frame-highlight: rgb(255 255 255 / 20%);
+  --vz-card-frame-line: rgb(174 184 191 / 38%);
+  --vz-card-frame-shadow-line: rgb(0 0 0 / 92%);
+
+  --vz-card-body-background: linear-gradient(180deg, rgb(14 20 24 / 98%), rgb(4 7 9 / 100%));
+
+  --vz-card-header-background: linear-gradient(180deg, rgb(32 40 46 / 96%), rgb(11 15 18 / 98%));
+
+  --vz-card-media-background:
+    radial-gradient(circle at 50% 18%, rgb(0 255 135 / 13%), transparent 46%),
+    linear-gradient(180deg, #11181c, #050708);
+
+  --vz-card-stats-background: linear-gradient(180deg, rgb(4 8 10 / 82%), rgb(2 4 5 / 94%));
+
+  --vz-card-footer-background: linear-gradient(180deg, rgb(13 18 21 / 96%), rgb(4 6 8 / 100%));
+
+  /* ================================================================
+     CARD RARITY AND DOMAIN TONES
+     ================================================================ */
+
+  --vz-card-rarity-common: #87929b;
+  --vz-card-rarity-rare: var(--vz-surface-accent-cyan);
+  --vz-card-rarity-epic: var(--vz-surface-accent-violet);
+  --vz-card-rarity-legendary: var(--vz-surface-accent-gold);
+
+  --vz-card-tone-player: var(--vz-surface-accent-green);
+  --vz-card-tone-crew: var(--vz-surface-accent-violet);
+  --vz-card-tone-match: var(--vz-surface-accent-magenta);
+  --vz-card-tone-pool: var(--vz-surface-accent-green);
+  --vz-card-tone-information: var(--vz-surface-accent-cyan);
+  --vz-card-tone-warning: var(--vz-surface-accent-gold);
+  --vz-card-tone-danger: var(--vz-surface-accent-red);
+
+  /* ================================================================
+     FOIL AND GLASS EFFECTS
+     ================================================================ */
+
+  --vz-card-foil-spectrum: linear-gradient(
+    112deg,
+    transparent 4%,
+    rgb(0 255 135 / 18%) 18%,
+    rgb(0 229 255 / 24%) 34%,
+    rgb(138 79 255 / 22%) 50%,
+    rgb(255 79 216 / 18%) 64%,
+    rgb(255 194 71 / 20%) 78%,
+    transparent 94%
+  );
+
+  --vz-card-foil-radial: radial-gradient(
+    circle at 20% 16%,
+    rgb(255 255 255 / 22%),
+    transparent 25%
+  );
+
+  --vz-card-glass-shine: linear-gradient(
+    125deg,
+    rgb(255 255 255 / 18%) 0%,
+    rgb(255 255 255 / 4%) 20%,
+    transparent 46%
+  );
+
+  --vz-card-foil-opacity-rest: 0.18;
+  --vz-card-foil-opacity-hover: 0.34;
+
+  /* ================================================================
+     CARD ELEVATION
+     ================================================================ */
+
+  --vz-card-shadow:
+    0 1.25rem 2.75rem rgb(0 0 0 / 50%), 0 0.25rem 0.75rem rgb(0 0 0 / 76%),
+    inset 0 1px 0 rgb(255 255 255 / 5%);
+
+  --vz-card-shadow-hover:
+    0 1.75rem 3.5rem rgb(0 0 0 / 60%), 0 0.375rem 1rem rgb(0 0 0 / 82%),
+    inset 0 1px 0 rgb(255 255 255 / 7%);
+
+  --vz-card-glow-common: 0 0 1.25rem rgb(135 146 155 / 14%);
+  --vz-card-glow-rare: 0 0 1.5rem rgb(0 229 255 / 24%);
+  --vz-card-glow-epic: 0 0 1.75rem rgb(138 79 255 / 26%);
+  --vz-card-glow-legendary: 0 0 2rem rgb(255 194 71 / 30%);
+
+  /* ================================================================
+     PANEL FRAME
+     ================================================================ */
+
+  --vz-panel-frame-background: linear-gradient(
+    135deg,
+    #313b42 0%,
+    #080b0d 20%,
+    #59656e 36%,
+    #0a0e11 52%,
+    #343d44 70%,
+    #070a0c 84%,
+    #2c343a 100%
+  );
+
+  --vz-panel-frame-inner: linear-gradient(180deg, rgb(18 24 28 / 98%), rgb(4 7 9 / 100%));
+
+  --vz-panel-body-background: linear-gradient(180deg, rgb(13 18 22 / 97%), rgb(4 7 9 / 99%));
+
+  --vz-panel-header-background: linear-gradient(180deg, rgb(28 35 41 / 96%), rgb(10 14 17 / 98%));
+
+  --vz-panel-footer-background: linear-gradient(180deg, rgb(9 13 16 / 96%), rgb(3 5 7 / 100%));
+
+  --vz-panel-frame-line: rgb(174 184 191 / 34%);
+  --vz-panel-frame-highlight: rgb(255 255 255 / 16%);
+  --vz-panel-frame-shadow-line: rgb(0 0 0 / 90%);
+
+  --vz-panel-frame-width: 0.125rem;
+  --vz-panel-inner-gap: 0.375rem;
+
+  --vz-panel-shadow:
+    0 1.5rem 3.5rem rgb(0 0 0 / 46%), 0 0.25rem 0.875rem rgb(0 0 0 / 70%),
+    inset 0 1px 0 rgb(255 255 255 / 4%);
+
+  /* ================================================================
+     MODULE ISOLATION
+     ================================================================ */
+
+  --vz-module-background: linear-gradient(180deg, rgb(16 22 26 / 96%), rgb(5 8 10 / 100%));
+
+  --vz-module-border: rgb(174 184 191 / 20%);
+  --vz-module-border-active: rgb(0 255 135 / 58%);
+  --vz-module-error-background: rgb(255 59 48 / 6%);
+  --vz-module-error-border: rgb(255 59 48 / 58%);
+  --vz-module-stale-background: rgb(255 194 71 / 5%);
+  --vz-module-stale-border: rgb(255 194 71 / 52%);
+
+  /* ================================================================
+     MOTION
+     ================================================================ */
+
+  --vz-trading-surface-transition:
+    border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, filter 160ms ease,
+    opacity 160ms ease;
+
+  --vz-card-hover-transform: translateY(-0.25rem);
+  --vz-card-active-transform: translateY(-0.0625rem);
+}
+
+/* M2 STEP 9 END */

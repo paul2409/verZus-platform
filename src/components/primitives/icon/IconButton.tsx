@@ -2,7 +2,8 @@
 
 import { forwardRef, type ButtonHTMLAttributes } from "react";
 
-import { Icon, type IconName, type IconSize } from "./Icon";
+import { Icon, type IconSize } from "./Icon";
+import type { IconName } from "./iconDefinitions";
 import styles from "./IconButton.module.css";
 
 export type IconButtonVariant = "neutral" | "primary" | "secondary" | "danger";

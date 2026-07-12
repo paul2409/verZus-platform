@@ -1,0 +1,89 @@
+.root {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  color: var(--vz-input-text);
+  background: var(--vz-input-background);
+  border: var(--vz-border-width-1) solid var(--vz-input-border);
+  border-radius: var(--vz-radius-control);
+  box-shadow: var(--vz-shadow-control);
+  transition: var(--vz-transition-interactive);
+}
+
+.root:hover:not(.disabled) {
+  background: var(--vz-input-background-hover);
+  border-color: var(--vz-input-border-hover);
+}
+
+.root:focus-within:not(.disabled) {
+  border-color: var(--vz-input-border-focus);
+  box-shadow: var(--vz-input-focus-shadow);
+}
+
+.sm {
+  min-height: var(--vz-control-height-sm);
+}
+
+.md {
+  min-height: var(--vz-control-height-md);
+}
+
+.lg {
+  min-height: var(--vz-control-height-lg);
+}
+
+.select {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--vz-space-12) 0 var(--vz-space-4);
+  color: var(--vz-input-text);
+  appearance: none;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-body-md);
+  cursor: pointer;
+}
+
+.select:focus,
+.select:focus-visible {
+  outline: none;
+}
+
+.select option {
+  color: var(--vz-color-text-primary);
+  background: var(--vz-color-surface-elevated);
+}
+
+.icon {
+  position: absolute;
+  right: var(--vz-space-4);
+  pointer-events: none;
+  color: var(--vz-color-text-tertiary);
+}
+
+.root:focus-within .icon {
+  color: var(--vz-color-green-500);
+}
+
+.invalid {
+  border-color: var(--vz-color-red-500);
+  box-shadow:
+    0 0 0 1px var(--vz-color-red-500),
+    var(--vz-glow-red-subtle);
+}
+
+.disabled {
+  background: var(--vz-input-background-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: var(--vz-opacity-disabled);
+}
+
+.disabled .select {
+  cursor: not-allowed;
+}

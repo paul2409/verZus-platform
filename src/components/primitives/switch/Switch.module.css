@@ -1,0 +1,111 @@
+.root {
+  display: grid;
+  gap: var(--vz-space-2);
+}
+
+.control {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: var(--vz-space-3);
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.track {
+  position: relative;
+  display: flex;
+  width: 2.75rem;
+  height: 1.5rem;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0.1875rem;
+  background: var(--vz-color-surface-elevated);
+  border: var(--vz-border-width-1) solid var(--vz-input-border);
+  border-radius: var(--vz-radius-full);
+  box-shadow: var(--vz-shadow-xs);
+  transition: var(--vz-transition-interactive);
+}
+
+.thumb {
+  width: 1rem;
+  height: 1rem;
+  background: var(--vz-color-text-secondary);
+  border-radius: var(--vz-radius-full);
+  box-shadow: var(--vz-shadow-sm);
+  transform: translateX(0);
+  transition: var(--vz-transition-interactive);
+}
+
+.input:checked + .track {
+  background: var(--vz-color-green-500);
+  border-color: var(--vz-color-green-500);
+  box-shadow: var(--vz-glow-green-subtle);
+}
+
+.input:checked + .track .thumb {
+  background: var(--vz-color-text-inverse);
+  transform: translateX(1.2rem);
+}
+
+.input:focus-visible + .track {
+  outline: var(--vz-border-width-2) solid var(--vz-color-focus-ring);
+  outline-offset: var(--vz-space-1);
+}
+
+.control:hover .track {
+  border-color: var(--vz-color-green-500);
+}
+
+.content {
+  display: grid;
+  min-width: 0;
+  gap: var(--vz-space-1);
+}
+
+.label {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-body-md);
+}
+
+.description,
+.error {
+  color: var(--vz-color-text-tertiary);
+  font-family: var(--vz-font-body);
+  font-size: var(--vz-font-size-caption);
+}
+
+.error {
+  margin: 0 0 0 calc(2.75rem + var(--vz-space-3));
+  color: var(--vz-color-red-400);
+}
+
+.root[data-invalid="true"] .track {
+  border-color: var(--vz-color-red-500);
+}
+
+.root[data-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--vz-opacity-disabled);
+}
+
+.root[data-disabled="true"] .control {
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .thumb {
+    transition: none;
+  }
+}

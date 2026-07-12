@@ -1,4 +1,7 @@
-import { fontVariables } from "@/lib/fonts";
+import "@fontsource-variable/inter";
+import "@fontsource/rajdhani/500.css";
+import "@fontsource/rajdhani/600.css";
+import "@fontsource/rajdhani/700.css";
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
@@ -28,7 +31,7 @@ type RootLayoutProps = Readonly<{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={fontVariables}>
+    <html lang="en">
       <body>
         <AppProviders>{children}</AppProviders>
       </body>
