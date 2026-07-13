@@ -1,0 +1,119 @@
+/* VERZUS M4 STEP 4.3 */
+
+.page {
+  min-height: 100svh;
+  padding: clamp(1rem, 4vw, 3rem);
+  background:
+    linear-gradient(rgb(7 8 17 / 92%), rgb(7 8 17 / 98%)),
+    linear-gradient(var(--vz-color-primary, #39ff14) 1px, transparent 1px),
+    linear-gradient(90deg, var(--vz-color-primary, #39ff14) 1px, transparent 1px), #070811;
+  background-size:
+    auto,
+    2.5rem 2.5rem,
+    2.5rem 2.5rem,
+    auto;
+  color: var(--vz-color-text, #f3f5f7);
+}
+
+.header {
+  display: grid;
+  max-width: 68rem;
+  gap: 0.65rem;
+  margin-inline: auto;
+  margin-bottom: 1.5rem;
+}
+
+.header p,
+.header h1,
+.card h2,
+.card p {
+  margin: 0;
+}
+
+.header p {
+  color: var(--vz-color-information, #00e5ff);
+  font: 800 0.75rem/1.2 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  font: 900 clamp(2rem, 7vw, 4rem) / 0.95 var(--vz-font-display, sans-serif);
+  text-transform: uppercase;
+}
+
+.header span {
+  max-width: 62ch;
+  color: var(--vz-color-text-muted, #8a87b8);
+  line-height: 1.55;
+}
+
+.grid {
+  display: grid;
+  max-width: 68rem;
+  gap: 0.9rem;
+  margin-inline: auto;
+}
+
+.card {
+  display: grid;
+  min-width: 0;
+  min-height: 10rem;
+  align-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--vz-color-primary, #39ff14) 32%, transparent);
+  background: color-mix(in srgb, var(--vz-color-surface, #12101f) 95%, transparent);
+  color: inherit;
+  text-decoration: none;
+  clip-path: polygon(
+    0.7rem 0,
+    100% 0,
+    100% calc(100% - 0.7rem),
+    calc(100% - 0.7rem) 100%,
+    0 100%,
+    0 0.7rem
+  );
+}
+
+.card:hover {
+  border-color: var(--vz-color-primary, #39ff14);
+  background: color-mix(
+    in srgb,
+    var(--vz-color-primary, #39ff14) 6%,
+    var(--vz-color-surface, #12101f)
+  );
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--vz-color-information, #00e5ff);
+  outline-offset: 3px;
+}
+
+.card h2 {
+  font: 800 1.1rem/1.2 var(--vz-font-display, sans-serif);
+  text-transform: uppercase;
+}
+
+.card p {
+  color: var(--vz-color-text-muted, #8a87b8);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.route {
+  color: var(--vz-color-information, #00e5ff);
+  font: 700 0.75rem/1.2 var(--vz-font-numeric, monospace);
+}
+
+@media (width >= 768px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

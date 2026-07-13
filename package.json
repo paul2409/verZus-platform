@@ -38,7 +38,13 @@
     "test:m3:navigation": "playwright test --config=playwright.m3-final.config.ts",
     "visual:m3:test": "playwright test tests/visual/m3-shell.visual.spec.ts --config=playwright.visual.config.ts --project=mobile-390 --project=tablet-768 --project=desktop-1440",
     "visual:m3:update": "playwright test tests/visual/m3-shell.visual.spec.ts --config=playwright.visual.config.ts --project=mobile-390 --project=tablet-768 --project=desktop-1440 --update-snapshots",
-    "verify:m3": "npm run verify && npm run build-storybook && npm run test:m3:shell-audit && npm run test:m3:navigation && npm run visual:m3:test"
+    "verify:m3": "npm run verify && npm run build-storybook && npm run test:m3:shell-audit && npm run test:m3:navigation && npm run visual:m3:test",
+    "test:m4": "vitest run --config vitest.m4.config.ts tests/integration/m4",
+    "m4:verify:technical": "node scripts/verify-m4.mjs --technical",
+    "m4:verify": "node scripts/verify-m4.mjs",
+    "test:e2e:m4": "playwright test tests/e2e/m4",
+    "test:visual:m4": "playwright test tests/visual/m4",
+    "m4:visual-review": "node scripts/m4-visual-review.mjs"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [

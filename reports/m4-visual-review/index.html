@@ -1,0 +1,1714 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  />
+  <title>VERZUS M4 Visual Review</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #060914;
+      color: #f6f7fb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(0, 245, 212, 0.1),
+          transparent 28rem
+        ),
+        #060914;
+    }
+
+    .page {
+      width: min(1800px, 100%);
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 20px;
+      margin-bottom: 36px;
+      padding: 28px;
+      border: 1px solid #27304b;
+      border-radius: 22px;
+      background: rgba(12, 17, 35, 0.94);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+    }
+
+    .hero h1,
+    .hero p {
+      margin: 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 58px);
+      letter-spacing: -0.045em;
+    }
+
+    .hero p {
+      max-width: 900px;
+      color: #aeb8d2;
+      line-height: 1.6;
+    }
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .summary-card {
+      min-width: 170px;
+      padding: 16px 18px;
+      border: 1px solid #27304b;
+      border-radius: 14px;
+      background: #0a1022;
+    }
+
+    .summary-card strong,
+    .summary-card span {
+      display: block;
+    }
+
+    .summary-card strong {
+      font-size: 28px;
+      color: #00f5d4;
+    }
+
+    .summary-card span {
+      margin-top: 4px;
+      color: #9aa6c3;
+      font-size: 13px;
+    }
+
+    .notice {
+      padding: 14px 16px;
+      border-left: 4px solid #f9c74f;
+      background: rgba(249, 199, 79, 0.08);
+      color: #f5dda0;
+      line-height: 1.5;
+    }
+
+    .review-group {
+      margin-top: 44px;
+    }
+
+    .group-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .group-heading h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .group-heading span {
+      color: #7f8baa;
+    }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+      gap: 22px;
+    }
+
+    .screen-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid #27304b;
+      border-radius: 18px;
+      background: #0a1022;
+    }
+
+    .screen-header,
+    .screen-footer {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .screen-header {
+      border-bottom: 1px solid #202943;
+    }
+
+    .screen-header h3 {
+      margin: 4px 0 6px;
+      font-size: 20px;
+    }
+
+    code {
+      color: #9fb0d3;
+      overflow-wrap: anywhere;
+    }
+
+    .eyebrow {
+      color: #00f5d4;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .status {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .status.ready {
+      background: rgba(64, 211, 137, 0.13);
+      color: #76efad;
+    }
+
+    .status.redirect {
+      background: rgba(84, 160, 255, 0.14);
+      color: #8fc0ff;
+    }
+
+    .status.warning {
+      background: rgba(249, 199, 79, 0.14);
+      color: #f9d97d;
+    }
+
+    .status.missing {
+      background: rgba(255, 82, 115, 0.14);
+      color: #ff8aa3;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 18px;
+      border-bottom: 1px solid #202943;
+      background: #080d1d;
+    }
+
+    .toolbar button,
+    .toolbar a {
+      min-height: 36px;
+      padding: 8px 11px;
+      border: 1px solid #33405f;
+      border-radius: 9px;
+      background: #111a32;
+      color: #dbe5ff;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .toolbar button:hover,
+    .toolbar a:hover {
+      border-color: #00f5d4;
+    }
+
+    .toolbar button:disabled {
+      cursor: not-allowed;
+      opacity: 0.38;
+    }
+
+    .preview-shell {
+      height: 720px;
+      overflow: auto;
+      padding: 18px;
+      background:
+        linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.02) 25%,
+          transparent 25%,
+          transparent 75%,
+          rgba(255, 255, 255, 0.02) 75%
+        ),
+        #050816;
+      background-size: 22px 22px;
+    }
+
+    .preview-stage {
+      display: flex;
+      justify-content: center;
+      min-width: max-content;
+    }
+
+    iframe {
+      width: 390px;
+      height: 844px;
+      border: 1px solid #34405d;
+      border-radius: 14px;
+      background: white;
+      transform-origin: top center;
+    }
+
+    .missing-panel {
+      display: grid;
+      place-items: center;
+      gap: 10px;
+      min-height: 360px;
+      padding: 30px;
+      background: #060a16;
+      color: #ff8aa3;
+      text-align: center;
+    }
+
+    .missing-panel span {
+      max-width: 360px;
+      color: #9aa6c3;
+      overflow-wrap: anywhere;
+    }
+
+    .screen-footer {
+      border-top: 1px solid #202943;
+      color: #7f8baa;
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 16px;
+      }
+
+      .hero {
+        padding: 20px;
+      }
+
+      .screen-header,
+      .screen-footer {
+        display: grid;
+      }
+
+      .status {
+        justify-self: start;
+      }
+
+      .preview-shell {
+        height: 640px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <span class="eyebrow">VERZUS · M4</span>
+      <h1>Authentication and onboarding visual review</h1>
+      <p>
+        This dashboard loads the actual local Next.js routes. It does not
+        invent missing screens. Use the viewport controls to inspect 360,
+        390, 430, 768, 1024, and 1440 pixel presentations.
+      </p>
+
+      <div class="summary">
+        <div class="summary-card">
+          <strong>15</strong>
+          <span>Required M4 screens</span>
+        </div>
+        <div class="summary-card">
+          <strong>0</strong>
+          <span>Route files found</span>
+        </div>
+        <div class="summary-card">
+          <strong>15</strong>
+          <span>Required route files missing</span>
+        </div>
+      </div>
+
+      <div class="notice">
+        Protected onboarding routes may redirect to Login because the review
+        browser has no authenticated mock-session cookie. That redirect is
+        security behavior, not proof that the onboarding UI exists.
+      </div>
+    </section>
+
+    
+        <section class="review-group">
+          <div class="group-heading">
+            <h2>Authentication</h2>
+            <span>6 screens</span>
+          </div>
+          <div class="screen-grid">
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Authentication</span>
+                  <h3>Login</h3>
+                  <code>/login</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-authentication-0"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-0"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-0"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-0"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-0"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-0"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/login/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/login/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Authentication</span>
+                  <h3>Register</h3>
+                  <code>/register</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-authentication-1"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-1"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-1"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-1"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-1"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-1"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/register/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/register/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Authentication</span>
+                  <h3>Email verification</h3>
+                  <code>/verify-email</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-authentication-2"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-2"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-2"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-2"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-2"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-2"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/verify-email/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/verify-email/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Authentication</span>
+                  <h3>Forgot password</h3>
+                  <code>/forgot-password</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-authentication-3"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-3"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-3"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-3"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-3"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-3"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/forgot-password/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/forgot-password/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Authentication</span>
+                  <h3>Reset password</h3>
+                  <code>/reset-password</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-authentication-4"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-4"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-4"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-4"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-4"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-4"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/reset-password/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/reset-password/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Authentication</span>
+                  <h3>Session expired</h3>
+                  <code>/session-expired</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-authentication-5"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-5"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-5"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-5"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-5"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-authentication-5"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/session-expired/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/session-expired/page.tsx</code>
+              </footer>
+            </article>
+          </div>
+        </section>
+      
+
+        <section class="review-group">
+          <div class="group-heading">
+            <h2>Account restrictions</h2>
+            <span>2 screens</span>
+          </div>
+          <div class="screen-grid">
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Account restrictions</span>
+                  <h3>Suspended account</h3>
+                  <code>/account/suspended</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-0"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-0"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-0"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-0"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-0"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-0"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/account/suspended/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/account/suspended/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Account restrictions</span>
+                  <h3>Banned account</h3>
+                  <code>/account/banned</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-1"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-1"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-1"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-1"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-1"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-account-restrictions-1"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/account/banned/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/account/banned/page.tsx</code>
+              </footer>
+            </article>
+          </div>
+        </section>
+      
+
+        <section class="review-group">
+          <div class="group-heading">
+            <h2>Onboarding</h2>
+            <span>7 screens</span>
+          </div>
+          <div class="screen-grid">
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Onboarding</span>
+                  <h3>Onboarding welcome</h3>
+                  <code>/onboarding</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-onboarding-0"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-0"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-0"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-0"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-0"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-0"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/onboarding/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/onboarding/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Onboarding</span>
+                  <h3>Choose games</h3>
+                  <code>/onboarding/games</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-onboarding-1"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-1"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-1"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-1"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-1"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-1"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/onboarding/games/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/onboarding/games/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Onboarding</span>
+                  <h3>Select location</h3>
+                  <code>/onboarding/location</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-onboarding-2"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-2"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-2"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-2"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-2"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-2"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/onboarding/location/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/onboarding/location/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Onboarding</span>
+                  <h3>Create player identity</h3>
+                  <code>/onboarding/identity</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-onboarding-3"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-3"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-3"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-3"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-3"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-3"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/onboarding/identity/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/onboarding/identity/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Onboarding</span>
+                  <h3>Set availability</h3>
+                  <code>/onboarding/availability</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-onboarding-4"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-4"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-4"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-4"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-4"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-4"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/onboarding/availability/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/onboarding/availability/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Onboarding</span>
+                  <h3>Join or skip Crew</h3>
+                  <code>/onboarding/crew</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-onboarding-5"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-5"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-5"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-5"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-5"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-5"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/onboarding/crew/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/onboarding/crew/page.tsx</code>
+              </footer>
+            </article>
+          
+
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Onboarding</span>
+                  <h3>Onboarding complete</h3>
+                  <code>/onboarding/complete</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-onboarding-6"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-6"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-6"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-6"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-6"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-onboarding-6"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/onboarding/complete/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/onboarding/complete/page.tsx</code>
+              </footer>
+            </article>
+          </div>
+        </section>
+      
+
+        <section class="review-group">
+          <div class="group-heading">
+            <h2>Flow destination</h2>
+            <span>1 screens</span>
+          </div>
+          <div class="screen-grid">
+            <article class="screen-card">
+              <header class="screen-header">
+                <div>
+                  <span class="eyebrow">Flow destination</span>
+                  <h3>Play</h3>
+                  <code>/play</code>
+                </div>
+                <span class="status missing">
+                  Route file missing
+                </span>
+              </header>
+
+              <div class="toolbar">
+                <button
+                  type="button"
+                  data-target="frame-flow-destination-0"
+                  data-width="360"
+                  disabled
+                >
+                  360
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-flow-destination-0"
+                  data-width="390"
+                  disabled
+                >
+                  390
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-flow-destination-0"
+                  data-width="430"
+                  disabled
+                >
+                  430
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-flow-destination-0"
+                  data-width="768"
+                  disabled
+                >
+                  768
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-flow-destination-0"
+                  data-width="1024"
+                  disabled
+                >
+                  1024
+                </button>
+                <button
+                  type="button"
+                  data-target="frame-flow-destination-0"
+                  data-width="1440"
+                  disabled
+                >
+                  1440
+                </button>
+
+                
+              </div>
+
+              
+              <div class="missing-panel">
+                <strong>Not built yet</strong>
+                <span>src/app/play/page.tsx</span>
+              </div>
+            
+
+              <footer class="screen-footer">
+                <span>Source</span>
+                <code>src/app/play/page.tsx</code>
+              </footer>
+            </article>
+          </div>
+        </section>
+      
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll(
+      "button[data-target][data-width]",
+    );
+
+    function applyViewport(frame, requestedWidth) {
+      const shell = frame.closest(".preview-shell");
+      const stage = frame.closest(".preview-stage");
+      const available =
+        Math.max(280, shell.clientWidth - 36);
+      const scale =
+        Math.min(1, available / requestedWidth);
+
+      frame.style.width = requestedWidth + "px";
+      frame.style.height =
+        (requestedWidth <= 430 ? 844 : 1000) + "px";
+      frame.style.transform =
+        "scale(" + scale + ")";
+
+      stage.style.height =
+        Math.ceil(
+          Number.parseInt(frame.style.height, 10) *
+            scale,
+        ) + "px";
+
+      shell.dataset.width = String(requestedWidth);
+    }
+
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        const frame = document.getElementById(
+          button.dataset.target,
+        );
+
+        if (!frame) {
+          return;
+        }
+
+        applyViewport(
+          frame,
+          Number(button.dataset.width),
+        );
+      });
+    }
+
+    for (const frame of document.querySelectorAll(
+      "iframe",
+    )) {
+      applyViewport(frame, 390);
+    }
+
+    window.addEventListener("resize", () => {
+      for (const shell of document.querySelectorAll(
+        ".preview-shell",
+      )) {
+        const frame = shell.querySelector("iframe");
+
+        if (!frame) {
+          continue;
+        }
+
+        applyViewport(
+          frame,
+          Number(shell.dataset.width || "390"),
+        );
+      }
+    });
+  </script>
+</body>
+</html>

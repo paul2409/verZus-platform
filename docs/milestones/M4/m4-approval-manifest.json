@@ -1,0 +1,80 @@
+{
+  "marker": "VERZUS M4 STEP 4.11",
+  "version": 1,
+  "milestone": "M4",
+  "approved": false,
+  "references": {
+    "login": {
+      "mobile390": "pending_review",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "register": {
+      "mobile390": "pending_review",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "emailVerification": {
+      "mobile390": "pending_review",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "forgotPassword": {
+      "mobile390": "pending_review",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "resetPassword": {
+      "mobile390": "pending_review",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "sessionExpired": {
+      "mobile390": "pending_review",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "onboardingWelcome": {
+      "mobile390": "generated_unapproved",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "chooseGames": {
+      "mobile390": "generated_unapproved",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "selectLocation": {
+      "mobile390": "generated_unapproved",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "createPlayerIdentity": {
+      "mobile390": "generated_unapproved",
+      "tablet768": "undecided",
+      "desktop1440": "blocked"
+    },
+    "setAvailability": {
+      "mobile390": "missing",
+      "tablet768": "blocked",
+      "desktop1440": "blocked"
+    },
+    "joinOrSkipCrew": {
+      "mobile390": "missing",
+      "tablet768": "blocked",
+      "desktop1440": "blocked"
+    },
+    "onboardingComplete": {
+      "mobile390": "missing",
+      "tablet768": "blocked",
+      "desktop1440": "blocked"
+    }
+  },
+  "signoff": {
+    "product": false,
+    "design": false,
+    "engineering": false,
+    "accessibility": false,
+    "security": false
+  }
+}

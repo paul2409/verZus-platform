@@ -1,82 +1,167 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALLER="./script.sh"
-TEST_FILE="tests/e2e/m3-shell-navigation.spec.ts"
-
-echo "VERZUS M3 Step 3.8 - Mobile active-route assertion repair"
+echo "VERZUS M4 visual-review direct Next.js spawn repair"
 echo "No branch will be created or changed."
+echo
 
-for file in "$INSTALLER" "$TEST_FILE"; do
-  if [[ ! -f "$file" ]]; then
-    echo "Error: required file not found: $file"
-    echo "Run this script from the repository root beside script.sh."
-    exit 1
-  fi
-done
+TARGET="scripts/m4-visual-review.mjs"
+
+if [[ ! -f "$TARGET" ]]; then
+  echo "Error: required file not found: $TARGET"
+  echo "Run this script from the VERZUS repository root."
+  exit 1
+fi
 
 node <<'NODE'
 const fs = require("node:fs");
 
-const testFile = "tests/e2e/m3-shell-navigation.spec.ts";
-const installerFile = "./script.sh";
+const file = "scripts/m4-visual-review.mjs";
+let source = fs.readFileSync(file, "utf8");
 
-const oldAssertion = `    await expect(page).toHaveURL(/\\/compete$/);
-    await expect(page.locator('[aria-current="page"]').first()).toBeVisible();`;
+const serverAnchor =
+  "Starting VERZUS development server";
+const anchorIndex = source.indexOf(serverAnchor);
 
-const newAssertion = `    await expect(page).toHaveURL(/\\/compete$/);
-
-    const mobileNavigation = page.getByRole("navigation", {
-      name: "Primary mobile navigation",
-    });
-    const activeMobileDestination = mobileNavigation.locator(
-      '[aria-current="page"]',
-    );
-
-    await expect(activeMobileDestination).toBeVisible();
-    await expect(activeMobileDestination).toHaveAttribute("href", "/compete");`;
-
-function patch(file) {
-  let source = fs.readFileSync(file, "utf8");
-
-  if (source.includes(newAssertion)) {
-    console.log(`${file}: already repaired.`);
-    return;
-  }
-
-  if (!source.includes(oldAssertion)) {
-    console.error(
-      `${file}: could not find the original mobile active-route assertion.`,
-    );
-    process.exit(1);
-  }
-
-  source = source.replace(oldAssertion, newAssertion);
-  fs.writeFileSync(file, source, "utf8");
-  console.log(`${file}: repaired.`);
+if (anchorIndex < 0) {
+  throw new Error(
+    "Could not find the development-server start section.",
+  );
 }
 
-patch(testFile);
-patch(installerFile);
+const spawnIndex = source.indexOf(
+  "child = spawn(",
+  anchorIndex,
+);
+
+if (spawnIndex < 0) {
+  throw new Error(
+    "Could not find child = spawn(...) after the server-start section.",
+  );
+}
+
+const readyIndex = source.indexOf(
+  "const ready = await waitForServer()",
+  spawnIndex,
+);
+
+if (readyIndex < 0) {
+  throw new Error(
+    "Could not find the waitForServer() call after child = spawn(...).",
+  );
+}
+
+const commandIndex = source.lastIndexOf(
+  "const command",
+  spawnIndex,
+);
+
+let replaceStart = spawnIndex;
+
+if (
+  commandIndex >= anchorIndex &&
+  commandIndex < spawnIndex
+) {
+  replaceStart = commandIndex;
+}
+
+replaceStart =
+  source.lastIndexOf("\n", replaceStart) + 1;
+
+const replaceEnd =
+  source.lastIndexOf("\n", readyIndex) + 1;
+
+const replacement = `  const nextCli = path.join(
+    root,
+    "node_modules",
+    "next",
+    "dist",
+    "bin",
+    "next",
+  );
+
+  if (!fs.existsSync(nextCli)) {
+    throw new Error(
+      \`Next.js CLI was not found at \${nextCli}. Run npm install first.\`,
+    );
+  }
+
+  child = spawn(
+    process.execPath,
+    [
+      nextCli,
+      "dev",
+      "--hostname",
+      host,
+      "--port",
+      String(port),
+    ],
+    {
+      cwd: root,
+      stdio: "inherit",
+      windowsHide: false,
+      env: {
+        ...process.env,
+        BROWSER: "none",
+      },
+    },
+  );
+
+`;
+
+source =
+  source.slice(0, replaceStart) +
+  replacement +
+  source.slice(replaceEnd);
+
+fs.writeFileSync(file, source, "utf8");
+
+const finalSource = fs.readFileSync(file, "utf8");
+
+const requiredFragments = [
+  'const nextCli = path.join(',
+  '"node_modules",',
+  '"next",',
+  '"dist",',
+  '"bin",',
+  'process.execPath',
+  'child = spawn(',
+  'const ready = await waitForServer()',
+];
+
+for (const fragment of requiredFragments) {
+  if (!finalSource.includes(fragment)) {
+    throw new Error(
+      `Repair validation failed: missing ${fragment}`,
+    );
+  }
+}
+
+if (finalSource.includes('"npm.cmd"')) {
+  throw new Error(
+    "The failing npm.cmd spawn path still exists.",
+  );
+}
+
+console.log(
+  "Replaced npm spawning with direct Next.js CLI execution.",
+);
 NODE
 
 echo
-echo "Formatting the repaired E2E test..."
-npx prettier "$TEST_FILE" --write
+echo "Formatting repaired visual-review script..."
+npx prettier "$TARGET" --write
 
 echo
-echo "Checking installer shell syntax..."
-bash -n "$INSTALLER"
+echo "Checking JavaScript syntax..."
+node --check "$TARGET"
 
 echo
-echo "Running the previously failing navigation suite..."
-npm run test:m3:navigation
+echo "Running TypeScript verification..."
+npm run typecheck
 
 echo
-echo "Navigation suite passed."
-echo "Running the complete M3 verification gate..."
-npm run verify:m3
-
+echo "Repair completed successfully."
 echo
-echo "M3 Step 3.8 verification completed successfully."
-echo "Approval centre: http://localhost:3000/m3-preview"
+echo "Run:"
+echo "npm run m4:visual-review"

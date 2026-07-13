@@ -1,0 +1,349 @@
+/* VERZUS M4 STEP 4.4 */
+
+.form {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.label {
+  margin: 0;
+  color: var(--auth-muted);
+  font: 800 0.72rem/1.2 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.inputShell {
+  display: grid;
+  min-height: 3.25rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  padding-inline: 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--auth-accent) 44%, transparent);
+  background: rgb(0 0 0 / 30%);
+  clip-path: polygon(
+    0.55rem 0,
+    100% 0,
+    100% calc(100% - 0.55rem),
+    calc(100% - 0.55rem) 100%,
+    0 100%,
+    0 0.55rem
+  );
+}
+
+.inputShell[data-invalid="true"] {
+  border-color: var(--vz-color-danger, #ff3ea5);
+  background: color-mix(in srgb, var(--vz-color-danger, #ff3ea5) 5%, rgb(0 0 0 / 30%));
+}
+
+.icon {
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  color: var(--auth-accent);
+  font: 800 0.7rem/1 var(--vz-font-interface, sans-serif);
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--vz-color-text, #f3f5f7);
+  font: 600 0.95rem/1.2 var(--vz-font-interface, sans-serif);
+}
+
+.input::placeholder {
+  color: color-mix(in srgb, var(--auth-muted) 72%, transparent);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--auth-accent);
+  outline-offset: 0.55rem;
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.visibilityButton {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--vz-color-information, #00e5ff);
+  font: 800 0.68rem/1 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.visibilityButton:focus-visible,
+.retryButton:focus-visible,
+.submitButton:focus-visible {
+  outline: 2px solid var(--vz-color-information, #00e5ff);
+  outline-offset: 3px;
+}
+
+.help,
+.errorText {
+  margin: 0;
+  font: 400 0.75rem/1.4 var(--vz-font-interface, sans-serif);
+}
+
+.help {
+  color: var(--auth-muted);
+}
+
+.errorText {
+  color: var(--vz-color-danger, #ff3ea5);
+}
+
+.errorSummary {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--vz-color-danger, #ff3ea5) 62%, transparent);
+  background: color-mix(in srgb, var(--vz-color-danger, #ff3ea5) 7%, transparent);
+  color: var(--vz-color-text, #f3f5f7);
+  clip-path: polygon(
+    0.55rem 0,
+    100% 0,
+    100% calc(100% - 0.55rem),
+    calc(100% - 0.55rem) 100%,
+    0 100%,
+    0 0.55rem
+  );
+}
+
+.errorSummary:focus {
+  outline: 2px solid var(--vz-color-danger, #ff3ea5);
+  outline-offset: 3px;
+}
+
+.errorTitle,
+.errorMessage,
+.successMessage,
+.statusMessage,
+.rateLimitMessage {
+  margin: 0;
+}
+
+.errorTitle {
+  font: 800 0.85rem/1.2 var(--vz-font-display, sans-serif);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.errorMessage {
+  color: var(--auth-muted);
+  font: 400 0.8rem/1.45 var(--vz-font-interface, sans-serif);
+}
+
+.errorList {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--vz-color-danger, #ff3ea5);
+  font: 500 0.78rem/1.4 var(--vz-font-interface, sans-serif);
+}
+
+.errorMeta {
+  color: var(--auth-muted);
+  font: 700 0.68rem/1.3 var(--vz-font-numeric, monospace);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.retryButton {
+  min-height: 2.75rem;
+  justify-self: start;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--vz-color-danger, #ff3ea5) 62%, transparent);
+  background: transparent;
+  color: var(--vz-color-text, #f3f5f7);
+  font: 800 0.72rem/1 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.retryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.submitButton {
+  display: inline-flex;
+  width: 100%;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--auth-accent);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--auth-accent) 86%, #fff 14%),
+    var(--auth-accent)
+  );
+  color: #031008;
+  box-shadow: 0 0 1.5rem color-mix(in srgb, var(--auth-accent) 20%, transparent);
+  font: 900 0.95rem/1 var(--vz-font-display, sans-serif);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(
+    0.7rem 0,
+    100% 0,
+    100% calc(100% - 0.7rem),
+    calc(100% - 0.7rem) 100%,
+    0 100%,
+    0 0.7rem
+  );
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+  opacity: 0.62;
+}
+
+.statusRegion {
+  min-height: 1.25rem;
+}
+
+.statusMessage,
+.rateLimitMessage,
+.successMessage {
+  font: 700 0.75rem/1.4 var(--vz-font-interface, sans-serif);
+}
+
+.statusMessage {
+  color: var(--vz-color-information, #00e5ff);
+}
+
+.rateLimitMessage {
+  color: var(--vz-color-warning, #ffc400);
+}
+
+.successMessage {
+  color: var(--vz-color-primary, #39ff14);
+}
+
+.checkboxRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.65rem;
+  color: var(--auth-muted);
+  font: 400 0.82rem/1.5 var(--vz-font-interface, sans-serif);
+}
+
+.checkbox {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 0.08rem;
+  accent-color: var(--auth-accent);
+}
+
+.codeFieldset {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.codeGroup {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.codeInput {
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 0.82;
+  border: 1px solid var(--auth-border);
+  outline: 0;
+  background: rgb(0 0 0 / 34%);
+  color: var(--vz-color-text, #f3f5f7);
+  font: 800 1.2rem/1 var(--vz-font-numeric, monospace);
+  text-align: center;
+  clip-path: polygon(
+    0.45rem 0,
+    100% 0,
+    100% calc(100% - 0.45rem),
+    calc(100% - 0.45rem) 100%,
+    0 100%,
+    0 0.45rem
+  );
+}
+
+.codeInput[data-invalid="true"] {
+  border-color: var(--vz-color-danger, #ff3ea5);
+}
+
+.codeInput:focus-visible {
+  border-color: var(--auth-accent);
+  outline: 2px solid color-mix(in srgb, var(--auth-accent) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.passwordRules {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--auth-accent) 22%, transparent);
+  background: rgb(255 255 255 / 2%);
+  list-style: none;
+}
+
+.passwordRule {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem;
+  color: var(--auth-muted);
+  font: 400 0.76rem/1.4 var(--vz-font-interface, sans-serif);
+}
+
+.passwordRule::before {
+  color: var(--auth-accent);
+  content: "•";
+  font-weight: 900;
+}
+
+@media (width <= 430px) {
+  .codeGroup {
+    gap: 0.25rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .inputShell,
+  .errorSummary,
+  .retryButton,
+  .submitButton,
+  .codeInput,
+  .passwordRules {
+    border: 1px solid CanvasText;
+  }
+
+  .submitButton {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

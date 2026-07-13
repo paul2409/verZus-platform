@@ -1,0 +1,167 @@
+{
+  "marker": "VERZUS M4 VISUAL REVIEW DASHBOARD",
+  "generatedAt": "2026-07-13T21:57:57.967Z",
+  "baseUrl": "http://127.0.0.1:3104",
+  "screens": [
+    {
+      "group": "Authentication",
+      "name": "Login",
+      "route": "/login",
+      "file": "src/app/login/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Authentication",
+      "name": "Register",
+      "route": "/register",
+      "file": "src/app/register/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Authentication",
+      "name": "Email verification",
+      "route": "/verify-email",
+      "file": "src/app/verify-email/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Authentication",
+      "name": "Forgot password",
+      "route": "/forgot-password",
+      "file": "src/app/forgot-password/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Authentication",
+      "name": "Reset password",
+      "route": "/reset-password",
+      "file": "src/app/reset-password/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Authentication",
+      "name": "Session expired",
+      "route": "/session-expired",
+      "file": "src/app/session-expired/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Account restrictions",
+      "name": "Suspended account",
+      "route": "/account/suspended",
+      "file": "src/app/account/suspended/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Account restrictions",
+      "name": "Banned account",
+      "route": "/account/banned",
+      "file": "src/app/account/banned/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Onboarding",
+      "name": "Onboarding welcome",
+      "route": "/onboarding",
+      "file": "src/app/onboarding/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Onboarding",
+      "name": "Choose games",
+      "route": "/onboarding/games",
+      "file": "src/app/onboarding/games/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Onboarding",
+      "name": "Select location",
+      "route": "/onboarding/location",
+      "file": "src/app/onboarding/location/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Onboarding",
+      "name": "Create player identity",
+      "route": "/onboarding/identity",
+      "file": "src/app/onboarding/identity/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Onboarding",
+      "name": "Set availability",
+      "route": "/onboarding/availability",
+      "file": "src/app/onboarding/availability/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Onboarding",
+      "name": "Join or skip Crew",
+      "route": "/onboarding/crew",
+      "file": "src/app/onboarding/crew/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Onboarding",
+      "name": "Onboarding complete",
+      "route": "/onboarding/complete",
+      "file": "src/app/onboarding/complete/page.tsx",
+      "required": true,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    },
+    {
+      "group": "Flow destination",
+      "name": "Play",
+      "route": "/play",
+      "file": "src/app/play/page.tsx",
+      "required": false,
+      "exists": false,
+      "httpStatus": null,
+      "location": null
+    }
+  ]
+}
