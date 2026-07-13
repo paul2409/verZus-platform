@@ -49,14 +49,14 @@ export type CardStatProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   detail?: ReactNode;
 };
 
-const layoutClasses: Record<CardLayout, string> = {
+const layoutClasses = {
   fluid: styles.layoutFluid,
   portrait: styles.layoutPortrait,
   landscape: styles.layoutLandscape,
   square: styles.layoutSquare,
 };
 
-const toneClasses: Record<CardTone, string> = {
+const toneClasses = {
   neutral: styles.toneNeutral,
   primary: styles.tonePrimary,
   secondary: styles.toneSecondary,
@@ -65,20 +65,20 @@ const toneClasses: Record<CardTone, string> = {
   danger: styles.toneDanger,
 };
 
-const rarityClasses: Record<CardRarity, string> = {
+const rarityClasses = {
   common: styles.rarityCommon,
   rare: styles.rarityRare,
   epic: styles.rarityEpic,
   legendary: styles.rarityLegendary,
 };
 
-const densityClasses: Record<CardDensity, string> = {
+const densityClasses = {
   compact: styles.densityCompact,
   regular: styles.densityRegular,
   featured: styles.densityFeatured,
 };
 
-const mediaAspectClasses: Record<CardMediaAspect, string> = {
+const mediaAspectClasses = {
   auto: styles.mediaAuto,
   portrait: styles.mediaPortrait,
   landscape: styles.mediaLandscape,

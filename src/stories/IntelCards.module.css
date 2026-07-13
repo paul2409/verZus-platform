@@ -1,0 +1,42 @@
+.frame {
+  min-height: 100vh;
+  padding: clamp(1rem, 3vw, 2rem);
+  color: var(--vz-intel-text);
+  background: radial-gradient(circle at 50% 0, rgb(0 255 135 / 9%), transparent 32rem), #030607;
+}
+
+.header {
+  width: min(100%, 86rem);
+  margin: 0 auto 1rem;
+}
+
+.header p,
+.header h1 {
+  margin: 0;
+  font-family: var(--font-rajdhani, "Arial Narrow", sans-serif);
+  text-transform: uppercase;
+}
+
+.header p {
+  color: var(--vz-intel-player);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+.header h1 {
+  font-size: clamp(2rem, 7vw, 4rem);
+}
+
+.grid {
+  display: grid;
+  width: min(100%, 86rem);
+  margin-inline: auto;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

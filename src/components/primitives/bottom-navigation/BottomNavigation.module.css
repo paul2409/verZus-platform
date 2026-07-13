@@ -1,0 +1,443 @@
+.navigation {
+  --vz-bottom-nav-columns: 5;
+
+  position: relative;
+  z-index: var(--vz-bottom-nav-z-index);
+  width: 100%;
+  min-width: 0;
+  color: var(--vz-bottom-nav-item-text);
+}
+
+.positionStatic {
+  position: relative;
+}
+
+.positionFixed {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.positionFixed.variantFloating {
+  right: 0.75rem;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  width: auto;
+  max-width: var(--vz-bottom-nav-max-width);
+  margin-inline: auto;
+}
+
+.itemsThree {
+  --vz-bottom-nav-columns: 3;
+}
+
+.itemsFour {
+  --vz-bottom-nav-columns: 4;
+}
+
+.itemsFive {
+  --vz-bottom-nav-columns: 5;
+}
+
+.frame {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 0%, var(--vz-bottom-nav-border-strong) 50%, transparent 100%)
+      top / 100% 1px no-repeat,
+    var(--vz-bottom-nav-surface);
+  border: 1px solid var(--vz-bottom-nav-border);
+  box-shadow: var(--vz-bottom-nav-shadow);
+}
+
+.variantElevated .frame {
+  background:
+    linear-gradient(90deg, transparent 0%, var(--vz-bottom-nav-border-strong) 50%, transparent 100%)
+      top / 100% 1px no-repeat,
+    var(--vz-bottom-nav-surface-elevated);
+  box-shadow: var(--vz-bottom-nav-shadow);
+}
+
+.variantFloating .frame {
+  background:
+    linear-gradient(90deg, transparent, var(--vz-bottom-nav-border-strong), transparent) top / 100%
+      1px no-repeat,
+    var(--vz-bottom-nav-surface-elevated);
+  border-radius: 1rem;
+  box-shadow: var(--vz-bottom-nav-shadow-floating);
+}
+
+.surface {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: var(--vz-bottom-nav-height);
+  padding-inline: 0.35rem;
+}
+
+.safeArea .surface {
+  padding-bottom: var(--vz-bottom-nav-safe-area);
+}
+
+.variantFloating .surface {
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(var(--vz-bottom-nav-columns), minmax(0, 1fr));
+  min-width: 0;
+  min-height: var(--vz-bottom-nav-height);
+  gap: var(--vz-bottom-nav-inline-gap);
+  margin: 0;
+  padding: 0.3rem 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  align-items: stretch;
+}
+
+.action {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: var(--vz-bottom-nav-item-min-height);
+  place-items: center;
+  align-content: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.25rem 0.3rem;
+  overflow: visible;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+  transition: var(--vz-bottom-nav-transition);
+}
+
+.action:hover {
+  color: var(--vz-bottom-nav-item-hover);
+  background: var(--vz-bottom-nav-item-background-hover);
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--vz-bottom-nav-item-active);
+  outline-offset: -0.15rem;
+}
+
+.iconWrap {
+  position: relative;
+  display: grid;
+  width: 2rem;
+  height: 1.8rem;
+  place-items: center;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  transition: var(--vz-bottom-nav-transition);
+}
+
+.icon > svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  stroke-width: 1.9;
+}
+
+.label {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--vz-font-display);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  line-height: 1;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.activeRail {
+  position: absolute;
+  top: -0.3rem;
+  left: 50%;
+  width: 2.25rem;
+  height: 0.125rem;
+  content: "";
+  background: currentColor;
+  box-shadow: 0 0 0.75rem currentColor;
+  opacity: 0;
+  transform: translateX(-50%) scaleX(0.4);
+  transition: var(--vz-bottom-nav-transition);
+}
+
+.current {
+  color: var(--vz-bottom-nav-item-active);
+}
+
+.current .action {
+  background:
+    radial-gradient(circle at 50% 20%, rgb(0 255 135 / 15%), transparent 70%),
+    var(--vz-bottom-nav-item-background-active);
+}
+
+.current .activeRail {
+  opacity: 1;
+  transform: translateX(-50%) scaleX(1);
+}
+
+.current .icon {
+  filter: drop-shadow(0 0 0.45rem rgb(0 255 135 / 44%));
+  transform: translateY(-0.0625rem);
+}
+
+.statePartial {
+  color: var(--vz-bottom-nav-item-partial);
+}
+
+.statePartial .action {
+  background: var(--vz-bottom-nav-item-background-partial);
+}
+
+.partialMarker {
+  position: absolute;
+  right: 0.05rem;
+  bottom: 0.05rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  background: currentColor;
+  border: 2px solid #070b0d;
+  border-radius: 50%;
+  box-shadow: 0 0 0.5rem currentColor;
+}
+
+.stateDisabled {
+  color: var(--vz-bottom-nav-item-disabled);
+}
+
+.stateDisabled .action {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.stateDisabled .action:hover {
+  color: inherit;
+  background: transparent;
+}
+
+.prominent {
+  z-index: 2;
+}
+
+.prominent .action {
+  align-content: start;
+  padding-top: 0;
+  background: transparent;
+}
+
+.prominent .iconWrap {
+  width: var(--vz-bottom-nav-prominent-size);
+  height: var(--vz-bottom-nav-prominent-size);
+  margin-top: calc(var(--vz-bottom-nav-prominent-size) * -0.36);
+  color: var(--vz-bottom-nav-prominent-foreground);
+  background: var(--vz-bottom-nav-prominent-background);
+  border: 2px solid rgb(255 255 255 / 34%);
+  border-radius: 50%;
+  box-shadow: var(--vz-bottom-nav-prominent-ring);
+  transition: var(--vz-bottom-nav-transition);
+}
+
+.prominent .icon > svg {
+  width: 1.7rem;
+  height: 1.7rem;
+  stroke-width: 2.25;
+}
+
+.prominent .label {
+  margin-top: -0.15rem;
+  color: var(--vz-bottom-nav-item-active);
+}
+
+.prominent .action:hover .iconWrap {
+  filter: brightness(1.08);
+  transform: translateY(-0.125rem) scale(1.025);
+}
+
+.prominent.stateDisabled .iconWrap {
+  filter: grayscale(1);
+  box-shadow: 0 0 0 0.1875rem #05080a;
+}
+
+.badgeSlot {
+  position: absolute;
+  z-index: 3;
+  top: -0.45rem;
+  right: -0.55rem;
+}
+
+.navigationBadge {
+  --vz-navigation-badge-color: var(--vz-navigation-badge-danger);
+
+  display: inline-grid;
+  min-width: 1rem;
+  min-height: 1rem;
+  place-items: center;
+  color: white;
+  background: var(--vz-navigation-badge-color);
+  border: 2px solid var(--vz-navigation-badge-surface);
+  border-radius: 999px;
+  box-shadow: 0 0 0.55rem color-mix(in srgb, var(--vz-navigation-badge-color) 50%, transparent);
+  font-family: var(--vz-font-display);
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.navigationBadgeCount {
+  min-width: 1.1rem;
+  padding-inline: 0.2rem;
+}
+
+.navigationBadgeDot {
+  width: 0.7rem;
+  min-width: 0.7rem;
+  min-height: 0.7rem;
+}
+
+.badgeNeutral {
+  --vz-navigation-badge-color: var(--vz-navigation-badge-neutral);
+  color: #081014;
+}
+
+.badgePrimary {
+  --vz-navigation-badge-color: var(--vz-navigation-badge-primary);
+  color: #031008;
+}
+
+.badgeWarning {
+  --vz-navigation-badge-color: var(--vz-navigation-badge-warning);
+  color: #1c1201;
+}
+
+.badgeDanger {
+  --vz-navigation-badge-color: var(--vz-navigation-badge-danger);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 22.5rem) {
+  .surface,
+  .list {
+    min-height: var(--vz-bottom-nav-height-compact);
+  }
+
+  .list {
+    gap: 0;
+  }
+
+  .action {
+    padding-inline: 0.1rem;
+  }
+
+  .label {
+    font-size: 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  .prominent .iconWrap {
+    width: 3.45rem;
+    height: 3.45rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .positionFixed:not(.variantFloating) .surface,
+  .positionFixed:not(.variantFloating) .frame {
+    width: min(100%, var(--vz-bottom-nav-max-width));
+    margin-inline: auto;
+  }
+
+  .positionFixed:not(.variantFloating) .frame {
+    right: 0;
+    left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action,
+  .icon,
+  .iconWrap,
+  .activeRail {
+    transition: none;
+  }
+
+  .prominent .action:hover .iconWrap,
+  .current .icon {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .frame {
+    border-width: 2px;
+    border-color: var(--vz-bottom-nav-item-active);
+  }
+
+  .action:focus-visible {
+    outline-width: 3px;
+  }
+
+  .navigationBadge {
+    border-color: black;
+    border-width: 3px;
+  }
+}
+
+@media (forced-colors: active) {
+  .frame,
+  .surface,
+  .action,
+  .iconWrap,
+  .navigationBadge {
+    color: CanvasText;
+    background: Canvas;
+    border-color: CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+
+  .current .action,
+  .current .iconWrap {
+    color: HighlightText;
+    background: Highlight;
+  }
+
+  .stateDisabled .action {
+    color: GrayText;
+  }
+
+  .activeRail,
+  .partialMarker {
+    background: currentColor;
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Jayflex abstract player portrait</title>
+  <desc id="desc">Original geometric esports portrait in green and cyan.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#113d2b"/>
+      <stop offset="1" stop-color="#030706"/>
+    </radialGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#00ff87"/>
+      <stop offset="1" stop-color="#00a85d"/>
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="123" fill="url(#bg)" stroke="#00ff87" stroke-width="6"/>
+  <path d="M64 213c13-38 38-58 64-58s51 20 64 58" fill="#0a1712" stroke="#00e5ff" stroke-width="5"/>
+  <path d="M82 87c5-36 28-57 48-57 28 0 48 25 48 60v34c0 38-20 65-50 65-28 0-47-25-47-62Z" fill="#7b4a32" stroke="#f4c5a5" stroke-width="4"/>
+  <path d="M72 96 87 48l21 25 10-42 20 40 23-31 19 51-17-13-9 27-20-24-20 28-12-28-18 23Z" fill="url(#hair)" stroke="#07140e" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M96 119h20M140 119h20" stroke="#0a0f0d" stroke-width="7" stroke-linecap="round"/>
+  <path d="M111 151c11 8 24 8 35 0" fill="none" stroke="#0a0f0d" stroke-width="6" stroke-linecap="round"/>
+  <path d="M53 211h150" stroke="#00ff87" stroke-width="6" stroke-linecap="round"/>
+</svg>

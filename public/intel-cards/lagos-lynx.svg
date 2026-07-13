@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Lagos Lynx emblem</title>
+  <desc id="desc">Original red angular lynx head emblem.</desc>
+  <path d="m44 40 49 23 35-26 35 26 49-23-16 62 14 33-39 64-43 20-43-20-39-64 14-33Z" fill="#190606" stroke="#ff4e55" stroke-width="12" stroke-linejoin="round"/>
+  <path d="m80 103 37 15-27 26-27-21Zm96 0-37 15 27 26 27-21Z" fill="#ff4e55"/>
+  <path d="m110 165 18-13 18 13-18 19Z" fill="#ffad54"/>
+  <path d="M93 188c22 14 48 14 70 0" fill="none" stroke="#ff4e55" stroke-width="9" stroke-linecap="round"/>
+</svg>

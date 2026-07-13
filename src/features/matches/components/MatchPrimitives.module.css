@@ -1,0 +1,197 @@
+.match {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--vz-match-surface);
+  border: 1px solid var(--vz-match-border);
+  clip-path: var(--vz-shape-card);
+  box-shadow: var(--vz-card-shadow);
+}
+
+.matchHeader,
+.matchFooter {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.kicker,
+.bracketLabel {
+  margin: 0;
+  color: var(--vz-match-accent);
+  font-family: var(--vz-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.matchTitle {
+  margin: 0.25rem 0 0;
+  font-family: var(--vz-font-display);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+
+.versus {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgb(0 0 0 / 18%);
+  border: 1px solid rgb(174 184 191 / 14%);
+}
+
+.participant {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.participant[data-participant-side="away"] {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.score {
+  flex: 0 0 auto;
+  color: var(--vz-match-accent);
+  font-family: var(--vz-font-numeric, var(--vz-font-display));
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.versusMark {
+  color: var(--vz-match-versus);
+  font-family: var(--vz-font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-shadow: 0 0 0.8rem currentColor;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.timelineStep {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  list-style: none;
+}
+
+.timelineStep::after {
+  position: absolute;
+  top: 1rem;
+  bottom: -0.5rem;
+  left: 0.4375rem;
+  width: 0.125rem;
+  content: "";
+  background: var(--vz-timeline-line);
+}
+
+.timelineStep:last-child::after {
+  display: none;
+}
+
+.timelineMarker {
+  position: relative;
+  z-index: 1;
+  width: 1rem;
+  height: 1rem;
+  background: var(--vz-timeline-future);
+  border: 0.1875rem solid #071014;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px currentColor;
+}
+
+.timelineComplete .timelineMarker {
+  color: var(--vz-timeline-complete);
+  background: var(--vz-timeline-complete);
+}
+
+.timelineCurrent .timelineMarker {
+  color: var(--vz-timeline-current);
+  background: var(--vz-timeline-current);
+  box-shadow:
+    0 0 0 1px currentColor,
+    0 0 0.75rem currentColor;
+}
+
+.timelineError .timelineMarker {
+  color: var(--vz-surface-accent-red, #ff3b30);
+  background: var(--vz-surface-accent-red, #ff3b30);
+}
+
+.timelineContent {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.timelineContent strong {
+  font-family: var(--vz-font-display);
+  text-transform: uppercase;
+}
+
+.timelineContent span {
+  color: var(--vz-color-text-secondary);
+  font-size: 0.8125rem;
+}
+
+.bracketNode {
+  min-width: min(100%, var(--vz-bracket-node-min-width));
+  padding: 0.75rem;
+  background: var(--vz-bracket-node-background);
+  border: 1px solid var(--vz-bracket-node-border);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+}
+
+.bracketNode[data-bracket-active="true"] {
+  border-color: var(--vz-bracket-node-active);
+  box-shadow: 0 0 1rem rgb(0 229 255 / 12%);
+}
+
+.bracketParticipant {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.625rem;
+  border-top: 1px solid rgb(174 184 191 / 12%);
+}
+
+.bracketParticipant[data-bracket-winner="true"] {
+  color: var(--vz-surface-accent-green, #00ff87);
+  background: rgb(0 255 135 / 6%);
+}
+
+@media (max-width: 39.999rem) {
+  .matchHeader,
+  .matchFooter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .versus {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .participant[data-participant-side="away"] {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .versusMark {
+    justify-self: center;
+  }
+}

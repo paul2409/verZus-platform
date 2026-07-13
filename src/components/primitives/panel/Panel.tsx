@@ -65,7 +65,7 @@ export type PanelStatusProps = HTMLAttributes<HTMLDivElement> & {
   tone?: PanelStatusTone;
 };
 
-const toneClasses: Record<PanelTone, string> = {
+const toneClasses = {
   neutral: styles.toneNeutral,
   primary: styles.tonePrimary,
   secondary: styles.toneSecondary,
@@ -74,25 +74,25 @@ const toneClasses: Record<PanelTone, string> = {
   danger: styles.toneDanger,
 };
 
-const densityClasses: Record<PanelDensity, string> = {
+const densityClasses = {
   compact: styles.densityCompact,
   regular: styles.densityRegular,
   spacious: styles.densitySpacious,
 };
 
-const elevationClasses: Record<PanelElevation, string> = {
+const elevationClasses = {
   flat: styles.elevationFlat,
   raised: styles.elevationRaised,
   floating: styles.elevationFloating,
 };
 
-const layoutClasses: Record<PanelLayout, string> = {
+const layoutClasses = {
   stack: styles.layoutStack,
   grid: styles.layoutGrid,
   split: styles.layoutSplit,
 };
 
-const gridColumnClasses: Record<PanelGridColumns, string> = {
+const gridColumnClasses = {
   1: styles.gridColumnsOne,
   2: styles.gridColumnsTwo,
   3: styles.gridColumnsThree,
@@ -100,7 +100,7 @@ const gridColumnClasses: Record<PanelGridColumns, string> = {
   auto: styles.gridColumnsAuto,
 };
 
-const moduleStateClasses: Record<PanelModuleState, string> = {
+const moduleStateClasses = {
   idle: styles.moduleStateIdle,
   loading: styles.moduleStateLoading,
   success: styles.moduleStateSuccess,
@@ -116,7 +116,7 @@ const moduleStateClasses: Record<PanelModuleState, string> = {
   "partial-failure": styles.moduleStatePartialFailure,
 };
 
-const statusToneClasses: Record<PanelStatusTone, string> = {
+const statusToneClasses = {
   neutral: styles.statusNeutral,
   positive: styles.statusPositive,
   warning: styles.statusWarning,

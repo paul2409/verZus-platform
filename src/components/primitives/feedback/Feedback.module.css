@@ -1,0 +1,777 @@
+.systemState,
+.toast,
+.skeleton,
+.divider,
+.sectionHeader,
+.systemState *,
+.toast *,
+.sectionHeader * {
+  box-sizing: border-box;
+}
+
+/* ==================================================================
+   SYSTEM STATES
+   ================================================================== */
+
+.systemState {
+  --vz-state-accent: var(--vz-feedback-neutral);
+  --vz-state-accent-rgb: 199 208 214;
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: min(100%, var(--vz-state-max-width));
+  min-width: 0;
+  gap: var(--vz-space-4, 1rem);
+  padding: clamp(1rem, 3vw, 2rem);
+  overflow: hidden;
+  color: var(--vz-color-text-primary, #f4f7f8);
+  background:
+    radial-gradient(circle at 50% 0%, rgb(var(--vz-state-accent-rgb) / 10%), transparent 55%),
+    var(--vz-feedback-surface);
+  border: 1px solid rgb(var(--vz-state-accent-rgb) / 42%);
+  clip-path: var(--vz-feedback-shape);
+  box-shadow: var(--vz-feedback-shadow);
+}
+
+.stateRail {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 1rem;
+  left: 1rem;
+  height: 0.125rem;
+  background: linear-gradient(90deg, transparent, var(--vz-state-accent), transparent);
+  opacity: 0.82;
+  box-shadow: 0 0 1rem rgb(var(--vz-state-accent-rgb) / 34%);
+}
+
+.stateIcon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: var(--vz-state-icon-size-md);
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--vz-state-accent);
+  background:
+    radial-gradient(circle, rgb(var(--vz-state-accent-rgb) / 17%), transparent 72%),
+    rgb(4 8 10 / 76%);
+  border: 1px solid rgb(var(--vz-state-accent-rgb) / 54%);
+  clip-path: polygon(
+    0.625rem 0,
+    calc(100% - 0.625rem) 0,
+    100% 0.625rem,
+    100% calc(100% - 0.625rem),
+    calc(100% - 0.625rem) 100%,
+    0.625rem 100%,
+    0 calc(100% - 0.625rem),
+    0 0.625rem
+  );
+  box-shadow:
+    0 0 1.25rem rgb(var(--vz-state-accent-rgb) / 18%),
+    inset 0 1px 0 rgb(255 255 255 / 7%);
+}
+
+.stateCopy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 0;
+  gap: var(--vz-space-2, 0.5rem);
+}
+
+.stateTitle,
+.stateDescription {
+  margin: 0;
+}
+
+.stateTitle {
+  overflow-wrap: anywhere;
+  color: var(--vz-color-text-primary, #f4f7f8);
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.15rem, 3vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.stateDescription {
+  max-width: 58ch;
+  color: var(--vz-color-text-secondary, #aeb8bf);
+  font-family: var(--vz-font-body);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.stateContent {
+  display: grid;
+  min-width: 0;
+  gap: var(--vz-space-3, 0.75rem);
+  margin-top: var(--vz-space-1, 0.25rem);
+}
+
+.stateActions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--vz-space-3, 0.75rem);
+}
+
+.alignStart {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  text-align: left;
+}
+
+.alignStart .stateActions {
+  grid-column: 2;
+  justify-content: flex-start;
+}
+
+.alignCenter {
+  justify-items: center;
+  text-align: center;
+}
+
+.alignCenter .stateDescription {
+  margin-inline: auto;
+}
+
+.alignCenter .stateActions {
+  justify-content: center;
+}
+
+.sizeSm {
+  --vz-state-icon-size-md: var(--vz-state-icon-size-sm);
+  gap: var(--vz-space-3, 0.75rem);
+  padding: 1rem;
+}
+
+.sizeSm .stateTitle {
+  font-size: 1rem;
+}
+
+.sizeSm .stateDescription {
+  font-size: 0.8125rem;
+}
+
+.sizeLg {
+  --vz-state-icon-size-md: var(--vz-state-icon-size-lg);
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.compact {
+  width: 100%;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--vz-space-3, 0.75rem);
+  padding: 0.875rem 1rem;
+  text-align: left;
+}
+
+.compact .stateIcon {
+  --vz-state-icon-size-md: 2.5rem;
+}
+
+.compact .stateActions {
+  grid-column: auto;
+  justify-content: flex-end;
+}
+
+.stateLoading,
+.stateRetrying {
+  --vz-state-accent: var(--vz-feedback-information);
+  --vz-state-accent-rgb: 0 229 255;
+}
+
+.stateEmpty {
+  --vz-state-accent: var(--vz-feedback-neutral);
+  --vz-state-accent-rgb: 199 208 214;
+}
+
+.stateError,
+.stateUnauthorized,
+.stateForbidden {
+  --vz-state-accent: var(--vz-feedback-negative);
+  --vz-state-accent-rgb: 255 59 48;
+}
+
+.stateOffline {
+  --vz-state-accent: #9aa6ae;
+  --vz-state-accent-rgb: 154 166 174;
+}
+
+.stateMaintenance {
+  --vz-state-accent: var(--vz-feedback-warning);
+  --vz-state-accent-rgb: 255 194 71;
+}
+
+.stateNotFound {
+  --vz-state-accent: var(--vz-feedback-special);
+  --vz-state-accent-rgb: 138 79 255;
+}
+
+.statePartialFailure {
+  --vz-state-accent: var(--vz-feedback-partial);
+  --vz-state-accent-rgb: 255 79 216;
+}
+
+.stateSuccess {
+  --vz-state-accent: var(--vz-feedback-positive);
+  --vz-state-accent-rgb: 0 255 135;
+}
+
+.stateLoading .stateIcon,
+.stateRetrying .stateIcon {
+  animation: vz-state-breathe 1.5s ease-in-out infinite;
+}
+
+.stateRetrying .stateIcon svg {
+  animation: vz-state-spin 1.2s linear infinite;
+}
+
+@keyframes vz-state-breathe {
+  0%,
+  100% {
+    filter: brightness(0.92);
+    transform: scale(0.98);
+  }
+
+  50% {
+    filter: brightness(1.15);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes vz-state-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==================================================================
+   TOASTS
+   ================================================================== */
+
+.toastViewport {
+  position: fixed;
+  z-index: var(--vz-toast-z-index);
+  display: grid;
+  width: var(--vz-toast-width);
+  max-height: calc(100svh - 2rem);
+  gap: var(--vz-toast-gap);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  pointer-events: none;
+  list-style: none;
+}
+
+.viewportTopRight {
+  top: 1rem;
+  right: 1rem;
+}
+
+.viewportTopCenter {
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.viewportBottomRight {
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
+.viewportBottomCenter {
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.toast {
+  --vz-toast-accent: var(--vz-feedback-neutral);
+  --vz-toast-accent-rgb: 199 208 214;
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  overflow: hidden;
+  color: var(--vz-color-text-primary, #f4f7f8);
+  background:
+    linear-gradient(110deg, rgb(var(--vz-toast-accent-rgb) / 10%), transparent 46%),
+    var(--vz-feedback-surface-raised);
+  border: 1px solid rgb(var(--vz-toast-accent-rgb) / 50%);
+  clip-path: var(--vz-feedback-shape);
+  box-shadow: var(--vz-toast-shadow);
+  pointer-events: auto;
+  animation: vz-toast-enter 180ms ease-out;
+}
+
+.toastRail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.1875rem;
+  background: var(--vz-toast-accent);
+  box-shadow: 0 0 0.875rem rgb(var(--vz-toast-accent-rgb) / 42%);
+}
+
+.toastIcon {
+  display: grid;
+  width: 2rem;
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--vz-toast-accent);
+  background: rgb(var(--vz-toast-accent-rgb) / 10%);
+  border: 1px solid rgb(var(--vz-toast-accent-rgb) / 34%);
+  clip-path: polygon(
+    0.35rem 0,
+    100% 0,
+    100% calc(100% - 0.35rem),
+    calc(100% - 0.35rem) 100%,
+    0 100%,
+    0 0.35rem
+  );
+}
+
+.toastCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.toastTitle,
+.toastDescription {
+  margin: 0;
+}
+
+.toastTitle {
+  overflow-wrap: anywhere;
+  font-family: var(--vz-font-display);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.toastDescription {
+  color: var(--vz-color-text-secondary, #aeb8bf);
+  font-family: var(--vz-font-body);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.toastAction {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.toastDismiss {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  cursor: pointer;
+  place-items: center;
+  color: var(--vz-color-text-secondary, #aeb8bf);
+  background: transparent;
+  border: 1px solid transparent;
+  clip-path: polygon(
+    0.35rem 0,
+    100% 0,
+    100% calc(100% - 0.35rem),
+    calc(100% - 0.35rem) 100%,
+    0 100%,
+    0 0.35rem
+  );
+  transition: var(--vz-feedback-transition);
+}
+
+.toastDismiss:hover {
+  color: var(--vz-color-text-primary, #f4f7f8);
+  background: rgb(255 255 255 / 6%);
+  border-color: rgb(var(--vz-toast-accent-rgb) / 42%);
+}
+
+.toastDismiss:focus-visible {
+  outline: 2px solid var(--vz-toast-accent);
+  outline-offset: 0.125rem;
+}
+
+.toastNeutral {
+  --vz-toast-accent: var(--vz-feedback-neutral);
+  --vz-toast-accent-rgb: 199 208 214;
+}
+
+.toastInformation {
+  --vz-toast-accent: var(--vz-feedback-information);
+  --vz-toast-accent-rgb: 0 229 255;
+}
+
+.toastSuccess {
+  --vz-toast-accent: var(--vz-feedback-positive);
+  --vz-toast-accent-rgb: 0 255 135;
+}
+
+.toastWarning {
+  --vz-toast-accent: var(--vz-feedback-warning);
+  --vz-toast-accent-rgb: 255 194 71;
+}
+
+.toastError {
+  --vz-toast-accent: var(--vz-feedback-negative);
+  --vz-toast-accent-rgb: 255 59 48;
+}
+
+@keyframes vz-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==================================================================
+   SKELETONS
+   ================================================================== */
+
+.skeleton {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--vz-skeleton-base);
+  border: 1px solid rgb(174 184 191 / 8%);
+  border-radius: var(--vz-skeleton-radius);
+}
+
+.skeletonText {
+  width: 100%;
+  height: 0.875rem;
+}
+
+.skeletonCircle {
+  width: 3rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.skeletonRectangle {
+  width: 100%;
+  min-height: 4rem;
+}
+
+.skeletonControl {
+  width: 8rem;
+  height: 2.75rem;
+  border-radius: 0.25rem;
+}
+
+.skeletonCard {
+  width: 100%;
+  min-height: 13rem;
+  border-radius: 0;
+  clip-path: var(--vz-feedback-shape);
+}
+
+.skeletonWave::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(90deg, transparent, var(--vz-skeleton-highlight), transparent);
+  transform: translateX(-100%);
+  animation: vz-skeleton-wave var(--vz-skeleton-duration) linear infinite;
+}
+
+.skeletonPulse {
+  animation: vz-skeleton-pulse var(--vz-skeleton-duration) ease-in-out infinite;
+}
+
+.skeletonStatic {
+  animation: none;
+}
+
+@keyframes vz-skeleton-wave {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes vz-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.48;
+  }
+
+  50% {
+    opacity: 0.94;
+  }
+}
+
+/* ==================================================================
+   DIVIDER
+   ================================================================== */
+
+.divider {
+  --vz-divider-current: var(--vz-divider-line);
+
+  position: relative;
+  flex: 0 0 auto;
+  color: var(--vz-divider-label);
+}
+
+.dividerHorizontal {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dividerHorizontal::before,
+.dividerHorizontal::after {
+  height: 1px;
+  flex: 1 1 auto;
+  content: "";
+  background: linear-gradient(90deg, transparent, var(--vz-divider-current));
+}
+
+.dividerHorizontal::after {
+  background: linear-gradient(90deg, var(--vz-divider-current), transparent);
+}
+
+.dividerVertical {
+  width: 1px;
+  min-height: 2rem;
+  align-self: stretch;
+  background: linear-gradient(180deg, transparent, var(--vz-divider-current), transparent);
+}
+
+.dividerSubtle {
+  --vz-divider-current: var(--vz-divider-line);
+}
+
+.dividerStrong {
+  --vz-divider-current: var(--vz-feedback-border-strong);
+}
+
+.dividerAccent {
+  --vz-divider-current: var(--vz-divider-line-strong);
+}
+
+.dividerLabel {
+  flex: 0 1 auto;
+  overflow: hidden;
+  font-family: var(--vz-font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ==================================================================
+   SECTION HEADER
+   ================================================================== */
+
+.sectionHeader {
+  display: flex;
+  min-width: 0;
+  align-items: flex-end;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.sectionCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.sectionEyebrow,
+.sectionTitle,
+.sectionDescription {
+  margin: 0;
+}
+
+.sectionEyebrow {
+  color: var(--vz-feedback-positive);
+  font-family: var(--vz-font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.sectionTitle {
+  overflow-wrap: anywhere;
+  color: var(--vz-color-text-primary, #f4f7f8);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.sectionDescription {
+  max-width: 70ch;
+  color: var(--vz-color-text-secondary, #aeb8bf);
+  font-family: var(--vz-font-body);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.sectionAction {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.sectionAlignBetween {
+  justify-content: space-between;
+}
+
+.sectionAlignStart {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sectionSizeSm .sectionTitle {
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+}
+
+.sectionSizeMd .sectionTitle {
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+}
+
+.sectionSizeLg .sectionTitle {
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+}
+
+/* ==================================================================
+   RESPONSIVE AND ACCESSIBILITY
+   ================================================================== */
+
+@media (max-width: 39.999rem) {
+  .systemState,
+  .alignStart,
+  .compact {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .alignStart .stateActions,
+  .compact .stateActions {
+    grid-column: auto;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stateActions > button,
+  .stateActions > a {
+    flex: 1 1 100%;
+  }
+
+  .toastViewport {
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    transform: none;
+  }
+
+  .toast {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sectionAction {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .sectionAction > button,
+  .sectionAction > a {
+    flex: 1 1 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stateLoading .stateIcon,
+  .stateRetrying .stateIcon,
+  .stateRetrying .stateIcon svg,
+  .toast,
+  .skeletonWave::after,
+  .skeletonPulse {
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .systemState,
+  .toast {
+    border-width: 2px;
+  }
+
+  .stateDescription,
+  .toastDescription,
+  .sectionDescription {
+    color: var(--vz-color-text-primary, #f4f7f8);
+  }
+
+  .skeleton {
+    border-color: CanvasText;
+  }
+}
+
+@media (forced-colors: active) {
+  .systemState,
+  .stateIcon,
+  .toast,
+  .toastIcon,
+  .toastDismiss,
+  .skeleton {
+    color: CanvasText;
+    background: Canvas;
+    border-color: CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+
+  .stateRail,
+  .toastRail,
+  .skeletonWave::after {
+    display: none;
+  }
+
+  .stateIcon,
+  .toastIcon,
+  .sectionEyebrow {
+    color: LinkText;
+  }
+}

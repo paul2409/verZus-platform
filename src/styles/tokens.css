@@ -1177,3 +1177,667 @@
 }
 
 /* M2 STEP 9 END */
+
+/* M2 STEP 10 START */
+/* ==================================================================
+   BADGES, STATUS, RANK, MOVEMENT AND STAT VALUES
+   ================================================================== */
+
+:root {
+  /* ================================================================
+     BADGE GEOMETRY
+     ================================================================ */
+
+  --vz-badge-height-sm: 1.375rem;
+  --vz-badge-height-md: 1.75rem;
+  --vz-badge-height-lg: 2.125rem;
+
+  --vz-badge-padding-inline-sm: 0.5rem;
+  --vz-badge-padding-inline-md: 0.6875rem;
+  --vz-badge-padding-inline-lg: 0.875rem;
+
+  --vz-badge-gap-sm: 0.25rem;
+  --vz-badge-gap-md: 0.375rem;
+  --vz-badge-gap-lg: 0.5rem;
+
+  --vz-badge-cut-sm: 0.25rem;
+  --vz-badge-cut-md: 0.375rem;
+  --vz-badge-cut-lg: 0.5rem;
+
+  --vz-badge-border-width: 0.0625rem;
+  --vz-badge-indicator-size-sm: 0.375rem;
+  --vz-badge-indicator-size-md: 0.5rem;
+  --vz-badge-indicator-size-lg: 0.625rem;
+
+  --vz-badge-shape: polygon(
+    var(--vz-badge-cut-md) 0,
+    100% 0,
+    100% calc(100% - var(--vz-badge-cut-md)),
+    calc(100% - var(--vz-badge-cut-md)) 100%,
+    0 100%,
+    0 var(--vz-badge-cut-md)
+  );
+
+  --vz-badge-shape-opposite: polygon(
+    0 0,
+    calc(100% - var(--vz-badge-cut-md)) 0,
+    100% var(--vz-badge-cut-md),
+    100% 100%,
+    var(--vz-badge-cut-md) 100%,
+    0 calc(100% - var(--vz-badge-cut-md))
+  );
+
+  /* ================================================================
+     BADGE MATERIALS
+     ================================================================ */
+
+  --vz-badge-background-neutral: linear-gradient(180deg, rgb(49 59 66 / 94%), rgb(16 21 25 / 98%));
+
+  --vz-badge-background-information: linear-gradient(
+    180deg,
+    rgb(0 229 255 / 18%),
+    rgb(4 20 25 / 98%)
+  );
+
+  --vz-badge-background-positive: linear-gradient(180deg, rgb(0 255 135 / 18%), rgb(3 22 14 / 98%));
+
+  --vz-badge-background-warning: linear-gradient(180deg, rgb(255 194 71 / 20%), rgb(27 19 4 / 98%));
+
+  --vz-badge-background-negative: linear-gradient(180deg, rgb(255 59 48 / 19%), rgb(27 7 6 / 98%));
+
+  --vz-badge-background-special: linear-gradient(180deg, rgb(138 79 255 / 20%), rgb(16 8 31 / 98%));
+
+  --vz-badge-background-live: linear-gradient(180deg, rgb(255 79 216 / 22%), rgb(30 6 25 / 98%));
+
+  --vz-badge-background-disabled: linear-gradient(
+    180deg,
+    rgb(135 146 155 / 8%),
+    rgb(10 13 15 / 96%)
+  );
+
+  /* ================================================================
+     BADGE COLOURS
+     ================================================================ */
+
+  --vz-badge-neutral: var(--vz-surface-accent-silver, #c7d0d6);
+  --vz-badge-information: var(--vz-surface-accent-cyan, #00e5ff);
+  --vz-badge-positive: var(--vz-surface-accent-green, #00ff87);
+  --vz-badge-warning: var(--vz-surface-accent-gold, #ffc247);
+  --vz-badge-negative: var(--vz-surface-accent-red, #ff3b30);
+  --vz-badge-special: var(--vz-surface-accent-violet, #8a4fff);
+  --vz-badge-live: var(--vz-surface-accent-magenta, #ff4fd8);
+  --vz-badge-disabled: #68737b;
+
+  /* ================================================================
+     BADGE BORDERS AND SHADOWS
+     ================================================================ */
+
+  --vz-badge-border-neutral: rgb(199 208 214 / 44%);
+  --vz-badge-border-information: rgb(0 229 255 / 56%);
+  --vz-badge-border-positive: rgb(0 255 135 / 56%);
+  --vz-badge-border-warning: rgb(255 194 71 / 58%);
+  --vz-badge-border-negative: rgb(255 59 48 / 58%);
+  --vz-badge-border-special: rgb(138 79 255 / 58%);
+  --vz-badge-border-live: rgb(255 79 216 / 62%);
+  --vz-badge-border-disabled: rgb(104 115 123 / 26%);
+
+  --vz-badge-shadow-neutral: inset 0 1px 0 rgb(255 255 255 / 8%);
+  --vz-badge-shadow-information:
+    0 0 0.75rem rgb(0 229 255 / 14%), inset 0 1px 0 rgb(255 255 255 / 9%);
+  --vz-badge-shadow-positive: 0 0 0.75rem rgb(0 255 135 / 14%), inset 0 1px 0 rgb(255 255 255 / 9%);
+  --vz-badge-shadow-warning: 0 0 0.75rem rgb(255 194 71 / 15%), inset 0 1px 0 rgb(255 255 255 / 9%);
+  --vz-badge-shadow-negative: 0 0 0.75rem rgb(255 59 48 / 15%), inset 0 1px 0 rgb(255 255 255 / 9%);
+  --vz-badge-shadow-special: 0 0 0.75rem rgb(138 79 255 / 16%), inset 0 1px 0 rgb(255 255 255 / 9%);
+  --vz-badge-shadow-live: 0 0 0.9rem rgb(255 79 216 / 20%), inset 0 1px 0 rgb(255 255 255 / 10%);
+
+  /* ================================================================
+     STATUS INDICATORS
+     ================================================================ */
+
+  --vz-status-online: var(--vz-surface-accent-green, #00ff87);
+  --vz-status-offline: #7e8991;
+  --vz-status-away: var(--vz-surface-accent-gold, #ffc247);
+  --vz-status-busy: var(--vz-surface-accent-red, #ff3b30);
+  --vz-status-live: var(--vz-surface-accent-magenta, #ff4fd8);
+  --vz-status-loading: var(--vz-surface-accent-cyan, #00e5ff);
+
+  --vz-status-indicator-ring: 0 0 0 0.125rem var(--vz-material-ink, #060809);
+
+  --vz-status-indicator-glow: 0 0 0.625rem currentColor;
+
+  /* ================================================================
+     RANK BADGES
+     ================================================================ */
+
+  --vz-rank-size-sm: 2rem;
+  --vz-rank-size-md: 2.625rem;
+  --vz-rank-size-lg: 3.25rem;
+
+  --vz-rank-shape: polygon(50% 0, 92% 18%, 100% 65%, 50% 100%, 0 65%, 8% 18%);
+
+  --vz-rank-background-standard: linear-gradient(
+    145deg,
+    #4e5a63,
+    #11171b 42%,
+    #07090a 72%,
+    #343d44
+  );
+
+  --vz-rank-background-bronze: linear-gradient(145deg, #d39563, #6c351c 40%, #23110b 72%, #9f5c33);
+
+  --vz-rank-background-silver: linear-gradient(145deg, #f0f4f6, #89949c 40%, #252c31 72%, #c3ccd2);
+
+  --vz-rank-background-gold: linear-gradient(145deg, #fff1a8, #ffc247 36%, #61420c 72%, #d79516);
+
+  --vz-rank-background-elite: linear-gradient(145deg, #dbc9ff, #8a4fff 36%, #211040 72%, #ff4fd8);
+
+  --vz-rank-border-standard: #7e8991;
+  --vz-rank-border-bronze: #d38a55;
+  --vz-rank-border-silver: #d5dde2;
+  --vz-rank-border-gold: #ffe27c;
+  --vz-rank-border-elite: #c29cff;
+
+  --vz-rank-shadow-standard: 0 0.5rem 1rem rgb(0 0 0 / 38%);
+  --vz-rank-shadow-bronze: 0 0.5rem 1rem rgb(0 0 0 / 40%), 0 0 0.875rem rgb(211 138 85 / 18%);
+  --vz-rank-shadow-silver: 0 0.5rem 1rem rgb(0 0 0 / 40%), 0 0 0.875rem rgb(213 221 226 / 16%);
+  --vz-rank-shadow-gold: 0 0.5rem 1rem rgb(0 0 0 / 42%), 0 0 1rem rgb(255 194 71 / 22%);
+  --vz-rank-shadow-elite: 0 0.5rem 1rem rgb(0 0 0 / 44%), 0 0 1.125rem rgb(138 79 255 / 28%);
+
+  /* ================================================================
+     MOVEMENT BADGES
+     ================================================================ */
+
+  --vz-movement-increased: var(--vz-surface-accent-green, #00ff87);
+  --vz-movement-decreased: var(--vz-surface-accent-red, #ff3b30);
+  --vz-movement-unchanged: #9da7ae;
+  --vz-movement-new: var(--vz-surface-accent-violet, #8a4fff);
+  --vz-movement-unranked: #68737b;
+
+  --vz-movement-background-increased: rgb(0 255 135 / 8%);
+  --vz-movement-background-decreased: rgb(255 59 48 / 8%);
+  --vz-movement-background-unchanged: rgb(157 167 174 / 7%);
+  --vz-movement-background-new: rgb(138 79 255 / 9%);
+  --vz-movement-background-unranked: rgb(104 115 123 / 7%);
+
+  /* ================================================================
+     STAT VALUES
+     ================================================================ */
+
+  --vz-stat-value-neutral: var(--vz-color-text-primary, #f4f7f8);
+  --vz-stat-value-positive: var(--vz-surface-accent-green, #00ff87);
+  --vz-stat-value-information: var(--vz-surface-accent-cyan, #00e5ff);
+  --vz-stat-value-warning: var(--vz-surface-accent-gold, #ffc247);
+  --vz-stat-value-negative: var(--vz-surface-accent-red, #ff3b30);
+  --vz-stat-value-special: var(--vz-surface-accent-violet, #8a4fff);
+
+  --vz-stat-value-size-sm: 1.125rem;
+  --vz-stat-value-size-md: 1.5rem;
+  --vz-stat-value-size-lg: 2.25rem;
+  --vz-stat-value-size-xl: 3.5rem;
+
+  --vz-stat-label-size: 0.6875rem;
+  --vz-stat-detail-size: 0.75rem;
+
+  /* ================================================================
+     MOTION
+     ================================================================ */
+
+  --vz-badge-transition:
+    color 140ms ease, background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease,
+    filter 140ms ease, opacity 140ms ease, transform 140ms ease;
+}
+
+/* M2 STEP 10 END */
+
+/* M2 STEP 11 START */
+/* ==================================================================
+   AVATARS, AVATAR GROUPS, PLAYER IDENTITY AND CREW IDENTITY
+   ================================================================== */
+
+:root {
+  /* Avatar dimensions */
+  --vz-avatar-size-xs: 1.5rem;
+  --vz-avatar-size-sm: 2rem;
+  --vz-avatar-size-md: 2.5rem;
+  --vz-avatar-size-lg: 3.5rem;
+  --vz-avatar-size-xl: 4.5rem;
+
+  --vz-avatar-ring-width: 0.125rem;
+  --vz-avatar-status-ring-width: 0.125rem;
+  --vz-avatar-status-size-xs: 0.4375rem;
+  --vz-avatar-status-size-sm: 0.5625rem;
+  --vz-avatar-status-size-md: 0.6875rem;
+  --vz-avatar-status-size-lg: 0.8125rem;
+  --vz-avatar-status-size-xl: 0.9375rem;
+
+  /* Avatar materials */
+  --vz-avatar-background:
+    radial-gradient(circle at 35% 25%, rgb(255 255 255 / 12%), transparent 32%),
+    linear-gradient(145deg, #253039, #080b0d 66%, #11171b);
+  --vz-avatar-border: rgb(199 208 214 / 44%);
+  --vz-avatar-inner-border: rgb(255 255 255 / 10%);
+  --vz-avatar-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 42%), inset 0 1px 0 rgb(255 255 255 / 8%);
+  --vz-avatar-suspended-overlay: rgb(255 59 48 / 40%);
+
+  /* Avatar tones */
+  --vz-avatar-tone-neutral: var(--vz-surface-accent-silver, #c7d0d6);
+  --vz-avatar-tone-green: var(--vz-surface-accent-green, #00ff87);
+  --vz-avatar-tone-cyan: var(--vz-surface-accent-cyan, #00e5ff);
+  --vz-avatar-tone-violet: var(--vz-surface-accent-violet, #8a4fff);
+  --vz-avatar-tone-gold: var(--vz-surface-accent-gold, #ffc247);
+  --vz-avatar-tone-red: var(--vz-surface-accent-red, #ff3b30);
+
+  /* Presence */
+  --vz-avatar-presence-online: var(--vz-status-online, #00ff87);
+  --vz-avatar-presence-offline: var(--vz-status-offline, #7e8991);
+  --vz-avatar-presence-away: var(--vz-status-away, #ffc247);
+  --vz-avatar-presence-busy: var(--vz-status-busy, #ff3b30);
+
+  /* Shapes */
+  --vz-avatar-shape-circle: circle(50% at 50% 50%);
+  --vz-avatar-shape-rounded: polygon(
+    0.5rem 0,
+    calc(100% - 0.5rem) 0,
+    100% 0.5rem,
+    100% calc(100% - 0.5rem),
+    calc(100% - 0.5rem) 100%,
+    0.5rem 100%,
+    0 calc(100% - 0.5rem),
+    0 0.5rem
+  );
+  --vz-avatar-shape-hex: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0 50%);
+
+  /* Loading */
+  --vz-avatar-loading-background: linear-gradient(
+    105deg,
+    rgb(255 255 255 / 3%) 20%,
+    rgb(0 229 255 / 17%) 42%,
+    rgb(255 255 255 / 4%) 62%
+  );
+  --vz-avatar-loading-size: 220% 100%;
+
+  /* Group */
+  --vz-avatar-group-overlap-xs: -0.375rem;
+  --vz-avatar-group-overlap-sm: -0.5rem;
+  --vz-avatar-group-overlap-md: -0.625rem;
+  --vz-avatar-group-overlap-lg: -0.875rem;
+  --vz-avatar-group-overlap-xl: -1.125rem;
+  --vz-avatar-group-ring: var(--vz-material-ink, #060809);
+
+  /* Identity */
+  --vz-identity-gap-sm: 0.625rem;
+  --vz-identity-gap-md: 0.875rem;
+  --vz-identity-gap-lg: 1rem;
+  --vz-identity-name-color: var(--vz-color-text-primary, #f4f7f8);
+  --vz-identity-secondary-color: var(--vz-color-text-secondary, #aeb8bf);
+  --vz-identity-muted-color: var(--vz-color-text-tertiary, #7e8991);
+  --vz-identity-divider: rgb(199 208 214 / 18%);
+  --vz-identity-surface: linear-gradient(180deg, rgb(18 24 28 / 92%), rgb(6 9 11 / 96%));
+  --vz-identity-border: rgb(199 208 214 / 20%);
+  --vz-identity-highlight: rgb(255 255 255 / 6%);
+
+  --vz-avatar-transition:
+    border-color 150ms ease, box-shadow 150ms ease, filter 150ms ease, opacity 150ms ease,
+    transform 150ms ease;
+}
+
+/* M2 STEP 11 END */
+
+/* M2 STEP 12 START */
+/* ==================================================================
+   TABS AND SEGMENTED CONTROLS
+   ================================================================== */
+
+:root {
+  /* Tabs geometry */
+  --vz-tabs-list-min-height: 3rem;
+  --vz-tabs-gap: 0.25rem;
+  --vz-tabs-padding: 0.25rem;
+  --vz-tabs-item-min-height: 2.5rem;
+  --vz-tabs-item-padding-inline: 1rem;
+  --vz-tabs-item-cut: 0.5rem;
+  --vz-tabs-panel-padding-block: 1.25rem;
+  --vz-tabs-indicator-height: 0.1875rem;
+
+  /* Tabs materials */
+  --vz-tabs-list-background: linear-gradient(180deg, rgb(20 27 31 / 96%), rgb(6 9 11 / 98%));
+  --vz-tabs-list-border: rgb(199 208 214 / 20%);
+  --vz-tabs-item-color: var(--vz-color-text-secondary, #aeb8bf);
+  --vz-tabs-item-hover-color: var(--vz-color-text-primary, #f4f7f8);
+  --vz-tabs-item-selected-color: var(--vz-surface-accent-green, #00ff87);
+  --vz-tabs-item-selected-background: linear-gradient(
+    180deg,
+    rgb(0 255 135 / 13%),
+    rgb(4 20 13 / 94%)
+  );
+  --vz-tabs-item-hover-background: rgb(255 255 255 / 4%);
+  --vz-tabs-item-disabled-color: #657078;
+  --vz-tabs-indicator-color: var(--vz-surface-accent-green, #00ff87);
+  --vz-tabs-panel-border: rgb(199 208 214 / 14%);
+
+  /* Segmented-control geometry */
+  --vz-segmented-min-height-sm: 2.25rem;
+  --vz-segmented-min-height-md: 2.75rem;
+  --vz-segmented-min-height-lg: 3.25rem;
+  --vz-segmented-gap: 0.1875rem;
+  --vz-segmented-padding: 0.25rem;
+  --vz-segmented-item-padding-sm: 0.625rem;
+  --vz-segmented-item-padding-md: 0.875rem;
+  --vz-segmented-item-padding-lg: 1.125rem;
+  --vz-segmented-cut: 0.5rem;
+
+  /* Segmented-control materials */
+  --vz-segmented-background: linear-gradient(180deg, rgb(17 23 27 / 98%), rgb(5 8 10 / 100%));
+  --vz-segmented-border: rgb(199 208 214 / 22%);
+  --vz-segmented-item-color: var(--vz-color-text-secondary, #aeb8bf);
+  --vz-segmented-item-hover-background: rgb(255 255 255 / 4%);
+  --vz-segmented-item-selected-color: #031008;
+  --vz-segmented-item-selected-background: linear-gradient(
+    180deg,
+    #82ffc1,
+    var(--vz-surface-accent-green, #00ff87)
+  );
+  --vz-segmented-item-selected-shadow:
+    0 0 1rem rgb(0 255 135 / 20%), inset 0 1px 0 rgb(255 255 255 / 38%);
+  --vz-segmented-item-disabled-color: #657078;
+
+  /* Shared motion */
+  --vz-selection-control-transition:
+    color 150ms ease, background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease,
+    filter 150ms ease, opacity 150ms ease, transform 150ms ease;
+}
+
+/* M2 STEP 12 END */
+
+/* M2 STEP 13 START */
+/* ==================================================================
+   LEADERBOARD TABLE AND MOBILE RANKING LIST
+   One display contract, two intentional responsive presentations.
+   ================================================================== */
+
+:root {
+  --vz-leaderboard-row-min-height: 4.75rem;
+  --vz-leaderboard-row-gap: 0.75rem;
+  --vz-leaderboard-cell-padding-block: 0.875rem;
+  --vz-leaderboard-cell-padding-inline: 1rem;
+
+  --vz-leaderboard-header-background: linear-gradient(
+    180deg,
+    rgb(29 38 44 / 98%),
+    rgb(9 13 16 / 100%)
+  );
+  --vz-leaderboard-row-background: linear-gradient(180deg, rgb(17 23 27 / 96%), rgb(7 10 12 / 99%));
+  --vz-leaderboard-row-background-alt: linear-gradient(
+    180deg,
+    rgb(21 28 33 / 96%),
+    rgb(8 11 14 / 99%)
+  );
+  --vz-leaderboard-row-background-current: linear-gradient(
+    90deg,
+    rgb(0 255 135 / 12%),
+    rgb(8 19 15 / 98%) 34%,
+    rgb(5 9 11 / 99%)
+  );
+  --vz-leaderboard-row-background-pinned: linear-gradient(
+    90deg,
+    rgb(0 229 255 / 11%),
+    rgb(7 17 22 / 98%) 34%,
+    rgb(5 9 11 / 99%)
+  );
+
+  --vz-leaderboard-border: rgb(174 184 191 / 20%);
+  --vz-leaderboard-border-strong: rgb(174 184 191 / 34%);
+  --vz-leaderboard-current-border: rgb(0 255 135 / 58%);
+  --vz-leaderboard-pinned-border: rgb(0 229 255 / 54%);
+  --vz-leaderboard-divider: rgb(255 255 255 / 6%);
+
+  --vz-leaderboard-rank-column: 5.25rem;
+  --vz-leaderboard-player-column: minmax(15rem, 1.6fr);
+  --vz-leaderboard-crew-column: minmax(10rem, 1fr);
+  --vz-leaderboard-stat-column: minmax(5.25rem, 0.55fr);
+  --vz-leaderboard-movement-column: 6.25rem;
+
+  --vz-leaderboard-mobile-card-gap: 0.75rem;
+  --vz-leaderboard-mobile-card-padding: 1rem;
+  --vz-leaderboard-mobile-card-background: linear-gradient(
+    145deg,
+    rgb(18 25 30 / 98%),
+    rgb(5 8 10 / 100%)
+  );
+  --vz-leaderboard-mobile-card-current: linear-gradient(
+    145deg,
+    rgb(0 255 135 / 13%),
+    rgb(7 18 14 / 98%) 40%,
+    rgb(4 7 9 / 100%)
+  );
+
+  --vz-leaderboard-state-background: linear-gradient(
+    180deg,
+    rgb(15 21 25 / 97%),
+    rgb(5 8 10 / 100%)
+  );
+  --vz-leaderboard-state-border: rgb(174 184 191 / 24%);
+
+  --vz-leaderboard-shadow: 0 1rem 2.5rem rgb(0 0 0 / 34%), inset 0 1px 0 rgb(255 255 255 / 4%);
+
+  --vz-leaderboard-transition:
+    background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+/* M2 STEP 13 END */
+
+/* M2 STEP 14 START */
+/* ==================================================================
+   MATCH, COMPETITION AND OVERLAY PRIMITIVES
+   ================================================================== */
+
+:root {
+  --vz-competition-surface: linear-gradient(145deg, rgb(19 27 32 / 98%), rgb(5 8 10 / 100%));
+  --vz-competition-border: rgb(174 184 191 / 24%);
+  --vz-competition-highlight: rgb(0 255 135 / 52%);
+  --vz-competition-accent: var(--vz-surface-accent-green, #00ff87);
+
+  --vz-match-surface: linear-gradient(145deg, rgb(20 26 33 / 98%), rgb(5 7 11 / 100%));
+  --vz-match-border: rgb(174 184 191 / 24%);
+  --vz-match-accent: var(--vz-surface-accent-cyan, #00e5ff);
+  --vz-match-versus: var(--vz-surface-accent-magenta, #ff4fd8);
+
+  --vz-timeline-line: rgb(174 184 191 / 22%);
+  --vz-timeline-complete: var(--vz-surface-accent-green, #00ff87);
+  --vz-timeline-current: var(--vz-surface-accent-cyan, #00e5ff);
+  --vz-timeline-future: #68737b;
+
+  --vz-bracket-node-min-width: 12rem;
+  --vz-bracket-node-background: linear-gradient(180deg, rgb(20 27 32 / 98%), rgb(6 9 11 / 100%));
+  --vz-bracket-node-border: rgb(174 184 191 / 28%);
+  --vz-bracket-node-active: rgb(0 229 255 / 58%);
+  --vz-bracket-node-winner: rgb(0 255 135 / 58%);
+
+  --vz-overlay-backdrop: rgb(1 3 5 / 78%);
+  --vz-overlay-surface: linear-gradient(145deg, rgb(24 32 38 / 99%), rgb(5 8 10 / 100%));
+  --vz-overlay-border: rgb(174 184 191 / 38%);
+  --vz-overlay-shadow:
+    0 2rem 5rem rgb(0 0 0 / 68%), 0 0 2rem rgb(0 229 255 / 8%), inset 0 1px 0 rgb(255 255 255 / 6%);
+  --vz-overlay-radius: 0.75rem;
+  --vz-overlay-max-width-sm: 28rem;
+  --vz-overlay-max-width-md: 40rem;
+  --vz-overlay-max-width-lg: 56rem;
+  --vz-overlay-z-popover: 70;
+  --vz-overlay-z-dialog: 80;
+  --vz-overlay-z-tooltip: 90;
+
+  --vz-tooltip-background: #0d1418;
+  --vz-tooltip-border: rgb(0 229 255 / 44%);
+  --vz-tooltip-text: #f4f7f8;
+
+  --vz-step14-transition:
+    opacity 140ms ease, transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+/* M2 STEP 14 END */
+
+/* M2 STEP 15 START */
+/* ==================================================================
+   BOTTOM NAVIGATION
+   ================================================================== */
+
+:root {
+  --vz-bottom-nav-height: 4.75rem;
+  --vz-bottom-nav-height-compact: 4.25rem;
+  --vz-bottom-nav-max-width: 36rem;
+  --vz-bottom-nav-inline-gap: 0.25rem;
+  --vz-bottom-nav-safe-area: env(safe-area-inset-bottom, 0px);
+  --vz-bottom-nav-z-index: 60;
+
+  --vz-bottom-nav-surface: linear-gradient(180deg, rgb(19 27 32 / 98%), rgb(5 8 10 / 100%));
+  --vz-bottom-nav-surface-elevated: linear-gradient(
+    180deg,
+    rgb(24 34 40 / 99%),
+    rgb(6 9 11 / 100%)
+  );
+  --vz-bottom-nav-border: rgb(174 184 191 / 28%);
+  --vz-bottom-nav-border-strong: rgb(0 255 135 / 44%);
+  --vz-bottom-nav-shadow:
+    0 -1.25rem 3rem rgb(0 0 0 / 46%), 0 -0.125rem 0.875rem rgb(0 0 0 / 64%),
+    inset 0 1px 0 rgb(255 255 255 / 5%);
+  --vz-bottom-nav-shadow-floating:
+    0 1.25rem 3rem rgb(0 0 0 / 56%), 0 0 1.5rem rgb(0 255 135 / 10%),
+    inset 0 1px 0 rgb(255 255 255 / 6%);
+
+  --vz-bottom-nav-item-min-height: 2.75rem;
+  --vz-bottom-nav-item-text: #87929b;
+  --vz-bottom-nav-item-hover: #dce4e8;
+  --vz-bottom-nav-item-active: var(--vz-surface-accent-green, #00ff87);
+  --vz-bottom-nav-item-partial: var(--vz-surface-accent-gold, #ffc247);
+  --vz-bottom-nav-item-disabled: #59636a;
+  --vz-bottom-nav-item-background-active: rgb(0 255 135 / 8%);
+  --vz-bottom-nav-item-background-hover: rgb(255 255 255 / 4%);
+  --vz-bottom-nav-item-background-partial: rgb(255 194 71 / 6%);
+
+  --vz-bottom-nav-prominent-size: 3.75rem;
+  --vz-bottom-nav-prominent-background: linear-gradient(
+    180deg,
+    #65ffae 0%,
+    #00ff87 54%,
+    #00b85f 100%
+  );
+  --vz-bottom-nav-prominent-foreground: #031008;
+  --vz-bottom-nav-prominent-ring:
+    0 0 0 0.1875rem #05080a, 0 0 0 0.3125rem rgb(0 255 135 / 54%), 0 0 1.5rem rgb(0 255 135 / 34%);
+
+  --vz-navigation-badge-neutral: #c7d0d6;
+  --vz-navigation-badge-primary: var(--vz-surface-accent-green, #00ff87);
+  --vz-navigation-badge-warning: var(--vz-surface-accent-gold, #ffc247);
+  --vz-navigation-badge-danger: var(--vz-surface-accent-red, #ff3b30);
+  --vz-navigation-badge-surface: #080c0f;
+
+  --vz-bottom-nav-transition:
+    color 140ms ease, background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease,
+    opacity 140ms ease, transform 140ms ease;
+}
+
+/* M2 STEP 15 END */
+
+/* M2 STEP 16 START */
+/* ==================================================================
+   FEEDBACK, SYSTEM STATES, DIVIDERS AND SECTION HEADERS
+   ================================================================== */
+
+:root {
+  --vz-feedback-neutral: var(--vz-surface-accent-silver, #c7d0d6);
+  --vz-feedback-information: var(--vz-surface-accent-cyan, #00e5ff);
+  --vz-feedback-positive: var(--vz-surface-accent-green, #00ff87);
+  --vz-feedback-warning: var(--vz-surface-accent-gold, #ffc247);
+  --vz-feedback-negative: var(--vz-surface-accent-red, #ff3b30);
+  --vz-feedback-special: var(--vz-surface-accent-violet, #8a4fff);
+  --vz-feedback-partial: var(--vz-surface-accent-magenta, #ff4fd8);
+
+  --vz-feedback-surface: linear-gradient(180deg, rgb(18 25 29 / 98%), rgb(5 8 10 / 100%));
+  --vz-feedback-surface-raised: linear-gradient(180deg, rgb(27 36 42 / 98%), rgb(7 11 14 / 100%));
+  --vz-feedback-border: rgb(174 184 191 / 24%);
+  --vz-feedback-border-strong: rgb(174 184 191 / 44%);
+  --vz-feedback-shadow:
+    0 1rem 2.5rem rgb(0 0 0 / 42%), 0 0.25rem 0.875rem rgb(0 0 0 / 62%),
+    inset 0 1px 0 rgb(255 255 255 / 5%);
+
+  --vz-feedback-cut-sm: 0.5rem;
+  --vz-feedback-cut-md: 0.75rem;
+  --vz-feedback-cut-lg: 1rem;
+  --vz-feedback-shape: polygon(
+    var(--vz-feedback-cut-md) 0,
+    calc(100% - var(--vz-feedback-cut-md)) 0,
+    100% var(--vz-feedback-cut-md),
+    100% calc(100% - var(--vz-feedback-cut-md)),
+    calc(100% - var(--vz-feedback-cut-md)) 100%,
+    var(--vz-feedback-cut-md) 100%,
+    0 calc(100% - var(--vz-feedback-cut-md)),
+    0 var(--vz-feedback-cut-md)
+  );
+
+  --vz-state-icon-size-sm: 2.75rem;
+  --vz-state-icon-size-md: 3.5rem;
+  --vz-state-icon-size-lg: 4.5rem;
+  --vz-state-max-width: 42rem;
+
+  --vz-toast-width: min(24rem, calc(100vw - 2rem));
+  --vz-toast-gap: 0.75rem;
+  --vz-toast-z-index: 90;
+  --vz-toast-shadow:
+    0 1.25rem 3rem rgb(0 0 0 / 58%), 0 0 1.5rem rgb(0 229 255 / 8%),
+    inset 0 1px 0 rgb(255 255 255 / 6%);
+
+  --vz-skeleton-base: rgb(112 126 135 / 12%);
+  --vz-skeleton-highlight: rgb(210 225 233 / 17%);
+  --vz-skeleton-radius: 0.35rem;
+  --vz-skeleton-duration: 1.45s;
+
+  --vz-divider-line: rgb(174 184 191 / 20%);
+  --vz-divider-line-strong: rgb(0 255 135 / 42%);
+  --vz-divider-label: #87929b;
+
+  --vz-feedback-transition:
+    color 150ms ease, background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease,
+    opacity 150ms ease, transform 150ms ease;
+}
+
+/* M2 STEP 16 END */
+
+/* M2 STEP 19 START */
+/* ==================================================================
+   INTEL CARDS
+   Player, Match, Crew and War Match command-centre summaries.
+   ================================================================== */
+
+:root {
+  --vz-intel-background:
+    radial-gradient(circle at 72% 18%, rgb(0 255 135 / 10%), transparent 34%),
+    linear-gradient(150deg, rgb(18 25 29 / 99%), rgb(4 7 9 / 100%));
+  --vz-intel-background-raised: linear-gradient(145deg, rgb(24 32 37 / 99%), rgb(7 10 12 / 100%));
+  --vz-intel-border: rgb(177 190 196 / 25%);
+  --vz-intel-border-strong: rgb(177 190 196 / 43%);
+  --vz-intel-text: #f5f7f8;
+  --vz-intel-muted: #9aa6ac;
+  --vz-intel-subtle: #66727a;
+  --vz-intel-player: #00ff87;
+  --vz-intel-match: #00e5ff;
+  --vz-intel-crew: #a44fff;
+  --vz-intel-war: #ff4f9a;
+  --vz-intel-warning: #ffce5c;
+  --vz-intel-danger: #ff4e55;
+  --vz-intel-offline: #8b969d;
+  --vz-intel-cut: 1.05rem;
+  --vz-intel-radius: 0.25rem;
+  --vz-intel-padding: clamp(0.875rem, 2vw, 1.25rem);
+  --vz-intel-gap: clamp(0.75rem, 1.7vw, 1rem);
+  --vz-intel-shadow: 0 1.5rem 3.75rem rgb(0 0 0 / 42%), inset 0 1px 0 rgb(255 255 255 / 5%);
+  --vz-intel-glow:
+    0 0 0 1px color-mix(in srgb, var(--intel-accent, #00ff87) 35%, transparent),
+    0 0 2rem color-mix(in srgb, var(--intel-accent, #00ff87) 12%, transparent);
+  --vz-intel-action-height: 2.75rem;
+  --vz-intel-transition:
+    border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease,
+    background-color 150ms ease;
+}
+
+/* M2 STEP 19 END */

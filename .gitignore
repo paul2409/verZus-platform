@@ -49,3 +49,6 @@ Thumbs.db
 
 # Temporary local design-system backups
 /.m2-backup/
+
+# Storybook build output
+/storybook-static/

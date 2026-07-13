@@ -1,0 +1,172 @@
+.matchup,
+.warScore {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.85rem;
+  background: rgb(255 255 255 / 2%);
+  border: 1px solid var(--vz-intel-border);
+}
+
+.side,
+.warSide {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 3.4rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.side img,
+.warSide img {
+  width: 3.4rem;
+  height: 3.4rem;
+  object-fit: contain;
+  grid-row: span 2;
+}
+
+.side strong,
+.side span,
+.warSide strong,
+.warSide span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.side strong,
+.warSide strong {
+  font-family: var(--font-rajdhani, "Arial Narrow", sans-serif);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.side span,
+.warSide span {
+  color: var(--vz-intel-muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.countdown,
+.score {
+  display: grid;
+  place-items: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.countdown > span,
+.score > span {
+  color: var(--vz-intel-muted);
+  font-family: var(--font-rajdhani, "Arial Narrow", sans-serif);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.countdown > strong,
+.score > strong {
+  color: var(--vz-intel-match);
+  font-family: var(--font-rajdhani, "Arial Narrow", sans-serif);
+  font-size: clamp(2rem, 12cqi, 3.5rem);
+  line-height: 0.95;
+}
+
+.score > strong {
+  color: var(--vz-intel-text);
+}
+
+.format {
+  margin: -0.2rem 0 0;
+  color: var(--vz-intel-muted);
+  font-family: var(--font-rajdhani, "Arial Narrow", sans-serif);
+  font-size: 0.76rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.live {
+  color: var(--vz-intel-danger) !important;
+}
+
+.live::before {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.35rem;
+  content: "";
+  background: currentColor;
+  border-radius: 50%;
+  box-shadow: 0 0 0.75rem currentColor;
+}
+
+.lanes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.lane {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  background: rgb(255 255 255 / 2%);
+  border: 1px solid var(--vz-intel-border);
+}
+
+.lane > span {
+  overflow: hidden;
+  color: var(--vz-intel-muted);
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@container intel-card (min-width: 32rem) {
+  .matchup,
+  .warScore {
+    grid-template-columns: minmax(0, 1fr) minmax(7rem, 0.75fr) minmax(0, 1fr);
+  }
+
+  .side:last-child,
+  .warSide:last-child {
+    grid-template-columns: minmax(0, 1fr) 3.4rem;
+    text-align: right;
+  }
+
+  .side:last-child img,
+  .warSide:last-child img {
+    grid-column: 2;
+  }
+
+  .lanes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@container intel-card (min-width: 48rem) {
+  .side,
+  .warSide {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+  }
+
+  .side img,
+  .warSide img {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  .side:last-child,
+  .warSide:last-child {
+    grid-template-columns: minmax(0, 1fr) 4.5rem;
+  }
+}

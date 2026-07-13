@@ -1,0 +1,114 @@
+.page {
+  display: grid;
+  min-height: 100svh;
+  gap: clamp(1.25rem, 4vw, 3rem);
+  padding: clamp(1rem, 4vw, 4rem);
+  overflow-x: hidden;
+  color: var(--vz-color-text-primary);
+  background:
+    radial-gradient(circle at 12% 8%, rgb(0 255 135 / 10%), transparent 30rem),
+    radial-gradient(circle at 88% 22%, rgb(0 229 255 / 9%), transparent 28rem), #030506;
+}
+
+.pageHeader {
+  display: grid;
+  width: min(100%, 70rem);
+  gap: 0.75rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.kicker {
+  margin: 0;
+  color: var(--vz-surface-accent-green, #00ff87);
+  font-family: var(--vz-font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--vz-font-display);
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.description,
+.dialogCopy {
+  margin: 0;
+  color: var(--vz-color-text-secondary);
+  line-height: 1.6;
+}
+
+.timelinePanel {
+  padding: 1rem;
+  background: var(--vz-match-surface);
+  border: 1px solid var(--vz-match-border);
+}
+
+.inlineHeader,
+.bracketRow,
+.resultBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.inlineHeader h3 {
+  margin: 0;
+  font-family: var(--vz-font-display);
+  text-transform: uppercase;
+}
+
+.timeline {
+  display: grid;
+  gap: 0.25rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+}
+
+.bracketRow {
+  align-items: stretch;
+}
+
+.resultBox {
+  min-width: 12rem;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(255 255 255 / 3%);
+  border: 1px solid rgb(174 184 191 / 18%);
+}
+
+.helpButton {
+  min-height: 2.75rem;
+  cursor: pointer;
+  color: var(--vz-color-text-primary);
+  background: transparent;
+  border: 1px solid var(--vz-surface-accent-cyan, #00e5ff);
+  padding-inline: 1rem;
+}
+
+.drawerContent {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (max-width: 47.999rem) {
+  .page {
+    padding-inline: 0.625rem;
+  }
+
+  .bracketRow {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .resultBox {
+    min-width: 0;
+  }
+}

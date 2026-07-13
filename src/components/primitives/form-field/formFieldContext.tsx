@@ -4,7 +4,7 @@ import { createContext, useContext, type ReactNode } from "react";
 
 export type FormFieldContextValue = {
   controlId: string;
-  describedBy?: string;
+  describedBy: string | undefined;
   disabled: boolean;
   invalid: boolean;
   required: boolean;

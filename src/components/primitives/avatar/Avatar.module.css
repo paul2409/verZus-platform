@@ -1,0 +1,374 @@
+.avatar {
+  --vz-avatar-size: var(--vz-avatar-size-md, 2.5rem);
+  --vz-avatar-accent: var(--vz-avatar-tone-neutral, #c7d0d6);
+  --vz-avatar-presence-color: transparent;
+  --vz-avatar-shape: var(--vz-avatar-shape-circle);
+  --vz-avatar-status-size: var(--vz-avatar-status-size-md, 0.6875rem);
+
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  width: var(--vz-avatar-size);
+  height: var(--vz-avatar-size);
+  min-width: var(--vz-avatar-size);
+  flex: 0 0 var(--vz-avatar-size);
+  place-items: center;
+  vertical-align: middle;
+  transition: var(--vz-avatar-transition);
+}
+
+.frame,
+.content,
+.suspendedMark {
+  position: absolute;
+  inset: 0;
+  clip-path: var(--vz-avatar-shape);
+}
+
+.frame {
+  z-index: 0;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--vz-avatar-accent) 82%, white),
+      transparent 34%
+    ),
+    linear-gradient(315deg, var(--vz-avatar-accent), #10161a 58%);
+  box-shadow:
+    var(--vz-avatar-shadow),
+    0 0 1rem color-mix(in srgb, var(--vz-avatar-accent) 18%, transparent);
+}
+
+.content {
+  z-index: 1;
+  inset: var(--vz-avatar-ring-width, 0.125rem);
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  color: var(--vz-avatar-accent);
+  background: var(--vz-avatar-background);
+  border: 1px solid var(--vz-avatar-inner-border);
+}
+
+.image,
+.visual {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.visual {
+  display: grid;
+  place-items: center;
+}
+
+.visual > svg {
+  width: 82%;
+  height: 82%;
+  overflow: visible;
+}
+
+.initials {
+  overflow: hidden;
+  max-width: 82%;
+  color: var(--vz-avatar-accent);
+  font-family: var(--vz-font-display);
+  font-size: calc(var(--vz-avatar-size) * 0.36);
+  font-weight: var(--vz-font-weight-bold, 700);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: center;
+  text-overflow: clip;
+  text-shadow: 0 0 0.75rem color-mix(in srgb, var(--vz-avatar-accent) 32%, transparent);
+  white-space: nowrap;
+}
+
+.loadingLayer {
+  position: absolute;
+  inset: 0;
+  background: var(--vz-avatar-loading-background);
+  background-size: var(--vz-avatar-loading-size);
+  animation: vz-avatar-loading 1.25s linear infinite;
+}
+
+@keyframes vz-avatar-loading {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.presenceIndicator {
+  position: absolute;
+  z-index: 5;
+  right: -0.04rem;
+  bottom: -0.04rem;
+  width: var(--vz-avatar-status-size);
+  height: var(--vz-avatar-status-size);
+  background: var(--vz-avatar-presence-color);
+  border: var(--vz-avatar-status-ring-width, 0.125rem) solid var(--vz-material-ink, #060809);
+  border-radius: 50%;
+  box-shadow: 0 0 0.625rem var(--vz-avatar-presence-color);
+}
+
+.verifiedMark {
+  position: absolute;
+  z-index: 6;
+  top: -0.125rem;
+  right: -0.125rem;
+  display: grid;
+  width: calc(var(--vz-avatar-status-size) * 1.15);
+  height: calc(var(--vz-avatar-status-size) * 1.15);
+  place-items: center;
+  color: #06110c;
+  background: var(--vz-avatar-tone-green, #00ff87);
+  border: 0.1rem solid var(--vz-material-ink, #060809);
+  border-radius: 50%;
+  box-shadow: 0 0 0.625rem rgb(0 255 135 / 34%);
+}
+
+.verifiedMark svg {
+  width: 72%;
+  height: 72%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.4;
+}
+
+.suspendedMark {
+  z-index: 4;
+  background:
+    linear-gradient(
+      45deg,
+      transparent 44%,
+      var(--vz-avatar-tone-red, #ff3b30) 45% 55%,
+      transparent 56%
+    ),
+    var(--vz-avatar-suspended-overlay);
+}
+
+.suspended {
+  filter: grayscale(0.66) saturate(0.7);
+}
+
+.loading {
+  cursor: progress;
+}
+
+.sizeXs {
+  --vz-avatar-size: var(--vz-avatar-size-xs, 1.5rem);
+  --vz-avatar-status-size: var(--vz-avatar-status-size-xs, 0.4375rem);
+}
+
+.sizeSm {
+  --vz-avatar-size: var(--vz-avatar-size-sm, 2rem);
+  --vz-avatar-status-size: var(--vz-avatar-status-size-sm, 0.5625rem);
+}
+
+.sizeMd {
+  --vz-avatar-size: var(--vz-avatar-size-md, 2.5rem);
+  --vz-avatar-status-size: var(--vz-avatar-status-size-md, 0.6875rem);
+}
+
+.sizeLg {
+  --vz-avatar-size: var(--vz-avatar-size-lg, 3.5rem);
+  --vz-avatar-status-size: var(--vz-avatar-status-size-lg, 0.8125rem);
+}
+
+.sizeXl {
+  --vz-avatar-size: var(--vz-avatar-size-xl, 4.5rem);
+  --vz-avatar-status-size: var(--vz-avatar-status-size-xl, 0.9375rem);
+}
+
+.shapeCircle {
+  --vz-avatar-shape: var(--vz-avatar-shape-circle);
+}
+
+.shapeRounded {
+  --vz-avatar-shape: var(--vz-avatar-shape-rounded);
+}
+
+.shapeHex {
+  --vz-avatar-shape: var(--vz-avatar-shape-hex);
+}
+
+.toneNeutral {
+  --vz-avatar-accent: var(--vz-avatar-tone-neutral, #c7d0d6);
+}
+
+.toneGreen {
+  --vz-avatar-accent: var(--vz-avatar-tone-green, #00ff87);
+}
+
+.toneCyan {
+  --vz-avatar-accent: var(--vz-avatar-tone-cyan, #00e5ff);
+}
+
+.toneViolet {
+  --vz-avatar-accent: var(--vz-avatar-tone-violet, #8a4fff);
+}
+
+.toneGold {
+  --vz-avatar-accent: var(--vz-avatar-tone-gold, #ffc247);
+}
+
+.toneRed {
+  --vz-avatar-accent: var(--vz-avatar-tone-red, #ff3b30);
+}
+
+.presenceNone {
+  --vz-avatar-presence-color: transparent;
+}
+
+.presenceOnline {
+  --vz-avatar-presence-color: var(--vz-avatar-presence-online, #00ff87);
+}
+
+.presenceOffline {
+  --vz-avatar-presence-color: var(--vz-avatar-presence-offline, #7e8991);
+}
+
+.presenceAway {
+  --vz-avatar-presence-color: var(--vz-avatar-presence-away, #ffc247);
+}
+
+.presenceBusy {
+  --vz-avatar-presence-color: var(--vz-avatar-presence-busy, #ff3b30);
+}
+
+.avatarGroup {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.avatarGroupVisuals {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  padding-inline-end: 0.125rem;
+}
+
+.avatarGroupItem,
+.avatarOverflow {
+  position: relative;
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+}
+
+.avatarGroupItem {
+  margin-inline-start: var(--vz-avatar-group-overlap, -0.625rem);
+  filter: drop-shadow(0 0 0.1rem var(--vz-avatar-group-ring, #060809));
+}
+
+.avatarGroupItem:first-child {
+  margin-inline-start: 0;
+}
+
+.avatarOverflow {
+  width: var(--vz-avatar-size);
+  height: var(--vz-avatar-size);
+  margin-inline-start: var(--vz-avatar-group-overlap, -0.625rem);
+  color: var(--vz-color-text-primary, #f4f7f8);
+  background: linear-gradient(145deg, rgb(49 59 66 / 98%), rgb(8 11 13 / 100%));
+  border: 0.125rem solid var(--vz-avatar-group-ring, #060809);
+  border-radius: 50%;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 9%);
+  font-family: var(--vz-font-display);
+  font-size: calc(var(--vz-avatar-size) * 0.28);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.groupSizeXs {
+  --vz-avatar-size: var(--vz-avatar-size-xs, 1.5rem);
+  --vz-avatar-group-overlap: var(--vz-avatar-group-overlap-xs, -0.375rem);
+}
+
+.groupSizeSm {
+  --vz-avatar-size: var(--vz-avatar-size-sm, 2rem);
+  --vz-avatar-group-overlap: var(--vz-avatar-group-overlap-sm, -0.5rem);
+}
+
+.groupSizeMd {
+  --vz-avatar-size: var(--vz-avatar-size-md, 2.5rem);
+  --vz-avatar-group-overlap: var(--vz-avatar-group-overlap-md, -0.625rem);
+}
+
+.groupSizeLg {
+  --vz-avatar-size: var(--vz-avatar-size-lg, 3.5rem);
+  --vz-avatar-group-overlap: var(--vz-avatar-group-overlap-lg, -0.875rem);
+}
+
+.groupSizeXl {
+  --vz-avatar-size: var(--vz-avatar-size-xl, 4.5rem);
+  --vz-avatar-group-overlap: var(--vz-avatar-group-overlap-xl, -1.125rem);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar,
+  .loadingLayer {
+    animation: none;
+    transition: none;
+  }
+
+  .loadingLayer {
+    background-position: 50% 0;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .frame {
+    box-shadow: 0 0 0 2px var(--vz-avatar-accent);
+  }
+
+  .presenceIndicator,
+  .verifiedMark {
+    border-width: 0.15rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .frame,
+  .content,
+  .avatarOverflow {
+    color: CanvasText;
+    background: Canvas;
+    border: 1px solid CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+
+  .presenceIndicator,
+  .verifiedMark {
+    color: HighlightText;
+    background: Highlight;
+    border-color: Canvas;
+    box-shadow: none;
+  }
+
+  .suspendedMark {
+    background: transparent;
+    border: 0.25rem solid Mark;
+  }
+}

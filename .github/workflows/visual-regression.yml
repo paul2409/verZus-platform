@@ -1,0 +1,58 @@
+name: Visual regression
+
+on:
+  pull_request:
+    paths:
+      - ".storybook/**"
+      - "src/**"
+      - "tests/visual/**"
+      - "playwright.visual.config.ts"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  storybook-visual:
+    name: Storybook visual baseline
+    runs-on: windows-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install chromium
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Compare visual baselines
+        run: npm run visual:test
+
+      - name: Upload visual diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diagnostics
+          path: |
+            playwright-report/visual
+            test-results
+          if-no-files-found: ignore
+          retention-days: 14

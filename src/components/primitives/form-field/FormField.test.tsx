@@ -12,7 +12,7 @@ describe("FormField", () => {
       </FormField>,
     );
 
-    const input = screen.getByLabelText("Player name");
+    const input = screen.getByRole("textbox", { name: "Player name" });
 
     expect(input).toBeInTheDocument();
     expect(input).toHaveAccessibleDescription("Use your public player name.");
@@ -25,7 +25,10 @@ describe("FormField", () => {
       </FormField>,
     );
 
-    expect(screen.getByLabelText("Player name")).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("textbox", { name: "Player name" })).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
 
     expect(screen.getByRole("alert")).toHaveTextContent("Player name is required.");
   });
