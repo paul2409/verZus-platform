@@ -1,0 +1,256 @@
+/* VERZUS M3 STEP 3.5 */
+
+.fallback {
+  --widget-accent: var(--vz-widget-boundary-error);
+
+  position: relative;
+  display: grid;
+  min-height: var(--vz-widget-boundary-min-height);
+  align-content: center;
+  gap: var(--vz-widget-boundary-gap);
+  overflow: hidden;
+  padding: var(--vz-widget-boundary-padding);
+  border: 1px solid color-mix(in srgb, var(--widget-accent) 44%, transparent);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--widget-accent) 7%, transparent),
+      transparent 48%
+    ),
+    var(--vz-widget-boundary-surface);
+  box-shadow: var(--vz-widget-boundary-shadow);
+  clip-path: polygon(
+    var(--vz-widget-boundary-cut) 0,
+    100% 0,
+    100% calc(100% - var(--vz-widget-boundary-cut)),
+    calc(100% - var(--vz-widget-boundary-cut)) 100%,
+    0 100%,
+    0 var(--vz-widget-boundary-cut)
+  );
+}
+
+.fallback::before {
+  position: absolute;
+  inset: 0;
+  border-top: 1px solid color-mix(in srgb, var(--widget-accent) 72%, transparent);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--widget-accent) 11%, transparent),
+    transparent 34%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.fallback[data-variant="loading"] {
+  --widget-accent: var(--vz-widget-boundary-info);
+}
+
+.fallback[data-variant="offline"],
+.fallback[data-variant="maintenance"],
+.fallback[data-variant="partial"] {
+  --widget-accent: var(--vz-widget-boundary-warning);
+}
+
+.fallback[data-variant="empty"],
+.fallback[data-variant="unavailable"] {
+  --widget-accent: var(--vz-widget-boundary-muted);
+}
+
+.compact {
+  min-height: 7.5rem;
+  padding: 1rem;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.marker {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--widget-accent) 62%, transparent);
+  background: color-mix(in srgb, var(--widget-accent) 10%, transparent);
+  color: var(--widget-accent);
+  font: 800 0.67rem/1 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.06em;
+  clip-path: polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%);
+}
+
+.headingGroup {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.eyebrow,
+.title,
+.description,
+.reference {
+  margin: 0;
+}
+
+.eyebrow {
+  color: var(--widget-accent);
+  font: 800 0.68rem/1.2 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  overflow-wrap: anywhere;
+  color: var(--vz-color-text, #f4f7f5);
+  font: 800 clamp(1rem, 3vw, 1.25rem) / 1.15 var(--vz-font-display, sans-serif);
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.description {
+  position: relative;
+  max-width: 58ch;
+  color: var(--vz-widget-boundary-muted);
+  font: 400 0.9rem/1.55 var(--vz-font-interface, sans-serif);
+}
+
+.reference {
+  color: var(--vz-widget-boundary-muted);
+  font: 700 0.68rem/1.4 var(--vz-font-numeric, monospace);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.15rem;
+}
+
+.action,
+.secondaryAction {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--widget-accent) 54%, transparent);
+  color: var(--vz-color-text, #f4f7f5);
+  font: 800 0.75rem/1 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(
+    0.5rem 0,
+    100% 0,
+    100% calc(100% - 0.5rem),
+    calc(100% - 0.5rem) 100%,
+    0 100%,
+    0 0.5rem
+  );
+}
+
+.action {
+  background: var(--widget-accent);
+  color: #031008;
+}
+
+.secondaryAction {
+  background: rgb(255 255 255 / 3%);
+}
+
+.action:hover,
+.secondaryAction:hover {
+  filter: brightness(1.12);
+}
+
+.action:focus-visible,
+.secondaryAction:focus-visible {
+  outline: 2px solid var(--vz-widget-boundary-info);
+  outline-offset: 3px;
+}
+
+.skeleton {
+  position: relative;
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.25rem;
+}
+
+.skeletonLine {
+  height: var(--vz-widget-skeleton-height);
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 7%);
+}
+
+.skeletonLine::after {
+  display: block;
+  width: 38%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--widget-accent) 30%, transparent),
+    transparent
+  );
+  content: "";
+  animation: widget-boundary-scan 1.25s linear infinite;
+}
+
+.skeletonLine:nth-child(2) {
+  width: 82%;
+}
+
+.skeletonLine:nth-child(3) {
+  width: 57%;
+}
+
+@keyframes widget-boundary-scan {
+  from {
+    transform: translateX(-120%);
+  }
+
+  to {
+    transform: translateX(285%);
+  }
+}
+
+@media (width <= 430px) {
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .action,
+  .secondaryAction {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeletonLine::after {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .fallback,
+  .marker,
+  .action,
+  .secondaryAction {
+    border: 1px solid CanvasText;
+  }
+
+  .action {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

@@ -1841,3 +1841,150 @@
 }
 
 /* M2 STEP 19 END */
+
+/* M3 STEP 3.1 START */
+/* ==================================================================
+   APPLICATION SHELL AND NAVIGATION
+   ================================================================== */
+
+:root {
+  --vz-shell-topbar-height: 4.5rem;
+  --vz-shell-sidebar-width: 16rem;
+  --vz-shell-content-max: 96rem;
+  --vz-shell-mobile-gutter: 1rem;
+  --vz-shell-tablet-gutter: 1.5rem;
+  --vz-shell-desktop-gutter: 2rem;
+  --vz-shell-bottom-clearance: calc(var(--vz-bottom-nav-height, 4.75rem) + 1.25rem);
+  --vz-shell-background:
+    radial-gradient(circle at 72% 16%, rgb(0 255 135 / 7%), transparent 32rem),
+    radial-gradient(circle at 16% 82%, rgb(138 79 255 / 6%), transparent 28rem),
+    linear-gradient(180deg, #030607 0%, #060a0d 54%, #020405 100%);
+  --vz-shell-surface: linear-gradient(180deg, rgb(12 18 21 / 98%), rgb(4 7 9 / 100%));
+  --vz-shell-surface-raised: linear-gradient(180deg, rgb(18 26 30 / 98%), rgb(6 10 12 / 100%));
+  --vz-shell-border: rgb(174 184 191 / 22%);
+  --vz-shell-border-active: rgb(0 255 135 / 52%);
+  --vz-shell-text: #f4f7f8;
+  --vz-shell-muted: #8d9aa2;
+  --vz-shell-active: #00ff87;
+  --vz-shell-partial: #ffc247;
+  --vz-shell-danger: #ff4e55;
+  --vz-shell-information: #00e5ff;
+  --vz-shell-shadow: 0 1.5rem 4rem rgb(0 0 0 / 45%), inset 0 1px 0 rgb(255 255 255 / 4%);
+  --vz-shell-transition:
+    color 140ms ease, background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease,
+    opacity 140ms ease, transform 140ms ease;
+}
+
+/* M3 STEP 3.1 END */
+
+/* M3 STEP 3.2 START */
+/* ==================================================================
+   APPLICATION-SHELL NAVIGATION STATES
+   ================================================================== */
+
+:root {
+  --vz-shell-nav-loading: #00e5ff;
+  --vz-shell-nav-error: #ff4e55;
+  --vz-shell-nav-partial: #ffc247;
+  --vz-shell-nav-feature: #a46fff;
+  --vz-shell-nav-disabled-opacity: 0.42;
+  --vz-shell-nav-state-ring: 0 0 0 1px currentColor;
+  --vz-shell-nav-loading-duration: 850ms;
+}
+
+/* M3 STEP 3.2 END */
+
+/* M3 STEP 3.3 START */
+/* ==================================================================
+   PRODUCTION ROUTE INTEGRATION
+   ================================================================== */
+
+:root {
+  --vz-shell-route-gap: clamp(0.875rem, 2vw, 1.25rem);
+  --vz-shell-route-panel-min: 13rem;
+  --vz-shell-route-panel-border: rgb(174 184 191 / 18%);
+  --vz-shell-route-panel-surface: linear-gradient(180deg, rgb(14 21 24 / 94%), rgb(5 9 11 / 98%));
+  --vz-shell-route-placeholder-grid:
+    linear-gradient(rgb(255 255 255 / 2%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 2%) 1px, transparent 1px);
+}
+
+/* M3 STEP 3.3 END */
+
+/* M3 STEP 3.4 START */
+:root {
+  --vz-route-boundary-min-height: 26rem;
+  --vz-route-boundary-max-width: 52rem;
+  --vz-route-boundary-padding: clamp(1.25rem, 4vw, 3rem);
+  --vz-route-boundary-gap: 1rem;
+  --vz-route-boundary-cut: 1rem;
+  --vz-route-boundary-border: color-mix(in srgb, var(--vz-color-primary, #00ff87) 36%, transparent);
+  --vz-route-boundary-surface: color-mix(
+    in srgb,
+    var(--vz-color-surface, #0b1010) 92%,
+    transparent
+  );
+  --vz-route-boundary-grid: color-mix(in srgb, var(--vz-color-primary, #00ff87) 5%, transparent);
+  --vz-route-boundary-error: var(--vz-color-danger, #ff3b4f);
+  --vz-route-boundary-warning: var(--vz-color-warning, #f5c451);
+  --vz-route-boundary-info: var(--vz-color-information, #00d8ff);
+  --vz-route-boundary-muted: var(--vz-color-text-muted, #8f9a96);
+  --vz-route-boundary-shadow: 0 1.5rem 4rem rgb(0 0 0 / 38%);
+}
+/* M3 STEP 3.4 END */
+
+/* M3 STEP 3.5 START */
+:root {
+  --vz-widget-boundary-min-height: 10rem;
+  --vz-widget-boundary-padding: clamp(1rem, 3vw, 1.5rem);
+  --vz-widget-boundary-gap: 0.75rem;
+  --vz-widget-boundary-cut: 0.75rem;
+  --vz-widget-boundary-border: color-mix(
+    in srgb,
+    var(--vz-color-primary, #00ff87) 24%,
+    transparent
+  );
+  --vz-widget-boundary-surface: color-mix(
+    in srgb,
+    var(--vz-color-surface, #0b1010) 94%,
+    transparent
+  );
+  --vz-widget-boundary-error: var(--vz-color-danger, #ff3b4f);
+  --vz-widget-boundary-warning: var(--vz-color-warning, #f5c451);
+  --vz-widget-boundary-info: var(--vz-color-information, #00d8ff);
+  --vz-widget-boundary-muted: var(--vz-color-text-muted, #8f9a96);
+  --vz-widget-boundary-shadow: 0 1rem 2.5rem rgb(0 0 0 / 28%);
+  --vz-widget-skeleton-height: 0.7rem;
+}
+/* M3 STEP 3.5 END */
+
+/* M3 STEP 3.6 START */
+:root {
+  --vz-shell-overlay-width-sm: min(23rem, calc(100vw - 1rem));
+  --vz-shell-overlay-width-md: min(38rem, calc(100vw - 1rem));
+  --vz-shell-overlay-gap: 0.75rem;
+  --vz-shell-overlay-padding: clamp(1rem, 3vw, 1.5rem);
+  --vz-shell-overlay-cut: 0.75rem;
+  --vz-shell-overlay-border: color-mix(in srgb, var(--vz-color-primary, #00ff87) 30%, transparent);
+  --vz-shell-overlay-surface: color-mix(in srgb, var(--vz-color-surface, #0b1010) 96%, transparent);
+  --vz-shell-overlay-muted: var(--vz-color-text-muted, #8f9a96);
+  --vz-shell-overlay-info: var(--vz-color-information, #00d8ff);
+  --vz-shell-overlay-warning: var(--vz-color-warning, #f5c451);
+  --vz-shell-overlay-danger: var(--vz-color-danger, #ff3b4f);
+  --vz-shell-overlay-shadow: 0 1.5rem 4rem rgb(0 0 0 / 42%);
+  --vz-shell-loading-notice-top: calc(var(--vz-shell-topbar-height, 4rem) + 0.75rem);
+}
+/* M3 STEP 3.6 END */
+
+/* M3 STEP 3.7 START */
+:root {
+  --vz-shell-audit-surface: color-mix(in srgb, var(--vz-color-surface, #0b1010) 95%, transparent);
+  --vz-shell-audit-border: color-mix(in srgb, var(--vz-color-primary, #00ff87) 30%, transparent);
+  --vz-shell-audit-info: var(--vz-color-information, #00d8ff);
+  --vz-shell-audit-warning: var(--vz-color-warning, #f5c451);
+  --vz-shell-audit-danger: var(--vz-color-danger, #ff3b4f);
+  --vz-shell-audit-muted: var(--vz-color-text-muted, #8f9a96);
+  --vz-shell-audit-control-height: 2.75rem;
+  --vz-shell-audit-gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+/* M3 STEP 3.7 END */

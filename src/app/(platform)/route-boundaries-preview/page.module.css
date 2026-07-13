@@ -1,0 +1,39 @@
+/* VERZUS M3 STEP 3.4 */
+
+.page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.intro {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.intro h1,
+.intro p {
+  margin: 0;
+}
+
+.intro h1 {
+  color: var(--vz-color-text, #f4f7f5);
+  font: 800 clamp(1.8rem, 5vw, 3rem) / 1 var(--vz-font-display, sans-serif);
+  text-transform: uppercase;
+}
+
+.intro p {
+  max-width: 70ch;
+  color: var(--vz-color-text-muted, #8f9a96);
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (width >= 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

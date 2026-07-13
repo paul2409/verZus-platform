@@ -32,7 +32,13 @@
     "build-storybook": "storybook build --output-dir storybook-static",
     "visual:test": "playwright test --config=playwright.visual.config.ts",
     "visual:update": "playwright test --config=playwright.visual.config.ts --update-snapshots",
-    "verify:m2": "npm run verify && npm run build-storybook && npm run visual:test"
+    "verify:m2": "npm run verify && npm run build-storybook && npm run visual:test",
+    "test:m3:shell-audit": "playwright test --config=playwright.m3-shell.config.ts",
+    "verify:m3:shell-audit": "npm run typecheck && npm run test -- src/components/layout/app-shell/ShellFailureIsolation.test.tsx src/app/m3-shell-audit/page.test.tsx && npm run build && npm run test:m3:shell-audit",
+    "test:m3:navigation": "playwright test --config=playwright.m3-final.config.ts",
+    "visual:m3:test": "playwright test tests/visual/m3-shell.visual.spec.ts --config=playwright.visual.config.ts --project=mobile-390 --project=tablet-768 --project=desktop-1440",
+    "visual:m3:update": "playwright test tests/visual/m3-shell.visual.spec.ts --config=playwright.visual.config.ts --project=mobile-390 --project=tablet-768 --project=desktop-1440 --update-snapshots",
+    "verify:m3": "npm run verify && npm run build-storybook && npm run test:m3:shell-audit && npm run test:m3:navigation && npm run visual:m3:test"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [
@@ -53,6 +59,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.61.1",
     "@storybook/addon-a11y": "10.5.0",
     "@storybook/addon-docs": "10.5.0",

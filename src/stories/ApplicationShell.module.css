@@ -1,0 +1,258 @@
+/* VERZUS M3 STEP 3.8 */
+
+.visualRoot {
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--vz-color-background-deep, #050807);
+}
+
+.dashboard {
+  display: grid;
+  gap: clamp(0.85rem, 2vw, 1.25rem);
+  padding: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+.hero {
+  display: grid;
+  min-width: 0;
+  gap: 0.7rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid color-mix(in srgb, var(--vz-color-primary, #00ff87) 34%, transparent);
+  background:
+    radial-gradient(
+      circle at 92% 10%,
+      color-mix(in srgb, var(--vz-color-primary, #00ff87) 13%, transparent),
+      transparent 15rem
+    ),
+    linear-gradient(145deg, rgb(255 255 255 / 4%), transparent 42%),
+    color-mix(in srgb, var(--vz-color-surface, #0b1010) 95%, transparent);
+  clip-path: polygon(
+    0.9rem 0,
+    100% 0,
+    100% calc(100% - 0.9rem),
+    calc(100% - 0.9rem) 100%,
+    0 100%,
+    0 0.9rem
+  );
+}
+
+.eyebrow,
+.title,
+.description,
+.panel h2,
+.panel h3,
+.panel p,
+.metric span,
+.metric strong {
+  margin: 0;
+}
+
+.eyebrow {
+  color: var(--vz-color-primary, #00ff87);
+  font: 800 0.72rem/1.2 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.title {
+  max-width: 18ch;
+  color: var(--vz-color-text, #f4f7f5);
+  font: 800 clamp(1.8rem, 5vw, 3.6rem) / 0.98 var(--vz-font-display, sans-serif);
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+
+.description,
+.panel p {
+  max-width: 62ch;
+  color: var(--vz-color-text-muted, #8f9a96);
+  font: 400 0.92rem/1.55 var(--vz-font-interface, sans-serif);
+}
+
+.grid {
+  display: grid;
+  min-width: 0;
+  gap: clamp(0.85rem, 2vw, 1.25rem);
+}
+
+.panel {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 0.75rem;
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  border: 1px solid color-mix(in srgb, var(--vz-color-information, #00d8ff) 24%, transparent);
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 3%), transparent 45%),
+    color-mix(in srgb, var(--vz-color-surface, #0b1010) 95%, transparent);
+  clip-path: polygon(
+    0.75rem 0,
+    100% 0,
+    100% calc(100% - 0.75rem),
+    calc(100% - 0.75rem) 100%,
+    0 100%,
+    0 0.75rem
+  );
+}
+
+.panel[data-accent="violet"] {
+  border-color: color-mix(in srgb, #9b6dff 38%, transparent);
+}
+
+.panel[data-accent="gold"] {
+  border-color: color-mix(in srgb, #ffd568 38%, transparent);
+}
+
+.panel h2,
+.panel h3 {
+  color: var(--vz-color-text, #f4f7f5);
+  font: 800 1.15rem/1.1 var(--vz-font-display, sans-serif);
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.matchRow {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.participant {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(255 255 255 / 3%);
+}
+
+.participant strong,
+.participant span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.participant strong {
+  color: var(--vz-color-text, #f4f7f5);
+  font-family: var(--vz-font-display, sans-serif);
+  text-transform: uppercase;
+}
+
+.participant span {
+  color: var(--vz-color-text-muted, #8f9a96);
+  font-size: 0.78rem;
+}
+
+.metricGrid {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.metric {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+  padding: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(255 255 255 / 2%);
+}
+
+.metric span {
+  color: var(--vz-color-text-muted, #8f9a96);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metric strong {
+  overflow: hidden;
+  color: var(--vz-color-text, #f4f7f5);
+  font: 800 1.2rem/1 var(--vz-font-numeric, monospace);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.activity {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activity li {
+  padding: 0.7rem;
+  border-left: 2px solid var(--vz-color-primary, #00ff87);
+  background: rgb(255 255 255 / 2%);
+  color: var(--vz-color-text-muted, #8f9a96);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.action {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--vz-color-primary, #00ff87) 68%, transparent);
+  background: var(--vz-color-primary, #00ff87);
+  color: #031008;
+  font: 800 0.75rem/1 var(--vz-font-interface, sans-serif);
+  letter-spacing: 0.07em;
+  text-decoration: none;
+  text-transform: uppercase;
+  clip-path: polygon(
+    0.5rem 0,
+    100% 0,
+    100% calc(100% - 0.5rem),
+    calc(100% - 0.5rem) 100%,
+    0 100%,
+    0 0.5rem
+  );
+}
+
+@media (width >= 768px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (width >= 1200px) {
+  .grid {
+    grid-template-columns: 1.35fr 1fr 1fr;
+  }
+
+  .hero {
+    grid-column: 1 / -1;
+  }
+
+  .matchPanel {
+    grid-row: span 2;
+  }
+}
+
+@media (width <= 430px) {
+  .metricGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .actionRow,
+  .action {
+    width: 100%;
+  }
+}

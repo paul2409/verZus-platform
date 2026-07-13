@@ -52,3 +52,9 @@ Thumbs.db
 
 # Storybook build output
 /storybook-static/
+
+
+# VERZUS M3 STEP 3.8 START
+artifacts/m3-final-results/
+artifacts/m3-final-report/
+# VERZUS M3 STEP 3.8 END

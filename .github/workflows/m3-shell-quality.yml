@@ -1,0 +1,46 @@
+# VERZUS M3 STEP 3.8
+name: M3 shell quality
+
+on:
+  pull_request:
+    paths:
+      - "src/components/layout/**"
+      - "src/app/(platform)/**"
+      - "src/app/m3-shell-audit/**"
+      - "src/stories/ApplicationShell.*"
+      - "tests/e2e/m3-shell-navigation.spec.ts"
+      - "tests/e2e/m3-shell-audit.spec.ts"
+      - "tests/visual/m3-shell.visual.spec.ts"
+      - "playwright.m3-*.config.ts"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+jobs:
+  verify-m3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run visual:m3:update
+      - run: npm run verify:m3
+
+      - name: Upload M3 reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-shell-reports
+          path: |
+            artifacts/
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore

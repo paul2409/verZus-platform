@@ -1,0 +1,177 @@
+.breadcrumbList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  gap: 0.35rem;
+  list-style: none;
+}
+
+.breadcrumbList a {
+  color: var(--vz-shell-active);
+  text-decoration: none;
+}
+
+.breadcrumbList a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.breadcrumbList a:focus-visible,
+.routeIndex a:focus-visible {
+  outline: 2px solid var(--vz-shell-information);
+  outline-offset: 3px;
+}
+
+.breadcrumbSeparator {
+  margin-right: 0.35rem;
+  color: var(--vz-shell-muted);
+}
+
+.primaryPanel,
+.routeIndex {
+  position: relative;
+  min-width: 0;
+  min-height: var(--vz-shell-route-panel-min);
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  overflow: hidden;
+  border: 1px solid var(--vz-shell-route-panel-border);
+  background: var(--vz-shell-route-panel-surface);
+  box-shadow: var(--vz-shell-shadow);
+  clip-path: polygon(0 0, calc(100% - 0.9rem) 0, 100% 0.9rem, 100% 100%, 0 100%);
+}
+
+.primaryPanel::before,
+.routeIndex::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  opacity: 0.35;
+  background-image: var(--vz-shell-route-placeholder-grid);
+  background-size: 1.5rem 1.5rem;
+  mask-image: linear-gradient(135deg, black, transparent 72%);
+}
+
+.primaryPanel {
+  border-color: rgb(0 255 135 / 32%);
+}
+
+.panelEyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--vz-shell-active);
+  font-family: var(--vz-font-display, Rajdhani, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.primaryPanel h2,
+.routeIndex h2 {
+  margin: 0;
+  color: var(--vz-shell-text);
+  font-family: var(--vz-font-display, Rajdhani, sans-serif);
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.primaryPanel > p:not(.panelEyebrow) {
+  max-width: 45rem;
+  color: var(--vz-shell-muted);
+}
+
+.routeFacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 1.25rem 0 0;
+  gap: 0.75rem;
+}
+
+.routeFacts div {
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--vz-shell-route-panel-border);
+  background: rgb(0 0 0 / 20%);
+}
+
+.routeFacts dt {
+  color: var(--vz-shell-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.routeFacts dd {
+  margin: 0.3rem 0 0;
+  overflow-wrap: anywhere;
+  color: var(--vz-shell-text);
+  font-weight: 700;
+}
+
+.routeIndex ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+  margin: 1rem 0 0;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.routeIndex a {
+  display: flex;
+  min-height: 3.25rem;
+  padding: 0.65rem 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--vz-shell-text);
+  border: 1px solid var(--vz-shell-route-panel-border);
+  text-decoration: none;
+  background: rgb(255 255 255 / 2%);
+  transition: var(--vz-shell-transition);
+}
+
+.routeIndex a:hover,
+.routeIndex a[aria-current="page"] {
+  color: var(--vz-shell-active);
+  border-color: var(--vz-shell-border-active);
+  background: rgb(0 255 135 / 7%);
+}
+
+.routeIndex small {
+  color: var(--vz-shell-muted);
+  font-size: 0.65rem;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+@media (max-width: 47.99rem) {
+  .routeFacts,
+  .routeIndex ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .routeIndex a {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .primaryPanel,
+  .routeIndex,
+  .routeFacts div,
+  .routeIndex a {
+    border: 1px solid CanvasText;
+    clip-path: none;
+  }
+
+  .routeIndex a[aria-current="page"] {
+    outline: 2px solid Highlight;
+  }
+}

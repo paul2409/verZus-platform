@@ -1,79 +1,82 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONFIG="playwright.visual.config.ts"
-STEP19="./script.sh"
+INSTALLER="./script.sh"
+TEST_FILE="tests/e2e/m3-shell-navigation.spec.ts"
 
-echo "VERZUS - bypass Playwright workers typing and continue Step 19"
+echo "VERZUS M3 Step 3.8 - Mobile active-route assertion repair"
 echo "No branch will be created or changed."
 
-if [[ ! -f "$CONFIG" ]]; then
-  echo "Error: $CONFIG was not found."
-  echo "Run this script from the repository root."
-  exit 1
-fi
+for file in "$INSTALLER" "$TEST_FILE"; do
+  if [[ ! -f "$file" ]]; then
+    echo "Error: required file not found: $file"
+    echo "Run this script from the repository root beside script.sh."
+    exit 1
+  fi
+done
 
 node <<'NODE'
 const fs = require("node:fs");
 
-const file = "playwright.visual.config.ts";
-let source = fs.readFileSync(file, "utf8");
+const testFile = "tests/e2e/m3-shell-navigation.spec.ts";
+const installerFile = "./script.sh";
 
-const patterns = [
-  {
-    regex: /^([ \t]*)workers\s*:\s*process\.env\.CI\s*\?\s*1\s*:\s*undefined\s*,?\s*$/m,
-    replacement: (_, indent) => `${indent}...(process.env.CI ? { workers: 1 } : {}),`,
-  },
-  {
-    regex: /^([ \t]*)workers\s*:\s*process\.env\.CI\s*\?\s*2\s*:\s*undefined\s*,?\s*$/m,
-    replacement: (_, indent) => `${indent}...(process.env.CI ? { workers: 2 } : {}),`,
-  },
-  {
-    regex: /^([ \t]*)workers\s*:\s*[^,\n]*\bundefined\b[^,\n]*,?\s*$/m,
-    replacement: (_, indent) => `${indent}// workers omitted locally; Playwright uses its default`,
-  },
-];
+const oldAssertion = `    await expect(page).toHaveURL(/\\/compete$/);
+    await expect(page.locator('[aria-current="page"]').first()).toBeVisible();`;
 
-let changed = false;
+const newAssertion = `    await expect(page).toHaveURL(/\\/compete$/);
 
-for (const { regex, replacement } of patterns) {
-  if (regex.test(source)) {
-    source = source.replace(regex, replacement);
-    changed = true;
-    break;
+    const mobileNavigation = page.getByRole("navigation", {
+      name: "Primary mobile navigation",
+    });
+    const activeMobileDestination = mobileNavigation.locator(
+      '[aria-current="page"]',
+    );
+
+    await expect(activeMobileDestination).toBeVisible();
+    await expect(activeMobileDestination).toHaveAttribute("href", "/compete");`;
+
+function patch(file) {
+  let source = fs.readFileSync(file, "utf8");
+
+  if (source.includes(newAssertion)) {
+    console.log(`${file}: already repaired.`);
+    return;
   }
-}
 
-if (!changed) {
-  if (/workers\s*:/.test(source)) {
+  if (!source.includes(oldAssertion)) {
     console.error(
-      "A workers property exists, but its format was not recognized. Open playwright.visual.config.ts and remove the workers line manually.",
+      `${file}: could not find the original mobile active-route assertion.`,
     );
     process.exit(1);
   }
 
-  console.log("No workers property needed repair.");
-  process.exit(0);
+  source = source.replace(oldAssertion, newAssertion);
+  fs.writeFileSync(file, source, "utf8");
+  console.log(`${file}: repaired.`);
 }
 
-fs.writeFileSync(file, source, "utf8");
-console.log("Playwright workers typing bypass applied.");
+patch(testFile);
+patch(installerFile);
 NODE
 
-npx prettier "$CONFIG" --write
+echo
+echo "Formatting the repaired E2E test..."
+npx prettier "$TEST_FILE" --write
 
 echo
-echo "Re-running TypeScript..."
-npm run typecheck
-
-if [[ ! -f "$STEP19" ]]; then
-  echo
-  echo "TypeScript passed, but ./script.sh was not found."
-  echo "Run the Step 19 script manually."
-  exit 0
-fi
+echo "Checking installer shell syntax..."
+bash -n "$INSTALLER"
 
 echo
-echo "Restarting Step 19..."
-chmod +x "$STEP19"
-bash "$STEP19"
+echo "Running the previously failing navigation suite..."
+npm run test:m3:navigation
+
+echo
+echo "Navigation suite passed."
+echo "Running the complete M3 verification gate..."
+npm run verify:m3
+
+echo
+echo "M3 Step 3.8 verification completed successfully."
+echo "Approval centre: http://localhost:3000/m3-preview"
