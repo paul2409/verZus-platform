@@ -1,167 +1,268 @@
 {
   "marker": "VERZUS M4 VISUAL REVIEW DASHBOARD",
-  "generatedAt": "2026-07-13T21:57:57.967Z",
-  "baseUrl": "http://127.0.0.1:3104",
+  "generatedAt": "2026-07-13T22:33:40.328Z",
+  "dashboardUrl": "http://localhost:3105",
+  "appBaseUrl": "http://localhost:3104",
   "screens": [
     {
       "group": "Authentication",
       "name": "Login",
       "route": "/login",
-      "file": "src/app/login/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(auth)/login/page.tsx",
+      "status": 200,
       "location": null
     },
     {
       "group": "Authentication",
       "name": "Register",
       "route": "/register",
-      "file": "src/app/register/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(auth)/register/page.tsx",
+      "status": 200,
       "location": null
     },
     {
       "group": "Authentication",
       "name": "Email verification",
       "route": "/verify-email",
-      "file": "src/app/verify-email/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(auth)/verify-email/page.tsx",
+      "status": 200,
       "location": null
     },
     {
       "group": "Authentication",
       "name": "Forgot password",
       "route": "/forgot-password",
-      "file": "src/app/forgot-password/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(auth)/forgot-password/page.tsx",
+      "status": 200,
       "location": null
     },
     {
       "group": "Authentication",
       "name": "Reset password",
       "route": "/reset-password",
-      "file": "src/app/reset-password/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(auth)/reset-password/page.tsx",
+      "status": null,
       "location": null
     },
     {
       "group": "Authentication",
       "name": "Session expired",
       "route": "/session-expired",
-      "file": "src/app/session-expired/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(auth)/session-expired/page.tsx",
+      "status": 200,
       "location": null
     },
     {
       "group": "Account restrictions",
       "name": "Suspended account",
       "route": "/account/suspended",
-      "file": "src/app/account/suspended/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(auth)/account/suspended/page.tsx",
+      "status": 200,
       "location": null
     },
     {
       "group": "Account restrictions",
       "name": "Banned account",
       "route": "/account/banned",
-      "file": "src/app/account/banned/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(auth)/account/banned/page.tsx",
+      "status": 200,
       "location": null
     },
     {
       "group": "Onboarding",
       "name": "Onboarding welcome",
       "route": "/onboarding",
-      "file": "src/app/onboarding/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": null,
+      "status": null,
       "location": null
     },
     {
       "group": "Onboarding",
       "name": "Choose games",
       "route": "/onboarding/games",
-      "file": "src/app/onboarding/games/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": null,
+      "status": null,
       "location": null
     },
     {
       "group": "Onboarding",
       "name": "Select location",
       "route": "/onboarding/location",
-      "file": "src/app/onboarding/location/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": null,
+      "status": null,
       "location": null
     },
     {
       "group": "Onboarding",
       "name": "Create player identity",
       "route": "/onboarding/identity",
-      "file": "src/app/onboarding/identity/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": null,
+      "status": null,
       "location": null
     },
     {
       "group": "Onboarding",
       "name": "Set availability",
       "route": "/onboarding/availability",
-      "file": "src/app/onboarding/availability/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": null,
+      "status": null,
       "location": null
     },
     {
       "group": "Onboarding",
       "name": "Join or skip Crew",
       "route": "/onboarding/crew",
-      "file": "src/app/onboarding/crew/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": null,
+      "status": null,
       "location": null
     },
     {
       "group": "Onboarding",
       "name": "Onboarding complete",
       "route": "/onboarding/complete",
-      "file": "src/app/onboarding/complete/page.tsx",
       "required": true,
-      "exists": false,
-      "httpStatus": null,
+      "file": null,
+      "status": null,
       "location": null
     },
     {
       "group": "Flow destination",
       "name": "Play",
       "route": "/play",
-      "file": "src/app/play/page.tsx",
       "required": false,
-      "exists": false,
-      "httpStatus": null,
+      "file": "src/app/(platform)/play/page.tsx",
+      "status": 200,
       "location": null
     }
-  ]
+  ],
+  "apiRoutes": [
+    {
+      "route": "/api/auth/forgot-password",
+      "file": "src/app/api/auth/forgot-password/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/auth/login",
+      "file": "src/app/api/auth/login/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/auth/logout",
+      "file": "src/app/api/auth/logout/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/auth/register",
+      "file": "src/app/api/auth/register/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/auth/resend-verification",
+      "file": "src/app/api/auth/resend-verification/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/auth/reset-password",
+      "file": "src/app/api/auth/reset-password/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/auth/session/refresh",
+      "file": "src/app/api/auth/session/refresh/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/auth/verify-email",
+      "file": "src/app/api/auth/verify-email/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/me",
+      "file": "src/app/api/me/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "route": "/api/onboarding/complete",
+      "file": "src/app/api/onboarding/complete/route.ts",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "route": "/api/onboarding/options/availability",
+      "file": "src/app/api/onboarding/options/availability/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "route": "/api/onboarding/options/crews",
+      "file": "src/app/api/onboarding/options/crews/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "route": "/api/onboarding/options/games",
+      "file": "src/app/api/onboarding/options/games/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "route": "/api/onboarding/options/identity",
+      "file": "src/app/api/onboarding/options/identity/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "route": "/api/onboarding/options/locations",
+      "file": "src/app/api/onboarding/options/locations/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "route": "/api/onboarding/progress",
+      "file": "src/app/api/onboarding/progress/route.ts",
+      "methods": [
+        "GET",
+        "PUT"
+      ]
+    }
+  ],
+  "duplicatePages": []
 }

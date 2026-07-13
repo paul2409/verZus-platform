@@ -44,7 +44,8 @@
     "m4:verify": "node scripts/verify-m4.mjs",
     "test:e2e:m4": "playwright test tests/e2e/m4",
     "test:visual:m4": "playwright test tests/visual/m4",
-    "m4:visual-review": "node scripts/m4-visual-review.mjs"
+    "m4:visual-review": "node scripts/m4-visual-review.mjs",
+    "m4:routes": "node scripts/m4-visual-review.mjs --scan-only"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [

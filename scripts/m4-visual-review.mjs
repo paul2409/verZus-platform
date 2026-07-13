@@ -1,137 +1,230 @@
 // VERZUS M4 VISUAL REVIEW DASHBOARD
 
-import { spawn, spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
+import net from "node:net";
 import path from "node:path";
 import process from "node:process";
-import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
-const host = process.env.M4_REVIEW_HOST ?? "127.0.0.1";
-const port = Number(process.env.M4_REVIEW_PORT ?? "3104");
-const baseUrl = `http://${host}:${port}`;
-const reportDir = path.join(root, "reports", "m4-visual-review");
-const reportFile = path.join(reportDir, "index.html");
-const manifestFile = path.join(reportDir, "manifest.json");
+const appDirectory = path.join(root, "src", "app");
+const reportDirectory = path.join(root, "reports", "m4-visual-review");
+const manifestFile = path.join(reportDirectory, "manifest.json");
+const scanOnly = process.argv.includes("--scan-only");
 
-const screens = [
+const preferredAppPort = Number(process.env.M4_APP_PORT ?? "3104");
+const preferredDashboardPort = Number(process.env.M4_DASHBOARD_PORT ?? "3105");
+const bindHost = "127.0.0.1";
+
+const requiredScreens = [
   {
     group: "Authentication",
     name: "Login",
     route: "/login",
-    file: "src/app/login/page.tsx",
     required: true,
   },
   {
     group: "Authentication",
     name: "Register",
     route: "/register",
-    file: "src/app/register/page.tsx",
     required: true,
   },
   {
     group: "Authentication",
     name: "Email verification",
     route: "/verify-email",
-    file: "src/app/verify-email/page.tsx",
     required: true,
   },
   {
     group: "Authentication",
     name: "Forgot password",
     route: "/forgot-password",
-    file: "src/app/forgot-password/page.tsx",
     required: true,
   },
   {
     group: "Authentication",
     name: "Reset password",
     route: "/reset-password",
-    file: "src/app/reset-password/page.tsx",
     required: true,
   },
   {
     group: "Authentication",
     name: "Session expired",
     route: "/session-expired",
-    file: "src/app/session-expired/page.tsx",
     required: true,
   },
   {
     group: "Account restrictions",
     name: "Suspended account",
     route: "/account/suspended",
-    file: "src/app/account/suspended/page.tsx",
     required: true,
   },
   {
     group: "Account restrictions",
     name: "Banned account",
     route: "/account/banned",
-    file: "src/app/account/banned/page.tsx",
     required: true,
   },
   {
     group: "Onboarding",
     name: "Onboarding welcome",
     route: "/onboarding",
-    file: "src/app/onboarding/page.tsx",
     required: true,
   },
   {
     group: "Onboarding",
     name: "Choose games",
     route: "/onboarding/games",
-    file: "src/app/onboarding/games/page.tsx",
     required: true,
   },
   {
     group: "Onboarding",
     name: "Select location",
     route: "/onboarding/location",
-    file: "src/app/onboarding/location/page.tsx",
     required: true,
   },
   {
     group: "Onboarding",
     name: "Create player identity",
     route: "/onboarding/identity",
-    file: "src/app/onboarding/identity/page.tsx",
     required: true,
   },
   {
     group: "Onboarding",
     name: "Set availability",
     route: "/onboarding/availability",
-    file: "src/app/onboarding/availability/page.tsx",
     required: true,
   },
   {
     group: "Onboarding",
     name: "Join or skip Crew",
     route: "/onboarding/crew",
-    file: "src/app/onboarding/crew/page.tsx",
     required: true,
   },
   {
     group: "Onboarding",
     name: "Onboarding complete",
     route: "/onboarding/complete",
-    file: "src/app/onboarding/complete/page.tsx",
     required: true,
   },
   {
     group: "Flow destination",
     name: "Play",
     route: "/play",
-    file: "src/app/play/page.tsx",
     required: false,
   },
 ];
 
-function routeFileExists(relativePath) {
-  return fs.existsSync(path.join(root, relativePath));
+const pageFilePattern = /^page\.(?:js|jsx|ts|tsx|mdx)$/;
+const routeFilePattern = /^route\.(?:js|jsx|ts|tsx)$/;
+
+function normalizePath(filePath) {
+  return filePath.split(path.sep).join("/");
+}
+
+function walk(directory) {
+  if (!fs.existsSync(directory)) {
+    return [];
+  }
+
+  const files = [];
+
+  for (const entry of fs.readdirSync(directory, {
+    withFileTypes: true,
+  })) {
+    const fullPath = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      files.push(...walk(fullPath));
+    } else {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+function isInvisibleRouteSegment(segment) {
+  return (
+    (segment.startsWith("(") && segment.endsWith(")")) ||
+    segment.startsWith("@") ||
+    segment.startsWith("_")
+  );
+}
+
+function appFileToRoute(filePath) {
+  const relative = path.relative(appDirectory, filePath);
+  const segments = relative.split(path.sep);
+  const fileName = segments.pop();
+
+  if (!fileName || (!pageFilePattern.test(fileName) && !routeFilePattern.test(fileName))) {
+    return null;
+  }
+
+  const visibleSegments = segments.filter((segment) => !isInvisibleRouteSegment(segment));
+
+  return visibleSegments.length === 0 ? "/" : `/${visibleSegments.join("/")}`;
+}
+
+function discoverRoutes() {
+  const pages = new Map();
+  const apiRoutes = new Map();
+  const duplicatePages = [];
+
+  for (const filePath of walk(appDirectory)) {
+    const fileName = path.basename(filePath);
+    const route = appFileToRoute(filePath);
+
+    if (!route) {
+      continue;
+    }
+
+    const relativeFile = normalizePath(path.relative(root, filePath));
+
+    if (pageFilePattern.test(fileName)) {
+      if (pages.has(route)) {
+        duplicatePages.push({
+          route,
+          files: [pages.get(route), relativeFile],
+        });
+      } else {
+        pages.set(route, relativeFile);
+      }
+    }
+
+    if (routeFilePattern.test(fileName) && route.startsWith("/api/")) {
+      const source = fs.readFileSync(filePath, "utf8");
+      const methods = new Set();
+      const methodPattern =
+        /export\s+(?:async\s+)?(?:function|const)\s+(GET|POST|PUT|PATCH|DELETE|OPTIONS|HEAD)\b/g;
+      let match;
+
+      while ((match = methodPattern.exec(source))) {
+        methods.add(match[1]);
+      }
+
+      apiRoutes.set(route, {
+        file: relativeFile,
+        methods: [...methods].sort(),
+      });
+    }
+  }
+
+  return {
+    pages,
+    apiRoutes,
+    duplicatePages,
+  };
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function sleep(milliseconds) {
@@ -144,15 +237,15 @@ function requestStatus(url) {
       url,
       {
         headers: {
-          "user-agent": "VERZUS-M4-Visual-Review/1.0",
+          "user-agent": "VERZUS-M4-Localhost-Review/2.0",
         },
       },
       (response) => {
         response.resume();
-
         resolve({
           status: response.statusCode ?? null,
-          location: response.headers.location ?? null,
+          location:
+            typeof response.headers.location === "string" ? response.headers.location : null,
         });
       },
     );
@@ -164,9 +257,8 @@ function requestStatus(url) {
       });
     });
 
-    request.setTimeout(3000, () => {
+    request.setTimeout(4000, () => {
       request.destroy();
-
       resolve({
         status: null,
         location: null,
@@ -175,11 +267,45 @@ function requestStatus(url) {
   });
 }
 
-async function waitForServer() {
-  for (let attempt = 0; attempt < 90; attempt += 1) {
-    const result = await requestStatus(baseUrl);
+function canBind(port) {
+  return new Promise((resolve) => {
+    const server = net.createServer();
 
-    if (result.status !== null) {
+    server.once("error", () => resolve(false));
+    server.once("listening", () => {
+      server.close(() => resolve(true));
+    });
+
+    server.listen(port, bindHost);
+  });
+}
+
+async function findAvailablePort(start, excluded = []) {
+  for (let port = start; port < start + 30; port += 1) {
+    if (excluded.includes(port)) {
+      continue;
+    }
+
+    if (await canBind(port)) {
+      return port;
+    }
+  }
+
+  throw new Error(`No available localhost port found from ${start}.`);
+}
+
+async function isVerzusServer(baseUrl) {
+  const login = await requestStatus(`${baseUrl}/login`);
+  return login.status !== null && login.status !== 404;
+}
+
+async function waitForVerzusServer(baseUrl, childState) {
+  for (let attempt = 0; attempt < 120; attempt += 1) {
+    if (childState.exited) {
+      return false;
+    }
+
+    if (await isVerzusServer(baseUrl)) {
       return true;
     }
 
@@ -189,108 +315,112 @@ async function waitForServer() {
   return false;
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function openBrowser(url) {
+  try {
+    let opener;
+
+    if (process.platform === "win32") {
+      opener = spawn(process.env.ComSpec ?? "cmd.exe", ["/d", "/s", "/c", "start", "", url], {
+        detached: true,
+        stdio: "ignore",
+        windowsHide: true,
+      });
+    } else if (process.platform === "darwin") {
+      opener = spawn("open", [url], {
+        detached: true,
+        stdio: "ignore",
+      });
+    } else {
+      opener = spawn("xdg-open", [url], {
+        detached: true,
+        stdio: "ignore",
+      });
+    }
+
+    opener.unref();
+  } catch {
+    console.log(`Open this URL manually: ${url}`);
+  }
 }
 
-function openReport(filePath) {
-  const fileUrl = pathToFileURL(filePath).href;
-
-  if (process.platform === "win32") {
-    spawnSync("cmd.exe", ["/c", "start", "", fileUrl], {
-      stdio: "ignore",
-      windowsHide: true,
-    });
-    return;
-  }
-
-  if (process.platform === "darwin") {
-    spawnSync("open", [fileUrl], {
-      stdio: "ignore",
-    });
-    return;
-  }
-
-  spawnSync("xdg-open", [fileUrl], {
-    stdio: "ignore",
-  });
-}
-
-function statusLabel(item) {
-  if (!item.exists) {
+function statusDescriptor(screen) {
+  if (!screen.file) {
     return {
       tone: "missing",
-      text: "Route file missing",
+      label: "Screen route not built",
     };
   }
 
-  if (item.httpStatus === null) {
+  if (screen.status === null) {
     return {
       tone: "warning",
-      text: "Server response unavailable",
+      label: "No server response",
     };
   }
 
-  if (item.httpStatus >= 300 && item.httpStatus < 400) {
+  if (screen.status >= 300 && screen.status < 400) {
     return {
       tone: "redirect",
-      text: item.location ? `Redirects to ${item.location}` : `Redirect ${item.httpStatus}`,
+      label: screen.location ? `Redirects to ${screen.location}` : `Redirect ${screen.status}`,
     };
   }
 
-  if (item.httpStatus === 404) {
+  if (screen.status === 404) {
     return {
       tone: "missing",
-      text: "404 Not Found",
+      label: "404 Not Found",
     };
   }
 
-  if (item.httpStatus >= 200 && item.httpStatus < 300) {
+  if (screen.status >= 200 && screen.status < 300) {
     return {
       tone: "ready",
-      text: `Available (${item.httpStatus})`,
+      label: `Available (${screen.status})`,
     };
   }
 
   return {
     tone: "warning",
-    text: `HTTP ${item.httpStatus}`,
+    label: `HTTP ${screen.status}`,
   };
 }
 
-function createHtml(items) {
-  const groups = [...new Set(items.map((item) => item.group))];
+function createDashboardHtml({ screens, apiRoutes, appBaseUrl, dashboardUrl, duplicatePages }) {
+  const required = screens.filter((screen) => screen.required);
+  const found = required.filter((screen) => Boolean(screen.file));
+  const missing = required.filter((screen) => !screen.file);
+  const groups = [...new Set(screens.map((screen) => screen.group))];
 
-  const totalRequired = items.filter((item) => item.required).length;
-  const existingRequired = items.filter((item) => item.required && item.exists).length;
-  const missingRequired = totalRequired - existingRequired;
+  const quickLinks = found
+    .map(
+      (screen) => `
+        <a class="quick-link" href="${escapeHtml(
+          `${appBaseUrl}${screen.route}`,
+        )}" target="_blank" rel="noreferrer">
+          <span>${escapeHtml(screen.name)}</span>
+          <code>${escapeHtml(screen.route)}</code>
+        </a>
+      `,
+    )
+    .join("");
 
   const groupMarkup = groups
     .map((group) => {
-      const cards = items
-        .filter((item) => item.group === group)
-        .map((item, index) => {
-          const status = statusLabel(item);
-          const safeName = escapeHtml(item.name);
-          const safeRoute = escapeHtml(item.route);
-          const safeFile = escapeHtml(item.file);
+      const cards = screens
+        .filter((screen) => screen.group === group)
+        .map((screen, index) => {
+          const status = statusDescriptor(screen);
           const frameId = `frame-${group.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-")}-${index}`;
 
-          const preview = item.exists
+          const body = screen.file
             ? `
               <div class="preview-shell" data-width="390">
                 <div class="preview-stage">
                   <iframe
                     id="${frameId}"
-                    title="${safeName}"
-                    src="${escapeHtml(`${baseUrl}${item.route}`)}"
+                    title="${escapeHtml(screen.name)}"
+                    src="${escapeHtml(`${appBaseUrl}${screen.route}`)}"
                     loading="lazy"
-                    referrerpolicy="no-referrer"
                   ></iframe>
                 </div>
               </div>
@@ -298,7 +428,7 @@ function createHtml(items) {
             : `
               <div class="missing-panel">
                 <strong>Not built yet</strong>
-                <span>${safeFile}</span>
+                <span>No App Router page currently resolves to ${escapeHtml(screen.route)}.</span>
               </div>
             `;
 
@@ -307,516 +437,307 @@ function createHtml(items) {
               <header class="screen-header">
                 <div>
                   <span class="eyebrow">${escapeHtml(group)}</span>
-                  <h3>${safeName}</h3>
-                  <code>${safeRoute}</code>
+                  <h3>${escapeHtml(screen.name)}</h3>
+                  <code>${escapeHtml(screen.route)}</code>
                 </div>
-                <span class="status ${status.tone}">
-                  ${escapeHtml(status.text)}
-                </span>
+                <span class="status ${status.tone}">${escapeHtml(status.label)}</span>
               </header>
 
               <div class="toolbar">
-                <button
-                  type="button"
-                  data-target="${frameId}"
-                  data-width="360"
-                  ${item.exists ? "" : "disabled"}
-                >
-                  360
-                </button>
-                <button
-                  type="button"
-                  data-target="${frameId}"
-                  data-width="390"
-                  ${item.exists ? "" : "disabled"}
-                >
-                  390
-                </button>
-                <button
-                  type="button"
-                  data-target="${frameId}"
-                  data-width="430"
-                  ${item.exists ? "" : "disabled"}
-                >
-                  430
-                </button>
-                <button
-                  type="button"
-                  data-target="${frameId}"
-                  data-width="768"
-                  ${item.exists ? "" : "disabled"}
-                >
-                  768
-                </button>
-                <button
-                  type="button"
-                  data-target="${frameId}"
-                  data-width="1024"
-                  ${item.exists ? "" : "disabled"}
-                >
-                  1024
-                </button>
-                <button
-                  type="button"
-                  data-target="${frameId}"
-                  data-width="1440"
-                  ${item.exists ? "" : "disabled"}
-                >
-                  1440
-                </button>
-
+                ${[360, 390, 430, 768, 1024, 1440]
+                  .map(
+                    (width) => `
+                      <button
+                        type="button"
+                        data-target="${frameId}"
+                        data-width="${width}"
+                        ${screen.file ? "" : "disabled"}
+                      >
+                        ${width}
+                      </button>
+                    `,
+                  )
+                  .join("")}
                 ${
-                  item.exists
+                  screen.file
                     ? `
                       <a
-                        href="${escapeHtml(`${baseUrl}${item.route}`)}"
+                        href="${escapeHtml(`${appBaseUrl}${screen.route}`)}"
                         target="_blank"
                         rel="noreferrer"
                       >
-                        Open full screen
+                        Open route
                       </a>
                     `
                     : ""
                 }
               </div>
 
-              ${preview}
+              ${body}
 
               <footer class="screen-footer">
                 <span>Source</span>
-                <code>${safeFile}</code>
+                <code>${escapeHtml(screen.file ?? "No route file discovered")}</code>
               </footer>
             </article>
           `;
         })
-        .join("\n");
+        .join("");
 
       return `
         <section class="review-group">
           <div class="group-heading">
             <h2>${escapeHtml(group)}</h2>
-            <span>${items.filter((item) => item.group === group).length} screens</span>
+            <span>${screens.filter((screen) => screen.group === group).length} routes</span>
           </div>
           <div class="screen-grid">${cards}</div>
         </section>
       `;
     })
-    .join("\n");
+    .join("");
+
+  const apiMarkup = apiRoutes
+    .map(
+      (api) => `
+        <tr>
+          <td><code>${escapeHtml(api.route)}</code></td>
+          <td>${escapeHtml(
+            api.methods.length > 0 ? api.methods.join(", ") : "Detected route handler",
+          )}</td>
+          <td><code>${escapeHtml(api.file)}</code></td>
+        </tr>
+      `,
+    )
+    .join("");
+
+  const duplicateNotice =
+    duplicatePages.length === 0
+      ? ""
+      : `
+        <div class="notice danger">
+          Duplicate page routes were detected. Review manifest.json before relying on those entries.
+        </div>
+      `;
 
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  />
-  <title>VERZUS M4 Visual Review</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VERZUS M4 Localhost Route Review</title>
   <style>
     :root {
       color-scheme: dark;
-      font-family:
-        Inter, ui-sans-serif, system-ui, -apple-system,
-        BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #060914;
-      color: #f6f7fb;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #050815;
+      color: #f7f8fc;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       background:
-        radial-gradient(
-          circle at top right,
-          rgba(0, 245, 212, 0.1),
-          transparent 28rem
-        ),
-        #060914;
+        radial-gradient(circle at top right, rgba(0, 245, 212, 0.10), transparent 32rem),
+        #050815;
     }
-
-    .page {
-      width: min(1800px, 100%);
-      margin: 0 auto;
-      padding: 32px;
-    }
-
+    a { color: inherit; }
+    code { color: #a9bbdf; overflow-wrap: anywhere; }
+    .page { width: min(1880px, 100%); margin: 0 auto; padding: 32px; }
     .hero {
       display: grid;
       gap: 20px;
-      margin-bottom: 36px;
       padding: 28px;
-      border: 1px solid #27304b;
+      border: 1px solid #263250;
       border-radius: 22px;
-      background: rgba(12, 17, 35, 0.94);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+      background: rgba(11, 17, 36, 0.96);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.34);
     }
-
-    .hero h1,
-    .hero p {
-      margin: 0;
+    .eyebrow {
+      color: #00f5d4;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
     }
-
-    .hero h1 {
-      font-size: clamp(30px, 5vw, 58px);
-      letter-spacing: -0.045em;
-    }
-
-    .hero p {
-      max-width: 900px;
-      color: #aeb8d2;
-      line-height: 1.6;
-    }
-
-    .summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .summary-card {
-      min-width: 170px;
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 0; font-size: clamp(34px, 5vw, 62px); letter-spacing: -0.05em; }
+    .hero p { margin-bottom: 0; max-width: 980px; color: #aab6d1; line-height: 1.65; }
+    .urls { display: flex; flex-wrap: wrap; gap: 12px; }
+    .url-card, .summary-card {
       padding: 16px 18px;
-      border: 1px solid #27304b;
+      border: 1px solid #2a3554;
       border-radius: 14px;
       background: #0a1022;
     }
-
-    .summary-card strong,
-    .summary-card span {
-      display: block;
-    }
-
-    .summary-card strong {
-      font-size: 28px;
-      color: #00f5d4;
-    }
-
-    .summary-card span {
-      margin-top: 4px;
-      color: #9aa6c3;
-      font-size: 13px;
-    }
-
+    .url-card span, .summary-card span { display: block; color: #94a1bf; font-size: 12px; }
+    .url-card strong, .summary-card strong { display: block; margin-top: 5px; color: #00f5d4; }
+    .summary { display: flex; flex-wrap: wrap; gap: 12px; }
+    .summary-card strong { font-size: 28px; }
     .notice {
       padding: 14px 16px;
       border-left: 4px solid #f9c74f;
       background: rgba(249, 199, 79, 0.08);
-      color: #f5dda0;
-      line-height: 1.5;
+      color: #f4d98a;
+      line-height: 1.55;
     }
-
-    .review-group {
-      margin-top: 44px;
+    .notice.danger { border-left-color: #ff5d7a; color: #ff9cb0; }
+    .quick-section, .api-section, .review-group { margin-top: 42px; }
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
     }
-
-    .group-heading {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 16px;
+    .quick-link {
+      display: grid;
+      gap: 5px;
+      padding: 15px;
+      border: 1px solid #263250;
+      border-radius: 13px;
+      background: #0a1022;
+      text-decoration: none;
     }
-
-    .group-heading h2 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .group-heading span {
-      color: #7f8baa;
-    }
-
+    .quick-link:hover { border-color: #00f5d4; }
+    .group-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 16px; }
+    .group-heading h2 { margin-bottom: 0; }
+    .group-heading span { color: #8794b2; }
     .screen-grid {
       display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 470px), 1fr));
       gap: 22px;
     }
-
-    .screen-card {
-      min-width: 0;
-      overflow: hidden;
-      border: 1px solid #27304b;
-      border-radius: 18px;
-      background: #0a1022;
-    }
-
-    .screen-header,
-    .screen-footer {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 18px;
-    }
-
-    .screen-header {
-      border-bottom: 1px solid #202943;
-    }
-
-    .screen-header h3 {
-      margin: 4px 0 6px;
-      font-size: 20px;
-    }
-
-    code {
-      color: #9fb0d3;
-      overflow-wrap: anywhere;
-    }
-
-    .eyebrow {
-      color: #00f5d4;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .status {
-      flex: 0 0 auto;
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .status.ready {
-      background: rgba(64, 211, 137, 0.13);
-      color: #76efad;
-    }
-
-    .status.redirect {
-      background: rgba(84, 160, 255, 0.14);
-      color: #8fc0ff;
-    }
-
-    .status.warning {
-      background: rgba(249, 199, 79, 0.14);
-      color: #f9d97d;
-    }
-
-    .status.missing {
-      background: rgba(255, 82, 115, 0.14);
-      color: #ff8aa3;
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 12px 18px;
-      border-bottom: 1px solid #202943;
-      background: #080d1d;
-    }
-
-    .toolbar button,
-    .toolbar a {
+    .screen-card { min-width: 0; overflow: hidden; border: 1px solid #263250; border-radius: 18px; background: #0a1022; }
+    .screen-header, .screen-footer { display: flex; justify-content: space-between; gap: 16px; padding: 18px; }
+    .screen-header { border-bottom: 1px solid #202a45; }
+    .screen-header h3 { margin: 4px 0 6px; font-size: 20px; }
+    .status { align-self: flex-start; flex: 0 0 auto; padding: 7px 10px; border-radius: 999px; font-size: 11px; font-weight: 900; }
+    .status.ready { background: rgba(64, 211, 137, 0.14); color: #78efae; }
+    .status.redirect { background: rgba(84, 160, 255, 0.14); color: #98c6ff; }
+    .status.warning { background: rgba(249, 199, 79, 0.14); color: #f9dc86; }
+    .status.missing { background: rgba(255, 82, 115, 0.15); color: #ff91a8; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; border-bottom: 1px solid #202a45; background: #070c1b; }
+    .toolbar button, .toolbar a {
       min-height: 36px;
       padding: 8px 11px;
-      border: 1px solid #33405f;
+      border: 1px solid #354365;
       border-radius: 9px;
       background: #111a32;
-      color: #dbe5ff;
+      color: #dce6ff;
       font: inherit;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       text-decoration: none;
       cursor: pointer;
     }
-
-    .toolbar button:hover,
-    .toolbar a:hover {
-      border-color: #00f5d4;
-    }
-
-    .toolbar button:disabled {
-      cursor: not-allowed;
-      opacity: 0.38;
-    }
-
+    .toolbar button:hover, .toolbar a:hover { border-color: #00f5d4; }
+    .toolbar button:disabled { cursor: not-allowed; opacity: 0.36; }
     .preview-shell {
       height: 720px;
       overflow: auto;
       padding: 18px;
-      background:
-        linear-gradient(
-          45deg,
-          rgba(255, 255, 255, 0.02) 25%,
-          transparent 25%,
-          transparent 75%,
-          rgba(255, 255, 255, 0.02) 75%
-        ),
-        #050816;
-      background-size: 22px 22px;
+      background: #050816;
     }
-
-    .preview-stage {
-      display: flex;
-      justify-content: center;
-      min-width: max-content;
-    }
-
+    .preview-stage { display: flex; justify-content: center; min-width: max-content; }
     iframe {
       width: 390px;
       height: 844px;
-      border: 1px solid #34405d;
+      border: 1px solid #3b496c;
       border-radius: 14px;
       background: white;
       transform-origin: top center;
     }
-
-    .missing-panel {
-      display: grid;
-      place-items: center;
-      gap: 10px;
-      min-height: 360px;
-      padding: 30px;
-      background: #060a16;
-      color: #ff8aa3;
-      text-align: center;
-    }
-
-    .missing-panel span {
-      max-width: 360px;
-      color: #9aa6c3;
-      overflow-wrap: anywhere;
-    }
-
-    .screen-footer {
-      border-top: 1px solid #202943;
-      color: #7f8baa;
-      font-size: 12px;
-    }
-
-    @media (max-width: 640px) {
-      .page {
-        padding: 16px;
-      }
-
-      .hero {
-        padding: 20px;
-      }
-
-      .screen-header,
-      .screen-footer {
-        display: grid;
-      }
-
-      .status {
-        justify-self: start;
-      }
-
-      .preview-shell {
-        height: 640px;
-        padding: 10px;
-      }
+    .missing-panel { display: grid; place-items: center; gap: 10px; min-height: 360px; padding: 30px; color: #ff91a8; text-align: center; background: #050816; }
+    .missing-panel span { max-width: 390px; color: #96a4c2; }
+    .screen-footer { border-top: 1px solid #202a45; color: #7f8dab; font-size: 12px; }
+    .api-wrap { overflow-x: auto; border: 1px solid #263250; border-radius: 16px; }
+    table { width: 100%; border-collapse: collapse; background: #0a1022; }
+    th, td { padding: 14px 16px; border-bottom: 1px solid #202a45; text-align: left; vertical-align: top; }
+    th { color: #00f5d4; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    @media (max-width: 680px) {
+      .page { padding: 16px; }
+      .hero { padding: 20px; }
+      .screen-header, .screen-footer { display: grid; }
+      .preview-shell { height: 640px; padding: 10px; }
     }
   </style>
 </head>
 <body>
   <main class="page">
     <section class="hero">
-      <span class="eyebrow">VERZUS · M4</span>
-      <h1>Authentication and onboarding visual review</h1>
+      <span class="eyebrow">VERZUS M4</span>
+      <h1>Localhost route review</h1>
       <p>
-        This dashboard loads the actual local Next.js routes. It does not
-        invent missing screens. Use the viewport controls to inspect 360,
-        390, 430, 768, 1024, and 1440 pixel presentations.
+        This dashboard scans the real Next.js App Router tree. Route groups such as
+        <code>(auth)</code> and <code>(platform)</code> are removed when resolving URLs,
+        so existing authentication screens are no longer reported as missing.
       </p>
-
+      <div class="urls">
+        <div class="url-card"><span>Review dashboard</span><strong>${escapeHtml(
+          dashboardUrl,
+        )}</strong></div>
+        <div class="url-card"><span>VERZUS application</span><strong>${escapeHtml(
+          appBaseUrl,
+        )}</strong></div>
+      </div>
       <div class="summary">
-        <div class="summary-card">
-          <strong>${totalRequired}</strong>
-          <span>Required M4 screens</span>
-        </div>
-        <div class="summary-card">
-          <strong>${existingRequired}</strong>
-          <span>Route files found</span>
-        </div>
-        <div class="summary-card">
-          <strong>${missingRequired}</strong>
-          <span>Required route files missing</span>
-        </div>
+        <div class="summary-card"><strong>${required.length}</strong><span>Required M4 screens</span></div>
+        <div class="summary-card"><strong>${found.length}</strong><span>Route screens found</span></div>
+        <div class="summary-card"><strong>${missing.length}</strong><span>Route screens missing</span></div>
       </div>
-
       <div class="notice">
-        Protected onboarding routes may redirect to Login because the review
-        browser has no authenticated mock-session cookie. That redirect is
-        security behavior, not proof that the onboarding UI exists.
+        Protected routes may redirect because the browser does not have the matching mock-session cookie.
+        Use the status label and the discovered source path to distinguish a real route from a missing screen.
       </div>
+      ${duplicateNotice}
+    </section>
+
+    <section class="quick-section">
+      <div class="group-heading"><h2>Built M4 screen routes</h2><span>Open in a full browser tab</span></div>
+      <div class="quick-grid">${quickLinks}</div>
     </section>
 
     ${groupMarkup}
+
+    <section class="api-section">
+      <div class="group-heading"><h2>M4 API routes</h2><span>${apiRoutes.length} discovered handlers</span></div>
+      <div class="api-wrap">
+        <table>
+          <thead><tr><th>Route</th><th>Methods</th><th>Source</th></tr></thead>
+          <tbody>${apiMarkup}</tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
   <script>
-    const buttons = document.querySelectorAll(
-      "button[data-target][data-width]",
-    );
-
     function applyViewport(frame, requestedWidth) {
       const shell = frame.closest(".preview-shell");
       const stage = frame.closest(".preview-stage");
-      const available =
-        Math.max(280, shell.clientWidth - 36);
-      const scale =
-        Math.min(1, available / requestedWidth);
+      const available = Math.max(280, shell.clientWidth - 36);
+      const requestedHeight = requestedWidth <= 430 ? 844 : 1000;
+      const scale = Math.min(1, available / requestedWidth);
 
       frame.style.width = requestedWidth + "px";
-      frame.style.height =
-        (requestedWidth <= 430 ? 844 : 1000) + "px";
-      frame.style.transform =
-        "scale(" + scale + ")";
-
-      stage.style.height =
-        Math.ceil(
-          Number.parseInt(frame.style.height, 10) *
-            scale,
-        ) + "px";
-
+      frame.style.height = requestedHeight + "px";
+      frame.style.transform = "scale(" + scale + ")";
+      stage.style.height = Math.ceil(requestedHeight * scale) + "px";
       shell.dataset.width = String(requestedWidth);
     }
 
-    for (const button of buttons) {
+    for (const button of document.querySelectorAll("button[data-target][data-width]")) {
       button.addEventListener("click", () => {
-        const frame = document.getElementById(
-          button.dataset.target,
-        );
-
-        if (!frame) {
-          return;
-        }
-
-        applyViewport(
-          frame,
-          Number(button.dataset.width),
-        );
+        const frame = document.getElementById(button.dataset.target);
+        if (frame) applyViewport(frame, Number(button.dataset.width));
       });
     }
 
-    for (const frame of document.querySelectorAll(
-      "iframe",
-    )) {
+    for (const frame of document.querySelectorAll("iframe")) {
       applyViewport(frame, 390);
     }
 
     window.addEventListener("resize", () => {
-      for (const shell of document.querySelectorAll(
-        ".preview-shell",
-      )) {
+      for (const shell of document.querySelectorAll(".preview-shell")) {
         const frame = shell.querySelector("iframe");
-
-        if (!frame) {
-          continue;
-        }
-
-        applyViewport(
-          frame,
-          Number(shell.dataset.width || "390"),
-        );
+        if (frame) applyViewport(frame, Number(shell.dataset.width || "390"));
       }
     });
   </script>
@@ -824,117 +745,202 @@ function createHtml(items) {
 </html>`;
 }
 
-let child = null;
-let existingServer = false;
+function isM4ApiRoute(route) {
+  return (
+    route.startsWith("/api/auth/") || route === "/api/me" || route.startsWith("/api/onboarding/")
+  );
+}
 
-const initialProbe = await requestStatus(baseUrl);
+const discovery = discoverRoutes();
+const initialScreens = requiredScreens.map((screen) => ({
+  ...screen,
+  file: discovery.pages.get(screen.route) ?? null,
+}));
+const m4ApiRoutes = [...discovery.apiRoutes.entries()]
+  .filter(([route]) => isM4ApiRoute(route))
+  .map(([route, details]) => ({
+    route,
+    ...details,
+  }))
+  .sort((left, right) => left.route.localeCompare(right.route));
 
-if (initialProbe.status !== null) {
-  existingServer = true;
-  console.log(`Using existing server at ${baseUrl}.`);
+if (scanOnly) {
+  const found = initialScreens.filter((screen) => screen.required && screen.file);
+  const missing = initialScreens.filter((screen) => screen.required && !screen.file);
+
+  console.log("\nM4 screen route discovery");
+  console.log("=========================");
+
+  for (const screen of initialScreens) {
+    console.log(`${screen.file ? "FOUND  " : "MISSING"} ${screen.route} ${screen.file ?? ""}`);
+  }
+
+  console.log(`\nRequired screens: ${found.length} found, ${missing.length} missing.`);
+  console.log(`M4 API handlers: ${m4ApiRoutes.length}.`);
+
+  if (discovery.duplicatePages.length > 0) {
+    console.log("\nDuplicate page routes:");
+    for (const duplicate of discovery.duplicatePages) {
+      console.log(`- ${duplicate.route}: ${duplicate.files.join(", ")}`);
+    }
+  }
+
+  process.exit(0);
+}
+
+let appChild = null;
+let ownsAppServer = false;
+const childState = { exited: false };
+
+let appPort = preferredAppPort;
+let appBaseUrl = `http://localhost:${appPort}`;
+
+if (await isVerzusServer(appBaseUrl)) {
+  console.log(`Using existing VERZUS server: ${appBaseUrl}`);
 } else {
-  console.log(`Starting VERZUS development server at ${baseUrl}...`);
+  appPort = await findAvailablePort(preferredAppPort);
+  appBaseUrl = `http://localhost:${appPort}`;
 
   const nextCli = path.join(root, "node_modules", "next", "dist", "bin", "next");
 
   if (!fs.existsSync(nextCli)) {
-    throw new Error(`Next.js CLI was not found at ${nextCli}. Run npm install first.`);
+    throw new Error(`Next.js CLI not found at ${nextCli}. Run npm install first.`);
   }
 
-  child = spawn(process.execPath, [nextCli, "dev", "--hostname", host, "--port", String(port)], {
-    cwd: root,
-    stdio: "inherit",
-    windowsHide: false,
-    env: {
-      ...process.env,
-      BROWSER: "none",
+  console.log(`Starting VERZUS application: ${appBaseUrl}`);
+
+  appChild = spawn(
+    process.execPath,
+    [nextCli, "dev", "--hostname", bindHost, "--port", String(appPort)],
+    {
+      cwd: root,
+      stdio: "inherit",
+      windowsHide: false,
+      env: {
+        ...process.env,
+        BROWSER: "none",
+      },
     },
+  );
+
+  ownsAppServer = true;
+  appChild.once("exit", () => {
+    childState.exited = true;
   });
 
-  const ready = await waitForServer();
+  const ready = await waitForVerzusServer(appBaseUrl, childState);
 
   if (!ready) {
-    child.kill();
-    console.error(`The Next.js server did not become ready at ${baseUrl}.`);
-    process.exit(1);
+    throw new Error(`VERZUS did not become ready at ${appBaseUrl}.`);
   }
 }
 
-const reviewedScreens = [];
+const dashboardPort = await findAvailablePort(preferredDashboardPort, [appPort]);
+const dashboardUrl = `http://localhost:${dashboardPort}`;
 
-for (const screen of screens) {
-  const exists = routeFileExists(screen.file);
-  const probe = exists
-    ? await requestStatus(`${baseUrl}${screen.route}`)
-    : {
-        status: null,
-        location: null,
-      };
+const screens = [];
+for (const screen of initialScreens) {
+  const probe = screen.file
+    ? await requestStatus(`${appBaseUrl}${screen.route}`)
+    : { status: null, location: null };
 
-  reviewedScreens.push({
+  screens.push({
     ...screen,
-    exists,
-    httpStatus: probe.status,
+    status: probe.status,
     location: probe.location,
   });
 }
 
-fs.mkdirSync(reportDir, {
+fs.mkdirSync(reportDirectory, {
   recursive: true,
 });
 
-fs.writeFileSync(
-  manifestFile,
-  `${JSON.stringify(
-    {
-      marker: "VERZUS M4 VISUAL REVIEW DASHBOARD",
-      generatedAt: new Date().toISOString(),
-      baseUrl,
-      screens: reviewedScreens,
-    },
-    null,
-    2,
-  )}\n`,
-  "utf8",
-);
+const manifest = {
+  marker: "VERZUS M4 VISUAL REVIEW DASHBOARD",
+  generatedAt: new Date().toISOString(),
+  dashboardUrl,
+  appBaseUrl,
+  screens,
+  apiRoutes: m4ApiRoutes,
+  duplicatePages: discovery.duplicatePages,
+};
 
-fs.writeFileSync(reportFile, createHtml(reviewedScreens), "utf8");
+fs.writeFileSync(manifestFile, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
 
-console.log(`\nVisual review: ${reportFile}`);
-console.log(`Route manifest: ${manifestFile}`);
-console.log("\nOpening the review dashboard in your browser...");
+const html = createDashboardHtml({
+  screens,
+  apiRoutes: m4ApiRoutes,
+  appBaseUrl,
+  dashboardUrl,
+  duplicatePages: discovery.duplicatePages,
+});
 
-openReport(reportFile);
+const dashboardServer = http.createServer((request, response) => {
+  const requestUrl = new URL(request.url ?? "/", dashboardUrl);
 
-const missing = reviewedScreens.filter((screen) => screen.required && !screen.exists);
-
-if (missing.length > 0) {
-  console.log("\nRequired M4 routes still missing:");
-
-  for (const screen of missing) {
-    console.log(`- ${screen.name}: ${screen.file}`);
+  if (requestUrl.pathname === "/manifest.json") {
+    response.writeHead(200, {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+    });
+    response.end(`${JSON.stringify(manifest, null, 2)}\n`);
+    return;
   }
-}
 
-if (existingServer) {
-  console.log("\nThe dashboard is using an existing server.");
-  process.exit(0);
-}
+  if (requestUrl.pathname === "/health") {
+    response.writeHead(200, {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+    });
+    response.end(
+      JSON.stringify({
+        ok: true,
+        appBaseUrl,
+      }),
+    );
+    return;
+  }
 
-console.log("\nKeep this terminal open while reviewing.");
-console.log("Press Ctrl+C when the visual review is finished.");
+  response.writeHead(200, {
+    "content-type": "text/html; charset=utf-8",
+    "cache-control": "no-store",
+  });
+  response.end(html);
+});
 
+await new Promise((resolve, reject) => {
+  dashboardServer.once("error", reject);
+  dashboardServer.listen(dashboardPort, bindHost, resolve);
+});
+
+const requiredFound = screens.filter((screen) => screen.required && screen.file).length;
+const requiredMissing = screens.filter((screen) => screen.required && !screen.file).length;
+
+console.log("\nM4 localhost review is ready");
+console.log("============================");
+console.log(`Dashboard: ${dashboardUrl}`);
+console.log(`Application: ${appBaseUrl}`);
+console.log(`Required screens: ${requiredFound} found, ${requiredMissing} missing.`);
+console.log(`Manifest: ${manifestFile}`);
+console.log("\nPress Ctrl+C when review is finished.");
+
+openBrowser(dashboardUrl);
+
+let stopping = false;
 function stop() {
-  if (child && !child.killed) {
-    child.kill("SIGTERM");
-  }
+  if (stopping) return;
+  stopping = true;
 
-  process.exit(0);
+  dashboardServer.close(() => {
+    if (ownsAppServer && appChild && !appChild.killed) {
+      appChild.kill("SIGTERM");
+    }
+
+    process.exit(0);
+  });
 }
 
 process.on("SIGINT", stop);
 process.on("SIGTERM", stop);
 
-await new Promise((resolve) => {
-  child.on("exit", resolve);
-});
+await new Promise(() => {});
