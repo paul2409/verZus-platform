@@ -1,60 +1,71 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "VERZUS - Repair corrupted Next.js generated route types"
+echo "VERZUS M4 responsive reference exact-optional-property repair"
 echo "No branch will be created or changed."
 echo
 
-if [[ ! -f "package.json" ]]; then
-  echo "Error: package.json was not found."
+TARGET="src/app/(preview)/m4-onboarding-responsive-references/page.tsx"
+
+if [[ ! -f "$TARGET" ]]; then
+  echo "Error: required file not found: $TARGET"
   echo "Run this script from the VERZUS repository root."
   exit 1
 fi
 
-echo "Stopping VERZUS visual-review processes on ports 3104 and 3105..."
+node <<'NODE'
+const fs = require("node:fs");
 
-if command -v powershell.exe >/dev/null 2>&1; then
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -Command '
-    $ports = @(3104, 3105)
-    $processIds = @()
+const file =
+  "src/app/(preview)/m4-onboarding-responsive-references/page.tsx";
 
-    foreach ($port in $ports) {
-      try {
-        $connections = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
+let source = fs.readFileSync(file, "utf8");
 
-        foreach ($connection in $connections) {
-          if ($connection.OwningProcess -gt 0) {
-            $processIds += $connection.OwningProcess
-          }
-        }
-      } catch {
-      }
-    }
+const oldType = `  className?: string;`;
+const newType = `  className?: string | undefined;`;
 
-    $processIds = $processIds | Sort-Object -Unique
+if (source.includes(newType)) {
+  console.log(
+    "PanelProps.className already accepts explicit undefined.",
+  );
+} else if (source.includes(oldType)) {
+  source = source.replace(oldType, newType);
+  fs.writeFileSync(file, source, "utf8");
 
-    foreach ($processId in $processIds) {
-      try {
-        $process = Get-Process -Id $processId -ErrorAction Stop
-        Write-Host ("Stopping PID {0}: {1}" -f $processId, $process.ProcessName)
-        Stop-Process -Id $processId -Force -ErrorAction Stop
-      } catch {
-        Write-Host ("Could not stop PID {0}: {1}" -f $processId, $_.Exception.Message)
-      }
-    }
-  ' || true
-else
-  echo "PowerShell was not available. Continuing without port cleanup."
-fi
+  console.log(
+    "Updated PanelProps.className for exactOptionalPropertyTypes.",
+  );
+} else {
+  throw new Error(
+    "Could not find PanelProps.className in the responsive reference page.",
+  );
+}
 
-echo
-echo "Removing generated Next.js output..."
-rm -rf .next
+const finalSource = fs.readFileSync(file, "utf8");
 
-echo "Removed: .next"
+if (!finalSource.includes(newType)) {
+  throw new Error(
+    "Repair validation failed: updated className type is missing.",
+  );
+}
+
+console.log("Exact optional property repair validated.");
+NODE
 
 echo
-echo "Rebuilding generated Next.js types..."
+echo "Formatting repaired page..."
+npx prettier "$TARGET" --write
+
+echo
+echo "Running focused lint..."
+npx eslint "$TARGET" --max-warnings=0
+
+echo
+echo "Removing stale generated development types..."
+rm -rf .next/dev/types
+
+echo
+echo "Running TypeScript verification..."
 npm run typecheck
 
 echo
@@ -62,14 +73,10 @@ echo "Running production build..."
 npm run build
 
 echo
-echo "Verifying M4 route discovery..."
-npm run m4:routes
-
-echo
 echo "Repair completed successfully."
 echo
-echo "Start the visual review with:"
-echo "npm run m4:visual-review"
+echo "Start the reference board with:"
+echo "npm run m4:onboarding-responsive-references"
 echo
-echo "Then open:"
-echo "http://localhost:3105"
+echo "Open:"
+echo "http://localhost:3107/m4-onboarding-responsive-references"

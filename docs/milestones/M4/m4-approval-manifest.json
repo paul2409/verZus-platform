@@ -36,38 +36,38 @@
     },
     "onboardingWelcome": {
       "mobile390": "generated_unapproved",
-      "tablet768": "undecided",
-      "desktop1440": "blocked"
+      "tablet768": "generated_unapproved",
+      "desktop1440": "generated_unapproved"
     },
     "chooseGames": {
       "mobile390": "generated_unapproved",
-      "tablet768": "undecided",
-      "desktop1440": "blocked"
+      "tablet768": "generated_unapproved",
+      "desktop1440": "generated_unapproved"
     },
     "selectLocation": {
       "mobile390": "generated_unapproved",
-      "tablet768": "undecided",
-      "desktop1440": "blocked"
+      "tablet768": "generated_unapproved",
+      "desktop1440": "generated_unapproved"
     },
     "createPlayerIdentity": {
       "mobile390": "generated_unapproved",
-      "tablet768": "undecided",
-      "desktop1440": "blocked"
+      "tablet768": "generated_unapproved",
+      "desktop1440": "generated_unapproved"
     },
     "setAvailability": {
       "mobile390": "missing",
-      "tablet768": "blocked",
-      "desktop1440": "blocked"
+      "tablet768": "generated_unapproved",
+      "desktop1440": "generated_unapproved"
     },
     "joinOrSkipCrew": {
       "mobile390": "missing",
-      "tablet768": "blocked",
-      "desktop1440": "blocked"
+      "tablet768": "generated_unapproved",
+      "desktop1440": "generated_unapproved"
     },
     "onboardingComplete": {
       "mobile390": "missing",
-      "tablet768": "blocked",
-      "desktop1440": "blocked"
+      "tablet768": "generated_unapproved",
+      "desktop1440": "generated_unapproved"
     }
   },
   "signoff": {

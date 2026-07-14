@@ -45,7 +45,11 @@
     "test:e2e:m4": "playwright test tests/e2e/m4",
     "test:visual:m4": "playwright test tests/visual/m4",
     "m4:visual-review": "node scripts/m4-visual-review.mjs",
-    "m4:routes": "node scripts/m4-visual-review.mjs --scan-only"
+    "m4:routes": "node scripts/m4-visual-review.mjs --scan-only",
+    "m4:onboarding-references": "next dev --hostname 127.0.0.1 --port 3106",
+    "m4:onboarding-responsive-references": "next dev --hostname 127.0.0.1 --port 3107",
+    "m4:onboarding": "next dev --hostname 127.0.0.1 --port 3108",
+    "test:m4:onboarding": "vitest run src/features/onboarding/ui/onboarding-route-access.test.ts"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [
