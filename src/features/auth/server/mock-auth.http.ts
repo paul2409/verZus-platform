@@ -4,10 +4,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type { ZodError, ZodType } from "zod";
 
-import type {
-  AuthApiFailureResponse,
-  AuthSessionEnvelope,
-} from "../api/auth-api.schema";
+import type { AuthApiFailureResponse, AuthSessionEnvelope } from "../api/auth-api.schema";
 import type { AuthSessionResponse } from "../model";
 import {
   authStateFromMockSession,
@@ -16,10 +13,7 @@ import {
 } from "./mock-auth.service";
 
 export function isMockAuthEnabled(): boolean {
-  return (
-    process.env.NEXT_PUBLIC_ENABLE_MOCKS === "true" ||
-    process.env.NODE_ENV !== "production"
-  );
+  return process.env.NEXT_PUBLIC_ENABLE_MOCKS === "true" || process.env.NODE_ENV !== "production";
 }
 
 function requestId(): string {
@@ -52,10 +46,7 @@ function validationFailure(error: ZodError): AuthApiFailureResponse {
       continue;
     }
 
-    fieldErrors[field] = [
-      ...(fieldErrors[field] ?? []),
-      issue.message,
-    ];
+    fieldErrors[field] = [...(fieldErrors[field] ?? []), issue.message];
   }
 
   return {
@@ -71,22 +62,15 @@ function validationFailure(error: ZodError): AuthApiFailureResponse {
   };
 }
 
-function applySessionCookie(
-  response: NextResponse,
-  result: MockAuthMutationResult,
-): void {
+function applySessionCookie(response: NextResponse, result: MockAuthMutationResult): void {
   if (result.sessionCookie?.action === "set") {
-    response.cookies.set(
-      MOCK_SESSION_COOKIE,
-      result.sessionCookie.value,
-      {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60,
-      },
-    );
+    response.cookies.set(MOCK_SESSION_COOKIE, result.sessionCookie.value, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60,
+    });
   }
 
   if (result.sessionCookie?.action === "clear") {
@@ -153,11 +137,8 @@ export function createMockAuthNoBodyHandler(
   };
 }
 
-export function createMockSessionResponse(
-  request: NextRequest,
-): AuthSessionEnvelope {
-  const cookieValue =
-    request.cookies.get(MOCK_SESSION_COOKIE)?.value ?? null;
+export function createMockSessionResponse(request: NextRequest): AuthSessionEnvelope {
+  const cookieValue = request.cookies.get(MOCK_SESSION_COOKIE)?.value ?? null;
   const state = authStateFromMockSession(cookieValue);
   const hasUser = state !== "anonymous";
 
@@ -169,20 +150,15 @@ export function createMockSessionResponse(
           email: "player@example.com",
           phone: null,
           role: "player",
-          emailVerified:
-            state !== "email_unverified",
+          emailVerified: state !== "email_unverified",
           onboardingComplete: state === "authenticated",
         }
       : null,
     session:
-      state === "authenticated" ||
-      state === "email_unverified" ||
-      state === "onboarding_incomplete"
+      state === "authenticated" || state === "email_unverified" || state === "onboarding_incomplete"
         ? {
             id: "mock-session-001",
-            expiresAt: new Date(
-              Date.now() + 60 * 60 * 1000,
-            ).toISOString(),
+            expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
             refreshable: true,
             deviceId: "mock-device-local",
           }

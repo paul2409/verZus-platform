@@ -2,10 +2,7 @@
 
 import { describe, expect, it } from "vitest";
 
-import {
-  adaptAuthApiPayload,
-  createNetworkAuthFailure,
-} from "./auth-api.adapter";
+import { adaptAuthApiPayload, createNetworkAuthFailure } from "./auth-api.adapter";
 
 describe("authentication API adapter", () => {
   it("adapts a valid success envelope", () => {

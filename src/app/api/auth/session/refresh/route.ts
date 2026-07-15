@@ -8,18 +8,14 @@ import {
   isMockAuthEnabled,
   mockAuthDisabledResponse,
 } from "@/features/auth/server/mock-auth.http";
-import {
-  MOCK_SESSION_COOKIE,
-  mockRefreshSession,
-} from "@/features/auth/server/mock-auth.service";
+import { MOCK_SESSION_COOKIE, mockRefreshSession } from "@/features/auth/server/mock-auth.service";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   if (!isMockAuthEnabled()) {
     return mockAuthDisabledResponse();
   }
 
-  const cookieValue =
-    request.cookies.get(MOCK_SESSION_COOKIE)?.value ?? null;
+  const cookieValue = request.cookies.get(MOCK_SESSION_COOKIE)?.value ?? null;
   const result = mockRefreshSession(cookieValue);
   const response = NextResponse.json(result.body, {
     status: result.status,

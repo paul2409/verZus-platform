@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { IntelCardState } from "@/components/primitives/intel-card";
 import {
   IntelCardAction,
@@ -38,7 +39,14 @@ export function WarMatchIntelCard({ model, state = "default" }: WarMatchIntelCar
     >
       <div className={styles.warScore!}>
         <div className={styles.warSide!}>
-          <img alt={`${model.home.name} emblem`} src={model.home.emblemSrc} />
+          <Image
+            alt={`${model.home.name} emblem`}
+            height={72}
+            sizes="72px"
+            src={model.home.emblemSrc}
+            unoptimized
+            width={72}
+          />
           <strong>{model.home.name}</strong>
           <span>{model.home.sideLabel}</span>
         </div>
@@ -48,7 +56,14 @@ export function WarMatchIntelCard({ model, state = "default" }: WarMatchIntelCar
           <span>{model.formatLabel}</span>
         </div>
         <div className={styles.warSide!}>
-          <img alt={`${model.away.name} emblem`} src={model.away.emblemSrc} />
+          <Image
+            alt={`${model.away.name} emblem`}
+            height={72}
+            sizes="72px"
+            src={model.away.emblemSrc}
+            unoptimized
+            width={72}
+          />
           <strong>{model.away.name}</strong>
           <span>{model.away.sideLabel}</span>
         </div>

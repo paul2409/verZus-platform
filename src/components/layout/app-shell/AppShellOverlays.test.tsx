@@ -31,7 +31,7 @@ describe("AppShell global overlays", () => {
     fireEvent.click(screen.getByRole("button", { name: "Search" }));
     expect(screen.getByRole("dialog", { name: "Search VERZUS" })).toBeVisible();
 
-    fireEvent.click(screen.getByRole("button", { name: "Close dialog" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
 
     fireEvent.click(
       screen.getByRole("button", {

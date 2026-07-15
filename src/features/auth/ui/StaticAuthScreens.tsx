@@ -1,5 +1,6 @@
 // VERZUS M4 STEP 4.3
 
+import Link from "next/link";
 import { AuthCodeFields } from "./AuthCodeFields";
 import { AuthField } from "./AuthField";
 import { AuthFrame } from "./AuthFrame";
@@ -52,9 +53,9 @@ export function LoginStaticScreen() {
           />
 
           <div className={styles.inlineRow}>
-            <a className={styles.link} href="/forgot-password">
+            <Link className={styles.link} href="/forgot-password">
               Forgot password?
-            </a>
+            </Link>
             <span className={styles.rateLimit}>Rate limits active</span>
           </div>
 
@@ -64,9 +65,9 @@ export function LoginStaticScreen() {
 
           <div className={styles.orDivider}>or</div>
 
-          <a className={styles.secondaryButton} href="/register">
+          <Link className={styles.secondaryButton} href="/register">
             Create account
-          </a>
+          </Link>
 
           <StaticActionNote />
         </form>
@@ -143,8 +144,8 @@ export function RegisterStaticScreen() {
           <label className={styles.checkboxRow}>
             <input className={styles.checkbox} type="checkbox" />
             <span>
-              I agree to the <a href="/terms">Terms</a> and{" "}
-              <a href="/community-rules">Community Rules</a>.
+              I agree to the <Link href="/terms">Terms</Link> and{" "}
+              <Link href="/community-rules">Community Rules</Link>.
             </span>
           </label>
 
@@ -154,9 +155,9 @@ export function RegisterStaticScreen() {
 
           <div className={styles.orDivider}>or</div>
 
-          <a className={styles.secondaryButton} href="/login">
+          <Link className={styles.secondaryButton} href="/login">
             Back to sign in
-          </a>
+          </Link>
 
           <StaticActionNote />
         </form>
@@ -205,9 +206,9 @@ export function EmailVerificationStaticScreen() {
           </button>
 
           <div className={styles.inlineRow}>
-            <a className={styles.textAction} href="/register">
+            <Link className={styles.textAction} href="/register">
               Change email
-            </a>
+            </Link>
             <span className={styles.rateLimit}>Attempt limits active</span>
           </div>
 
@@ -257,9 +258,9 @@ export function ForgotPasswordStaticScreen() {
 
           <div className={styles.orDivider}>or</div>
 
-          <a className={styles.secondaryButton} href="/login">
+          <Link className={styles.secondaryButton} href="/login">
             Back to sign in
-          </a>
+          </Link>
 
           <StaticActionNote />
         </form>
@@ -326,9 +327,9 @@ export function ResetPasswordStaticScreen() {
 
           <div className={styles.orDivider}>or</div>
 
-          <a className={styles.secondaryButton} href="/login">
+          <Link className={styles.secondaryButton} href="/login">
             Back to sign in
-          </a>
+          </Link>
 
           <StaticActionNote />
         </form>
@@ -391,12 +392,12 @@ export function SessionExpiredStaticScreen() {
           </li>
         </ul>
 
-        <a className={styles.primaryAction} href="/login">
+        <Link className={styles.primaryAction} href="/login">
           Sign in again
-        </a>
-        <a className={styles.secondaryButton} href="/">
+        </Link>
+        <Link className={styles.secondaryButton} href="/">
           Back to home
-        </a>
+        </Link>
       </section>
 
       <AuthSecurityPanel title="Your security matters" />
@@ -434,12 +435,12 @@ export function SuspendedAccountStaticScreen() {
           <p className={styles.noticeCopy}>AUTH-SUSPENSION-REVIEW</p>
         </div>
 
-        <a className={styles.primaryAction} href="/login">
+        <Link className={styles.primaryAction} href="/login">
           Return to sign in
-        </a>
-        <a className={styles.secondaryButton} href="/">
+        </Link>
+        <Link className={styles.secondaryButton} href="/">
           Back to home
-        </a>
+        </Link>
       </section>
     </AuthFrame>
   );
@@ -475,9 +476,9 @@ export function BannedAccountStaticScreen() {
           <p className={styles.noticeCopy}>AUTH-BAN-ENFORCED</p>
         </div>
 
-        <a className={styles.primaryAction} href="/">
+        <Link className={styles.primaryAction} href="/">
           Return home
-        </a>
+        </Link>
       </section>
     </AuthFrame>
   );

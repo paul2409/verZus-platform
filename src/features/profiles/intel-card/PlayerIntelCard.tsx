@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { IntelCardState } from "@/components/primitives/intel-card";
 import {
   IntelCardAction,
@@ -38,12 +39,14 @@ export function PlayerIntelCard({ model, state = "default" }: PlayerIntelCardPro
       variant="player"
     >
       <div className={styles.hero!}>
-        <img
+        <Image
           alt={`${model.displayName} player portrait`}
           className={styles.avatar!}
-          height="120"
+          height={120}
+          sizes="(min-width: 768px) 112px, 72px"
           src={model.avatarSrc}
-          width="120"
+          unoptimized
+          width={120}
         />
 
         <div className={styles.identity!}>

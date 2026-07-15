@@ -1,12 +1,13 @@
-// VERZUS M5 PLAY PREVIEW SESSION REPAIR
+// VERZUS M5 STEPS 5.9-5.13
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { isPlayCommandCenterEnabled } from "@/features/play/config/play-feature-flags";
 import { playScenarioSchema, type PlayScenario } from "@/features/play/model";
-import { PlayCommandCenter } from "@/features/play/ui";
+import { PlayCommandCenter, PlayDisabledState } from "@/features/play/ui";
 import {
   authStateFromMockSession,
   isMockSessionEnabled,
@@ -29,6 +30,10 @@ function firstSearchValue(value: string | string[] | undefined): string | undefi
 }
 
 export default async function PlayPage({ searchParams }: PlayPageProps) {
+  if (!isPlayCommandCenterEnabled()) {
+    return <PlayDisabledState />;
+  }
+
   const params = await searchParams;
   const rawScenario = firstSearchValue(params.scenario);
   const parsed = playScenarioSchema.safeParse(rawScenario);

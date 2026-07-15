@@ -1,6 +1,7 @@
 // VERZUS M4 STEP 4.3
 "use client";
 
+import Link from "next/link";
 import { AuthFrame } from "./AuthFrame";
 import styles from "./AuthScreens.module.css";
 
@@ -32,9 +33,9 @@ export function AuthRouteError({ error, reset }: AuthRouteErrorProps) {
         <button className={styles.primaryAction} onClick={reset} type="button">
           Retry screen
         </button>
-        <a className={styles.secondaryButton} href="/">
+        <Link className={styles.secondaryButton} href="/">
           Return home
-        </a>
+        </Link>
       </section>
     </AuthFrame>
   );

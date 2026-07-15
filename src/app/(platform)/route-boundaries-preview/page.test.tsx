@@ -10,10 +10,22 @@ describe("route boundaries preview", () => {
     render(<RouteBoundariesPreviewPage />);
 
     expect(screen.getByRole("heading", { name: "Route-Level Boundaries" })).toBeVisible();
-    expect(screen.getByText("Loading Play")).toBeVisible();
-    expect(screen.getByText(/temporarily unavailable/i)).toBeVisible();
-    expect(screen.getByText(/could not be located/i)).toBeVisible();
-    expect(screen.getByText(/needs a connection/i)).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Loading Play" })).toBeVisible();
+    expect(
+      screen.getByRole("heading", {
+        name: "Matches are temporarily unavailable",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", {
+        name: "Competition could not be located",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", {
+        name: "This route needs a connection",
+      }),
+    ).toBeVisible();
     expect(screen.getByText(/being serviced/i)).toBeVisible();
     expect(screen.getByText(/sign in to continue/i)).toBeVisible();
     expect(screen.getByText(/cannot access this route/i)).toBeVisible();

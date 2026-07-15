@@ -11,7 +11,11 @@ describe("route-level boundary states", () => {
   it("announces route loading without removing shell-safe copy", () => {
     render(<RouteLoading routeName="Play" />);
 
-    expect(screen.getByRole("status")).toHaveAttribute("aria-busy", "true");
+    expect(
+      screen.getByRole("region", {
+        name: "Loading Play",
+      }),
+    ).toHaveAttribute("aria-busy", "true");
     expect(screen.getByRole("heading", { name: "Loading Play" })).toBeVisible();
     expect(screen.getByText(/navigation and other shell controls remain available/i)).toBeVisible();
   });

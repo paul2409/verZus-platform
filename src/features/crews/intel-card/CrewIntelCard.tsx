@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { IntelCardState } from "@/components/primitives/intel-card";
 import {
   IntelCardAction,
@@ -32,12 +33,14 @@ export function CrewIntelCard({ model, state = "default" }: CrewIntelCardProps) 
       variant="crew"
     >
       <div className={styles.hero!}>
-        <img
+        <Image
           alt={`${model.name} crew emblem`}
           className={styles.emblem!}
-          height="128"
+          height={128}
+          sizes="(min-width: 768px) 112px, 76px"
           src={model.emblemSrc}
-          width="128"
+          unoptimized
+          width={128}
         />
         <div className={styles.identity!}>
           <div className={styles.nameRow!}>

@@ -1,6 +1,6 @@
 // VERZUS M3 STEP 3.6
 
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { ShellProfileMenu } from "./ShellProfileMenu";
@@ -29,7 +29,7 @@ describe("ShellProfileMenu", () => {
     );
   });
 
-  it("closes when the route key changes", () => {
+  it("closes when the route key changes", async () => {
     const { rerender } = render(<ShellProfileMenu profile={profile} routeKey="/play" />);
 
     fireEvent.click(screen.getByRole("button", { name: "Open profile menu" }));
@@ -37,6 +37,8 @@ describe("ShellProfileMenu", () => {
 
     rerender(<ShellProfileMenu profile={profile} routeKey="/profile" />);
 
-    expect(screen.queryByLabelText("Profile menu")).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByLabelText("Profile menu")).not.toBeInTheDocument();
+    });
   });
 });

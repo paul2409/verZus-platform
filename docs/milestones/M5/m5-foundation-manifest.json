@@ -34,6 +34,26 @@
     "5.8": {
       "name": "Independent query and widget integration",
       "status": "implemented"
+    },
+    "5.9": {
+      "name": "Responsive Play layouts",
+      "status": "implemented"
+    },
+    "5.10": {
+      "name": "Server-authoritative Play actions",
+      "status": "implemented"
+    },
+    "5.11": {
+      "name": "Tests and failure injection",
+      "status": "implemented"
+    },
+    "5.12": {
+      "name": "Observability, preview, and rollback",
+      "status": "implemented"
+    },
+    "5.13": {
+      "name": "M5 completion gate",
+      "status": "verification_installed"
     }
   },
   "productionPlayRouteReplaced": true,

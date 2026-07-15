@@ -920,3 +920,204 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+/* VERZUS M5 STEPS 5.9-5.13 RESPONSIVE COMPLETION */
+
+.playRoot,
+.dashboardGrid,
+.primaryColumn,
+.secondaryColumn,
+.widget,
+.primaryActionGrid,
+.matchCard,
+.checkInControl,
+.opportunityList article,
+.activityList article {
+  min-width: 0;
+}
+
+.playRoot :is(h1, h2, h3, strong, span, small, p, a, button) {
+  overflow-wrap: anywhere;
+}
+
+.checkInActionLink {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--vz-color-border-brand);
+  background: var(--vz-gradient-primary);
+  color: var(--vz-color-text-inverse);
+  font-size: 9px;
+  font-weight: 1000;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+.checkInFeedback {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 10px;
+  padding: 10px;
+  border: 1px solid var(--vz-color-border-danger);
+  background: var(--vz-color-surface-danger);
+}
+
+.checkInFeedback strong {
+  color: var(--vz-color-red-400);
+  font-size: 8px;
+}
+
+.checkInFeedback span {
+  color: var(--vz-color-text-secondary);
+  font-size: 7px;
+  overflow-wrap: anywhere;
+}
+
+.checkInFeedback button {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  min-height: 30px;
+  border: 1px solid var(--vz-color-border-danger);
+  background: transparent;
+  color: var(--vz-color-red-400);
+  font: inherit;
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.checkInSuccess {
+  color: var(--vz-color-green-500) !important;
+}
+
+.playDisabled {
+  width: min(760px, calc(100% - 24px));
+  margin: clamp(48px, 12vh, 140px) auto;
+  padding: clamp(24px, 5vw, 56px);
+  border: 1px solid var(--vz-color-border-warning);
+  border-left: 4px solid var(--vz-color-warning-400);
+  background: var(--vz-color-surface-warning);
+}
+
+.playDisabled > span {
+  color: var(--vz-color-warning-400);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+}
+
+.playDisabled h1 {
+  margin: 8px 0 12px;
+  font-family: var(--vz-font-display, sans-serif);
+  font-size: clamp(34px, 7vw, 72px);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.playDisabled p {
+  margin: 0;
+  color: var(--vz-color-text-secondary);
+  line-height: 1.6;
+}
+
+@media (min-width: 1440px) {
+  .playRoot {
+    max-width: 1600px;
+  }
+
+  .dashboardGrid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(380px, 0.75fr);
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .playRoot {
+    padding-inline: 22px;
+  }
+
+  .dashboardGrid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .playRoot {
+    padding: 18px 18px 106px;
+  }
+
+  .pageHeader {
+    align-items: center;
+  }
+
+  .primaryActionGrid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+  }
+
+  .secondaryColumn {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 390px) and (max-width: 767px) {
+  .playRoot {
+    padding-inline: 10px;
+  }
+
+  .pageStatus {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .statusStrip {
+    gap: 10px;
+  }
+
+  .quickActionGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 430px) {
+  .scenarioToolbar {
+    margin-inline: -2px;
+  }
+
+  .pageHeader h1 {
+    font-size: clamp(30px, 11vw, 46px);
+  }
+
+  .matchTopline {
+    align-items: flex-start;
+  }
+
+  .positionFooter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 360px) {
+  .playRoot {
+    padding-inline: 6px;
+  }
+
+  .pageHeader,
+  .widget,
+  .statusStrip {
+    padding-inline: 10px;
+  }
+
+  .positionGrid,
+  .crewMetrics,
+  .quickActionGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .opportunityList article {
+    grid-template-columns: 1fr;
+  }
+
+  .opportunityList article > a {
+    text-align: center;
+  }
+}

@@ -58,3 +58,7 @@ Thumbs.db
 artifacts/m3-final-results/
 artifacts/m3-final-report/
 # VERZUS M3 STEP 3.8 END
+
+/.verzus-backups/
+
+/reports/

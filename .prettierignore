@@ -7,3 +7,15 @@ public/mockServiceWorker.js
 package-lock.json
 *.min.css
 *.min.js
+
+reports/m4-visual-review/
+
+reports/m5-playwright/
+
+.verzus-backups/
+
+artifacts/
+
+reports/
+
+storybook-static/

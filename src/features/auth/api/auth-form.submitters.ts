@@ -8,24 +8,14 @@ import type {
   ResetPasswordFormInput,
 } from "../contracts";
 import type { AuthSubmitter } from "../forms/auth-form.submitter";
-import {
-  forgotPassword,
-  login,
-  register,
-  resetPassword,
-  verifyEmail,
-} from "./auth-api.client";
+import { forgotPassword, login, register, resetPassword, verifyEmail } from "./auth-api.client";
 
 export const submitLogin: AuthSubmitter<LoginFormInput> = login;
 
-export const submitRegistration: AuthSubmitter<RegisterFormInput> =
-  register;
+export const submitRegistration: AuthSubmitter<RegisterFormInput> = register;
 
-export const submitEmailVerification: AuthSubmitter<EmailVerificationFormInput> =
-  verifyEmail;
+export const submitEmailVerification: AuthSubmitter<EmailVerificationFormInput> = verifyEmail;
 
-export const submitForgotPassword: AuthSubmitter<ForgotPasswordFormInput> =
-  forgotPassword;
+export const submitForgotPassword: AuthSubmitter<ForgotPasswordFormInput> = forgotPassword;
 
-export const submitResetPassword: AuthSubmitter<ResetPasswordFormInput> =
-  resetPassword;
+export const submitResetPassword: AuthSubmitter<ResetPasswordFormInput> = resetPassword;

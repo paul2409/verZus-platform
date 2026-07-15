@@ -1,24 +1,47 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "VERZUS M5 - Robust Play hydration and preview-session repair"
+echo "VERZUS - Repair remaining visible preview-test regressions"
 echo "No branch will be created or changed."
 echo
 
-PLAY_HOOK="src/features/play/ui/usePlayCommandCenter.ts"
-PLAY_PAGE="src/app/(platform)/play/page.tsx"
-BOOTSTRAP_ROUTE="src/app/api/dev/m5-session/route.ts"
-DOC_FILE="docs/milestones/M5/m5-play-preview-session-repair.md"
+BACKUP_ROOT=".verzus-backups/preview-test-regressions"
+STAMP="$(date +%Y%m%d-%H%M%S)"
+BACKUP_DIR="${BACKUP_ROOT}/${STAMP}"
+REPORT_DIR="reports"
+FULL_REPORT="${REPORT_DIR}/m5-post-preview-repair-tests.txt"
+SUMMARY_REPORT="${REPORT_DIR}/m5-remaining-test-failures.txt"
 
-required_files=(
-  "package.json"
-  "$PLAY_HOOK"
-  "$PLAY_PAGE"
-  "src/shared/session/mock-session.ts"
-  "src/features/play/model/play.schema.ts"
+ROUTE_TEST="src/app/(platform)/route-boundaries-preview/page.test.tsx"
+OVERLAY_TEST="src/app/(platform)/shell-overlays-preview/page.test.tsx"
+
+FILES=(
+  "$ROUTE_TEST"
+  "$OVERLAY_TEST"
 )
 
-for file in "${required_files[@]}"; do
+echo "KEEP"
+echo "  - All production components"
+echo "  - Existing route-boundary accessibility semantics"
+echo "  - Existing shared Dialog close-button contract"
+echo "  - M5 Play code and visual baselines"
+echo
+echo "REUSE"
+echo "  - Testing Library role-based queries"
+echo "  - Current Vitest suite"
+echo
+echo "REPLACE"
+echo "  - Two stale preview-test expectations"
+echo
+echo "DELETE"
+echo "  - Nothing"
+echo
+echo "CREATE"
+echo "  - Timestamped rollback backup"
+echo "  - Full and concise remaining-failure reports"
+echo
+
+for file in "${FILES[@]}"; do
   if [[ ! -f "$file" ]]; then
     echo "Error: required file not found: $file"
     echo "Run this script from the VERZUS repository root."
@@ -26,530 +49,128 @@ for file in "${required_files[@]}"; do
   fi
 done
 
-echo "KEEP"
-echo "  - Production Play component tree"
-echo "  - Seven independently authorized Play APIs"
-echo "  - Server-side authorization"
-echo "  - Existing scenario and failure-isolation contracts"
-echo
-echo "REUSE"
-echo "  - usePlayCommandCenter query orchestration"
-echo "  - Existing mock-session cookie"
-echo "  - Existing Play scenario schema"
-echo
-echo "REPLACE"
-echo "  - Non-hydration-safe online-state calculation"
-echo "  - Development scenario entry handling in /play"
-echo
-echo "CREATE"
-echo "  - Development-only authenticated preview-session endpoint"
-echo "  - Repair documentation"
-echo
+mkdir -p "$BACKUP_DIR" "$REPORT_DIR"
 
-echo "Stopping any process using port 3110..."
-
-if command -v powershell.exe >/dev/null 2>&1; then
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -Command '
-    try {
-      $connections = Get-NetTCPConnection -LocalPort 3110 -ErrorAction SilentlyContinue
-      $processIds = @(
-        $connections |
-          Where-Object { $_.OwningProcess -gt 0 } |
-          Select-Object -ExpandProperty OwningProcess -Unique
-      )
-
-      foreach ($processId in $processIds) {
-        try {
-          Stop-Process -Id $processId -Force -ErrorAction Stop
-          Write-Host ("Stopped PID {0}" -f $processId)
-        } catch {
-          Write-Host ("Process {0} was already stopped." -f $processId)
-        }
-      }
-    } catch {
-      Write-Host "Port inspection skipped."
-    }
-  ' || true
-fi
-
-mkdir -p "$(dirname "$BOOTSTRAP_ROUTE")" "$(dirname "$DOC_FILE")"
+for file in "${FILES[@]}"; do
+  mkdir -p "$BACKUP_DIR/$(dirname "$file")"
+  cp "$file" "$BACKUP_DIR/$file"
+done
 
 node <<'NODE'
 const fs = require("node:fs");
 
-const file =
-  "src/features/play/ui/usePlayCommandCenter.ts";
+function patchFile(file, transform) {
+  const source = fs.readFileSync(file, "utf8");
+  const result = transform(source);
 
-let source = fs.readFileSync(file, "utf8");
-
-if (!source.includes('"use client";')) {
-  throw new Error(
-    "usePlayCommandCenter.ts is not a client component.",
-  );
-}
-
-if (
-  !source.includes(
-    'import { useSyncExternalStore } from "react";',
-  )
-) {
-  source = source.replace(
-    '"use client";',
-    '"use client";\n\nimport { useSyncExternalStore } from "react";',
-  );
-}
-
-const helperBlock = `function subscribeToOnlineStatus(
-  onStoreChange: () => void,
-): () => void {
-  window.addEventListener("online", onStoreChange);
-  window.addEventListener("offline", onStoreChange);
-
-  return () => {
-    window.removeEventListener(
-      "online",
-      onStoreChange,
-    );
-    window.removeEventListener(
-      "offline",
-      onStoreChange,
-    );
-  };
-}
-
-function getOnlineSnapshot(): boolean {
-  return navigator.onLine;
-}
-
-function getServerOnlineSnapshot(): boolean {
-  return true;
-}
-
-`;
-
-if (
-  !source.includes(
-    "function subscribeToOnlineStatus(",
-  )
-) {
-  const interfaceMarker =
-    "export interface PlayCommandCenterController";
-
-  if (!source.includes(interfaceMarker)) {
-    throw new Error(
-      "Could not locate PlayCommandCenterController.",
-    );
-  }
-
-  source = source.replace(
-    interfaceMarker,
-    `${helperBlock}${interfaceMarker}`,
-  );
-}
-
-const onlineSectionPattern =
-  /  const online\s*=[\s\S]*?;\s*\n\s*const viewModel\s*=/m;
-
-const replacement = `  const browserOnline = useSyncExternalStore(
-    subscribeToOnlineStatus,
-    getOnlineSnapshot,
-    getServerOnlineSnapshot,
-  );
-
-  const online =
-    scenario !== "offline" && browserOnline;
-
-  const viewModel =`;
-
-if (
-  source.includes(
-    "const browserOnline = useSyncExternalStore(",
-  )
-) {
-  console.log(
-    "Hydration-safe online state already installed.",
-  );
-} else if (onlineSectionPattern.test(source)) {
-  source = source.replace(
-    onlineSectionPattern,
-    replacement,
-  );
-  console.log(
-    "Replaced the existing online-state block.",
-  );
-} else {
-  const navigatorIndex =
-    source.indexOf("navigator.onLine");
-
-  if (navigatorIndex < 0) {
-    throw new Error(
-      "Could not locate the online-state calculation or navigator.onLine.",
-    );
-  }
-
-  const functionIndex = source.indexOf(
-    "export function usePlayCommandCenter(",
-  );
-
-  const viewModelIndex = source.indexOf(
-    "  const viewModel =",
-    functionIndex,
-  );
-
-  if (
-    functionIndex < 0 ||
-    viewModelIndex < 0 ||
-    navigatorIndex < functionIndex ||
-    navigatorIndex > viewModelIndex
-  ) {
-    throw new Error(
-      "Could not safely determine the online-state section.",
-    );
-  }
-
-  const before = source.slice(0, functionIndex);
-  const functionPrefix = source.slice(
-    functionIndex,
-    viewModelIndex,
-  );
-  const after = source.slice(viewModelIndex);
-
-  const firstConstIndex =
-    functionPrefix.lastIndexOf("  const ");
-
-  if (firstConstIndex < 0) {
-    throw new Error(
-      "Could not locate the final declaration before viewModel.",
-    );
-  }
-
-  const repairedPrefix = functionPrefix.replace(
-    /  const online\s*=[\s\S]*?;\s*$/m,
-    `  const browserOnline = useSyncExternalStore(
-    subscribeToOnlineStatus,
-    getOnlineSnapshot,
-    getServerOnlineSnapshot,
-  );
-
-  const online =
-    scenario !== "offline" && browserOnline;
-
-`,
-  );
-
-  if (repairedPrefix === functionPrefix) {
-    throw new Error(
-      "Fallback repair could not replace the online declaration.",
-    );
-  }
-
-  source = before + repairedPrefix + after;
-  console.log(
-    "Applied fallback online-state repair.",
-  );
-}
-
-fs.writeFileSync(file, source, "utf8");
-
-const finalSource = fs.readFileSync(file, "utf8");
-
-for (const fragment of [
-  'import { useSyncExternalStore } from "react";',
-  "function subscribeToOnlineStatus(",
-  "function getOnlineSnapshot(): boolean",
-  "function getServerOnlineSnapshot(): boolean",
-  "const browserOnline = useSyncExternalStore(",
-  'scenario !== "offline" && browserOnline',
-]) {
-  if (!finalSource.includes(fragment)) {
-    throw new Error(
-      `Hydration repair validation failed: missing ${fragment}`,
-    );
+  if (result === source) {
+    console.log(`${file}: already repaired or no matching stale expectation found.`);
+  } else {
+    fs.writeFileSync(file, result, "utf8");
+    console.log(`${file}: repaired.`);
   }
 }
 
-const directNavigatorUses =
-  finalSource.match(/navigator\.onLine/g) ?? [];
+patchFile(
+  "src/app/(platform)/route-boundaries-preview/page.test.tsx",
+  (source) => {
+    let result = source;
 
-if (directNavigatorUses.length !== 1) {
-  throw new Error(
-    `Expected navigator.onLine only inside getOnlineSnapshot, found ${directNavigatorUses.length} occurrences.`,
-  );
-}
+    const replacements = [
+      [
+        'expect(screen.getByText("Loading Play")).toBeVisible();',
+        `expect(
+      screen.getByRole("heading", { name: "Loading Play" }),
+    ).toBeVisible();`,
+      ],
+      [
+        "expect(screen.getByText(/temporarily unavailable/i)).toBeVisible();",
+        `expect(
+      screen.getByRole("heading", {
+        name: "Matches are temporarily unavailable",
+      }),
+    ).toBeVisible();`,
+      ],
+      [
+        "expect(screen.getByText(/could not be located/i)).toBeVisible();",
+        `expect(
+      screen.getByRole("heading", {
+        name: "Competition could not be located",
+      }),
+    ).toBeVisible();`,
+      ],
+      [
+        "expect(screen.getByText(/needs a connection/i)).toBeVisible();",
+        `expect(
+      screen.getByRole("heading", {
+        name: "This route needs a connection",
+      }),
+    ).toBeVisible();`,
+      ],
+    ];
 
-console.log("Hydration-safe online state validated.");
+    for (const [before, after] of replacements) {
+      if (result.includes(before)) {
+        result = result.replace(before, after);
+      }
+    }
+
+    return result;
+  },
+);
+
+patchFile(
+  "src/app/(platform)/shell-overlays-preview/page.test.tsx",
+  (source) =>
+    source.replaceAll(
+      'screen.getByRole("button", { name: "Close dialog" })',
+      'screen.getByRole("button", { name: "Close" })',
+    ),
+);
 NODE
 
-cat > "$BOOTSTRAP_ROUTE" <<'EOF'
-// VERZUS M5 PLAY PREVIEW SESSION REPAIR
-
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-
-import {
-  playScenarioSchema,
-} from "@/features/play/model";
-import {
-  isMockSessionEnabled,
-  MOCK_SESSION_COOKIE,
-  mockSessionValues,
-} from "@/shared/session/mock-session";
-
-function notFoundResponse(): NextResponse {
-  return NextResponse.json(
-    {
-      ok: false,
-      error: {
-        code: "not_found",
-        message: "Not found.",
-        request_id: `m5-preview-${globalThis.crypto.randomUUID()}`,
-        retryable: false,
-        field_errors: {},
-      },
-    },
-    {
-      status: 404,
-      headers: {
-        "cache-control": "no-store",
-      },
-    },
-  );
-}
-
-export function GET(
-  request: NextRequest,
-): NextResponse {
-  if (
-    process.env.NODE_ENV === "production" ||
-    !isMockSessionEnabled()
-  ) {
-    return notFoundResponse();
-  }
-
-  const parsed = playScenarioSchema.safeParse(
-    request.nextUrl.searchParams.get("scenario"),
-  );
-  const scenario = parsed.success
-    ? parsed.data
-    : "normal";
-
-  const destination = new URL(
-    "/play",
-    request.url,
-  );
-  destination.searchParams.set(
-    "scenario",
-    scenario,
-  );
-
-  const response =
-    NextResponse.redirect(destination);
-
-  response.cookies.set(
-    MOCK_SESSION_COOKIE,
-    mockSessionValues.authenticated,
-    {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: false,
-      path: "/",
-      maxAge: 60 * 60,
-    },
-  );
-
-  response.headers.set(
-    "cache-control",
-    "no-store",
-  );
-  response.headers.set(
-    "x-verzus-preview-session",
-    "authenticated",
-  );
-
-  return response;
-}
-EOF
-
-cat > "$PLAY_PAGE" <<'EOF'
-// VERZUS M5 PLAY PREVIEW SESSION REPAIR
-
-import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-
-import {
-  getPlatformRouteById,
-} from "@/components/layout/app-shell";
-import {
-  playScenarioSchema,
-  type PlayScenario,
-} from "@/features/play/model";
-import {
-  PlayCommandCenter,
-} from "@/features/play/ui";
-import {
-  authStateFromMockSession,
-  isMockSessionEnabled,
-  MOCK_SESSION_COOKIE,
-} from "@/shared/session/mock-session";
-
-const route = getPlatformRouteById("play");
-
-export const metadata: Metadata = {
-  title: route.title,
-  description: route.description,
-};
-
-type PlayPageProps = {
-  searchParams: Promise<
-    Record<
-      string,
-      string | string[] | undefined
-    >
-  >;
-};
-
-function firstSearchValue(
-  value: string | string[] | undefined,
-): string | undefined {
-  return Array.isArray(value)
-    ? value[0]
-    : value;
-}
-
-export default async function PlayPage({
-  searchParams,
-}: PlayPageProps) {
-  const params = await searchParams;
-  const rawScenario = firstSearchValue(
-    params.scenario,
-  );
-  const parsed =
-    playScenarioSchema.safeParse(rawScenario);
-  const scenario: PlayScenario = parsed.success
-    ? parsed.data
-    : "normal";
-
-  if (
-    rawScenario !== undefined &&
-    isMockSessionEnabled() &&
-    process.env.NODE_ENV !== "production"
-  ) {
-    const cookieStore = await cookies();
-    const authState =
-      authStateFromMockSession(
-        cookieStore.get(
-          MOCK_SESSION_COOKIE,
-        )?.value ?? null,
-      );
-
-    if (authState !== "authenticated") {
-      redirect(
-        `/api/dev/m5-session?scenario=${encodeURIComponent(
-          scenario,
-        )}`,
-      );
-    }
-  }
-
-  return (
-    <PlayCommandCenter scenario={scenario} />
-  );
-}
-EOF
-
-cat > "$DOC_FILE" <<'EOF'
-<!-- VERZUS M5 PLAY PREVIEW SESSION REPAIR -->
-
-# M5 Play Hydration and Preview Session Repair
-
-## Hydration failure
-
-The Play hook read `navigator.onLine` during its first render. The server and
-browser could therefore produce different HTML before React hydration.
-
-The repair uses `useSyncExternalStore` with:
-
-```text
-server snapshot: online
-browser snapshot: navigator.onLine
-updates: online and offline browser events
-```
-
-The explicit `offline` scenario remains deterministic on server and client.
-
-## Unauthorized Play API responses
-
-All seven Play APIs correctly require an authenticated session.
-
-Opening a scenario URL in a fresh browser did not include the existing
-`verzus_mock_session` cookie, so each API returned HTTP 401.
-
-A development-only bootstrap endpoint now:
-
-1. validates the requested Play scenario
-2. sets the existing authenticated HTTP-only mock cookie
-3. redirects only to `/play`
-4. returns HTTP 404 in production
-
-No Play API authorization rule was removed or bypassed.
-
-## Preview URL
-
-```text
-http://localhost:3110/play?scenario=check_in_open
-```
-
-The first request establishes the development preview session and redirects
-back to the same scenario.
-EOF
-
 echo
-echo "Formatting repaired files..."
-npx prettier \
-  "$PLAY_HOOK" \
-  "$PLAY_PAGE" \
-  "$BOOTSTRAP_ROUTE" \
-  "$DOC_FILE" \
-  --write
+echo "Formatting repaired tests..."
+npx prettier "${FILES[@]}" --write
 
 echo
 echo "Running focused ESLint..."
-npx eslint \
-  "$PLAY_HOOK" \
-  "$PLAY_PAGE" \
-  "$BOOTSTRAP_ROUTE" \
-  --max-warnings=0
+npx eslint "${FILES[@]}" --max-warnings=0
 
 echo
-echo "Running M5 foundation tests..."
-npm run test:m5:foundation
+echo "Running the two affected preview test files..."
+npx vitest run \
+  "$ROUTE_TEST" \
+  "$OVERLAY_TEST"
 
 echo
-echo "Running focused Play UI tests..."
-npm run test:m5:ui
+echo "Running the complete test suite..."
+set +e
+npm run test 2>&1 | tee "$FULL_REPORT"
+TEST_STATUS=${PIPESTATUS[0]}
+set -e
+
+{
+  echo "VERZUS remaining test-failure summary"
+  echo "Generated: $(date -Iseconds)"
+  echo
+  grep -E "^ FAIL |^ Test Files |^      Tests " "$FULL_REPORT" || true
+} > "$SUMMARY_REPORT"
+
+if [[ "$TEST_STATUS" -ne 0 ]]; then
+  echo
+  echo "The two visible preview regressions passed, but other failures remain."
+  echo "Upload this concise file next:"
+  echo "  $SUMMARY_REPORT"
+  echo
+  echo "Full report:"
+  echo "  $FULL_REPORT"
+  exit "$TEST_STATUS"
+fi
 
 echo
-echo "Removing stale Next.js output..."
-rm -rf .next
-
-echo
-echo "Running TypeScript verification..."
-npm run typecheck
-
-echo
-echo "Running architecture boundary checks..."
-npm run check:boundaries
-
-echo
-echo "Running production build..."
-npm run build
-
-echo
-echo "Repair completed successfully."
-echo
-echo "Start Play with:"
-echo "npm run m5:play"
-echo
-echo "Open:"
-echo "http://localhost:3110/play?scenario=check_in_open"
+echo "All application tests passed."
+echo "Rollback backup:"
+echo "  $BACKUP_DIR"
+echo "Full test report:"
+echo "  $FULL_REPORT"

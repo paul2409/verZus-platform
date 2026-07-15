@@ -2,3 +2,4 @@
 
 export * from "./play.schema";
 export * from "./play-state";
+export * from "./check-in.schema";

@@ -31,6 +31,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
 
   const resolvedId = id ?? `vz-switch-${reactId.replace(/:/g, "")}`;
 
+  const labelId = `${resolvedId}-label`;
+
   const descriptionId = description ? `${resolvedId}-description` : undefined;
 
   const errorId = error ? `${resolvedId}-error` : undefined;
@@ -46,6 +48,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
           {...inputProps}
           ref={ref}
           aria-describedby={mergeIds(descriptionId, errorId, ariaDescribedBy)}
+          aria-labelledby={labelId}
           aria-invalid={Boolean(error) || undefined}
           className={styles.input}
           disabled={disabled}
@@ -59,7 +62,9 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
         </span>
 
         <span className={styles.content}>
-          <span className={styles.label}>{label}</span>
+          <span className={styles.label} id={labelId}>
+            {label}
+          </span>
 
           {description ? (
             <span className={styles.description} id={descriptionId}>

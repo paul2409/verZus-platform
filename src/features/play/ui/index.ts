@@ -11,3 +11,4 @@ export { PrimaryActionPanel } from "./PrimaryActionPanel";
 export { QuickActions } from "./QuickActions";
 export { RecentActivityWidget } from "./RecentActivityWidget";
 export { usePlayCommandCenter } from "./usePlayCommandCenter";
+export { PlayDisabledState } from "./PlayDisabledState";

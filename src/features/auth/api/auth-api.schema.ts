@@ -10,10 +10,7 @@ import {
   registerFormSchema,
   resetPasswordFormSchema,
 } from "../contracts";
-import {
-  authSessionResponseSchema,
-  authStateSchema,
-} from "../model";
+import { authSessionResponseSchema, authStateSchema } from "../model";
 
 export const loginRequestSchema = loginFormSchema;
 export const registerRequestSchema = registerFormSchema;
@@ -25,10 +22,7 @@ export const resendVerificationRequestSchema = z.object({
   email: emailSchema,
 });
 
-export const authApiFieldErrorsSchema = z.record(
-  z.string(),
-  z.array(z.string()),
-);
+export const authApiFieldErrorsSchema = z.record(z.string(), z.array(z.string()));
 
 export const authApiErrorSchema = z.object({
   code: z.string().min(1),
@@ -64,23 +58,11 @@ export const authSessionEnvelopeSchema = z.object({
 export type LoginRequest = z.infer<typeof loginRequestSchema>;
 export type RegisterRequest = z.infer<typeof registerRequestSchema>;
 export type VerifyEmailRequest = z.infer<typeof verifyEmailRequestSchema>;
-export type ResendVerificationRequest = z.infer<
-  typeof resendVerificationRequestSchema
->;
-export type ForgotPasswordRequest = z.infer<
-  typeof forgotPasswordRequestSchema
->;
-export type ResetPasswordRequest = z.infer<
-  typeof resetPasswordRequestSchema
->;
+export type ResendVerificationRequest = z.infer<typeof resendVerificationRequestSchema>;
+export type ForgotPasswordRequest = z.infer<typeof forgotPasswordRequestSchema>;
+export type ResetPasswordRequest = z.infer<typeof resetPasswordRequestSchema>;
 export type AuthApiError = z.infer<typeof authApiErrorSchema>;
-export type AuthApiFailureResponse = z.infer<
-  typeof authApiFailureResponseSchema
->;
-export type AuthApiSuccessResponse = z.infer<
-  typeof authApiSuccessResponseSchema
->;
+export type AuthApiFailureResponse = z.infer<typeof authApiFailureResponseSchema>;
+export type AuthApiSuccessResponse = z.infer<typeof authApiSuccessResponseSchema>;
 export type AuthApiResponse = z.infer<typeof authApiResponseSchema>;
-export type AuthSessionEnvelope = z.infer<
-  typeof authSessionEnvelopeSchema
->;
+export type AuthSessionEnvelope = z.infer<typeof authSessionEnvelopeSchema>;

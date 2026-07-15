@@ -16,40 +16,24 @@ import {
 
 describe("mock authentication service", () => {
   it("creates deterministic login states", () => {
-    const authenticated = mockLogin(
-      mockAuthScenarios.authenticated,
-    );
-    const onboarding = mockLogin(
-      mockAuthScenarios.onboardingIncomplete,
-    );
+    const authenticated = mockLogin(mockAuthScenarios.authenticated);
+    const onboarding = mockLogin(mockAuthScenarios.onboardingIncomplete);
     const suspended = mockLogin(mockAuthScenarios.suspended);
 
     expect(authenticated.body.ok).toBe(true);
-    expect(
-      authenticated.body.ok && authenticated.body.state,
-    ).toBe("authenticated");
-    expect(onboarding.body.ok && onboarding.body.state).toBe(
-      "onboarding_incomplete",
-    );
-    expect(suspended.body.ok && suspended.body.state).toBe(
-      "suspended",
-    );
+    expect(authenticated.body.ok && authenticated.body.state).toBe("authenticated");
+    expect(onboarding.body.ok && onboarding.body.state).toBe("onboarding_incomplete");
+    expect(suspended.body.ok && suspended.body.state).toBe("suspended");
   });
 
   it("rejects invalid credentials and rate-limits scenarios", () => {
-    const invalid = mockLogin(
-      mockAuthScenarios.invalidCredentials,
-    );
+    const invalid = mockLogin(mockAuthScenarios.invalidCredentials);
     const limited = mockLogin(mockAuthScenarios.rateLimited);
 
     expect(invalid.status).toBe(401);
-    expect(!invalid.body.ok && invalid.body.error.code).toBe(
-      "invalid_credentials",
-    );
+    expect(!invalid.body.ok && invalid.body.error.code).toBe("invalid_credentials");
     expect(limited.status).toBe(429);
-    expect(!limited.body.ok && limited.body.error.code).toBe(
-      "rate_limited",
-    );
+    expect(!limited.body.ok && limited.body.error.code).toBe("rate_limited");
   });
 
   it("rejects duplicate registration without losing field context", () => {
@@ -63,24 +47,20 @@ describe("mock authentication service", () => {
     });
 
     expect(result.status).toBe(409);
-    expect(
-      !result.body.ok && result.body.error.fieldErrors.email,
-    ).toEqual(["Use another email address or sign in."]);
+    expect(!result.body.ok && result.body.error.fieldErrors.email).toEqual([
+      "Use another email address or sign in.",
+    ]);
   });
 
   it("verifies only the deterministic current code", () => {
     const valid = mockVerifyEmail({
-      verificationCode:
-        mockAuthScenarios.validVerificationCode,
+      verificationCode: mockAuthScenarios.validVerificationCode,
     });
     const expired = mockVerifyEmail({
-      verificationCode:
-        mockAuthScenarios.expiredVerificationCode,
+      verificationCode: mockAuthScenarios.expiredVerificationCode,
     });
 
-    expect(valid.body.ok && valid.body.state).toBe(
-      "onboarding_incomplete",
-    );
+    expect(valid.body.ok && valid.body.state).toBe("onboarding_incomplete");
     expect(expired.status).toBe(410);
   });
 
@@ -112,15 +92,11 @@ describe("mock authentication service", () => {
   });
 
   it("maps and refreshes mock session cookies", () => {
-    expect(
-      authStateFromMockSession(
-        mockSessionValues.onboarding_incomplete,
-      ),
-    ).toBe("onboarding_incomplete");
-
-    const refreshed = mockRefreshSession(
-      mockSessionValues.authenticated,
+    expect(authStateFromMockSession(mockSessionValues.onboarding_incomplete)).toBe(
+      "onboarding_incomplete",
     );
+
+    const refreshed = mockRefreshSession(mockSessionValues.authenticated);
     const missing = mockRefreshSession(null);
 
     expect(refreshed.status).toBe(200);

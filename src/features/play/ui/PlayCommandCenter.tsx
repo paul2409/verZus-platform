@@ -1,9 +1,13 @@
-// VERZUS M5 STEPS 5.5-5.8
+// VERZUS M5 STEPS 5.9-5.13
+
 "use client";
 
 import { WidgetBoundary } from "@/components/layout/widget-boundary";
 
+import { usePlayCheckIn } from "../actions/use-play-check-in";
 import type { PlayScenario } from "../model";
+import { recordPlayTelemetry } from "../telemetry/play-telemetry";
+import { usePlayCommandCenterTelemetry } from "../telemetry/use-play-telemetry";
 import { CrewPulseWidget } from "./CrewPulseWidget";
 import { CurrentPositionWidget } from "./CurrentPositionWidget";
 import { OpportunityRail } from "./OpportunityRail";
@@ -17,10 +21,42 @@ import styles from "./play-command-center.module.css";
 
 export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
   const controller = usePlayCommandCenter(scenario);
+  const checkInAction = usePlayCheckIn(scenario);
   const { viewModel, retry } = controller;
 
+  usePlayCommandCenterTelemetry(viewModel);
+
+  const stableWidgetViews = [
+    viewModel.playerStatus,
+    viewModel.nextMatch,
+    viewModel.currentCheckIn,
+    viewModel.currentPosition,
+    viewModel.crewSummary,
+    viewModel.recommendedCompetitions,
+    viewModel.recentActivity,
+  ] as const;
+
+  const playReady = stableWidgetViews.every(
+    (widget) =>
+      widget.state !== "loading" && widget.state !== "retrying" && widget.state !== "stale",
+  );
+
+  const retryWidget = (widget: string, retryAction: () => void) => {
+    recordPlayTelemetry("play.widget.retry", {
+      route: "/play",
+      scenario,
+      widget,
+    });
+    retryAction();
+  };
+
   return (
-    <div className={styles.playRoot} data-play-variant={viewModel.variant}>
+    <div
+      className={styles.playRoot}
+      data-play-command-center="true"
+      data-play-ready={playReady ? "true" : "false"}
+      data-play-variant={viewModel.variant}
+    >
       <ScenarioToolbar active={viewModel.variant} />
 
       <header className={styles.pageHeader}>
@@ -44,7 +80,7 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
             </small>
           </div>
           {viewModel.partialFailureCount > 0 ? (
-            <button type="button" onClick={retry.all}>
+            <button type="button" onClick={() => retryWidget("all", retry.all)}>
               RETRY ALL
             </button>
           ) : null}
@@ -57,7 +93,7 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           <span>
             Network actions are disabled. Static navigation and cached information remain available.
           </span>
-          <button type="button" onClick={retry.all}>
+          <button type="button" onClick={() => retryWidget("all", retry.all)}>
             RETRY CONNECTION
           </button>
         </div>
@@ -76,7 +112,10 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
         name="play-player-status"
         resetKeys={[viewModel.playerStatus.state, viewModel.playerStatus.requestId]}
       >
-        <PlayerStatusStrip view={viewModel.playerStatus} onRetry={retry.playerStatus} />
+        <PlayerStatusStrip
+          view={viewModel.playerStatus}
+          onRetry={() => retryWidget("player-status", retry.playerStatus)}
+        />
       </WidgetBoundary>
 
       <main className={styles.dashboardGrid}>
@@ -84,8 +123,9 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           <PrimaryActionPanel
             nextMatch={viewModel.nextMatch}
             currentCheckIn={viewModel.currentCheckIn}
-            retryNextMatch={retry.nextMatch}
-            retryCheckIn={retry.currentCheckIn}
+            checkInAction={checkInAction}
+            retryNextMatch={() => retryWidget("next-match", retry.nextMatch)}
+            retryCheckIn={() => retryWidget("current-check-in", retry.currentCheckIn)}
           />
 
           <WidgetBoundary
@@ -94,7 +134,7 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           >
             <CurrentPositionWidget
               view={viewModel.currentPosition}
-              onRetry={retry.currentPosition}
+              onRetry={() => retryWidget("current-position", retry.currentPosition)}
             />
           </WidgetBoundary>
 
@@ -107,7 +147,7 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           >
             <OpportunityRail
               view={viewModel.recommendedCompetitions}
-              onRetry={retry.recommendedCompetitions}
+              onRetry={() => retryWidget("recommended-competitions", retry.recommendedCompetitions)}
             />
           </WidgetBoundary>
         </div>
@@ -117,14 +157,20 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
             name="play-crew-pulse"
             resetKeys={[viewModel.crewSummary.state, viewModel.crewSummary.requestId]}
           >
-            <CrewPulseWidget view={viewModel.crewSummary} onRetry={retry.crewSummary} />
+            <CrewPulseWidget
+              view={viewModel.crewSummary}
+              onRetry={() => retryWidget("crew-summary", retry.crewSummary)}
+            />
           </WidgetBoundary>
 
           <WidgetBoundary
             name="play-recent-activity"
             resetKeys={[viewModel.recentActivity.state, viewModel.recentActivity.requestId]}
           >
-            <RecentActivityWidget view={viewModel.recentActivity} onRetry={retry.recentActivity} />
+            <RecentActivityWidget
+              view={viewModel.recentActivity}
+              onRetry={() => retryWidget("recent-activity", retry.recentActivity)}
+            />
           </WidgetBoundary>
 
           <WidgetBoundary name="play-quick-actions">

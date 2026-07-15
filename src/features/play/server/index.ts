@@ -3,3 +3,6 @@
 export * from "./mock-play.data";
 export * from "./mock-play.http";
 export * from "./mock-play.service";
+export * from "./mock-check-in.cookie";
+export * from "./mock-check-in.http";
+export * from "./mock-check-in.service";

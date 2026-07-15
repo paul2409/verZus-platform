@@ -1,8 +1,10 @@
-// VERZUS M5 STEPS 5.5-5.8
+// VERZUS M5 STEPS 5.9-5.13
+
 "use client";
 
 import { WidgetBoundary } from "@/components/layout/widget-boundary";
 
+import type { PlayCheckInAction } from "../actions/use-play-check-in";
 import type { CurrentCheckIn, NextMatch } from "../model";
 import type { PlayWidgetView } from "../view-model";
 import { CheckInControl } from "./CheckInControl";
@@ -13,11 +15,13 @@ import styles from "./play-command-center.module.css";
 export function PrimaryActionPanel({
   nextMatch,
   currentCheckIn,
+  checkInAction,
   retryNextMatch,
   retryCheckIn,
 }: {
   nextMatch: PlayWidgetView<NextMatch>;
   currentCheckIn: PlayWidgetView<CurrentCheckIn>;
+  checkInAction: PlayCheckInAction;
   retryNextMatch: () => void;
   retryCheckIn: () => void;
 }) {
@@ -37,7 +41,12 @@ export function PrimaryActionPanel({
           name="play-check-in"
           resetKeys={[currentCheckIn.state, currentCheckIn.requestId]}
         >
-          <CheckInControl view={currentCheckIn} match={nextMatch.data} onRetry={retryCheckIn} />
+          <CheckInControl
+            view={currentCheckIn}
+            match={nextMatch.data}
+            action={checkInAction}
+            onRetry={retryCheckIn}
+          />
         </WidgetBoundary>
       </div>
     </WidgetFrame>

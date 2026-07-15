@@ -1,0 +1,17 @@
+{
+  "marker": "VERZUS M5 STEPS 5.9-5.13",
+  "milestone": "M5",
+  "screen": "Play Command Centre",
+  "steps": {
+    "5.9": "implemented",
+    "5.10": "implemented",
+    "5.11": "implemented",
+    "5.12": "implemented",
+    "5.13": "verification_installed"
+  },
+  "supportedWidths": [360, 390, 430, 768, 1024, 1440],
+  "readEndpoints": 7,
+  "mutationEndpoints": ["POST /api/check-ins/current"],
+  "visualBaselineRequired": true,
+  "finalVerificationCommand": "npm run m5:verify"
+}

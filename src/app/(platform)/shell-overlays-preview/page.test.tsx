@@ -12,7 +12,7 @@ describe("shell overlays preview", () => {
     fireEvent.click(screen.getByRole("button", { name: "Open search" }));
     expect(screen.getByRole("dialog", { name: "Search VERZUS" })).toBeVisible();
 
-    fireEvent.click(screen.getByRole("button", { name: "Close dialog" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
 
     fireEvent.click(screen.getByRole("button", { name: "Open notifications" }));
     expect(screen.getByRole("dialog", { name: "Notifications" })).toBeVisible();

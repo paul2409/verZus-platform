@@ -74,6 +74,10 @@ export default defineConfig([
   },
   prettierConfig,
   globalIgnores([
+    ".verzus-backups/**",
+    "artifacts/**",
+    "reports/**",
+    "storybook-static/**",
     ".next/**",
     "coverage/**",
     "node_modules/**",

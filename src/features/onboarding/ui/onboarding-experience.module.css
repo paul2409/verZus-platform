@@ -8,8 +8,7 @@
   color: #f7f9ff;
   background:
     radial-gradient(circle at 88% 8%, rgb(109 44 255 / 20%), transparent 32rem),
-    radial-gradient(circle at 8% 82%, rgb(0 245 212 / 7%), transparent 30rem),
-    #060914;
+    radial-gradient(circle at 8% 82%, rgb(0 245 212 / 7%), transparent 30rem), #060914;
 }
 
 .page {
@@ -69,9 +68,7 @@
   flex-direction: column;
   padding: 28px 20px;
   border-right: 1px solid #252d46;
-  background:
-    linear-gradient(180deg, rgb(103 38 238 / 16%), transparent 42%),
-    #090d1b;
+  background: linear-gradient(180deg, rgb(103 38 238 / 16%), transparent 42%), #090d1b;
 }
 
 .railSteps {
@@ -361,9 +358,7 @@
   place-content: center;
   padding: 28px;
   border: 1px solid #2d3856;
-  background:
-    linear-gradient(145deg, rgb(109 44 255 / 10%), transparent 56%),
-    #0a0f1f;
+  background: linear-gradient(145deg, rgb(109 44 255 / 10%), transparent 56%), #0a0f1f;
   text-align: center;
 }
 
@@ -540,7 +535,12 @@
   place-items: center;
   border: 1px solid rgb(0 245 212 / 32%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgb(0 245 212 / 17%), rgb(109 44 255 / 12%) 48%, transparent 72%);
+  background: radial-gradient(
+    circle,
+    rgb(0 245 212 / 17%),
+    rgb(109 44 255 / 12%) 48%,
+    transparent 72%
+  );
 }
 
 .heroOrb > span {

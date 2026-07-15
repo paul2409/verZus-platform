@@ -2,14 +2,9 @@
 
 import type { AuthSubmissionError } from "../contracts";
 import type { AuthSubmitResult } from "../forms/auth-form.submitter";
-import {
-  authApiResponseSchema,
-  type AuthApiError,
-} from "./auth-api.schema";
+import { authApiResponseSchema, type AuthApiError } from "./auth-api.schema";
 
-export function adaptAuthApiError(
-  error: AuthApiError,
-): AuthSubmissionError {
+export function adaptAuthApiError(error: AuthApiError): AuthSubmissionError {
   return {
     code: error.code as AuthSubmissionError["code"],
     message: error.message,
@@ -28,8 +23,7 @@ export function adaptAuthApiPayload(input: unknown): AuthSubmitResult {
       ok: false,
       error: {
         code: "unknown",
-        message:
-          "The authentication service returned an invalid response.",
+        message: "The authentication service returned an invalid response.",
         requestId: null,
         retryable: true,
         fieldErrors: {},
@@ -52,8 +46,7 @@ export function adaptAuthApiPayload(input: unknown): AuthSubmitResult {
 }
 
 export function createNetworkAuthFailure(): AuthSubmitResult {
-  const offline =
-    typeof navigator !== "undefined" && navigator.onLine === false;
+  const offline = typeof navigator !== "undefined" && navigator.onLine === false;
 
   return {
     ok: false,

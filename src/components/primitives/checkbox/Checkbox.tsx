@@ -42,6 +42,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 
   const resolvedId = id ?? `vz-checkbox-${reactId.replace(/:/g, "")}`;
 
+  const labelId = `${resolvedId}-label`;
+
   const descriptionId = description ? `${resolvedId}-description` : undefined;
 
   const errorId = error ? `${resolvedId}-error` : undefined;
@@ -78,6 +80,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
           ref={assignRef}
           aria-checked={indeterminate ? "mixed" : undefined}
           aria-describedby={mergeIds(descriptionId, errorId, ariaDescribedBy)}
+          aria-labelledby={labelId}
           aria-invalid={Boolean(error) || undefined}
           className={styles.input}
           disabled={disabled}
@@ -88,7 +91,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
         <span aria-hidden="true" className={styles.box} />
 
         <span className={styles.content}>
-          <span className={styles.label}>{label}</span>
+          <span className={styles.label} id={labelId}>
+            {label}
+          </span>
 
           {description ? (
             <span className={styles.description} id={descriptionId}>

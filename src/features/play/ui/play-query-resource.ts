@@ -1,4 +1,4 @@
-// VERZUS M5 STEPS 5.5-5.8
+// VERZUS M5 STEPS 5.9-5.13
 
 import type { PlayWidgetState } from "../contracts";
 import { PlayApiClientError } from "../api";

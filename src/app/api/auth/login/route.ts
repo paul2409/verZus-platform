@@ -4,7 +4,4 @@ import { loginRequestSchema } from "@/features/auth/api";
 import { createMockAuthPostHandler } from "@/features/auth/server/mock-auth.http";
 import { mockLogin } from "@/features/auth/server/mock-auth.service";
 
-export const POST = createMockAuthPostHandler(
-  loginRequestSchema,
-  mockLogin,
-);
+export const POST = createMockAuthPostHandler(loginRequestSchema, mockLogin);
