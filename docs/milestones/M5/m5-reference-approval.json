@@ -1,0 +1,45 @@
+{
+  "marker": "VERZUS M5 STEPS 5.5-5.8",
+  "milestone": "M5",
+  "screen": "Play Command Centre",
+  "mobile390": {
+    "normal": "approved",
+    "check_in_open": "approved",
+    "checked_in": "approved",
+    "match_starting_soon": "approved",
+    "no_match_scheduled": "approved",
+    "crew_activity_present": "approved",
+    "no_crew": "approved",
+    "opportunities_available": "approved",
+    "partial_api_failure": "approved",
+    "offline": "approved"
+  },
+  "tablet768": {
+    "normal": "approved",
+    "check_in_open": "approved",
+    "checked_in": "approved",
+    "match_starting_soon": "approved",
+    "no_match_scheduled": "approved",
+    "crew_activity_present": "approved",
+    "no_crew": "approved",
+    "opportunities_available": "approved",
+    "partial_api_failure": "approved",
+    "offline": "approved"
+  },
+  "desktop1440": {
+    "normal": "approved",
+    "check_in_open": "approved",
+    "checked_in": "approved",
+    "match_starting_soon": "approved",
+    "no_match_scheduled": "approved",
+    "crew_activity_present": "approved",
+    "no_crew": "approved",
+    "opportunities_available": "approved",
+    "partial_api_failure": "approved",
+    "offline": "approved"
+  },
+  "mobileApproved": true,
+  "responsiveApproved": true,
+  "productionPlayRouteReplaced": true,
+  "approvedAt": "2026-07-15T20:19:36.858Z"
+}

@@ -1,0 +1,50 @@
+{
+  "marker": "VERZUS M5 STEPS 5.1-5.4",
+  "milestone": "M5",
+  "scope": "Play Command Centre foundation",
+  "steps": {
+    "5.1": {
+      "name": "Play screen contract and scope freeze",
+      "status": "implemented"
+    },
+    "5.2": {
+      "name": "Domain schemas and state model",
+      "status": "implemented"
+    },
+    "5.3": {
+      "name": "Independent mock APIs",
+      "status": "implemented"
+    },
+    "5.4": {
+      "name": "Query cache and view-model foundation",
+      "status": "implemented"
+    },
+    "5.5": {
+      "name": "390px Play reference set",
+      "status": "approved"
+    },
+    "5.6": {
+      "name": "Tablet and desktop references",
+      "status": "approved"
+    },
+    "5.7": {
+      "name": "Static Play component structure",
+      "status": "implemented"
+    },
+    "5.8": {
+      "name": "Independent query and widget integration",
+      "status": "implemented"
+    }
+  },
+  "productionPlayRouteReplaced": true,
+  "referenceApprovalGranted": true,
+  "requiredEndpoints": [
+    "/api/me/status",
+    "/api/matches/next",
+    "/api/check-ins/current",
+    "/api/leaderboards/me",
+    "/api/crews/me/summary",
+    "/api/competitions/recommended",
+    "/api/activity/recent"
+  ]
+}

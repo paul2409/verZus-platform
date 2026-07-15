@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Create and activate your VERZUS competitive player identity.",
 };
 
-export default function OnboardingLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function OnboardingLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return children;
 }

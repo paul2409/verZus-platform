@@ -2,10 +2,18 @@
 
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 import {
   finishOnboarding,
@@ -45,7 +53,8 @@ const stepDetails = {
     label: "Games",
     eyebrow: "BUILD YOUR COMPETITIVE POOL",
     title: "What do you play?",
-    description: "Choose every game you want to compete in. You can update these selections later.",
+    description:
+      "Choose every game you want to compete in. You can update these selections later.",
   },
   location: {
     label: "Location",
@@ -126,7 +135,8 @@ function getErrorView(error: unknown): ErrorView {
     return {
       state: "offline",
       title: "You are offline",
-      message: "Your saved onboarding progress is protected. Reconnect and retry this step.",
+      message:
+        "Your saved onboarding progress is protected. Reconnect and retry this step.",
       retryable: true,
       destination: null,
       destinationLabel: null,
@@ -149,7 +159,11 @@ function getErrorView(error: unknown): ErrorView {
       };
     }
 
-    if (error.code === "forbidden" || error.code === "suspended" || error.code === "banned") {
+    if (
+      error.code === "forbidden" ||
+      error.code === "suspended" ||
+      error.code === "banned"
+    ) {
       return {
         state: "forbidden",
         title: "Onboarding access blocked",
@@ -160,7 +174,10 @@ function getErrorView(error: unknown): ErrorView {
       };
     }
 
-    if (error.code === "maintenance" || error.code === "service_unavailable") {
+    if (
+      error.code === "maintenance" ||
+      error.code === "service_unavailable"
+    ) {
       return {
         state: "maintenance",
         title: "Onboarding is temporarily unavailable",
@@ -184,7 +201,10 @@ function getErrorView(error: unknown): ErrorView {
   return {
     state: "error",
     title: "Onboarding could not continue",
-    message: error instanceof Error ? error.message : "An unexpected onboarding error occurred.",
+    message:
+      error instanceof Error
+        ? error.message
+        : "An unexpected onboarding error occurred.",
     retryable: true,
     destination: null,
     destinationLabel: null,
@@ -240,7 +260,13 @@ function Progress({ draft }: { draft: OnboardingDraft }) {
   );
 }
 
-function StepRail({ currentStep, draft }: { currentStep: OnboardingStep; draft: OnboardingDraft }) {
+function StepRail({
+  currentStep,
+  draft,
+}: {
+  currentStep: OnboardingStep;
+  draft: OnboardingDraft;
+}) {
   return (
     <aside className={styles.stepRail} aria-label="Onboarding progress">
       <Brand />
@@ -249,13 +275,18 @@ function StepRail({ currentStep, draft }: { currentStep: OnboardingStep; draft: 
         {stepOrder.map((step, index) => {
           const active = step === currentStep;
           const complete = draft.completedSteps.includes(step);
-          const accessible = complete || step === draft.currentStep || step === "welcome";
+          const accessible =
+            complete || step === draft.currentStep || step === "welcome";
           const content = (
             <>
-              <span className={styles.railNumber}>{complete ? "✓" : index + 1}</span>
+              <span className={styles.railNumber}>
+                {complete ? "✓" : index + 1}
+              </span>
               <span className={styles.railCopy}>
                 <strong>{stepDetails[step].label}</strong>
-                <small>{active ? "Current step" : complete ? "Complete" : "Upcoming"}</small>
+                <small>
+                  {active ? "Current step" : complete ? "Complete" : "Upcoming"}
+                </small>
               </span>
             </>
           );
@@ -275,7 +306,11 @@ function StepRail({ currentStep, draft }: { currentStep: OnboardingStep; draft: 
           }
 
           return (
-            <div key={step} className={styles.railStep} aria-disabled="true">
+            <div
+              key={step}
+              className={styles.railStep}
+              aria-disabled="true"
+            >
               {content}
             </div>
           );
@@ -376,7 +411,12 @@ function PrimaryButton({
   onClick: () => void;
 }) {
   return (
-    <button type="button" className={styles.primaryButton} disabled={disabled} onClick={onClick}>
+    <button
+      type="button"
+      className={styles.primaryButton}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {children}
       <span aria-hidden="true">›</span>
     </button>
@@ -471,10 +511,7 @@ function OnboardingFrame({
 
             <div>
               <strong>FAILURE ISOLATION</strong>
-              <p>
-                Option widgets may fail without removing previous-step navigation or recovery
-                actions.
-              </p>
+              <p>Option widgets may fail without removing previous-step navigation or recovery actions.</p>
             </div>
           </aside>
         </div>
@@ -490,7 +527,8 @@ function useSaveProgress() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (update: OnboardingProgressUpdate) => saveOnboardingProgressRequest(update),
+    mutationFn: (update: OnboardingProgressUpdate) =>
+      saveOnboardingProgressRequest(update),
     onSuccess: (draft) => {
       queryClient.setQueryData(progressQueryKey, draft);
       router.push(getOnboardingRoute(draft.currentStep));
@@ -498,7 +536,13 @@ function useSaveProgress() {
   });
 }
 
-function WelcomeStep({ draft, online }: { draft: OnboardingDraft; online: boolean }) {
+function WelcomeStep({
+  draft,
+  online,
+}: {
+  draft: OnboardingDraft;
+  online: boolean;
+}) {
   const saveMutation = useSaveProgress();
 
   return (
@@ -563,7 +607,13 @@ function WelcomeStep({ draft, online }: { draft: OnboardingDraft; online: boolea
   );
 }
 
-function GamesStep({ draft, online }: { draft: OnboardingDraft; online: boolean }) {
+function GamesStep({
+  draft,
+  online,
+}: {
+  draft: OnboardingDraft;
+  online: boolean;
+}) {
   const optionsQuery = useQuery({
     queryKey: ["onboarding", "options", "games"],
     queryFn: getOnboardingGameOptions,
@@ -571,6 +621,7 @@ function GamesStep({ draft, online }: { draft: OnboardingDraft; online: boolean 
   const saveMutation = useSaveProgress();
   const [selected, setSelected] = useState<string[]>(draft.selectedGameIds);
   const [validationError, setValidationError] = useState<string | null>(null);
+
 
   const toggleGame = (gameId: string, maximumSelections: number) => {
     setValidationError(null);
@@ -609,7 +660,10 @@ function GamesStep({ draft, online }: { draft: OnboardingDraft; online: boolean 
       online={online}
       footer={
         <StepFooter step="games" saving={saveMutation.isPending}>
-          <PrimaryButton disabled={!online || saveMutation.isPending || !data} onClick={submit}>
+          <PrimaryButton
+            disabled={!online || saveMutation.isPending || !data}
+            onClick={submit}
+          >
             Continue
           </PrimaryButton>
         </StepFooter>
@@ -651,7 +705,9 @@ function GamesStep({ draft, online }: { draft: OnboardingDraft; online: boolean 
                 <button
                   key={game.id}
                   type="button"
-                  className={`${styles.optionCard} ${isSelected ? styles.optionCardSelected : ""}`}
+                  className={`${styles.optionCard} ${
+                    isSelected ? styles.optionCardSelected : ""
+                  }`}
                   aria-pressed={isSelected}
                   onClick={() => toggleGame(game.id, data.maximumSelections)}
                 >
@@ -681,13 +737,21 @@ function GamesStep({ draft, online }: { draft: OnboardingDraft; online: boolean 
   );
 }
 
-function LocationStep({ draft, online }: { draft: OnboardingDraft; online: boolean }) {
+function LocationStep({
+  draft,
+  online,
+}: {
+  draft: OnboardingDraft;
+  online: boolean;
+}) {
   const optionsQuery = useQuery({
     queryKey: ["onboarding", "options", "locations"],
     queryFn: () => getOnboardingLocationOptions(),
   });
   const saveMutation = useSaveProgress();
-  const [countryCode, setCountryCode] = useState(draft.location?.countryCode ?? "");
+  const [countryCode, setCountryCode] = useState(
+    draft.location?.countryCode ?? "",
+  );
   const [regionId, setRegionId] = useState("");
   const [cityId, setCityId] = useState("");
   const [timezone, setTimezone] = useState(draft.location?.timezone ?? "");
@@ -695,37 +759,58 @@ function LocationStep({ draft, online }: { draft: OnboardingDraft; online: boole
 
   const data = optionsQuery.data;
   const effectiveCountryCode =
-    countryCode || data?.selectedCountryCode || data?.countries[0]?.code || "";
+    countryCode ||
+    data?.selectedCountryCode ||
+    data?.countries[0]?.code ||
+    "";
   const draftRegionId =
     data?.regions.find(
       (region) =>
-        region.countryCode === effectiveCountryCode && region.name === draft.location?.region,
+        region.countryCode === effectiveCountryCode &&
+        region.name === draft.location?.region,
     )?.id ?? "";
   const effectiveRegionId =
     regionId ||
     draftRegionId ||
     data?.selectedRegionId ||
-    data?.regions.find((region) => region.countryCode === effectiveCountryCode)?.id ||
+    data?.regions.find(
+      (region) => region.countryCode === effectiveCountryCode,
+    )?.id ||
     "";
   const draftCityId =
     data?.cities.find(
-      (city) => city.regionId === effectiveRegionId && city.name === draft.location?.city,
+      (city) =>
+        city.regionId === effectiveRegionId &&
+        city.name === draft.location?.city,
     )?.id ?? "";
   const effectiveCityId =
     cityId ||
     draftCityId ||
     data?.cities.find((city) => city.regionId === effectiveRegionId)?.id ||
     "";
-  const effectiveTimezone = timezone || data?.timezones[0] || "";
+  const effectiveTimezone =
+    timezone || data?.timezones[0] || "";
   const regions =
-    data?.regions.filter((region) => region.countryCode === effectiveCountryCode) ?? [];
-  const cities = data?.cities.filter((city) => city.regionId === effectiveRegionId) ?? [];
+    data?.regions.filter(
+      (region) => region.countryCode === effectiveCountryCode,
+    ) ?? [];
+  const cities =
+    data?.cities.filter((city) => city.regionId === effectiveRegionId) ?? [];
 
   const submit = () => {
-    const region = data?.regions.find((item) => item.id === effectiveRegionId);
-    const city = data?.cities.find((item) => item.id === effectiveCityId);
+    const region = data?.regions.find(
+      (item) => item.id === effectiveRegionId,
+    );
+    const city = data?.cities.find(
+      (item) => item.id === effectiveCityId,
+    );
 
-    if (!effectiveCountryCode || !region || !city || !effectiveTimezone) {
+    if (
+      !effectiveCountryCode ||
+      !region ||
+      !city ||
+      !effectiveTimezone
+    ) {
       setValidationError("Choose a country, region, city, and timezone.");
       return;
     }
@@ -749,7 +834,10 @@ function LocationStep({ draft, online }: { draft: OnboardingDraft; online: boole
       online={online}
       footer={
         <StepFooter step="location" saving={saveMutation.isPending}>
-          <PrimaryButton disabled={!online || saveMutation.isPending || !data} onClick={submit}>
+          <PrimaryButton
+            disabled={!online || saveMutation.isPending || !data}
+            onClick={submit}
+          >
             Continue
           </PrimaryButton>
         </StepFooter>
@@ -800,7 +888,9 @@ function LocationStep({ draft, online }: { draft: OnboardingDraft; online: boole
                   const nextRegion = data.regions.find(
                     (region) => region.countryCode === nextCountry,
                   );
-                  const nextCity = data.cities.find((city) => city.regionId === nextRegion?.id);
+                  const nextCity = data.cities.find(
+                    (city) => city.regionId === nextRegion?.id,
+                  );
 
                   setCountryCode(nextCountry);
                   setRegionId(nextRegion?.id ?? "");
@@ -822,7 +912,9 @@ function LocationStep({ draft, online }: { draft: OnboardingDraft; online: boole
                 onChange={(event) => {
                   const nextRegion = event.target.value;
                   setRegionId(nextRegion);
-                  setCityId(data.cities.find((city) => city.regionId === nextRegion)?.id ?? "");
+                  setCityId(
+                    data.cities.find((city) => city.regionId === nextRegion)?.id ?? "",
+                  );
                 }}
               >
                 {regions.map((region) => (
@@ -835,7 +927,10 @@ function LocationStep({ draft, online }: { draft: OnboardingDraft; online: boole
 
             <label className={styles.field}>
               <span>CITY</span>
-              <select value={effectiveCityId} onChange={(event) => setCityId(event.target.value)}>
+              <select
+                value={effectiveCityId}
+                onChange={(event) => setCityId(event.target.value)}
+              >
                 {cities.map((city) => (
                   <option key={city.id} value={city.id}>
                     {city.name}
@@ -876,7 +971,13 @@ function LocationStep({ draft, online }: { draft: OnboardingDraft; online: boole
   );
 }
 
-function IdentityStep({ draft, online }: { draft: OnboardingDraft; online: boolean }) {
+function IdentityStep({
+  draft,
+  online,
+}: {
+  draft: OnboardingDraft;
+  online: boolean;
+}) {
   const optionsQuery = useQuery({
     queryKey: ["onboarding", "options", "identity"],
     queryFn: getOnboardingIdentityOptions,
@@ -902,7 +1003,10 @@ function IdentityStep({ draft, online }: { draft: OnboardingDraft; online: boole
       return;
     }
 
-    if (gamerTag.length < rules.minimumLength || gamerTag.length > rules.maximumLength) {
+    if (
+      gamerTag.length < rules.minimumLength ||
+      gamerTag.length > rules.maximumLength
+    ) {
       setValidationError(
         `Gamer tag must be ${rules.minimumLength}-${rules.maximumLength} characters.`,
       );
@@ -939,7 +1043,10 @@ function IdentityStep({ draft, online }: { draft: OnboardingDraft; online: boole
       online={online}
       footer={
         <StepFooter step="identity" saving={saveMutation.isPending}>
-          <PrimaryButton disabled={!online || saveMutation.isPending || !data} onClick={submit}>
+          <PrimaryButton
+            disabled={!online || saveMutation.isPending || !data}
+            onClick={submit}
+          >
             Continue
           </PrimaryButton>
         </StepFooter>
@@ -975,7 +1082,9 @@ function IdentityStep({ draft, online }: { draft: OnboardingDraft; online: boole
             <div>
               <span>PLAYER CARD PREVIEW</span>
               <strong>{identity.gamerTag || "YOUR GAMER TAG"}</strong>
-              <small>{platform?.label ?? "Platform"} · Rookie · Level 01</small>
+              <small>
+                {platform?.label ?? "Platform"} · Rookie · Level 01
+              </small>
             </div>
             <b>0 XP</b>
           </section>
@@ -1047,7 +1156,13 @@ function IdentityStep({ draft, online }: { draft: OnboardingDraft; online: boole
   );
 }
 
-function AvailabilityStep({ draft, online }: { draft: OnboardingDraft; online: boolean }) {
+function AvailabilityStep({
+  draft,
+  online,
+}: {
+  draft: OnboardingDraft;
+  online: boolean;
+}) {
   const timezone = draft.location?.timezone ?? "Africa/Lagos";
   const optionsQuery = useQuery({
     queryKey: ["onboarding", "options", "availability", timezone],
@@ -1065,7 +1180,9 @@ function AvailabilityStep({ draft, online }: { draft: OnboardingDraft; online: b
 
   const updateSlot = (index: number, patch: Partial<AvailabilitySlot>) => {
     setSlots((current) =>
-      current.map((slot, slotIndex) => (slotIndex === index ? { ...slot, ...patch } : slot)),
+      current.map((slot, slotIndex) =>
+        slotIndex === index ? { ...slot, ...patch } : slot,
+      ),
     );
   };
 
@@ -1111,7 +1228,10 @@ function AvailabilityStep({ draft, online }: { draft: OnboardingDraft; online: b
       online={online}
       footer={
         <StepFooter step="availability" saving={saveMutation.isPending}>
-          <PrimaryButton disabled={!online || saveMutation.isPending || !data} onClick={submit}>
+          <PrimaryButton
+            disabled={!online || saveMutation.isPending || !data}
+            onClick={submit}
+          >
             Save availability
           </PrimaryButton>
         </StepFooter>
@@ -1183,7 +1303,9 @@ function AvailabilityStep({ draft, online }: { draft: OnboardingDraft; online: b
                       type="time"
                       step={data.slotRules.minuteIncrement * 60}
                       value={slot.startTime}
-                      onChange={(event) => updateSlot(index, { startTime: event.target.value })}
+                      onChange={(event) =>
+                        updateSlot(index, { startTime: event.target.value })
+                      }
                     />
                   </label>
 
@@ -1193,7 +1315,9 @@ function AvailabilityStep({ draft, online }: { draft: OnboardingDraft; online: b
                       type="time"
                       step={data.slotRules.minuteIncrement * 60}
                       value={slot.endTime}
-                      onChange={(event) => updateSlot(index, { endTime: event.target.value })}
+                      onChange={(event) =>
+                        updateSlot(index, { endTime: event.target.value })
+                      }
                     />
                   </label>
 
@@ -1202,7 +1326,9 @@ function AvailabilityStep({ draft, online }: { draft: OnboardingDraft; online: b
                     className={styles.removeSlot}
                     aria-label={`Remove availability window ${index + 1}`}
                     onClick={() =>
-                      setSlots((current) => current.filter((_, slotIndex) => slotIndex !== index))
+                      setSlots((current) =>
+                        current.filter((_, slotIndex) => slotIndex !== index),
+                      )
                     }
                   >
                     Remove
@@ -1224,7 +1350,13 @@ function AvailabilityStep({ draft, online }: { draft: OnboardingDraft; online: b
   );
 }
 
-function CrewStep({ draft, online }: { draft: OnboardingDraft; online: boolean }) {
+function CrewStep({
+  draft,
+  online,
+}: {
+  draft: OnboardingDraft;
+  online: boolean;
+}) {
   const gameId = draft.selectedGameIds[0];
   const optionsQuery = useQuery({
     queryKey: ["onboarding", "options", "crews", gameId ?? "all"],
@@ -1251,7 +1383,10 @@ function CrewStep({ draft, online }: { draft: OnboardingDraft; online: boolean }
       online={online}
       footer={
         <StepFooter step="crew" saving={saveMutation.isPending}>
-          <PrimaryButton disabled={!online || saveMutation.isPending || !data} onClick={submit}>
+          <PrimaryButton
+            disabled={!online || saveMutation.isPending || !data}
+            onClick={submit}
+          >
             {choice.decision === "join" ? "Join selected Crew" : "Skip Crew for now"}
           </PrimaryButton>
         </StepFooter>
@@ -1299,7 +1434,9 @@ function CrewStep({ draft, online }: { draft: OnboardingDraft; online: boolean }
                 <button
                   key={crew.id}
                   type="button"
-                  className={`${styles.crewCard} ${selected ? styles.crewCardSelected : ""}`}
+                  className={`${styles.crewCard} ${
+                    selected ? styles.crewCardSelected : ""
+                  }`}
                   aria-pressed={selected}
                   disabled={!crew.acceptingMembers}
                   onClick={() => setChoice({ decision: "join", crewId: crew.id })}
@@ -1342,7 +1479,13 @@ function CrewStep({ draft, online }: { draft: OnboardingDraft; online: boolean }
   );
 }
 
-function CompleteStep({ draft, online }: { draft: OnboardingDraft; online: boolean }) {
+function CompleteStep({
+  draft,
+  online,
+}: {
+  draft: OnboardingDraft;
+  online: boolean;
+}) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const completeMutation = useMutation({
@@ -1353,7 +1496,8 @@ function CompleteStep({ draft, online }: { draft: OnboardingDraft; online: boole
     },
   });
 
-  const crewLabel = draft.crewChoice?.decision === "join" ? "Crew selected" : "Skipped for now";
+  const crewLabel =
+    draft.crewChoice?.decision === "join" ? "Crew selected" : "Skipped for now";
 
   return (
     <OnboardingFrame

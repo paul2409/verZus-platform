@@ -2,7 +2,10 @@
 
 import { describe, expect, it } from "vitest";
 
-import { createInitialOnboardingDraft, saveOnboardingProgress } from "@/features/onboarding";
+import {
+  createInitialOnboardingDraft,
+  saveOnboardingProgress,
+} from "@/features/onboarding";
 
 import { resolveOnboardingRouteRedirect } from "./onboarding-route-access";
 
@@ -16,7 +19,9 @@ describe("resolveOnboardingRouteRedirect", () => {
   it("blocks a future step and returns the resumable route", () => {
     const draft = createInitialOnboardingDraft();
 
-    expect(resolveOnboardingRouteRedirect(draft, "identity")).toBe("/onboarding");
+    expect(resolveOnboardingRouteRedirect(draft, "identity")).toBe(
+      "/onboarding",
+    );
   });
 
   it("allows a previously completed step to be revisited", () => {
@@ -32,13 +37,17 @@ describe("resolveOnboardingRouteRedirect", () => {
       return;
     }
 
-    expect(resolveOnboardingRouteRedirect(saved.draft, "welcome")).toBeNull();
+    expect(
+      resolveOnboardingRouteRedirect(saved.draft, "welcome"),
+    ).toBeNull();
   });
 
   it("blocks completion until the draft is ready", () => {
     const draft = createInitialOnboardingDraft();
 
-    expect(resolveOnboardingRouteRedirect(draft, "complete")).toBe("/onboarding");
+    expect(resolveOnboardingRouteRedirect(draft, "complete")).toBe(
+      "/onboarding",
+    );
   });
 
   it("sends completed players to Play", () => {
@@ -49,6 +58,8 @@ describe("resolveOnboardingRouteRedirect", () => {
       completedAt: "2026-07-14T00:00:00.000Z",
     };
 
-    expect(resolveOnboardingRouteRedirect(draft, "complete")).toBe("/play");
+    expect(resolveOnboardingRouteRedirect(draft, "complete")).toBe(
+      "/play",
+    );
   });
 });

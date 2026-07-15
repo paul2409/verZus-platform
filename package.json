@@ -49,7 +49,13 @@
     "m4:onboarding-references": "next dev --hostname 127.0.0.1 --port 3106",
     "m4:onboarding-responsive-references": "next dev --hostname 127.0.0.1 --port 3107",
     "m4:onboarding": "next dev --hostname 127.0.0.1 --port 3108",
-    "test:m4:onboarding": "vitest run src/features/onboarding/ui/onboarding-route-access.test.ts"
+    "test:m4:onboarding": "vitest run src/features/onboarding/ui/onboarding-route-access.test.ts",
+    "test:m5:foundation": "vitest run src/features/play",
+    "m5:verify:foundation": "npm run test:m5:foundation && npm run typecheck && npm run check:boundaries && npm run build",
+    "m5:references": "next dev --hostname 127.0.0.1 --port 3109",
+    "m5:play": "next dev --hostname 127.0.0.1 --port 3110",
+    "test:m5:ui": "vitest run src/features/play/ui",
+    "m5:verify:ui": "npm run test:m5:foundation && npm run test:m5:ui && npm run typecheck && npm run check:boundaries && npm run build"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [

@@ -1,6 +1,17 @@
-import type { Metadata } from "next";
+// VERZUS M5 PLAY PREVIEW SESSION REPAIR
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { playScenarioSchema, type PlayScenario } from "@/features/play/model";
+import { PlayCommandCenter } from "@/features/play/ui";
+import {
+  authStateFromMockSession,
+  isMockSessionEnabled,
+  MOCK_SESSION_COOKIE,
+} from "@/shared/session/mock-session";
 
 const route = getPlatformRouteById("play");
 
@@ -9,6 +20,32 @@ export const metadata: Metadata = {
   description: route.description,
 };
 
-export default function PlayPage() {
-  return <PlatformRoutePlaceholder routeId="play" />;
+type PlayPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+function firstSearchValue(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function PlayPage({ searchParams }: PlayPageProps) {
+  const params = await searchParams;
+  const rawScenario = firstSearchValue(params.scenario);
+  const parsed = playScenarioSchema.safeParse(rawScenario);
+  const scenario: PlayScenario = parsed.success ? parsed.data : "normal";
+
+  if (
+    rawScenario !== undefined &&
+    isMockSessionEnabled() &&
+    process.env.NODE_ENV !== "production"
+  ) {
+    const cookieStore = await cookies();
+    const authState = authStateFromMockSession(cookieStore.get(MOCK_SESSION_COOKIE)?.value ?? null);
+
+    if (authState !== "authenticated") {
+      redirect(`/api/dev/m5-session?scenario=${encodeURIComponent(scenario)}`);
+    }
+  }
+
+  return <PlayCommandCenter scenario={scenario} />;
 }
