@@ -320,3 +320,33 @@
   box-shadow: var(--vz-shadow-glow-green);
 }
 /* VERZUS RETRO_TABS END */
+
+/* VERZUS REFERENCE_LOCK_TABS START */
+.list {
+  background: #050609;
+  border-color: var(--vz-ref-line);
+  clip-path: var(--vz-ref-cut-sm);
+}
+
+.tab {
+  color: #8f8ba3;
+  border: 1px solid transparent;
+  clip-path: var(--vz-ref-cut-xs);
+}
+
+.tab:hover:not(:disabled) {
+  color: var(--vz-ref-cyan);
+  background: rgb(0 229 255 / 5%);
+}
+
+.selected {
+  color: #020305;
+  background: var(--vz-ref-green);
+  border-color: var(--vz-ref-green-soft);
+  text-shadow: none;
+}
+
+.selected::after {
+  display: none;
+}
+/* VERZUS REFERENCE_LOCK_TABS END */

@@ -456,3 +456,23 @@
   clip-path: var(--vz-retro-cut-sm);
 }
 /* VERZUS RETRO_SHELL_OVERLAYS END */
+
+/* VERZUS REFERENCE_LOCK_SHELL_OVERLAYS START */
+.searchForm,
+.searchField,
+.searchShortcuts,
+.shortcut,
+.profileContent,
+.notificationItem {
+  border-color: var(--vz-ref-line);
+  background: rgb(7 8 13 / 96%);
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-sm);
+}
+
+.shortcut:hover {
+  color: var(--vz-ref-cyan);
+  border-color: rgb(0 229 255 / 46%);
+  background: rgb(0 229 255 / 5%);
+}
+/* VERZUS REFERENCE_LOCK_SHELL_OVERLAYS END */

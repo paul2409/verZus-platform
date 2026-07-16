@@ -1001,3 +1001,138 @@
   }
 }
 /* VERZUS RETRO_SHELL END */
+
+/* VERZUS REFERENCE_LOCK_SHELL START */
+.shell {
+  --vz-shell-background: var(--vz-ref-black);
+  --vz-shell-surface: rgb(5 6 10 / 97%);
+  --vz-shell-border: var(--vz-ref-line);
+  --vz-shell-border-active: var(--vz-ref-green);
+  --vz-shell-text: var(--vz-ref-white);
+  --vz-shell-muted: var(--vz-ref-muted);
+  --vz-shell-active: var(--vz-ref-green);
+  background: var(--vz-ref-black);
+}
+
+.shell::before {
+  opacity: 0.28;
+  background:
+    linear-gradient(90deg, transparent 0 49%, rgb(0 229 255 / 4%) 50%, transparent 51%),
+    linear-gradient(rgb(155 98 255 / 3%) 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    24px 24px;
+}
+
+.topBar,
+.sidebar,
+.globalStatus,
+.globalStatusCompact,
+.pageHeader {
+  border-color: var(--vz-ref-line);
+  background: linear-gradient(180deg, rgb(10 11 17 / 98%), rgb(4 5 8 / 98%));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 3%);
+}
+
+.topBar {
+  border-bottom: 1px solid rgb(155 98 255 / 32%);
+  backdrop-filter: blur(16px);
+}
+
+.sidebar {
+  border-right: 1px solid rgb(155 98 255 / 30%);
+}
+
+.brand {
+  gap: 0.58rem;
+}
+
+.brandGlyph {
+  color: var(--vz-ref-green);
+  border-color: var(--vz-ref-green);
+  background: rgb(0 255 135 / 7%);
+  box-shadow: var(--vz-shadow-glow-green);
+  clip-path: var(--vz-ref-cut-sm);
+}
+
+.brandWord {
+  color: transparent;
+  background: var(--vz-gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-size: 1.04rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 0 1.2rem rgb(0 229 255 / 10%);
+}
+
+.brandVersion {
+  color: var(--vz-ref-violet-soft);
+  font-family: var(--vz-font-display);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  white-space: nowrap;
+}
+
+.navigationLink {
+  min-height: 2.9rem;
+  color: #9b98ad;
+  border: 1px solid transparent;
+  clip-path: var(--vz-ref-cut-sm);
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.navigationLink:hover {
+  color: var(--vz-ref-white);
+  border-color: rgb(0 229 255 / 38%);
+  background: rgb(0 229 255 / 6%);
+  transform: translateX(2px);
+}
+
+.navigationLink[aria-current="page"],
+.navigationLink[data-navigation-current="true"] {
+  color: var(--vz-ref-green);
+  border-color: rgb(0 255 135 / 70%);
+  background: linear-gradient(90deg, rgb(0 255 135 / 16%), rgb(0 255 135 / 3%));
+  box-shadow:
+    inset 3px 0 0 var(--vz-ref-green),
+    var(--vz-shadow-glow-green);
+}
+
+.navigationCount {
+  color: #020305;
+  background: var(--vz-ref-magenta);
+  border: 1px solid #ff8ac0;
+}
+
+.pageEyebrow {
+  color: var(--vz-ref-violet-soft);
+  letter-spacing: 0.18em;
+}
+
+.pageHeader h1 {
+  color: var(--vz-ref-white);
+  letter-spacing: 0.085em;
+}
+
+.globalStatus[data-shell-status="operational"],
+.sidebarStatus[data-shell-status="operational"] {
+  color: var(--vz-ref-green);
+}
+
+.routeProgress span {
+  background: linear-gradient(90deg, var(--vz-ref-green), var(--vz-ref-cyan), var(--vz-ref-violet));
+}
+
+@media (max-width: 767px) {
+  .brandVersion {
+    display: none;
+  }
+}
+/* VERZUS REFERENCE_LOCK_SHELL END */

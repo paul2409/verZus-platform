@@ -84,3 +84,22 @@
   color: var(--vz-retro-red);
 }
 /* VERZUS RETRO_FORM_FIELD END */
+
+/* VERZUS REFERENCE_LOCK_FORM_FIELD START */
+.label {
+  color: var(--vz-ref-white);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.description,
+.hint {
+  color: var(--vz-ref-muted);
+}
+
+.error {
+  color: var(--vz-ref-red);
+}
+/* VERZUS REFERENCE_LOCK_FORM_FIELD END */

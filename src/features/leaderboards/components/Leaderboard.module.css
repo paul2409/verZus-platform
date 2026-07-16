@@ -664,3 +664,70 @@
   text-transform: uppercase;
 }
 /* VERZUS RETRO_LEADERBOARD END */
+
+/* VERZUS REFERENCE_LOCK_LEADERBOARD START */
+.responsiveRoot {
+  gap: 1rem;
+}
+
+.tableViewport,
+.mobileCard,
+.stateCard {
+  border-color: var(--vz-ref-line);
+  background: rgb(5 6 10 / 97%);
+  clip-path: var(--vz-ref-cut-md);
+  box-shadow: 0 1.5rem 3rem rgb(0 0 0 / 32%);
+}
+
+.headerCell {
+  color: #aaa6c0;
+  background: #11121a;
+  border-bottom-color: var(--vz-ref-line-strong);
+  letter-spacing: 0.13em;
+}
+
+.row {
+  background: rgb(7 8 12 / 96%);
+}
+
+.row:nth-child(even) {
+  background: rgb(11 12 18 / 96%);
+}
+
+.row:hover {
+  background: rgb(0 229 255 / 5%);
+  box-shadow: inset 3px 0 0 var(--vz-ref-cyan);
+  filter: none;
+}
+
+.currentRow,
+.mobileCurrentCard {
+  background: rgb(0 255 135 / 7%) !important;
+  border-color: var(--vz-ref-green);
+  box-shadow:
+    inset 4px 0 0 var(--vz-ref-green),
+    inset 0 0 0 1px rgb(0 255 135 / 70%),
+    var(--vz-shadow-glow-green);
+}
+
+.pinnedRow,
+.mobilePinnedCard {
+  background: rgb(255 194 71 / 7%) !important;
+  box-shadow: inset 4px 0 0 var(--vz-ref-gold);
+}
+
+.pointsCell,
+.mobilePoints {
+  color: var(--vz-ref-cyan);
+}
+
+.rankCell {
+  font-family: var(--vz-font-display);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.mobileCard {
+  border: 1px solid var(--vz-ref-line);
+}
+/* VERZUS REFERENCE_LOCK_LEADERBOARD END */

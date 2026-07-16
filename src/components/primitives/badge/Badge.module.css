@@ -547,3 +547,37 @@
   box-shadow: var(--vz-shadow-glow-purple);
 }
 /* VERZUS RETRO_BADGES END */
+
+/* VERZUS REFERENCE_LOCK_BADGE START */
+.badge {
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-xs);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.1em;
+}
+
+.tonePositive,
+.statusOnline {
+  --vz-badge-color: var(--vz-ref-green);
+}
+
+.toneInformation,
+.statusLoading {
+  --vz-badge-color: var(--vz-ref-cyan);
+}
+
+.toneSpecial {
+  --vz-badge-color: var(--vz-ref-violet);
+}
+
+.toneWarning,
+.statusAway {
+  --vz-badge-color: var(--vz-ref-gold);
+}
+
+.toneNegative,
+.statusBusy,
+.statusLive {
+  --vz-badge-color: var(--vz-ref-red);
+}
+/* VERZUS REFERENCE_LOCK_BADGE END */

@@ -1435,3 +1435,94 @@
   box-shadow: var(--vz-shadow-glow-cyan);
 }
 /* VERZUS RETRO_ONBOARDING END */
+
+/* VERZUS REFERENCE_LOCK_ONBOARDING START */
+.page,
+.loadingPage {
+  background:
+    radial-gradient(circle at 10% 0%, rgb(0 229 255 / 8%), transparent 24rem),
+    radial-gradient(circle at 90% 18%, rgb(155 98 255 / 8%), transparent 28rem), #020305;
+}
+
+.stepRail,
+.desktopHeader,
+.mobileHeader,
+.contextPanel,
+.statePanel,
+.optionCard,
+.crewCard,
+.skipCard,
+.benefitGrid article,
+.summaryGrid article {
+  border-color: var(--vz-ref-line);
+  background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-md);
+}
+
+.brandMark {
+  color: #020305;
+  background: var(--vz-ref-green);
+  border-color: var(--vz-ref-green-soft);
+  box-shadow: var(--vz-shadow-glow-green);
+  clip-path: var(--vz-ref-cut-sm);
+}
+
+.brandCopy strong {
+  color: transparent;
+  background: var(--vz-gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.railStep,
+.optionCard,
+.crewCard,
+.skipCard {
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-sm);
+}
+
+.railStepActive,
+.optionCardSelected,
+.crewCardSelected,
+.skipCardSelected {
+  color: var(--vz-ref-white);
+  border-color: var(--vz-ref-green);
+  background: rgb(0 255 135 / 7%);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.railStepActive .railNumber,
+.optionCardSelected .optionCheck,
+.crewCardSelected .optionCheck {
+  color: #020305;
+  border-color: var(--vz-ref-green);
+  background: var(--vz-ref-green);
+}
+
+.optionIcon,
+.crewLogo {
+  color: var(--vz-ref-cyan);
+  border-color: rgb(0 229 255 / 48%);
+  background: rgb(0 229 255 / 5%);
+  border-radius: 50%;
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+
+.crewGrid {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+
+.primaryButton {
+  color: #020305;
+  background: var(--vz-ref-green);
+  border-color: var(--vz-ref-green-soft);
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-sm);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+/* VERZUS REFERENCE_LOCK_ONBOARDING END */

@@ -315,3 +315,58 @@
   color: #a7a4ba;
 }
 /* VERZUS RETRO_BUTTONS END */
+
+/* VERZUS REFERENCE_LOCK_BUTTON START */
+.button {
+  min-height: 2.75rem;
+  border-width: 1px;
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-sm);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.105em;
+  text-transform: uppercase;
+}
+
+.button::before {
+  background: linear-gradient(110deg, transparent 18%, rgb(255 255 255 / 20%) 48%, transparent 72%);
+  transform: translateX(-135%);
+}
+
+.button:hover:not(:disabled)::before {
+  transform: translateX(135%);
+  transition: transform 420ms ease;
+}
+
+.primary {
+  color: #020305;
+  background: var(--vz-ref-green);
+  border-color: var(--vz-ref-green-soft);
+  box-shadow: 0 0 1.1rem rgb(0 255 135 / 16%);
+}
+
+.primary:hover:not(:disabled) {
+  color: #020305;
+  background: var(--vz-ref-green-soft);
+  border-color: white;
+  box-shadow: 0 0 1.5rem rgb(0 255 135 / 28%);
+}
+
+.secondary,
+.accent {
+  color: var(--vz-ref-cyan);
+  background: rgb(0 229 255 / 4%);
+  border-color: rgb(0 229 255 / 58%);
+}
+
+.danger {
+  color: var(--vz-ref-red);
+  background: rgb(255 59 48 / 5%);
+  border-color: rgb(255 59 48 / 68%);
+}
+
+.ghost {
+  color: #aaa6bd;
+  border-color: var(--vz-ref-line);
+}
+/* VERZUS REFERENCE_LOCK_BUTTON END */

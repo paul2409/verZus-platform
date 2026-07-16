@@ -216,3 +216,34 @@
   text-transform: uppercase;
 }
 /* VERZUS RETRO_MATCHES END */
+
+/* VERZUS REFERENCE_LOCK_FEATURE_CARD START */
+.card,
+.root,
+.frame,
+.container,
+.article {
+  border-color: var(--vz-ref-line);
+  background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-md);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 3%),
+    0 1rem 2.25rem rgb(0 0 0 / 28%);
+}
+
+.card:hover,
+.root:hover,
+.article:hover {
+  border-color: rgb(0 229 255 / 46%);
+  transform: translateY(-2px);
+}
+
+.title,
+.heading,
+.eyebrow {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* VERZUS REFERENCE_LOCK_FEATURE_CARD END */

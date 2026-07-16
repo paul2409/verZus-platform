@@ -409,3 +409,16 @@
   box-shadow: var(--vz-shadow-glow-green);
 }
 /* VERZUS RETRO_AVATARS END */
+
+/* VERZUS REFERENCE_LOCK_AVATAR START */
+.root,
+.avatar {
+  border-color: color-mix(in srgb, var(--vz-avatar-tone, var(--vz-ref-green)) 70%, white);
+  box-shadow: 0 0 1rem
+    color-mix(in srgb, var(--vz-avatar-tone, var(--vz-ref-green)) 24%, transparent);
+}
+
+.presenceIndicator {
+  border-color: var(--vz-ref-black);
+}
+/* VERZUS REFERENCE_LOCK_AVATAR END */

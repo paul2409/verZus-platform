@@ -471,3 +471,53 @@
   box-shadow: var(--vz-shadow-glow-green);
 }
 /* VERZUS RETRO_BOTTOM_NAV END */
+
+/* VERZUS REFERENCE_LOCK_BOTTOM_NAV START */
+.frame {
+  background:
+    linear-gradient(90deg, transparent, rgb(155 98 255 / 44%), transparent) top / 100% 1px no-repeat,
+    rgb(4 5 9 / 98%);
+  border-color: var(--vz-ref-line);
+  box-shadow: 0 -1rem 2.5rem rgb(0 0 0 / 48%);
+}
+
+.action {
+  color: #807d96;
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-xs);
+}
+
+.action:hover {
+  color: var(--vz-ref-cyan);
+  background: rgb(0 229 255 / 5%);
+}
+
+.current {
+  color: var(--vz-ref-green);
+}
+
+.current .action {
+  color: var(--vz-ref-green);
+  background: linear-gradient(180deg, rgb(0 255 135 / 11%), transparent);
+  border-color: rgb(0 255 135 / 42%);
+}
+
+.current .activeRail {
+  background: var(--vz-ref-green);
+  box-shadow: 0 0 0.9rem rgb(0 255 135 / 50%);
+}
+
+.prominent .iconWrap {
+  color: #020305;
+  background: var(--vz-ref-green);
+  border-color: var(--vz-ref-green-soft);
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-sm);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.partialMarker {
+  background: var(--vz-ref-magenta);
+  border-color: var(--vz-ref-black);
+}
+/* VERZUS REFERENCE_LOCK_BOTTOM_NAV END */

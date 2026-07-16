@@ -375,3 +375,26 @@
   clip-path: var(--vz-retro-cut-sm);
 }
 /* VERZUS RETRO_AUTH_FORMS END */
+
+/* VERZUS REFERENCE_LOCK_AUTH_FORMS START */
+.form,
+.formCard,
+.fieldset {
+  border-color: var(--vz-ref-line);
+  background: rgb(7 8 13 / 96%);
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-md);
+}
+
+.submitButton,
+.primaryAction {
+  color: #020305;
+  background: var(--vz-ref-green);
+  border-color: var(--vz-ref-green-soft);
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-sm);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+/* VERZUS REFERENCE_LOCK_AUTH_FORMS END */

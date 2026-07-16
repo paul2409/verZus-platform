@@ -1,3 +1,5 @@
+import "@fontsource/rajdhani/400.css";
+import "@fontsource/rajdhani/300.css";
 import "@fontsource-variable/inter";
 import "@fontsource/rajdhani/500.css";
 import "@fontsource/rajdhani/600.css";
@@ -9,8 +11,9 @@ import type { ReactNode } from "react";
 import { AppProviders } from "./providers";
 
 import "@/styles/globals.css";
-import "@/styles/verzus-retro-system.css";
+import "@/styles/verzus-reference-lock.css";
 
+import "@/styles/verzus-font-reference.css";
 export const metadata: Metadata = {
   title: {
     default: "VERZUS",
@@ -32,7 +35,7 @@ type RootLayoutProps = Readonly<{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" data-theme="retro-competitive">
+    <html lang="en" data-theme="verzus-reference">
       <body>
         <AppProviders>{children}</AppProviders>
       </body>

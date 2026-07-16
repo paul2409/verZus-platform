@@ -310,3 +310,33 @@
   border-color: rgb(0 229 255 / 34%);
 }
 /* VERZUS RETRO_OVERLAY END */
+
+/* VERZUS REFERENCE_LOCK_OVERLAY START */
+.backdrop {
+  background: rgb(1 2 4 / 82%);
+  backdrop-filter: blur(10px);
+}
+
+.dialog,
+.drawer,
+.popoverContent {
+  border-color: var(--vz-ref-line-strong);
+  background: linear-gradient(180deg, rgb(14 16 24 / 99%), rgb(4 5 8 / 99%));
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-md);
+  box-shadow:
+    0 2rem 5rem rgb(0 0 0 / 58%),
+    var(--vz-shadow-glow-purple);
+}
+
+.dialogTitle {
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.dialogClose {
+  color: var(--vz-ref-red);
+  border-color: rgb(255 59 48 / 44%);
+  border-radius: 0;
+}
+/* VERZUS REFERENCE_LOCK_OVERLAY END */

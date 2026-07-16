@@ -1,0 +1,286 @@
+/*
+ * VERZUS REFERENCE TYPOGRAPHY
+ * ================================================================
+ * This is the single file to edit when tuning the platform fonts.
+ *
+ * Visual target:
+ * - Rajdhani: compressed competitive display and interface text
+ * - Inter Variable: readable descriptions, inputs and long copy
+ *
+ * The VERZUS logo in the references is custom artwork, not a normal
+ * typeface. The editable wordmark treatment below is the closest
+ * text-based implementation and can later be replaced by an SVG logo.
+ */
+
+/* ================================================================
+   1. EDITABLE FONT SETTINGS
+   ================================================================ */
+
+:root {
+  /* Font families */
+  --vz-font-display: "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
+  --vz-font-interface: "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
+  --vz-font-body:
+    "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --vz-font-numeric: "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
+  --vz-font-brand: "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
+
+  /* Main display sizes */
+  --vz-reference-display-xl: clamp(2.65rem, 5vw, 5.5rem);
+  --vz-reference-display-lg: clamp(2.1rem, 3.5vw, 4rem);
+  --vz-reference-heading-lg: clamp(1.55rem, 2.2vw, 2.35rem);
+  --vz-reference-heading-md: clamp(1.25rem, 1.6vw, 1.75rem);
+  --vz-reference-heading-sm: clamp(1rem, 1.2vw, 1.25rem);
+
+  /* Interface sizes */
+  --vz-reference-ui-lg: 1rem;
+  --vz-reference-ui-md: 0.875rem;
+  --vz-reference-ui-sm: 0.75rem;
+  --vz-reference-label: 0.6875rem;
+  --vz-reference-caption: 0.6875rem;
+
+  /* Weight controls */
+  --vz-reference-display-weight: 700;
+  --vz-reference-heading-weight: 600;
+  --vz-reference-ui-weight: 600;
+  --vz-reference-label-weight: 600;
+  --vz-reference-body-weight: 450;
+  --vz-reference-number-weight: 600;
+
+  /* Tracking controls */
+  --vz-reference-display-tracking: 0.045em;
+  --vz-reference-heading-tracking: 0.075em;
+  --vz-reference-ui-tracking: 0.055em;
+  --vz-reference-label-tracking: 0.15em;
+  --vz-reference-number-tracking: 0.035em;
+
+  /* Wordmark */
+  --vz-reference-wordmark-size: clamp(1.55rem, 2vw, 2.25rem);
+  --vz-reference-wordmark-tracking: 0.12em;
+}
+
+/* ================================================================
+   2. DOCUMENT DEFAULTS
+   ================================================================ */
+
+[data-theme="retro-competitive"] body {
+  font-family: var(--vz-font-body);
+  font-optical-sizing: auto;
+  font-synthesis: none;
+}
+
+/* ================================================================
+   3. DISPLAY AND HEADINGS
+   ================================================================ */
+
+[data-theme="retro-competitive"]
+  :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .vz-display-xl,
+    .vz-display-lg,
+    .vz-heading-lg,
+    .vz-heading-md,
+    .vz-heading-sm,
+    [data-font-role="display"]
+  ) {
+  font-family: var(--vz-font-display);
+  font-synthesis: none;
+  text-transform: uppercase;
+}
+
+[data-theme="retro-competitive"] :is(h1, .vz-display-xl) {
+  font-size: var(--vz-reference-display-xl);
+  font-weight: var(--vz-reference-display-weight);
+  line-height: 0.88;
+  letter-spacing: var(--vz-reference-display-tracking);
+}
+
+[data-theme="retro-competitive"] :is(.vz-display-lg) {
+  font-size: var(--vz-reference-display-lg);
+  font-weight: var(--vz-reference-display-weight);
+  line-height: 0.92;
+  letter-spacing: var(--vz-reference-display-tracking);
+}
+
+[data-theme="retro-competitive"] :is(h2, .vz-heading-lg) {
+  font-size: var(--vz-reference-heading-lg);
+  font-weight: var(--vz-reference-heading-weight);
+  line-height: 0.98;
+  letter-spacing: var(--vz-reference-heading-tracking);
+}
+
+[data-theme="retro-competitive"] :is(h3, .vz-heading-md) {
+  font-size: var(--vz-reference-heading-md);
+  font-weight: var(--vz-reference-heading-weight);
+  line-height: 1;
+  letter-spacing: var(--vz-reference-heading-tracking);
+}
+
+[data-theme="retro-competitive"] :is(h4, h5, h6, .vz-heading-sm) {
+  font-size: var(--vz-reference-heading-sm);
+  font-weight: var(--vz-reference-heading-weight);
+  line-height: 1.05;
+  letter-spacing: var(--vz-reference-heading-tracking);
+}
+
+/* ================================================================
+   4. INTERFACE TEXT
+   ================================================================ */
+
+[data-theme="retro-competitive"]
+  :is(
+    button,
+    [role="button"],
+    [role="tab"],
+    nav a,
+    label,
+    legend,
+    th,
+    summary,
+    .vz-label,
+    .vz-label-cap,
+    .vz-eyebrow
+  ) {
+  font-family: var(--vz-font-interface);
+  font-weight: var(--vz-reference-ui-weight);
+  letter-spacing: var(--vz-reference-ui-tracking);
+  font-synthesis: none;
+}
+
+[data-theme="retro-competitive"] :is(button, [role="button"], [role="tab"], nav a, th) {
+  text-transform: uppercase;
+}
+
+[data-theme="retro-competitive"] :is(.vz-label, .vz-label-cap, .vz-eyebrow, legend) {
+  font-size: var(--vz-reference-label);
+  font-weight: var(--vz-reference-label-weight);
+  letter-spacing: var(--vz-reference-label-tracking);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+/* ================================================================
+   5. BODY COPY AND FORM VALUES
+   ================================================================ */
+
+[data-theme="retro-competitive"]
+  :is(
+    p,
+    li,
+    dd,
+    input,
+    textarea,
+    select,
+    option,
+    .vz-body-lg,
+    .vz-body-md,
+    .vz-body-sm,
+    .vz-caption,
+    [data-font-role="body"]
+  ) {
+  font-family: var(--vz-font-body);
+  font-synthesis: none;
+}
+
+[data-theme="retro-competitive"] :is(p, li, dd) {
+  font-weight: var(--vz-reference-body-weight);
+}
+
+[data-theme="retro-competitive"] :is(input, textarea, select, option) {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* ================================================================
+   6. TABLES, SCORES AND NUMBERS
+   ================================================================ */
+
+[data-theme="retro-competitive"]
+  :is(
+    td,
+    time,
+    output,
+    progress,
+    [data-numeric],
+    [data-font-role="numeric"],
+    .vz-numeric,
+    .vz-numeric-lg,
+    .vz-numeric-md,
+    .vz-numeric-sm
+  ) {
+  font-family: var(--vz-font-numeric);
+  font-weight: var(--vz-reference-number-weight);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings:
+    "tnum" 1,
+    "lnum" 1,
+    "zero" 1;
+  letter-spacing: var(--vz-reference-number-tracking);
+  font-synthesis: none;
+}
+
+[data-theme="retro-competitive"] th {
+  font-size: var(--vz-reference-label);
+  letter-spacing: var(--vz-reference-label-tracking);
+}
+
+[data-theme="retro-competitive"] td {
+  font-size: var(--vz-reference-ui-md);
+}
+
+/* ================================================================
+   7. EDITABLE TEXT WORDMARK
+   ================================================================ */
+
+[data-theme="retro-competitive"]
+  :is([aria-label="VERZUS home"] > span:last-child, [data-verzus-wordmark], .vz-wordmark) {
+  display: inline-block;
+  color: transparent;
+  background: linear-gradient(90deg, #00e5ff 0%, #f7fbff 44%, #c276ff 76%, #7f4dff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-family: var(--vz-font-brand);
+  font-size: var(--vz-reference-wordmark-size);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: var(--vz-reference-wordmark-tracking);
+  text-transform: uppercase;
+  text-shadow:
+    -1px 0 rgb(0 229 255 / 28%),
+    1px 0 rgb(194 118 255 / 26%);
+}
+
+/* ================================================================
+   8. MOBILE TUNING
+   ================================================================ */
+
+@media (max-width: 47.99rem) {
+  :root {
+    --vz-reference-display-xl: clamp(2.15rem, 11vw, 3.5rem);
+    --vz-reference-display-lg: clamp(1.8rem, 8vw, 2.75rem);
+    --vz-reference-heading-lg: clamp(1.35rem, 6vw, 1.9rem);
+    --vz-reference-heading-md: clamp(1.1rem, 4.8vw, 1.45rem);
+    --vz-reference-wordmark-size: clamp(1.35rem, 6vw, 1.8rem);
+  }
+
+  [data-theme="retro-competitive"] td {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ================================================================
+   9. ACCESSIBILITY
+   ================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="retro-competitive"] * {
+    font-kerning: normal;
+  }
+}

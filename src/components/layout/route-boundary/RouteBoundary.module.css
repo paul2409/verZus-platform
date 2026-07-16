@@ -305,3 +305,30 @@
   border-color: rgb(0 229 255 / 54%);
 }
 /* VERZUS RETRO_ROUTE_BOUNDARY END */
+
+/* VERZUS REFERENCE_LOCK_ROUTE_BOUNDARY START */
+.root {
+  border-color: var(--vz-ref-line);
+  background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-md);
+}
+
+.root[data-kind="loading"] {
+  border-color: rgb(0 229 255 / 46%);
+}
+
+.root[data-kind="error"],
+.root[data-kind="forbidden"] {
+  border-color: rgb(255 59 48 / 58%);
+}
+
+.root[data-kind="not-found"],
+.root[data-kind="maintenance"] {
+  border-color: rgb(155 98 255 / 50%);
+}
+
+.root[data-kind="offline"] {
+  border-color: rgb(255 194 71 / 54%);
+}
+/* VERZUS REFERENCE_LOCK_ROUTE_BOUNDARY END */

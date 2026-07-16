@@ -825,3 +825,60 @@
   text-transform: uppercase;
 }
 /* VERZUS RETRO_CARDS END */
+
+/* VERZUS REFERENCE_LOCK_CARD START */
+.card {
+  --vz-card-accent: var(--vz-ref-violet);
+  filter: none;
+}
+
+.outerFrame {
+  background:
+    linear-gradient(
+      135deg,
+      var(--vz-card-accent),
+      transparent 16%,
+      transparent 84%,
+      var(--vz-card-rarity-color)
+    ),
+    #090a10;
+  box-shadow:
+    0 0 0 1px rgb(155 98 255 / 12%),
+    0 1.2rem 2.5rem rgb(0 0 0 / 35%);
+}
+
+.innerFrame {
+  background: linear-gradient(145deg, rgb(255 255 255 / 5%), transparent 20%), #050609;
+}
+
+.cardSurface {
+  background: linear-gradient(180deg, rgb(14 16 24 / 98%), rgb(6 7 11 / 98%));
+  border-color: color-mix(in srgb, var(--vz-card-accent) 35%, var(--vz-ref-line));
+}
+
+.card[data-interactive="true"]:hover,
+.interactive:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.tonePrimary {
+  --vz-card-accent: var(--vz-ref-green);
+}
+
+.toneSecondary {
+  --vz-card-accent: var(--vz-ref-cyan);
+}
+
+.toneAccent {
+  --vz-card-accent: var(--vz-ref-violet);
+}
+
+.toneWarning {
+  --vz-card-accent: var(--vz-ref-gold);
+}
+
+.toneDanger {
+  --vz-card-accent: var(--vz-ref-red);
+}
+/* VERZUS REFERENCE_LOCK_CARD END */

@@ -275,3 +275,14 @@
   border-color: rgb(0 229 255 / 54%);
 }
 /* VERZUS RETRO_WIDGET_BOUNDARY END */
+
+/* VERZUS REFERENCE_LOCK_WIDGET_BOUNDARY START */
+.root,
+.boundary,
+.fallback {
+  border-color: var(--vz-ref-line);
+  background: rgb(7 8 13 / 96%);
+  border-radius: 0;
+  clip-path: var(--vz-ref-cut-sm);
+}
+/* VERZUS REFERENCE_LOCK_WIDGET_BOUNDARY END */

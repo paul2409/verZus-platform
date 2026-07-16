@@ -1,0 +1,268 @@
+/*
+ * VERZUS REFERENCE-LOCKED VISUAL SYSTEM
+ * Authority: approved Rankings mobile references, M2 visual-language board,
+ * and Crew Icon Selector reference.
+ *
+ * Visual rules:
+ * - near-black canvas and panels
+ * - cyan-to-violet brand identity
+ * - neon green primary actions/current player/success
+ * - cyan information, violet category/rank, gold leadership/reward
+ * - red danger/loss/live urgency
+ * - magenta only for notification dots and rare reward signals
+ * - clipped HUD corners, no soft SaaS rounding
+ */
+
+:root,
+html[data-theme="verzus-reference"] {
+  color-scheme: dark;
+
+  --vz-ref-black: #020305;
+  --vz-ref-black-2: #05060a;
+  --vz-ref-surface: #090a10;
+  --vz-ref-surface-2: #0e1018;
+  --vz-ref-surface-3: #141620;
+  --vz-ref-line: #2b2540;
+  --vz-ref-line-strong: #4a3b70;
+  --vz-ref-white: #f7f8fb;
+  --vz-ref-muted: #9693aa;
+  --vz-ref-muted-2: #69677b;
+  --vz-ref-green: #00ff87;
+  --vz-ref-green-soft: #49ffad;
+  --vz-ref-cyan: #00e5ff;
+  --vz-ref-cyan-soft: #63efff;
+  --vz-ref-violet: #9b62ff;
+  --vz-ref-violet-soft: #c0a1ff;
+  --vz-ref-blue: #4a9eff;
+  --vz-ref-gold: #ffc247;
+  --vz-ref-orange: #ff8a1f;
+  --vz-ref-red: #ff3b30;
+  --vz-ref-magenta: #ff2d87;
+
+  --vz-retro-black: var(--vz-ref-black);
+  --vz-retro-black-soft: var(--vz-ref-black-2);
+  --vz-retro-surface: var(--vz-ref-surface);
+  --vz-retro-surface-2: var(--vz-ref-surface-2);
+  --vz-retro-surface-3: var(--vz-ref-surface-3);
+  --vz-retro-line: var(--vz-ref-line);
+  --vz-retro-green: var(--vz-ref-green);
+  --vz-retro-green-bright: var(--vz-ref-green-soft);
+  --vz-retro-cyan: var(--vz-ref-cyan);
+  --vz-retro-purple: var(--vz-ref-violet);
+  --vz-retro-blue: var(--vz-ref-blue);
+  --vz-retro-orange: var(--vz-ref-orange);
+  --vz-retro-gold: var(--vz-ref-gold);
+  --vz-retro-red: var(--vz-ref-red);
+  --vz-retro-pink: var(--vz-ref-magenta);
+  --vz-retro-white: var(--vz-ref-white);
+  --vz-retro-muted: var(--vz-ref-muted);
+
+  --vz-color-background-deep: var(--vz-ref-black);
+  --vz-color-background: var(--vz-ref-black);
+  --vz-color-background-elevated: var(--vz-ref-black-2);
+  --vz-color-background-muted: var(--vz-ref-surface);
+  --vz-color-surface-base: var(--vz-ref-surface);
+  --vz-color-surface-elevated: var(--vz-ref-surface-2);
+  --vz-color-surface-interactive: var(--vz-ref-surface-3);
+  --vz-color-panel: rgb(7 8 13 / 97%);
+  --vz-color-panel-muted: rgb(12 13 20 / 96%);
+  --vz-color-panel-hover: rgb(16 18 27 / 98%);
+  --vz-color-panel-active: rgb(0 255 135 / 8%);
+
+  --vz-color-text-primary: var(--vz-ref-white);
+  --vz-color-text-secondary: #b7b4c8;
+  --vz-color-text-tertiary: var(--vz-ref-muted);
+  --vz-color-text-muted: var(--vz-ref-muted-2);
+  --vz-color-text-brand: var(--vz-ref-green);
+  --vz-color-text-link: var(--vz-ref-cyan);
+  --vz-color-text-inverse: #020305;
+
+  --vz-color-action-primary: var(--vz-ref-green);
+  --vz-color-action-primary-hover: var(--vz-ref-green-soft);
+  --vz-color-action-primary-active: #00d970;
+  --vz-color-action-secondary: var(--vz-ref-cyan);
+  --vz-color-action-secondary-hover: var(--vz-ref-cyan-soft);
+  --vz-color-success: var(--vz-ref-green);
+  --vz-color-info: var(--vz-ref-cyan);
+  --vz-color-warning: var(--vz-ref-gold);
+  --vz-color-danger: var(--vz-ref-red);
+  --vz-color-status-live: var(--vz-ref-red);
+
+  --vz-color-border-subtle: rgb(155 98 255 / 15%);
+  --vz-color-border-default: var(--vz-ref-line);
+  --vz-color-border-strong: var(--vz-ref-line-strong);
+  --vz-color-border-active: var(--vz-ref-green);
+  --vz-color-border-information: var(--vz-ref-cyan);
+  --vz-color-border-warning: var(--vz-ref-gold);
+  --vz-color-border-danger: var(--vz-ref-red);
+  --vz-color-focus-ring: var(--vz-ref-green);
+  --vz-color-focus-ring-secondary: var(--vz-ref-cyan);
+
+  --vz-gradient-brand: linear-gradient(
+    90deg,
+    var(--vz-ref-cyan),
+    #ffffff 48%,
+    var(--vz-ref-violet)
+  );
+  --vz-gradient-brand-horizontal: var(--vz-gradient-brand);
+  --vz-gradient-primary: linear-gradient(180deg, var(--vz-ref-green-soft), var(--vz-ref-green));
+
+  --vz-radius-xs: 0;
+  --vz-radius-sm: 0;
+  --vz-radius-md: 0;
+  --vz-radius-lg: 0;
+  --vz-radius-xl: 0;
+
+  --vz-shadow-focus: 0 0 0 2px rgb(0 255 135 / 25%), 0 0 22px rgb(0 255 135 / 18%);
+  --vz-shadow-glow-green: 0 0 20px rgb(0 255 135 / 18%);
+  --vz-shadow-glow-cyan: 0 0 20px rgb(0 229 255 / 16%);
+  --vz-shadow-glow-purple: 0 0 20px rgb(155 98 255 / 16%);
+  --vz-shadow-glow-gold: 0 0 20px rgb(255 194 71 / 16%);
+
+  --vz-ref-cut-xs: polygon(
+    6px 0,
+    100% 0,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    0 100%,
+    0 6px
+  );
+  --vz-ref-cut-sm: polygon(
+    9px 0,
+    100% 0,
+    100% calc(100% - 9px),
+    calc(100% - 9px) 100%,
+    0 100%,
+    0 9px
+  );
+  --vz-ref-cut-md: polygon(
+    14px 0,
+    100% 0,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    0 100%,
+    0 14px
+  );
+  --vz-ref-cut-lg: polygon(
+    22px 0,
+    100% 0,
+    100% calc(100% - 22px),
+    calc(100% - 22px) 100%,
+    0 100%,
+    0 22px
+  );
+  --vz-retro-cut-sm: var(--vz-ref-cut-sm);
+  --vz-retro-cut-md: var(--vz-ref-cut-md);
+  --vz-retro-cut-lg: var(--vz-ref-cut-lg);
+}
+
+html[data-theme="verzus-reference"] {
+  min-width: 320px;
+  background: var(--vz-ref-black);
+}
+
+html[data-theme="verzus-reference"] body {
+  min-height: 100vh;
+  color: var(--vz-ref-white);
+  background:
+    radial-gradient(circle at 12% 2%, rgb(0 229 255 / 8%), transparent 24rem),
+    radial-gradient(circle at 88% 4%, rgb(155 98 255 / 8%), transparent 26rem),
+    linear-gradient(rgb(2 3 5 / 94%), rgb(2 3 5 / 98%)), var(--vz-ref-black);
+  background-attachment: fixed;
+}
+
+html[data-theme="verzus-reference"] body::before {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgb(155 98 255 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 229 255 / 3%) 1px, transparent 1px),
+    radial-gradient(circle, rgb(255 255 255 / 12%) 0.5px, transparent 0.7px);
+  background-size:
+    32px 32px,
+    32px 32px,
+    5px 5px;
+  mask-image: linear-gradient(to bottom, black, transparent 92%);
+}
+
+html[data-theme="verzus-reference"] body::after {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.075;
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, rgb(255 255 255 / 8%) 4px);
+  mix-blend-mode: soft-light;
+}
+
+html[data-theme="verzus-reference"] h1,
+html[data-theme="verzus-reference"] h2,
+html[data-theme="verzus-reference"] h3,
+html[data-theme="verzus-reference"] h4,
+html[data-theme="verzus-reference"] [data-font-role="display"] {
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+html[data-theme="verzus-reference"] button,
+html[data-theme="verzus-reference"] input,
+html[data-theme="verzus-reference"] select,
+html[data-theme="verzus-reference"] textarea {
+  font-family: var(--vz-font-body);
+}
+
+html[data-theme="verzus-reference"] a {
+  text-underline-offset: 0.2em;
+}
+
+html[data-theme="verzus-reference"] ::selection {
+  color: #020305;
+  background: var(--vz-ref-green);
+}
+
+html[data-theme="verzus-reference"] :focus-visible {
+  outline: 2px solid var(--vz-ref-green);
+  outline-offset: 3px;
+}
+
+html[data-theme="verzus-reference"] table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+html[data-theme="verzus-reference"] th {
+  color: #aaa6c0;
+  font-family: var(--vz-font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+html[data-theme="verzus-reference"] * {
+  scrollbar-color: var(--vz-ref-violet) var(--vz-ref-black);
+}
+
+html[data-theme="verzus-reference"] *::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--vz-ref-cyan), var(--vz-ref-violet));
+  border: 2px solid var(--vz-ref-black);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="verzus-reference"] *,
+  html[data-theme="verzus-reference"] *::before,
+  html[data-theme="verzus-reference"] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

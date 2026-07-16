@@ -203,3 +203,31 @@
   box-shadow: var(--vz-shadow-glow-green);
 }
 /* VERZUS RETRO_SEGMENTED END */
+
+/* VERZUS REFERENCE_LOCK_SEGMENTED START */
+.root {
+  border-color: var(--vz-ref-line);
+  background: #050609;
+  clip-path: var(--vz-ref-cut-sm);
+}
+
+.item {
+  color: #9693aa;
+  border-color: transparent;
+  clip-path: var(--vz-ref-cut-xs);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.09em;
+}
+
+.item:hover:not(:disabled) {
+  color: var(--vz-ref-cyan);
+  background: rgb(0 229 255 / 5%);
+}
+
+.selected {
+  color: #020305;
+  background: var(--vz-ref-green);
+  border-color: var(--vz-ref-green-soft);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+/* VERZUS REFERENCE_LOCK_SEGMENTED END */
