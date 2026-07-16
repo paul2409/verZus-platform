@@ -38,8 +38,8 @@
 }
 
 .inputShell[data-invalid="true"] {
-  border-color: var(--vz-color-danger, #ff3ea5);
-  background: color-mix(in srgb, var(--vz-color-danger, #ff3ea5) 5%, rgb(0 0 0 / 30%));
+  border-color: var(--vz-color-danger, var(--vz-retro-pink));
+  background: color-mix(in srgb, var(--vz-color-danger, var(--vz-retro-pink)) 5%, rgb(0 0 0 / 30%));
 }
 
 .icon {
@@ -57,7 +57,7 @@
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 600 0.95rem/1.2 var(--vz-font-interface, sans-serif);
 }
 
@@ -80,7 +80,7 @@
   min-height: 2.75rem;
   border: 0;
   background: transparent;
-  color: var(--vz-color-information, #00e5ff);
+  color: var(--vz-color-info, var(--vz-retro-cyan));
   font: 800 0.68rem/1 var(--vz-font-interface, sans-serif);
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -90,7 +90,7 @@
 .visibilityButton:focus-visible,
 .retryButton:focus-visible,
 .submitButton:focus-visible {
-  outline: 2px solid var(--vz-color-information, #00e5ff);
+  outline: 2px solid var(--vz-color-info, var(--vz-retro-cyan));
   outline-offset: 3px;
 }
 
@@ -105,16 +105,17 @@
 }
 
 .errorText {
-  color: var(--vz-color-danger, #ff3ea5);
+  color: var(--vz-color-danger, var(--vz-retro-pink));
 }
 
 .errorSummary {
   display: grid;
   gap: 0.6rem;
   padding: 0.85rem;
-  border: 1px solid color-mix(in srgb, var(--vz-color-danger, #ff3ea5) 62%, transparent);
-  background: color-mix(in srgb, var(--vz-color-danger, #ff3ea5) 7%, transparent);
-  color: var(--vz-color-text, #f3f5f7);
+  border: 1px solid
+    color-mix(in srgb, var(--vz-color-danger, var(--vz-retro-pink)) 62%, transparent);
+  background: color-mix(in srgb, var(--vz-color-danger, var(--vz-retro-pink)) 7%, transparent);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   clip-path: polygon(
     0.55rem 0,
     100% 0,
@@ -126,7 +127,7 @@
 }
 
 .errorSummary:focus {
-  outline: 2px solid var(--vz-color-danger, #ff3ea5);
+  outline: 2px solid var(--vz-color-danger, var(--vz-retro-pink));
   outline-offset: 3px;
 }
 
@@ -154,7 +155,7 @@
   gap: 0.3rem;
   margin: 0;
   padding-left: 1.1rem;
-  color: var(--vz-color-danger, #ff3ea5);
+  color: var(--vz-color-danger, var(--vz-retro-pink));
   font: 500 0.78rem/1.4 var(--vz-font-interface, sans-serif);
 }
 
@@ -169,9 +170,10 @@
   min-height: 2.75rem;
   justify-self: start;
   padding: 0.7rem 0.9rem;
-  border: 1px solid color-mix(in srgb, var(--vz-color-danger, #ff3ea5) 62%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--vz-color-danger, var(--vz-retro-pink)) 62%, transparent);
   background: transparent;
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 800 0.72rem/1 var(--vz-font-interface, sans-serif);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -194,10 +196,10 @@
   border: 1px solid var(--auth-accent);
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, var(--auth-accent) 86%, #fff 14%),
+    color-mix(in srgb, var(--auth-accent) 86%, var(--vz-retro-white) 14%),
     var(--auth-accent)
   );
-  color: #031008;
+  color: var(--vz-retro-black-soft);
   box-shadow: 0 0 1.5rem color-mix(in srgb, var(--auth-accent) 20%, transparent);
   font: 900 0.95rem/1 var(--vz-font-display, sans-serif);
   letter-spacing: 0.09em;
@@ -230,15 +232,15 @@
 }
 
 .statusMessage {
-  color: var(--vz-color-information, #00e5ff);
+  color: var(--vz-color-info, var(--vz-retro-cyan));
 }
 
 .rateLimitMessage {
-  color: var(--vz-color-warning, #ffc400);
+  color: var(--vz-color-warning, var(--vz-retro-orange));
 }
 
 .successMessage {
-  color: var(--vz-color-primary, #39ff14);
+  color: var(--vz-color-action-primary, var(--vz-retro-green));
 }
 
 .checkboxRow {
@@ -279,7 +281,7 @@
   border: 1px solid var(--auth-border);
   outline: 0;
   background: rgb(0 0 0 / 34%);
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 800 1.2rem/1 var(--vz-font-numeric, monospace);
   text-align: center;
   clip-path: polygon(
@@ -293,7 +295,7 @@
 }
 
 .codeInput[data-invalid="true"] {
-  border-color: var(--vz-color-danger, #ff3ea5);
+  border-color: var(--vz-color-danger, var(--vz-retro-pink));
 }
 
 .codeInput:focus-visible {
@@ -355,7 +357,7 @@
 .rateLimitMessage,
 .successMessage {
   border-color: var(--vz-retro-line);
-  background: #050609;
+  background: var(--vz-retro-black-soft);
   clip-path: var(--vz-retro-cut-sm);
 }
 .input:focus-visible,
@@ -364,7 +366,7 @@
   box-shadow: var(--vz-shadow-focus);
 }
 .submitButton {
-  color: #020305;
+  color: var(--vz-retro-black);
   border-color: var(--vz-retro-green);
   background: var(--vz-retro-green);
   clip-path: var(--vz-retro-cut-sm);
@@ -388,7 +390,7 @@
 
 .submitButton,
 .primaryAction {
-  color: #020305;
+  color: var(--vz-retro-black);
   background: var(--vz-ref-green);
   border-color: var(--vz-ref-green-soft);
   border-radius: 0;
@@ -405,8 +407,8 @@
 .codeInput,
 .passwordRules,
 .errorSummary {
-  border-radius: var(--vz-radius-control);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--vz-color-panel-elevated) 72%, transparent);
   clip-path: none;
 }
 
@@ -419,20 +421,20 @@
 }
 
 .input {
-  color: var(--vz-color-text-primary);
+  color: var(--vz-color-text-primary-primary);
 }
 
 .submitButton {
   border-color: var(--auth-accent);
   background: var(--auth-accent);
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   box-shadow: none;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .retryButton {
-  border-color: var(--vz-color-status-danger);
-  color: var(--vz-color-status-danger);
+  border-color: var(--vz-color-danger);
+  color: var(--vz-color-danger);
 }
 
 .input:focus-visible,
@@ -440,7 +442,7 @@
 .retryButton:focus-visible,
 .submitButton:focus-visible,
 .codeInput:focus-visible {
-  outline-color: var(--vz-color-accent-cyan);
+  outline-color: var(--vz-retro-cyan);
 }
 
 /* VERZUS STAGE 5 AUTH FORMS:END */

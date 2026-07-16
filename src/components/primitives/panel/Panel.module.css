@@ -1,5 +1,5 @@
 .panel {
-  --vz-panel-accent: var(--vz-surface-accent-silver, #c7d0d6);
+  --vz-panel-accent: var(--vz-surface-accent-silver, var(--vz-retro-white));
   --vz-panel-shape: var(--vz-shape-panel);
   --vz-panel-content-padding: var(--vz-space-5);
   --vz-panel-content-gap: var(--vz-space-4);
@@ -60,10 +60,10 @@
   background:
     linear-gradient(
       145deg,
-      rgb(255 255 255 / 9%),
+      color-mix(in srgb, var(--vz-retro-white) 9%, transparent),
       transparent 17%,
       transparent 83%,
-      rgb(0 0 0 / 68%)
+      color-mix(in srgb, var(--vz-retro-black) 68%, transparent)
     ),
     var(--vz-panel-frame-inner);
   clip-path: var(--vz-panel-shape);
@@ -88,7 +88,7 @@
   box-shadow:
     inset 0 1px 0 var(--vz-panel-frame-highlight),
     inset 0 0 0 1px var(--vz-panel-frame-shadow-line),
-    inset 0 0 4rem rgb(0 0 0 / 22%);
+    inset 0 0 4rem color-mix(in srgb, var(--vz-retro-black) 22%, transparent);
 }
 
 .railTop,
@@ -222,7 +222,7 @@
    ================================================================== */
 
 .elevationFlat {
-  --vz-panel-current-shadow: 0 0 0 1px rgb(255 255 255 / 3%);
+  --vz-panel-current-shadow: 0 0 0 1px color-mix(in srgb, var(--vz-retro-white) 3%, transparent);
 }
 
 .elevationRaised {
@@ -231,7 +231,8 @@
 
 .elevationFloating {
   --vz-panel-current-shadow:
-    0 2rem 4.5rem rgb(0 0 0 / 58%), 0 0.5rem 1.25rem rgb(0 0 0 / 74%),
+    0 2rem 4.5rem color-mix(in srgb, var(--vz-retro-black) 58%, transparent),
+    0 0.5rem 1.25rem color-mix(in srgb, var(--vz-retro-black) 74%, transparent),
     0 0 2rem color-mix(in srgb, var(--vz-panel-accent) 10%, transparent);
 }
 
@@ -315,7 +316,7 @@
   line-height: 1.02;
   text-transform: uppercase;
   text-shadow:
-    0 1px 0 rgb(0 0 0 / 92%),
+    0 1px 0 color-mix(in srgb, var(--vz-retro-black) 92%, transparent),
     0 0 1.25rem color-mix(in srgb, var(--vz-panel-accent) 14%, transparent);
 }
 
@@ -409,8 +410,8 @@
   border: 1px solid var(--vz-module-state-border);
   clip-path: var(--vz-shape-card-compact);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 5%),
-    inset 0 0 0 1px rgb(0 0 0 / 48%);
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 5%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--vz-retro-black) 48%, transparent);
   transition: var(--vz-trading-surface-transition);
 }
 
@@ -467,9 +468,9 @@
 .moduleInteractive:hover {
   border-color: color-mix(in srgb, var(--vz-module-accent) 68%, var(--vz-module-border));
   box-shadow:
-    0 0.75rem 1.75rem rgb(0 0 0 / 28%),
+    0 0.75rem 1.75rem color-mix(in srgb, var(--vz-retro-black) 28%, transparent),
     0 0 1.25rem color-mix(in srgb, var(--vz-module-accent) 12%, transparent),
-    inset 0 1px 0 rgb(255 255 255 / 7%);
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 7%, transparent);
   transform: translateY(-0.125rem);
 }
 
@@ -483,7 +484,7 @@
   box-shadow:
     0 0 0 1px var(--vz-module-accent),
     0 0 1.5rem color-mix(in srgb, var(--vz-module-accent) 22%, transparent),
-    inset 0 1px 0 rgb(255 255 255 / 7%);
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 7%, transparent);
 }
 
 /* ==================================================================
@@ -497,20 +498,20 @@
 .moduleStateLoading,
 .moduleStateRetrying {
   --vz-module-accent: var(--vz-surface-accent-cyan);
-  --vz-module-state-border: rgb(0 229 255 / 42%);
-  --vz-module-state-background: rgb(0 229 255 / 5%);
+  --vz-module-state-border: color-mix(in srgb, var(--vz-retro-cyan) 42%, transparent);
+  --vz-module-state-background: color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent);
 }
 
 .moduleStateSuccess {
   --vz-module-accent: var(--vz-surface-accent-green);
-  --vz-module-state-border: rgb(0 255 135 / 42%);
-  --vz-module-state-background: rgb(0 255 135 / 4%);
+  --vz-module-state-border: color-mix(in srgb, var(--vz-retro-green) 42%, transparent);
+  --vz-module-state-background: color-mix(in srgb, var(--vz-retro-green) 4%, transparent);
 }
 
 .moduleStateEmpty {
   --vz-module-accent: var(--vz-surface-accent-silver);
-  --vz-module-state-border: rgb(199 208 214 / 26%);
-  --vz-module-state-background: rgb(199 208 214 / 3%);
+  --vz-module-state-border: color-mix(in srgb, var(--vz-retro-white) 26%, transparent);
+  --vz-module-state-background: color-mix(in srgb, var(--vz-retro-white) 3%, transparent);
 }
 
 .moduleStateStale {
@@ -529,26 +530,26 @@
 
 .moduleStateOffline {
   --vz-module-accent: var(--vz-surface-accent-silver);
-  --vz-module-state-border: rgb(199 208 214 / 38%);
-  --vz-module-state-background: rgb(199 208 214 / 4%);
+  --vz-module-state-border: color-mix(in srgb, var(--vz-retro-white) 38%, transparent);
+  --vz-module-state-background: color-mix(in srgb, var(--vz-retro-white) 4%, transparent);
 }
 
 .moduleStateNotFound {
   --vz-module-accent: var(--vz-surface-accent-violet);
-  --vz-module-state-border: rgb(138 79 255 / 46%);
-  --vz-module-state-background: rgb(138 79 255 / 5%);
+  --vz-module-state-border: color-mix(in srgb, var(--vz-retro-purple) 46%, transparent);
+  --vz-module-state-background: color-mix(in srgb, var(--vz-retro-purple) 5%, transparent);
 }
 
 .moduleStateMaintenance {
   --vz-module-accent: var(--vz-surface-accent-gold);
-  --vz-module-state-border: rgb(255 194 71 / 48%);
-  --vz-module-state-background: rgb(255 194 71 / 5%);
+  --vz-module-state-border: color-mix(in srgb, var(--vz-retro-gold) 48%, transparent);
+  --vz-module-state-background: color-mix(in srgb, var(--vz-retro-gold) 5%, transparent);
 }
 
 .moduleStatePartialFailure {
   --vz-module-accent: var(--vz-surface-accent-magenta);
-  --vz-module-state-border: rgb(255 79 216 / 48%);
-  --vz-module-state-background: rgb(255 79 216 / 5%);
+  --vz-module-state-border: color-mix(in srgb, var(--vz-retro-pink) 48%, transparent);
+  --vz-module-state-background: color-mix(in srgb, var(--vz-retro-pink) 5%, transparent);
 }
 
 .moduleStateLoading::before,
@@ -610,7 +611,7 @@
   flex: 0 0 auto;
   content: "";
   background: currentColor;
-  border-radius: 50%;
+  border-radius: 0;
   box-shadow: 0 0 0.5rem currentColor;
 }
 
@@ -824,8 +825,16 @@
 .module {
   border-color: var(--vz-retro-line);
   background:
-    linear-gradient(135deg, rgb(0 255 135 / 2%), transparent 34%),
-    linear-gradient(180deg, rgb(11 13 19 / 98%), rgb(5 6 10 / 98%));
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--vz-retro-green) 2%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--vz-retro-surface) 98%, transparent),
+      color-mix(in srgb, var(--vz-retro-black-soft) 98%, transparent)
+    );
   clip-path: var(--vz-retro-cut-md);
 }
 
@@ -835,30 +844,30 @@
 }
 
 .tonePrimary .outerFrame {
-  border-color: rgb(0 255 135 / 48%);
+  border-color: color-mix(in srgb, var(--vz-retro-green) 48%, transparent);
 }
 .toneSecondary .outerFrame {
-  border-color: rgb(0 229 255 / 48%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 48%, transparent);
 }
 .toneAccent .outerFrame {
-  border-color: rgb(155 98 255 / 48%);
+  border-color: color-mix(in srgb, var(--vz-retro-purple) 48%, transparent);
 }
 .toneWarning .outerFrame {
-  border-color: rgb(255 194 71 / 48%);
+  border-color: color-mix(in srgb, var(--vz-retro-gold) 48%, transparent);
 }
 .toneDanger .outerFrame {
-  border-color: rgb(255 59 48 / 48%);
+  border-color: color-mix(in srgb, var(--vz-retro-red) 48%, transparent);
 }
 
 .moduleInteractive:hover {
-  border-color: rgb(0 229 255 / 54%);
-  background: rgb(0 229 255 / 5%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 54%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent);
   transform: translateY(-1px);
 }
 
 .moduleSelected {
   border-color: var(--vz-retro-green);
-  background: rgb(0 255 135 / 7%);
+  background: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
   box-shadow: var(--vz-shadow-glow-green);
 }
 
@@ -874,12 +883,16 @@
 /* VERZUS REFERENCE_LOCK_PANEL START */
 .panel {
   border-color: var(--vz-ref-line);
-  background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 98%, transparent),
+    color-mix(in srgb, var(--vz-retro-black-soft) 98%, transparent)
+  );
   border-radius: 0;
   clip-path: var(--vz-ref-cut-md);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 3%),
-    0 1.2rem 2.5rem rgb(0 0 0 / 28%);
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 3%, transparent),
+    0 1.2rem 2.5rem color-mix(in srgb, var(--vz-retro-black) 28%, transparent);
 }
 /* VERZUS REFERENCE_LOCK_PANEL END */
 
@@ -891,7 +904,7 @@
 .panelSurface,
 .module {
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
+  border-radius: 0;
   background: var(--vz-color-surface-base);
   box-shadow: var(--vz-shadow-panel);
 }
@@ -976,3 +989,54 @@
   color: var(--vz-color-status-danger);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.panel,
+.panelSurface,
+.outerFrame,
+.innerFrame,
+.module {
+  border-radius: 0;
+}
+
+.panel,
+.module {
+  position: relative;
+  color: var(--vz-color-text-primary);
+  border: 1px solid var(--vz-color-border-subtle);
+  background: var(--vz-color-panel);
+  clip-path: var(--vz-retro-cut-md);
+  box-shadow: none;
+}
+
+.panel::before,
+.module::before {
+  background: var(--vz-gradient-brand);
+}
+
+.moduleInteractive:hover,
+.moduleInteractive:focus-within {
+  border-color: var(--vz-retro-cyan);
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+
+.moduleInteractive:focus-visible {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+
+.moduleSelected {
+  border-color: var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-green) 7%, var(--vz-color-panel));
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.eyebrow,
+.status,
+.statLabel {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

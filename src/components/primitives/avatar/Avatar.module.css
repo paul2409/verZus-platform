@@ -1,6 +1,6 @@
 .avatar {
   --vz-avatar-size: var(--vz-avatar-size-md, 2.5rem);
-  --vz-avatar-accent: var(--vz-avatar-tone-neutral, #c7d0d6);
+  --vz-avatar-accent: var(--vz-avatar-tone-neutral, var(--vz-retro-white));
   --vz-avatar-presence-color: transparent;
   --vz-avatar-shape: var(--vz-avatar-shape-circle);
   --vz-avatar-status-size: var(--vz-avatar-status-size-md, 0.6875rem);
@@ -33,7 +33,7 @@
       color-mix(in srgb, var(--vz-avatar-accent) 82%, white),
       transparent 34%
     ),
-    linear-gradient(315deg, var(--vz-avatar-accent), #10161a 58%);
+    linear-gradient(315deg, var(--vz-avatar-accent), var(--vz-retro-surface-2) 58%);
   box-shadow:
     var(--vz-avatar-shadow),
     0 0 1rem color-mix(in srgb, var(--vz-avatar-accent) 18%, transparent);
@@ -113,8 +113,9 @@
   width: var(--vz-avatar-status-size);
   height: var(--vz-avatar-status-size);
   background: var(--vz-avatar-presence-color);
-  border: var(--vz-avatar-status-ring-width, 0.125rem) solid var(--vz-material-ink, #060809);
-  border-radius: 50%;
+  border: var(--vz-avatar-status-ring-width, 0.125rem) solid
+    var(--vz-material-ink, var(--vz-retro-black-soft));
+  border-radius: 0;
   box-shadow: 0 0 0.625rem var(--vz-avatar-presence-color);
 }
 
@@ -127,11 +128,11 @@
   width: calc(var(--vz-avatar-status-size) * 1.15);
   height: calc(var(--vz-avatar-status-size) * 1.15);
   place-items: center;
-  color: #06110c;
-  background: var(--vz-avatar-tone-green, #00ff87);
-  border: 0.1rem solid var(--vz-material-ink, #060809);
-  border-radius: 50%;
-  box-shadow: 0 0 0.625rem rgb(0 255 135 / 34%);
+  color: var(--vz-retro-surface);
+  background: var(--vz-avatar-tone-green, var(--vz-retro-green));
+  border: 0.1rem solid var(--vz-material-ink, var(--vz-retro-black-soft));
+  border-radius: 0;
+  box-shadow: 0 0 0.625rem color-mix(in srgb, var(--vz-retro-green) 34%, transparent);
 }
 
 .verifiedMark svg {
@@ -150,7 +151,7 @@
     linear-gradient(
       45deg,
       transparent 44%,
-      var(--vz-avatar-tone-red, #ff3b30) 45% 55%,
+      var(--vz-avatar-tone-red, var(--vz-retro-red)) 45% 55%,
       transparent 56%
     ),
     var(--vz-avatar-suspended-overlay);
@@ -202,27 +203,27 @@
 }
 
 .toneNeutral {
-  --vz-avatar-accent: var(--vz-avatar-tone-neutral, #c7d0d6);
+  --vz-avatar-accent: var(--vz-avatar-tone-neutral, var(--vz-retro-white));
 }
 
 .toneGreen {
-  --vz-avatar-accent: var(--vz-avatar-tone-green, #00ff87);
+  --vz-avatar-accent: var(--vz-avatar-tone-green, var(--vz-retro-green));
 }
 
 .toneCyan {
-  --vz-avatar-accent: var(--vz-avatar-tone-cyan, #00e5ff);
+  --vz-avatar-accent: var(--vz-avatar-tone-cyan, var(--vz-retro-cyan));
 }
 
 .toneViolet {
-  --vz-avatar-accent: var(--vz-avatar-tone-violet, #8a4fff);
+  --vz-avatar-accent: var(--vz-avatar-tone-violet, var(--vz-retro-purple));
 }
 
 .toneGold {
-  --vz-avatar-accent: var(--vz-avatar-tone-gold, #ffc247);
+  --vz-avatar-accent: var(--vz-avatar-tone-gold, var(--vz-retro-gold));
 }
 
 .toneRed {
-  --vz-avatar-accent: var(--vz-avatar-tone-red, #ff3b30);
+  --vz-avatar-accent: var(--vz-avatar-tone-red, var(--vz-retro-red));
 }
 
 .presenceNone {
@@ -230,19 +231,19 @@
 }
 
 .presenceOnline {
-  --vz-avatar-presence-color: var(--vz-avatar-presence-online, #00ff87);
+  --vz-avatar-presence-color: var(--vz-avatar-presence-online, var(--vz-retro-green));
 }
 
 .presenceOffline {
-  --vz-avatar-presence-color: var(--vz-avatar-presence-offline, #7e8991);
+  --vz-avatar-presence-color: var(--vz-avatar-presence-offline, var(--vz-retro-muted));
 }
 
 .presenceAway {
-  --vz-avatar-presence-color: var(--vz-avatar-presence-away, #ffc247);
+  --vz-avatar-presence-color: var(--vz-avatar-presence-away, var(--vz-retro-gold));
 }
 
 .presenceBusy {
-  --vz-avatar-presence-color: var(--vz-avatar-presence-busy, #ff3b30);
+  --vz-avatar-presence-color: var(--vz-avatar-presence-busy, var(--vz-retro-red));
 }
 
 .avatarGroup {
@@ -268,7 +269,7 @@
 
 .avatarGroupItem {
   margin-inline-start: var(--vz-avatar-group-overlap, -0.625rem);
-  filter: drop-shadow(0 0 0.1rem var(--vz-avatar-group-ring, #060809));
+  filter: drop-shadow(0 0 0.1rem var(--vz-avatar-group-ring, var(--vz-retro-black-soft)));
 }
 
 .avatarGroupItem:first-child {
@@ -279,11 +280,15 @@
   width: var(--vz-avatar-size);
   height: var(--vz-avatar-size);
   margin-inline-start: var(--vz-avatar-group-overlap, -0.625rem);
-  color: var(--vz-color-text-primary, #f4f7f8);
-  background: linear-gradient(145deg, rgb(49 59 66 / 98%), rgb(8 11 13 / 100%));
-  border: 0.125rem solid var(--vz-avatar-group-ring, #060809);
-  border-radius: 50%;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 9%);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--vz-retro-line) 98%, transparent),
+    color-mix(in srgb, var(--vz-retro-surface) 100%, transparent)
+  );
+  border: 0.125rem solid var(--vz-avatar-group-ring, var(--vz-retro-black-soft));
+  border-radius: 0;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 9%, transparent);
   font-family: var(--vz-font-display);
   font-size: calc(var(--vz-avatar-size) * 0.28);
   font-weight: 700;
@@ -375,7 +380,7 @@
 
 /* VERZUS RETRO_AVATARS START */
 .avatar {
-  filter: drop-shadow(0 0 8px rgb(0 229 255 / 14%));
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--vz-retro-cyan) 14%, transparent));
 }
 .frame {
   border-width: 1px;
@@ -387,7 +392,7 @@
   );
 }
 .content {
-  background: #07080d;
+  background: var(--vz-retro-black-soft);
 }
 .toneGreen .frame {
   background: var(--vz-retro-green);
@@ -488,3 +493,54 @@
   background: var(--vz-color-accent-cyan);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.avatar {
+  --vz-avatar-shape: var(--vz-retro-cut-sm);
+}
+
+.frame,
+.content,
+.suspendedMark,
+.shapeCircle,
+.shapeRounded,
+.shapeHex {
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.frame {
+  background: var(--vz-gradient-brand);
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+
+.content {
+  background: var(--vz-retro-surface-2);
+}
+
+.initials {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.055em;
+}
+
+.presenceIndicator,
+.verifiedMark,
+.avatarOverflow {
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.presenceOnline {
+  --vz-avatar-presence-color: var(--vz-retro-green);
+}
+
+.presenceAway {
+  --vz-avatar-presence-color: var(--vz-retro-gold);
+}
+
+.presenceBusy {
+  --vz-avatar-presence-color: var(--vz-retro-red);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

@@ -1,5 +1,5 @@
 .root {
-  --vz-segmented-accent: var(--vz-surface-accent-green, #00ff87);
+  --vz-segmented-accent: var(--vz-surface-accent-green, var(--vz-retro-green));
 
   display: inline-flex;
   width: fit-content;
@@ -16,7 +16,7 @@
     0 100%,
     0 var(--vz-segmented-cut, 0.5rem)
   );
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 5%, transparent);
 }
 
 .orientationHorizontal {
@@ -34,15 +34,15 @@
 }
 
 .tonePrimary {
-  --vz-segmented-accent: var(--vz-surface-accent-green, #00ff87);
+  --vz-segmented-accent: var(--vz-surface-accent-green, var(--vz-retro-green));
 }
 
 .toneSecondary {
-  --vz-segmented-accent: var(--vz-surface-accent-cyan, #00e5ff);
+  --vz-segmented-accent: var(--vz-surface-accent-cyan, var(--vz-retro-cyan));
 }
 
 .toneAccent {
-  --vz-segmented-accent: var(--vz-surface-accent-violet, #8a4fff);
+  --vz-segmented-accent: var(--vz-surface-accent-violet, var(--vz-retro-purple));
 }
 
 .sizeSm {
@@ -95,7 +95,7 @@
 }
 
 .item:hover:not(:disabled) {
-  color: var(--vz-color-text-primary, #f4f7f8);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   background: var(--vz-segmented-item-hover-background);
 }
 
@@ -106,7 +106,7 @@
 }
 
 .selected {
-  color: var(--vz-segmented-item-selected-color, #031008);
+  color: var(--vz-segmented-item-selected-color, var(--vz-retro-black-soft));
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--vz-segmented-accent) 64%, white),
@@ -115,7 +115,7 @@
   border-color: color-mix(in srgb, var(--vz-segmented-accent) 72%, white);
   box-shadow:
     0 0 1rem color-mix(in srgb, var(--vz-segmented-accent) 22%, transparent),
-    inset 0 1px 0 rgb(255 255 255 / 32%);
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 32%, transparent);
   text-shadow: none;
 }
 
@@ -183,11 +183,11 @@
 /* VERZUS RETRO_SEGMENTED START */
 .root {
   border: 1px solid var(--vz-retro-line);
-  background: #050609;
+  background: var(--vz-retro-black-soft);
   clip-path: var(--vz-retro-cut-sm);
 }
 .item {
-  color: #9693aa;
+  color: var(--vz-retro-muted);
   font-family: var(--vz-font-display);
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -195,10 +195,10 @@
 }
 .item:hover:not(:disabled) {
   color: var(--vz-retro-cyan);
-  background: rgb(0 229 255 / 5%);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent);
 }
 .selected {
-  color: #020305;
+  color: var(--vz-retro-black);
   background: var(--vz-retro-green);
   box-shadow: var(--vz-shadow-glow-green);
 }
@@ -207,12 +207,12 @@
 /* VERZUS REFERENCE_LOCK_SEGMENTED START */
 .root {
   border-color: var(--vz-ref-line);
-  background: #050609;
+  background: var(--vz-retro-black-soft);
   clip-path: var(--vz-ref-cut-sm);
 }
 
 .item {
-  color: #9693aa;
+  color: var(--vz-retro-muted);
   border-color: transparent;
   clip-path: var(--vz-ref-cut-xs);
   font-family: var(--vz-font-display);
@@ -221,11 +221,11 @@
 
 .item:hover:not(:disabled) {
   color: var(--vz-ref-cyan);
-  background: rgb(0 229 255 / 5%);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent);
 }
 
 .selected {
-  color: #020305;
+  color: var(--vz-retro-black);
   background: var(--vz-ref-green);
   border-color: var(--vz-ref-green-soft);
   box-shadow: var(--vz-shadow-glow-green);
@@ -237,7 +237,7 @@
   gap: 0;
   padding: 2px;
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-control);
+  border-radius: 0;
   background: var(--vz-color-surface-base);
 }
 
@@ -245,7 +245,7 @@
   min-height: 2.5rem;
   color: var(--vz-color-text-secondary);
   border: 0;
-  border-radius: calc(var(--vz-radius-control) - 2px);
+  border-radius: 0;
   background: transparent;
   font-family: var(--vz-font-interface);
   font-weight: 700;
@@ -280,3 +280,42 @@
   background: var(--vz-color-status-magenta);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.root,
+.item {
+  border-radius: 0;
+}
+
+.root {
+  border: 1px solid var(--vz-color-border-subtle);
+  background: var(--vz-retro-black-soft);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.item {
+  color: var(--vz-color-text-tertiary);
+  border: 0;
+  background: transparent;
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.065em;
+  text-transform: uppercase;
+}
+
+.item:hover:not(:disabled) {
+  color: var(--vz-retro-cyan);
+}
+
+.selected {
+  color: var(--vz-retro-black);
+  background: var(--vz-gradient-primary);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

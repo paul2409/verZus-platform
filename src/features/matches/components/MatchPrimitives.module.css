@@ -1,12 +1,23 @@
+/* VERZUS STAGE 4 RETRO COMPETITIVE */
 .match {
   display: grid;
   min-width: 0;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--vz-match-surface);
-  border: 1px solid var(--vz-match-border);
-  clip-path: var(--vz-shape-card);
-  box-shadow: var(--vz-card-shadow);
+  gap: var(--vz-space-4);
+  padding: var(--vz-space-4);
+  background: linear-gradient(180deg, var(--vz-retro-surface-2), var(--vz-retro-surface));
+  border: 1px solid var(--vz-match-border, var(--vz-retro-line));
+  clip-path: var(--vz-retro-cut-md);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 4%, transparent);
+  transition:
+    border-color var(--vz-duration-fast) var(--vz-ease-standard),
+    box-shadow var(--vz-duration-fast) var(--vz-ease-standard),
+    transform var(--vz-duration-fast) var(--vz-ease-standard);
+}
+
+.match:hover {
+  border-color: var(--vz-match-accent, var(--vz-retro-cyan));
+  box-shadow: var(--vz-shadow-glow-cyan);
+  transform: translateY(-2px);
 }
 
 .matchHeader,
@@ -15,24 +26,26 @@
   min-width: 0;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--vz-space-4);
 }
 
 .kicker,
 .bracketLabel {
   margin: 0;
-  color: var(--vz-match-accent);
+  color: var(--vz-match-accent, var(--vz-retro-cyan));
   font-family: var(--vz-font-display);
-  font-size: 0.6875rem;
+  font-size: var(--vz-text-xs);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .matchTitle {
-  margin: 0.25rem 0 0;
+  margin: var(--vz-space-1) 0 0;
+  color: var(--vz-retro-white);
   font-family: var(--vz-font-display);
   font-size: 1.4rem;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 
@@ -40,10 +53,11 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: rgb(0 0 0 / 18%);
-  border: 1px solid rgb(174 184 191 / 14%);
+  gap: var(--vz-space-4);
+  padding: var(--vz-space-4);
+  background: color-mix(in srgb, var(--vz-retro-black) 52%, transparent);
+  border: 1px solid var(--vz-retro-line-soft);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .participant {
@@ -51,7 +65,7 @@
   min-width: 0;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: var(--vz-space-3);
 }
 
 .participant[data-participant-side="away"] {
@@ -61,43 +75,44 @@
 
 .score {
   flex: 0 0 auto;
-  color: var(--vz-match-accent);
+  color: var(--vz-match-accent, var(--vz-retro-green));
   font-family: var(--vz-font-numeric, var(--vz-font-display));
   font-size: 2rem;
   font-weight: 700;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .versusMark {
-  color: var(--vz-match-versus);
+  color: var(--vz-retro-pink);
   font-family: var(--vz-font-display);
   font-size: 1.4rem;
   font-weight: 700;
-  text-shadow: 0 0 0.8rem currentColor;
+  text-shadow: var(--vz-shadow-glow-purple);
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: var(--vz-space-3);
 }
 
 .timelineStep {
   position: relative;
   display: grid;
-  grid-template-columns: 1rem minmax(0, 1fr);
-  gap: 0.75rem;
   min-height: 3.5rem;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  gap: var(--vz-space-3);
   list-style: none;
 }
 
 .timelineStep::after {
   position: absolute;
   top: 1rem;
-  bottom: -0.5rem;
+  bottom: calc(var(--vz-space-2) * -1);
   left: 0.4375rem;
   width: 0.125rem;
   content: "";
-  background: var(--vz-timeline-line);
+  background: var(--vz-timeline-line, var(--vz-retro-line));
 }
 
 .timelineStep:last-child::after {
@@ -109,70 +124,70 @@
   z-index: 1;
   width: 1rem;
   height: 1rem;
-  background: var(--vz-timeline-future);
-  border: 0.1875rem solid #071014;
-  border-radius: 50%;
+  background: var(--vz-timeline-future, var(--vz-retro-muted));
+  border: 0.1875rem solid var(--vz-retro-surface);
+  clip-path: var(--vz-retro-cut-sm);
   box-shadow: 0 0 0 1px currentColor;
 }
 
 .timelineComplete .timelineMarker {
-  color: var(--vz-timeline-complete);
-  background: var(--vz-timeline-complete);
+  color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
 }
 
 .timelineCurrent .timelineMarker {
-  color: var(--vz-timeline-current);
-  background: var(--vz-timeline-current);
-  box-shadow:
-    0 0 0 1px currentColor,
-    0 0 0.75rem currentColor;
+  color: var(--vz-retro-cyan);
+  background: var(--vz-retro-cyan);
+  box-shadow: var(--vz-shadow-glow-cyan);
 }
 
 .timelineError .timelineMarker {
-  color: var(--vz-surface-accent-red, #ff3b30);
-  background: var(--vz-surface-accent-red, #ff3b30);
+  color: var(--vz-retro-red);
+  background: var(--vz-retro-red);
 }
 
 .timelineContent {
   display: grid;
-  gap: 0.25rem;
+  gap: var(--vz-space-1);
 }
 
 .timelineContent strong {
+  color: var(--vz-retro-white);
   font-family: var(--vz-font-display);
+  letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 
 .timelineContent span {
-  color: var(--vz-color-text-secondary);
-  font-size: 0.8125rem;
+  color: var(--vz-retro-muted);
+  font-size: var(--vz-text-sm);
 }
 
 .bracketNode {
   min-width: min(100%, var(--vz-bracket-node-min-width));
-  padding: 0.75rem;
-  background: var(--vz-bracket-node-background);
-  border: 1px solid var(--vz-bracket-node-border);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+  padding: var(--vz-space-3);
+  background: var(--vz-bracket-node-background, var(--vz-retro-surface));
+  border: 1px solid var(--vz-bracket-node-border, var(--vz-retro-line));
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .bracketNode[data-bracket-active="true"] {
-  border-color: var(--vz-bracket-node-active);
-  box-shadow: 0 0 1rem rgb(0 229 255 / 12%);
+  border-color: var(--vz-bracket-node-active, var(--vz-retro-cyan));
+  box-shadow: var(--vz-shadow-glow-cyan);
 }
 
 .bracketParticipant {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.625rem;
-  border-top: 1px solid rgb(174 184 191 / 12%);
+  gap: var(--vz-space-3);
+  padding: var(--vz-space-3);
+  border-top: 1px solid var(--vz-retro-line-soft);
 }
 
 .bracketParticipant[data-bracket-winner="true"] {
-  color: var(--vz-surface-accent-green, #00ff87);
-  background: rgb(0 255 135 / 6%);
+  color: var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-green) 6%, transparent);
 }
 
 @media (max-width: 39.999rem) {
@@ -195,55 +210,3 @@
     justify-self: center;
   }
 }
-
-/* VERZUS RETRO_MATCHES START */
-.card,
-.matchCard,
-.stateCard,
-.timeline {
-  border-color: var(--vz-retro-line);
-  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
-  clip-path: var(--vz-retro-cut-md);
-}
-.versus {
-  color: var(--vz-retro-green);
-  text-shadow: 0 0 18px rgb(0 255 135 / 30%);
-}
-.title,
-.label {
-  font-family: var(--vz-font-display);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-/* VERZUS RETRO_MATCHES END */
-
-/* VERZUS REFERENCE_LOCK_FEATURE_CARD START */
-.card,
-.root,
-.frame,
-.container,
-.article {
-  border-color: var(--vz-ref-line);
-  background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
-  border-radius: 0;
-  clip-path: var(--vz-ref-cut-md);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 3%),
-    0 1rem 2.25rem rgb(0 0 0 / 28%);
-}
-
-.card:hover,
-.root:hover,
-.article:hover {
-  border-color: rgb(0 229 255 / 46%);
-  transform: translateY(-2px);
-}
-
-.title,
-.heading,
-.eyebrow {
-  font-family: var(--vz-font-display);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-/* VERZUS REFERENCE_LOCK_FEATURE_CARD END */

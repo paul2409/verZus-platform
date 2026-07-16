@@ -21,28 +21,28 @@
   gap: var(--vz-space-2);
   padding: var(--vz-space-4);
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--vz-color-panel-elevated) 72%, transparent);
 }
 
 .creditGrid span {
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
 .creditGrid strong {
-  color: var(--vz-color-text-primary);
+  color: var(--vz-color-text-primary-primary);
   font-family: var(--vz-font-interface);
   text-transform: uppercase;
 }
 
 .creditGrid p {
   margin: 0;
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
 }
 
 @media (min-width: 48rem) {

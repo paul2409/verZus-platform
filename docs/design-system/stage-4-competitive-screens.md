@@ -1,43 +1,27 @@
-# VERZUS Stage 4 Competitive Screens
+# VERZUS Stage 4 — Retro Competitive Screens
 
-Status: implementation candidate pending visual approval.
+Status: installed, pending visual approval
 
-## Scope
+## Boundary
 
-Stage 4 converts the following production routes from placeholders into feature-owned competitive screens:
+Stage 4 owns presentation for Leaderboards, Crews, Matches, Compete and Rewards. It does not modify routes, APIs, schemas, adapters, mocks, queries, authentication, check-in, telemetry or the Stage 3 Play command centre.
 
-- `/leaderboards/weekly`
-- `/crews`
-- `/matches`
-- `/compete`
-- `/rewards`
+## Source of truth
 
-The stage does not modify APIs, schemas, adapters, data hooks, authentication, check-in behavior, or the Play screen.
+`src/styles/verzus-retro-system.css` remains the only active visual theme.
 
-## Visual language
+## Screen signals
 
-- Green: active navigation, confirmed actions, positive movement and wins.
-- Cyan: information, filters, links and focus.
-- Gold: ranks, timers, reward pools and championship totals.
-- Magenta: rivalry and War Week.
-- Red: losses, errors and destructive states.
-- Near-black and elevated dark surfaces remain dominant.
+- Leaderboards: cyan structure, neon-green current-player state, gold rank points.
+- Crews: purple structure, pink War Week signal, green readiness.
+- Matches: cyan information, red urgency, green confirmation.
+- Compete: cyan discovery, green eligibility, gold rewards, pink Crew War.
+- Rewards: gold pools and timers, green confirmed credits, cyan informational balances.
 
 ## Responsive contract
 
-- 390px: stacked feature cards and mobile ranking rows.
-- 768px: two-column opportunities and schedule cards.
-- 1440px: wide ranking rows, split match control and dense Crew data.
-- No desktop table is compressed into a mobile viewport.
+Every Stage 4 route must be reviewed at 390px, 768px and 1440px. Ranking tables become mobile ranking cards; dialogs remain scrollable; no screen may create horizontal page overflow.
 
-## Domain ownership
+## Failure isolation
 
-Each feature owns its screen, CSS Module and smoke test. Shared primitives remain domain-neutral.
-
-## Data note
-
-These screens use existing typed feature mocks while the domain API milestones are developed. VS Points are competitive scores. Cash and Bonus VS Credits remain separate reward balances.
-
-## Approval gate
-
-Review each route at 390px, 768px and 1440px before Stage 5 begins.
+Stage 4 presentation does not create a combined dashboard endpoint. Domain data and failure handling remain feature-owned.

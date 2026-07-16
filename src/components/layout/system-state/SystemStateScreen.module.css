@@ -1,5 +1,5 @@
 .page {
-  --state-signal: var(--vz-color-accent-cyan);
+  --state-signal: var(--vz-retro-cyan);
 
   display: grid;
   min-height: 100svh;
@@ -11,19 +11,19 @@
       color-mix(in srgb, var(--state-signal) 8%, transparent),
       transparent 32rem
     ),
-    var(--vz-color-bg-deep);
+    var(--vz-color-background-deep);
 }
 
 .page[data-tone="error"] {
-  --state-signal: var(--vz-color-status-danger);
+  --state-signal: var(--vz-color-danger);
 }
 
 .page[data-tone="not-found"] {
-  --state-signal: var(--vz-color-rank-gold);
+  --state-signal: var(--vz-retro-gold);
 }
 
 .page[data-tone="maintenance"] {
-  --state-signal: var(--vz-color-status-magenta);
+  --state-signal: var(--vz-retro-pink);
 }
 
 .card {
@@ -34,8 +34,8 @@
   padding: clamp(var(--vz-space-6), 7vw, var(--vz-space-12));
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--state-signal) 46%, transparent);
-  border-radius: var(--vz-radius-lg);
-  background: var(--vz-color-surface-base);
+  border-radius: 0;
+  background: var(--vz-color-panel-base);
   box-shadow: var(--vz-shadow-panel);
 }
 
@@ -51,9 +51,9 @@
 .reference {
   margin: 0;
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
@@ -68,7 +68,7 @@
 
 .description,
 .reference {
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
 }
 
 .description {
@@ -87,17 +87,17 @@
   padding: var(--vz-space-3) var(--vz-space-5);
   border: 1px solid var(--state-signal);
   background: var(--state-signal);
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-decoration: none;
   text-transform: uppercase;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .action :is(button, a):focus-visible {
-  outline: 2px solid var(--vz-color-accent-cyan);
+  outline: 2px solid var(--vz-retro-cyan);
   outline-offset: 3px;
 }
 

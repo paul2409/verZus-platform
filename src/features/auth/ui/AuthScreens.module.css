@@ -1,11 +1,15 @@
 /* VERZUS M4 STEP 4.3 */
 
 .shell {
-  --auth-accent: var(--vz-color-primary, #39ff14);
+  --auth-accent: var(--vz-color-action-primary, var(--vz-retro-green));
   --auth-accent-soft: color-mix(in srgb, var(--auth-accent) 18%, transparent);
   --auth-border: color-mix(in srgb, var(--auth-accent) 52%, transparent);
-  --auth-panel: color-mix(in srgb, var(--vz-color-surface, #12101f) 96%, transparent);
-  --auth-muted: var(--vz-color-text-muted, #8a87b8);
+  --auth-panel: color-mix(
+    in srgb,
+    var(--vz-color-panel, var(--vz-retro-surface-3)) 96%,
+    transparent
+  );
+  --auth-muted: var(--vz-color-text-primary-muted, var(--vz-retro-muted));
 
   position: relative;
   min-height: 100svh;
@@ -19,14 +23,14 @@
       color-mix(in srgb, var(--auth-accent) 13%, transparent),
       transparent 38rem
     ),
-    #070811;
+    var(--vz-retro-surface);
   background-size:
     auto,
     2.5rem 2.5rem,
     2.5rem 2.5rem,
     auto,
     auto;
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   isolation: isolate;
 }
 
@@ -67,15 +71,15 @@
 }
 
 .shell[data-accent="info"] {
-  --auth-accent: var(--vz-color-information, #00e5ff);
+  --auth-accent: var(--vz-color-info, var(--vz-retro-cyan));
 }
 
 .shell[data-accent="warning"] {
-  --auth-accent: var(--vz-color-warning, #ffc400);
+  --auth-accent: var(--vz-color-warning, var(--vz-retro-orange));
 }
 
 .shell[data-accent="danger"] {
-  --auth-accent: var(--vz-color-danger, #ff3ea5);
+  --auth-accent: var(--vz-color-danger, var(--vz-retro-pink));
 }
 
 .viewport {
@@ -126,7 +130,7 @@
 
 .brandName {
   margin: 0;
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 900 clamp(2rem, 9vw, 3.2rem) / 0.95 var(--vz-font-display, sans-serif);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -148,7 +152,7 @@
   gap: 0.65rem;
   padding: 0.65rem 0.85rem;
   border: 1px solid var(--auth-border);
-  background: color-mix(in srgb, var(--auth-accent) 5%, #090b0d 95%);
+  background: color-mix(in srgb, var(--auth-accent) 5%, var(--vz-retro-surface) 95%);
   color: var(--auth-accent);
   font: 800 0.72rem/1.2 var(--vz-font-interface, sans-serif);
   letter-spacing: 0.08em;
@@ -208,7 +212,7 @@
 }
 
 .title {
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 900 clamp(2rem, 8vw, 3rem) / 0.98 var(--vz-font-display, sans-serif);
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -266,7 +270,7 @@
 .cardTitle,
 .securityTitle,
 .noticeTitle {
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 800 1rem/1.2 var(--vz-font-display, sans-serif);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -331,7 +335,7 @@
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 600 0.95rem/1.2 var(--vz-font-interface, sans-serif);
 }
 
@@ -368,7 +372,7 @@
 .link,
 .secondaryAction,
 .textAction {
-  color: var(--vz-color-information, #00e5ff);
+  color: var(--vz-color-info, var(--vz-retro-cyan));
   font: 800 0.78rem/1.25 var(--vz-font-interface, sans-serif);
   letter-spacing: 0.04em;
   text-decoration: none;
@@ -384,7 +388,7 @@
 .secondaryAction:focus-visible,
 .textAction:focus-visible,
 .primaryAction:focus-visible {
-  outline: 2px solid var(--vz-color-information, #00e5ff);
+  outline: 2px solid var(--vz-color-info, var(--vz-retro-cyan));
   outline-offset: 3px;
 }
 
@@ -405,7 +409,7 @@
   gap: 0.65rem;
   padding: 0.8rem 1rem;
   border: 1px solid var(--auth-border);
-  color: #031008;
+  color: var(--vz-retro-black-soft);
   font: 900 0.95rem/1 var(--vz-font-display, sans-serif);
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -424,15 +428,15 @@
   border-color: var(--auth-accent);
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, var(--auth-accent) 86%, #fff 14%),
+    color-mix(in srgb, var(--auth-accent) 86%, var(--vz-retro-white) 14%),
     var(--auth-accent)
   );
   box-shadow: 0 0 1.5rem color-mix(in srgb, var(--auth-accent) 20%, transparent);
 }
 
 .secondaryButton {
-  background: color-mix(in srgb, #7f5af0 10%, transparent);
-  color: #b768ff;
+  background: color-mix(in srgb, var(--vz-retro-purple) 10%, transparent);
+  color: var(--vz-retro-purple);
 }
 
 .orDivider {
@@ -482,7 +486,7 @@
   border: 1px solid var(--auth-border);
   outline: 0;
   background: rgb(0 0 0 / 34%);
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 800 1.2rem/1 var(--vz-font-numeric, monospace);
   text-align: center;
   clip-path: polygon(
@@ -552,8 +556,8 @@
   width: 3rem;
   height: 3rem;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--vz-color-information, #00e5ff) 60%, transparent);
-  color: var(--vz-color-information, #00e5ff);
+  border: 1px solid color-mix(in srgb, var(--vz-color-info, var(--vz-retro-cyan)) 60%, transparent);
+  color: var(--vz-color-info, var(--vz-retro-cyan));
   font: 900 0.9rem/1 var(--vz-font-interface, sans-serif);
   clip-path: polygon(50% 0, 92% 22%, 84% 78%, 50% 100%, 16% 78%, 8% 22%);
 }
@@ -566,7 +570,7 @@
 }
 
 .securityTitle {
-  color: var(--vz-color-information, #00e5ff);
+  color: var(--vz-color-info, var(--vz-retro-cyan));
 }
 
 .statePanel {
@@ -607,7 +611,7 @@
 }
 
 .stateItemTitle {
-  color: var(--vz-color-text, #f3f5f7);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font: 800 0.88rem/1.3 var(--vz-font-interface, sans-serif);
 }
 
@@ -624,7 +628,7 @@
 .loadingLine {
   height: 0.85rem;
   overflow: hidden;
-  border-radius: 999px;
+  border-radius: 0;
   background: rgb(255 255 255 / 7%);
 }
 
@@ -713,7 +717,12 @@
         color-mix(in srgb, var(--auth-accent) 16%, transparent),
         transparent 26rem
       ),
-      linear-gradient(135deg, #0b1020, #070811 58%, #11101d);
+      linear-gradient(
+        135deg,
+        var(--vz-retro-surface-2),
+        var(--vz-retro-surface) 58%,
+        var(--vz-retro-surface-2)
+      );
   }
 
   .atmosphere::before {
@@ -723,13 +732,13 @@
       linear-gradient(
         135deg,
         transparent 0 28%,
-        color-mix(in srgb, var(--vz-color-information, #00e5ff) 12%, transparent) 28.2% 28.35%,
+        color-mix(in srgb, var(--vz-color-info, var(--vz-retro-cyan)) 12%, transparent) 28.2% 28.35%,
         transparent 28.45% 100%
       ),
       linear-gradient(
         45deg,
         transparent 0 68%,
-        color-mix(in srgb, #ff3ea5 10%, transparent) 68.2% 68.35%,
+        color-mix(in srgb, var(--vz-retro-pink) 10%, transparent) 68.2% 68.35%,
         transparent 68.45% 100%
       );
     content: "";
@@ -752,7 +761,7 @@
 
   .atmosphereTitle {
     margin: 0;
-    color: var(--vz-color-text, #f3f5f7);
+    color: var(--vz-color-text-primary, var(--vz-retro-white));
     font: 900 clamp(2.5rem, 5vw, 4.75rem) / 0.92 var(--vz-font-display, sans-serif);
     text-transform: uppercase;
   }
@@ -871,10 +880,11 @@
 .shell {
   background:
     radial-gradient(circle at 20% 10%, rgb(0 229 255 / 10%), transparent 28rem),
-    radial-gradient(circle at 82% 20%, rgb(155 98 255 / 10%), transparent 30rem), #020305;
+    radial-gradient(circle at 82% 20%, rgb(155 98 255 / 10%), transparent 30rem),
+    var(--vz-retro-black);
 }
 .brandMark {
-  color: #020305;
+  color: var(--vz-retro-black);
   border-color: var(--vz-retro-green);
   background: var(--vz-retro-green);
   box-shadow: var(--vz-shadow-glow-green);
@@ -896,7 +906,7 @@
 }
 .inputShell {
   border-color: var(--vz-retro-line);
-  background: #050609;
+  background: var(--vz-retro-black-soft);
   clip-path: var(--vz-retro-cut-sm);
 }
 .input:focus-visible {
@@ -904,7 +914,7 @@
   box-shadow: var(--vz-shadow-focus);
 }
 .primaryAction {
-  color: #020305;
+  color: var(--vz-retro-black);
   border-color: var(--vz-retro-green);
   background: var(--vz-retro-green);
   clip-path: var(--vz-retro-cut-sm);
@@ -922,7 +932,8 @@
 .screen {
   background:
     radial-gradient(circle at 12% 8%, rgb(0 229 255 / 8%), transparent 25rem),
-    radial-gradient(circle at 88% 18%, rgb(155 98 255 / 8%), transparent 28rem), #020305;
+    radial-gradient(circle at 88% 18%, rgb(155 98 255 / 8%), transparent 28rem),
+    var(--vz-retro-black);
 }
 
 .panel,
@@ -948,40 +959,40 @@
 /* VERZUS STAGE 5 AUTH:BEGIN */
 
 .shell {
-  --auth-accent: var(--vz-color-accent-green);
+  --auth-accent: var(--vz-retro-green);
   --auth-accent-soft: color-mix(in srgb, var(--auth-accent) 12%, transparent);
   --auth-border: color-mix(in srgb, var(--auth-accent) 42%, transparent);
-  --auth-panel: var(--vz-color-surface-base);
-  --auth-muted: var(--vz-color-text-secondary);
+  --auth-panel: var(--vz-color-panel-base);
+  --auth-muted: var(--vz-color-text-primary-secondary);
 
   background:
     linear-gradient(
-      color-mix(in srgb, var(--vz-color-bg-deep) 84%, transparent),
-      var(--vz-color-bg-deep)
+      color-mix(in srgb, var(--vz-color-background-deep) 84%, transparent),
+      var(--vz-color-background-deep)
     ),
     linear-gradient(var(--vz-color-border-subtle) 1px, transparent 1px),
     linear-gradient(90deg, var(--vz-color-border-subtle) 1px, transparent 1px),
     radial-gradient(circle at 50% 0%, var(--auth-accent-soft), transparent 36rem),
-    var(--vz-color-bg-deep);
+    var(--vz-color-background-deep);
   background-size:
     auto,
     4rem 4rem,
     4rem 4rem,
     auto,
     auto;
-  color: var(--vz-color-text-primary);
+  color: var(--vz-color-text-primary-primary);
 }
 
 .shell[data-accent="info"] {
-  --auth-accent: var(--vz-color-accent-cyan);
+  --auth-accent: var(--vz-retro-cyan);
 }
 
 .shell[data-accent="warning"] {
-  --auth-accent: var(--vz-color-rank-gold);
+  --auth-accent: var(--vz-retro-gold);
 }
 
 .shell[data-accent="danger"] {
-  --auth-accent: var(--vz-color-status-danger);
+  --auth-accent: var(--vz-color-danger);
 }
 
 .brandName,
@@ -990,7 +1001,7 @@
 .securityTitle,
 .noticeTitle,
 .stateItemTitle {
-  color: var(--vz-color-text-primary);
+  color: var(--vz-color-text-primary-primary);
 }
 
 .description,
@@ -999,7 +1010,7 @@
 .securityCopy,
 .noticeCopy,
 .stateItemCopy {
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
   font-family: var(--vz-font-body);
 }
 
@@ -1008,14 +1019,14 @@
 .statePanel,
 .loadingPanel {
   border-color: var(--auth-border);
-  border-radius: var(--vz-radius-panel);
+  border-radius: 0;
   background:
     linear-gradient(
       145deg,
       color-mix(in srgb, var(--auth-accent) 4%, transparent),
       transparent 45%
     ),
-    var(--vz-color-surface-base);
+    var(--vz-color-panel-base);
   box-shadow: var(--vz-shadow-panel);
   clip-path: none;
 }
@@ -1023,19 +1034,19 @@
 .statusStrip,
 .primaryAction,
 .secondaryButton {
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .primaryAction {
   border-color: var(--auth-accent);
   background: var(--auth-accent);
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   box-shadow: none;
 }
 
 .secondaryButton {
-  border-color: var(--vz-color-accent-cyan);
-  color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-retro-cyan);
+  color: var(--vz-retro-cyan);
   background: transparent;
 }
 

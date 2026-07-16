@@ -25,7 +25,7 @@
   gap: var(--vz-space-4, 1rem);
   padding: clamp(1rem, 3vw, 2rem);
   overflow: hidden;
-  color: var(--vz-color-text-primary, #f4f7f8);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   background:
     radial-gradient(circle at 50% 0%, rgb(var(--vz-state-accent-rgb) / 10%), transparent 55%),
     var(--vz-feedback-surface);
@@ -56,7 +56,7 @@
   color: var(--vz-state-accent);
   background:
     radial-gradient(circle, rgb(var(--vz-state-accent-rgb) / 17%), transparent 72%),
-    rgb(4 8 10 / 76%);
+    color-mix(in srgb, var(--vz-retro-black-soft) 76%, transparent);
   border: 1px solid rgb(var(--vz-state-accent-rgb) / 54%);
   clip-path: polygon(
     0.625rem 0,
@@ -70,7 +70,7 @@
   );
   box-shadow:
     0 0 1.25rem rgb(var(--vz-state-accent-rgb) / 18%),
-    inset 0 1px 0 rgb(255 255 255 / 7%);
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 7%, transparent);
 }
 
 .stateCopy {
@@ -88,7 +88,7 @@
 
 .stateTitle {
   overflow-wrap: anywhere;
-  color: var(--vz-color-text-primary, #f4f7f8);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font-family: var(--vz-font-display);
   font-size: clamp(1.15rem, 3vw, 1.65rem);
   font-weight: 700;
@@ -99,7 +99,7 @@
 
 .stateDescription {
   max-width: 58ch;
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-secondary, var(--vz-retro-muted));
   font-family: var(--vz-font-body);
   font-size: 0.9375rem;
   line-height: 1.6;
@@ -202,7 +202,7 @@
 }
 
 .stateOffline {
-  --vz-state-accent: #9aa6ae;
+  --vz-state-accent: var(--vz-retro-muted);
   --vz-state-accent-rgb: 154 166 174;
 }
 
@@ -307,7 +307,7 @@
   gap: 0.75rem;
   padding: 0.875rem;
   overflow: hidden;
-  color: var(--vz-color-text-primary, #f4f7f8);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   background:
     linear-gradient(110deg, rgb(var(--vz-toast-accent-rgb) / 10%), transparent 46%),
     var(--vz-feedback-surface-raised);
@@ -368,7 +368,7 @@
 }
 
 .toastDescription {
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-secondary, var(--vz-retro-muted));
   font-family: var(--vz-font-body);
   font-size: 0.8125rem;
   line-height: 1.45;
@@ -388,7 +388,7 @@
   padding: 0;
   cursor: pointer;
   place-items: center;
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-secondary, var(--vz-retro-muted));
   background: transparent;
   border: 1px solid transparent;
   clip-path: polygon(
@@ -403,8 +403,8 @@
 }
 
 .toastDismiss:hover {
-  color: var(--vz-color-text-primary, #f4f7f8);
-  background: rgb(255 255 255 / 6%);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
+  background: color-mix(in srgb, var(--vz-retro-white) 6%, transparent);
   border-color: rgb(var(--vz-toast-accent-rgb) / 42%);
 }
 
@@ -459,8 +459,8 @@
   display: block;
   overflow: hidden;
   background: var(--vz-skeleton-base);
-  border: 1px solid rgb(174 184 191 / 8%);
-  border-radius: var(--vz-skeleton-radius);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-muted) 8%, transparent);
+  border-radius: 0;
 }
 
 .skeletonText {
@@ -471,7 +471,7 @@
 .skeletonCircle {
   width: 3rem;
   aspect-ratio: 1;
-  border-radius: 50%;
+  border-radius: 0;
 }
 
 .skeletonRectangle {
@@ -482,7 +482,7 @@
 .skeletonControl {
   width: 8rem;
   height: 2.75rem;
-  border-radius: 0.25rem;
+  border-radius: 0;
 }
 
 .skeletonCard {
@@ -623,7 +623,7 @@
 
 .sectionTitle {
   overflow-wrap: anywhere;
-  color: var(--vz-color-text-primary, #f4f7f8);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   font-family: var(--vz-font-display);
   font-weight: 700;
   letter-spacing: 0.025em;
@@ -633,7 +633,7 @@
 
 .sectionDescription {
   max-width: 70ch;
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-secondary, var(--vz-retro-muted));
   font-family: var(--vz-font-body);
   font-size: 0.9375rem;
   line-height: 1.55;
@@ -741,7 +741,7 @@
   .stateDescription,
   .toastDescription,
   .sectionDescription {
-    color: var(--vz-color-text-primary, #f4f7f8);
+    color: var(--vz-color-text-primary, var(--vz-retro-white));
   }
 
   .skeleton {
@@ -782,7 +782,11 @@
 .skeleton,
 .banner {
   border-color: var(--vz-retro-line);
-  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 98%, transparent),
+    color-mix(in srgb, var(--vz-retro-black-soft) 98%, transparent)
+  );
   clip-path: var(--vz-retro-cut-sm);
 }
 /* VERZUS RETRO_FEEDBACK END */
@@ -866,3 +870,89 @@
   border-color: var(--vz-color-accent-cyan);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.banner,
+.state,
+.systemState,
+.toast,
+.skeleton,
+.skeletonCard,
+.skeletonControl,
+.skeletonRectangle,
+.skeletonCircle {
+  border-radius: 0;
+}
+
+.banner,
+.state,
+.systemState,
+.toast {
+  color: var(--vz-color-text-primary);
+  border: 1px solid var(--vz-color-border-subtle);
+  background: var(--vz-color-panel);
+  clip-path: var(--vz-retro-cut-md);
+  box-shadow: none;
+}
+
+.toastSuccess,
+.stateSuccess {
+  border-color: var(--vz-retro-green);
+}
+
+.toastInformation,
+.stateLoading,
+.stateRetrying,
+.statePartialFailure {
+  border-color: var(--vz-retro-cyan);
+}
+
+.toastWarning,
+.stateMaintenance {
+  border-color: var(--vz-retro-gold);
+}
+
+.toastError,
+.stateError,
+.stateOffline,
+.stateUnauthorized,
+.stateForbidden,
+.stateNotFound {
+  border-color: var(--vz-retro-red);
+}
+
+.sectionEyebrow,
+.stateTitle,
+.toastTitle,
+.dividerLabel {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.toastAction,
+.toastDismiss,
+.sectionAction {
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.toastDismiss:focus-visible {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+
+.skeleton,
+.skeletonCard,
+.skeletonControl,
+.skeletonRectangle,
+.skeletonCircle {
+  background: linear-gradient(
+    90deg,
+    var(--vz-retro-surface),
+    var(--vz-retro-surface-3),
+    var(--vz-retro-surface)
+  );
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

@@ -3,23 +3,23 @@
   gap: var(--vz-space-3);
   padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-8));
   border: 1px solid var(--vz-color-border-subtle);
-  border-left-color: var(--vz-color-accent-cyan);
-  border-radius: var(--vz-radius-panel);
-  background: var(--vz-color-surface-base);
+  border-left-color: var(--vz-retro-cyan);
+  border-radius: 0;
+  background: var(--vz-color-panel-base);
 }
 
 .searchForm label {
-  color: var(--vz-color-text-primary);
+  color: var(--vz-color-text-primary-primary);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
 }
 
 .searchForm p,
 .categoryCopy {
   margin: 0;
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
 }
 
 .searchRow {
@@ -31,18 +31,18 @@
 .searchRow button {
   min-height: 3rem;
   padding: var(--vz-space-3) var(--vz-space-6);
-  border: 1px solid var(--vz-color-accent-green);
-  background: var(--vz-color-accent-green);
-  color: var(--vz-color-text-on-accent);
+  border: 1px solid var(--vz-retro-green);
+  background: var(--vz-retro-green);
+  color: var(--vz-retro-black);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .searchRow button:focus-visible {
-  outline: 2px solid var(--vz-color-accent-cyan);
+  outline: 2px solid var(--vz-retro-cyan);
   outline-offset: 3px;
 }
 

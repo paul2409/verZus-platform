@@ -12,8 +12,8 @@
   color: var(--vz-tooltip-text);
   background: var(--vz-tooltip-background);
   border: 1px solid var(--vz-tooltip-border);
-  border-radius: 0.375rem;
-  box-shadow: 0 0.75rem 1.75rem rgb(0 0 0 / 42%);
+  border-radius: 0;
+  box-shadow: 0 0.75rem 1.75rem color-mix(in srgb, var(--vz-retro-black) 42%, transparent);
   font-family: var(--vz-font-body);
   font-size: 0.75rem;
   line-height: 1.35;
@@ -83,8 +83,8 @@
   padding-inline: 1rem;
   cursor: pointer;
   color: var(--vz-color-text-primary);
-  background: rgb(8 14 17 / 94%);
-  border: 1px solid var(--vz-surface-accent-cyan, #00e5ff);
+  background: color-mix(in srgb, var(--vz-retro-surface) 94%, transparent);
+  border: 1px solid var(--vz-surface-accent-cyan, var(--vz-retro-cyan));
   clip-path: var(--vz-badge-shape);
   font-family: var(--vz-font-display);
   font-weight: 700;
@@ -94,7 +94,7 @@
 
 .popoverTrigger:focus-visible,
 .dialogClose:focus-visible {
-  outline: 2px solid var(--vz-surface-accent-cyan, #00e5ff);
+  outline: 2px solid var(--vz-surface-accent-cyan, var(--vz-retro-cyan));
   outline-offset: 0.2rem;
 }
 
@@ -107,7 +107,7 @@
   color: var(--vz-color-text-primary);
   background: var(--vz-overlay-surface);
   border: 1px solid var(--vz-overlay-border);
-  border-radius: var(--vz-overlay-radius);
+  border-radius: 0;
   box-shadow: var(--vz-overlay-shadow);
 }
 
@@ -143,7 +143,7 @@
   color: var(--vz-color-text-primary);
   background: var(--vz-overlay-surface);
   border: 1px solid var(--vz-overlay-border);
-  border-radius: var(--vz-overlay-radius);
+  border-radius: 0;
   box-shadow: var(--vz-overlay-shadow);
 }
 
@@ -166,7 +166,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.25rem;
-  background: rgb(6 10 12 / 82%);
+  background: color-mix(in srgb, var(--vz-retro-black-soft) 82%, transparent);
 }
 
 .dialogHeader {
@@ -201,9 +201,9 @@
   cursor: pointer;
   place-items: center;
   color: var(--vz-color-text-primary);
-  background: rgb(255 255 255 / 4%);
+  background: color-mix(in srgb, var(--vz-retro-white) 4%, transparent);
   border: 1px solid var(--vz-overlay-border);
-  border-radius: 0.375rem;
+  border-radius: 0;
   font-size: 1.5rem;
 }
 
@@ -240,7 +240,7 @@
   left: 0;
   width: 100%;
   max-height: min(82svh, 44rem);
-  border-radius: 0.75rem 0.75rem 0 0;
+  border-radius: 0;
 }
 
 @media (max-width: 47.999rem) {
@@ -286,7 +286,7 @@
 
 /* VERZUS RETRO_OVERLAY START */
 .backdrop {
-  background: rgb(0 0 0 / 82%);
+  background: color-mix(in srgb, var(--vz-retro-black) 82%, transparent);
   backdrop-filter: blur(10px);
 }
 .dialog,
@@ -294,10 +294,14 @@
 .popoverContent,
 .tooltip {
   border-color: var(--vz-retro-line);
-  background: linear-gradient(180deg, rgb(13 15 22 / 99%), rgb(4 5 8 / 99%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 99%, transparent),
+    color-mix(in srgb, var(--vz-retro-black) 99%, transparent)
+  );
   clip-path: var(--vz-retro-cut-md);
   box-shadow:
-    0 24px 80px rgb(0 0 0 / 62%),
+    0 24px 80px color-mix(in srgb, var(--vz-retro-black) 62%, transparent),
     var(--vz-shadow-glow-purple);
 }
 .dialogTitle {
@@ -307,13 +311,13 @@
 }
 .dialogClose {
   color: var(--vz-retro-cyan);
-  border-color: rgb(0 229 255 / 34%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 34%, transparent);
 }
 /* VERZUS RETRO_OVERLAY END */
 
 /* VERZUS REFERENCE_LOCK_OVERLAY START */
 .backdrop {
-  background: rgb(1 2 4 / 82%);
+  background: color-mix(in srgb, var(--vz-retro-black) 82%, transparent);
   backdrop-filter: blur(10px);
 }
 
@@ -321,11 +325,15 @@
 .drawer,
 .popoverContent {
   border-color: var(--vz-ref-line-strong);
-  background: linear-gradient(180deg, rgb(14 16 24 / 99%), rgb(4 5 8 / 99%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 99%, transparent),
+    color-mix(in srgb, var(--vz-retro-black) 99%, transparent)
+  );
   border-radius: 0;
   clip-path: var(--vz-ref-cut-md);
   box-shadow:
-    0 2rem 5rem rgb(0 0 0 / 58%),
+    0 2rem 5rem color-mix(in srgb, var(--vz-retro-black) 58%, transparent),
     var(--vz-shadow-glow-purple);
 }
 
@@ -336,7 +344,7 @@
 
 .dialogClose {
   color: var(--vz-ref-red);
-  border-color: rgb(255 59 48 / 44%);
+  border-color: color-mix(in srgb, var(--vz-retro-red) 44%, transparent);
   border-radius: 0;
 }
 /* VERZUS REFERENCE_LOCK_OVERLAY END */
@@ -354,7 +362,7 @@
 .tooltip {
   color: var(--vz-color-text-primary);
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
+  border-radius: 0;
   background: var(--vz-color-surface-elevated);
   box-shadow: none;
 }
@@ -404,3 +412,57 @@
   outline-offset: 3px;
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.backdrop {
+  background: color-mix(in srgb, var(--vz-retro-black) 82%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.dialog,
+.drawer,
+.modal,
+.popoverContent,
+.tooltip,
+.dialogClose {
+  border-radius: 0;
+}
+
+.dialog,
+.drawer,
+.modal,
+.popoverContent {
+  color: var(--vz-color-text-primary);
+  border: 1px solid var(--vz-color-border-subtle);
+  background: var(--vz-color-panel);
+  clip-path: var(--vz-retro-cut-md);
+  box-shadow: var(--vz-shadow-glow-purple);
+}
+
+.dialogTitle {
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.dialogClose {
+  color: var(--vz-retro-cyan);
+  border: 1px solid transparent;
+  background: transparent;
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.dialogClose:hover {
+  border-color: var(--vz-retro-cyan);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 8%, transparent);
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+
+.dialogClose:focus-visible,
+.popoverTrigger:focus-visible {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

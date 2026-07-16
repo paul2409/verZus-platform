@@ -4,32 +4,16 @@
 @import "./typography.css";
 
 /*
- * VERZUS Global Application Styles
+ * VERZUS neutral global application behaviour.
  *
- * Milestone: M2 — Design System and Visual Language
- * Visual authority:
- * docs/design-system/reference/approved-m2-visual-language-board.jpg
- *
- * This file owns:
- * - application canvas
- * - global atmosphere
- * - document typography defaults
- * - selection
- * - keyboard focus
- * - autofill
- * - scrollbars
- * - accessibility helpers
- *
- * Feature-specific and component-specific styles do not belong here.
+ * Visual atmosphere, theme colours, focus treatment, global grid,
+ * scanlines, radii, notches, and glows are owned exclusively by
+ * src/styles/verzus-retro-system.css while retro-competitive is active.
  */
-
-/* ==================================================================
-   ROOT ENVIRONMENT
-   ================================================================== */
 
 :root {
   color-scheme: dark;
-  accent-color: var(--vz-color-green-500);
+  accent-color: var(--vz-color-action-primary);
 
   --vz-safe-area-top: env(safe-area-inset-top, 0px);
   --vz-safe-area-right: env(safe-area-inset-right, 0px);
@@ -41,7 +25,6 @@ html {
   min-width: 20rem;
   min-height: 100%;
   overflow-x: hidden;
-  background: var(--vz-color-background-deep);
   scrollbar-gutter: stable;
 }
 
@@ -50,15 +33,10 @@ body {
   isolation: isolate;
   min-width: 20rem;
   min-height: 100vh;
+  min-height: 100svh;
   margin: 0;
   overflow-x: hidden;
   overflow-x: clip;
-  color: var(--vz-color-text-primary);
-  background:
-    radial-gradient(circle at 12% -12%, rgb(0 255 135 / 14%), transparent 34rem),
-    radial-gradient(circle at 92% 108%, rgb(0 229 255 / 9%), transparent 38rem),
-    radial-gradient(circle at 52% 42%, rgb(0 255 135 / 2%), transparent 50rem),
-    var(--vz-color-background-deep);
   font-family: var(--vz-font-body);
   font-size: var(--vz-font-size-md);
   font-weight: var(--vz-font-weight-regular);
@@ -67,48 +45,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/* ==================================================================
-   TECHNICAL GRID
-   ================================================================== */
-
-body::before {
-  position: fixed;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  content: "";
-  background-image:
-    linear-gradient(rgb(142 154 166 / 2.4%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(142 154 166 / 2.4%) 1px, transparent 1px),
-    linear-gradient(rgb(0 255 135 / 1.2%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(0 255 135 / 1.2%) 1px, transparent 1px);
-  background-size:
-    4rem 4rem,
-    4rem 4rem,
-    16rem 16rem,
-    16rem 16rem;
-  mask-image: radial-gradient(ellipse at center, rgb(0 0 0 / 88%), transparent 92%);
-  -webkit-mask-image: radial-gradient(ellipse at center, rgb(0 0 0 / 88%), transparent 92%);
-}
-
-/* ==================================================================
-   SUBTLE SURFACE TEXTURE
-   ================================================================== */
-
-body::after {
-  position: fixed;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  content: "";
-  background-image: radial-gradient(circle, rgb(255 255 255 / 12%) 0.5px, transparent 0.6px);
-  background-size: 4px 4px;
-  opacity: 0.1;
-  mix-blend-mode: soft-light;
-}
-
-/* Keep all Next.js application content above the atmosphere layers. */
 
 body > div {
   position: relative;
@@ -129,61 +65,13 @@ nav {
   min-width: 0;
 }
 
-/* ==================================================================
-   TEXT SELECTION AND CARET
-   ================================================================== */
-
-::selection {
-  color: var(--vz-color-selection-text);
-  background: var(--vz-color-selection-background);
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
 }
-
-input,
-textarea,
-[contenteditable="true"] {
-  caret-color: var(--vz-color-green-500);
-}
-
-mark {
-  color: var(--vz-color-text-inverse);
-  background: var(--vz-color-warning-400);
-}
-
-hr {
-  height: var(--vz-border-width-1);
-  margin: var(--vz-space-6) 0;
-  background: var(--vz-color-border-default);
-  border: 0;
-}
-
-/* ==================================================================
-   KEYBOARD FOCUS
-   ================================================================== */
-
-:focus {
-  outline: none;
-}
-
-:focus-visible {
-  outline: var(--vz-border-width-2) solid var(--vz-color-focus-ring);
-  outline-offset: var(--vz-space-1);
-}
-
-[data-focus-ring="secondary"]:focus-visible {
-  outline-color: var(--vz-color-focus-ring-secondary);
-}
-
-[data-focus-ring="danger"]:focus-visible {
-  outline-color: var(--vz-color-danger);
-}
-
-[data-focus-ring="inset"]:focus-visible {
-  outline-offset: calc(var(--vz-space-1) * -1);
-}
-
-/* ==================================================================
-   GLOBAL INTERACTION DEFAULTS
-   ================================================================== */
 
 button,
 a,
@@ -215,9 +103,11 @@ textarea:disabled,
   opacity: var(--vz-opacity-disabled);
 }
 
-/* ==================================================================
-   BROWSER AUTOFILL
-   ================================================================== */
+input,
+textarea,
+[contenteditable="true"] {
+  caret-color: var(--vz-color-action-primary);
+}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -229,18 +119,14 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-text-fill-color: var(--vz-input-text);
-  caret-color: var(--vz-color-green-500);
+  caret-color: var(--vz-color-action-primary);
   box-shadow: 0 0 0 1000px var(--vz-input-background) inset;
   transition: background-color 9999s ease-out;
 }
 
-/* ==================================================================
-   SCROLLBARS
-   ================================================================== */
-
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--vz-color-green-700) var(--vz-color-background-deep);
+  scrollbar-color: var(--vz-color-border-strong) var(--vz-color-background-deep);
 }
 
 *::-webkit-scrollbar {
@@ -248,32 +134,21 @@ select:-webkit-autofill:focus {
   height: 0.625rem;
 }
 
-*::-webkit-scrollbar-track {
-  background: var(--vz-color-background-deep);
-}
-
+*::-webkit-scrollbar-track,
 *::-webkit-scrollbar-corner {
   background: var(--vz-color-background-deep);
 }
 
 *::-webkit-scrollbar-thumb {
   min-height: 2.5rem;
-  background: linear-gradient(180deg, var(--vz-color-green-600), var(--vz-color-green-800));
+  background: var(--vz-color-border-strong);
   border: 0.125rem solid var(--vz-color-background-deep);
-  border-radius: var(--vz-radius-full);
+  border-radius: 0;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--vz-color-green-400), var(--vz-color-green-700));
+  background: var(--vz-color-border-information);
 }
-
-*::-webkit-scrollbar-thumb:active {
-  background: var(--vz-color-green-500);
-}
-
-/* ==================================================================
-   ACCESSIBILITY UTILITIES
-   ================================================================== */
 
 .visually-hidden {
   position: absolute !important;
@@ -293,15 +168,15 @@ select:-webkit-autofill:focus {
   top: calc(var(--vz-space-3) + var(--vz-safe-area-top));
   left: calc(var(--vz-space-3) + var(--vz-safe-area-left));
   padding: var(--vz-space-3) var(--vz-space-4);
-  color: var(--vz-color-text-inverse);
-  background: var(--vz-color-green-500);
-  border: var(--vz-border-width-1) solid var(--vz-color-green-300);
-  border-radius: var(--vz-radius-control);
-  box-shadow: var(--vz-glow-green-subtle);
+  color: var(--vz-retro-black);
+  background: var(--vz-color-action-primary);
+  border: var(--vz-border-width-1) solid var(--vz-color-action-primary-hover);
+  border-radius: 0;
   font-family: var(--vz-font-display);
   font-weight: var(--vz-font-weight-bold);
   letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
+  clip-path: var(--vz-retro-cut-sm);
   transform: translateY(calc(-100% - var(--vz-space-8)));
   transition: var(--vz-transition-transform);
 }
@@ -309,10 +184,6 @@ select:-webkit-autofill:focus {
 .skip-link:focus-visible {
   transform: translateY(0);
 }
-
-/* ==================================================================
-   APPLICATION STATE ATTRIBUTES
-   ================================================================== */
 
 html[data-scroll-lock="true"],
 body[data-scroll-lock="true"] {
@@ -332,32 +203,6 @@ body[data-scroll-lock="true"] {
   filter: saturate(0.82);
 }
 
-/* ==================================================================
-   RESPONSIVE ATMOSPHERE
-   ================================================================== */
-
-@media (max-width: 30rem) {
-  body {
-    background:
-      radial-gradient(circle at 8% -6%, rgb(0 255 135 / 11%), transparent 24rem),
-      radial-gradient(circle at 96% 104%, rgb(0 229 255 / 6%), transparent 26rem),
-      var(--vz-color-background-deep);
-  }
-
-  body::before {
-    background-size:
-      3rem 3rem,
-      3rem 3rem,
-      12rem 12rem,
-      12rem 12rem;
-    opacity: 0.76;
-  }
-}
-
-/* ==================================================================
-   REDUCED MOTION
-   ================================================================== */
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -368,39 +213,11 @@ body[data-scroll-lock="true"] {
   }
 }
 
-/* ==================================================================
-   HIGH CONTRAST
-   ================================================================== */
-
-@media (prefers-contrast: more) {
-  body::before,
-  body::after {
-    opacity: 0.04;
-  }
-
-  :focus-visible {
-    outline-width: var(--vz-border-width-3);
-  }
-
-  *::-webkit-scrollbar-thumb {
-    background: var(--vz-color-green-500);
-  }
-}
-
-/* ==================================================================
-   PRINT
-   ================================================================== */
-
 @media print {
   html,
   body {
-    color: #000000;
-    background: #ffffff;
-  }
-
-  body::before,
-  body::after {
-    display: none;
+    color: black;
+    background: white;
   }
 
   *,

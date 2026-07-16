@@ -94,3 +94,31 @@
   color: var(--vz-color-rank-gold);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.icon {
+  fill: none;
+  color: currentColor;
+  stroke: currentColor;
+}
+
+.icon * {
+  vector-effect: non-scaling-stroke;
+}
+
+.primary {
+  color: var(--vz-retro-green);
+}
+
+.secondary {
+  color: var(--vz-retro-cyan);
+}
+
+.warning {
+  color: var(--vz-retro-gold);
+}
+
+.danger {
+  color: var(--vz-retro-red);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

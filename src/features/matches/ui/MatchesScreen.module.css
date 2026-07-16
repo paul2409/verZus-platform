@@ -37,11 +37,11 @@
 
 .header > div > p:last-child {
   max-width: 48rem;
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-retro-muted);
 }
 
 .eyebrow {
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
   font-family: var(--vz-font-interface);
   font-size: var(--vz-text-xs);
   font-weight: var(--vz-font-weight-bold);
@@ -58,9 +58,9 @@
 .tab {
   min-height: 3rem;
   cursor: pointer;
-  color: var(--vz-color-text-secondary);
-  background: var(--vz-color-surface-base);
-  border: 1px solid var(--vz-color-border-default);
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
   letter-spacing: var(--vz-tracking-ui);
@@ -68,10 +68,10 @@
 }
 
 .tab[data-active="true"] {
-  color: var(--vz-color-accent-neon);
-  background: color-mix(in srgb, var(--vz-color-accent-neon) 7%, transparent);
-  border-color: var(--vz-color-accent-neon);
-  clip-path: var(--vz-clip-button);
+  color: var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
+  border-color: var(--vz-retro-green);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .featuredSection,
@@ -100,9 +100,9 @@
   display: grid;
   gap: 1rem;
   padding: 1.25rem;
-  background: var(--vz-color-surface-base);
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line-soft);
+  border-radius: 0;
 }
 
 .timelinePanel h3 {
@@ -131,9 +131,9 @@
   gap: 0.75rem;
   align-items: center;
   padding: 0.9rem 1rem;
-  background: var(--vz-color-surface-base);
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-md);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line-soft);
+  border-radius: 0;
 }
 
 .results li > div {
@@ -143,7 +143,7 @@
 }
 
 .results li > div strong {
-  color: var(--vz-color-text-primary);
+  color: var(--vz-retro-white);
   font-family: var(--vz-font-display);
   letter-spacing: var(--vz-tracking-ui);
   text-transform: uppercase;
@@ -151,7 +151,7 @@
 
 .results li > div span {
   overflow: hidden;
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-retro-muted);
   font-size: var(--vz-text-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -162,14 +162,14 @@
   width: 2.5rem;
   height: 2.5rem;
   place-items: center;
-  color: var(--vz-color-accent-cyan);
-  background: color-mix(in srgb, var(--vz-color-accent-cyan) 6%, transparent);
-  border: 1px solid color-mix(in srgb, var(--vz-color-accent-cyan) 24%, transparent);
-  clip-path: var(--vz-clip-rank);
+  color: var(--vz-retro-cyan);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-cyan) 24%, transparent);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .score {
-  color: var(--vz-color-rank-gold);
+  color: var(--vz-retro-gold);
   font-family: var(--vz-font-numeric);
   font-size: 1.1rem;
 }
@@ -201,3 +201,33 @@
     justify-self: start;
   }
 }
+/* VERZUS STAGE 4 RETRO COMPETITIVE:BEGIN */
+.header h1 {
+  background: var(--vz-gradient-brand);
+  background-clip: text;
+  color: transparent;
+}
+.tab,
+.timelinePanel,
+.results li,
+.gameIcon {
+  border-radius: 0;
+}
+.tab,
+.timelinePanel,
+.results li,
+.gameIcon {
+  clip-path: var(--vz-retro-cut-sm);
+}
+.timelinePanel {
+  background: linear-gradient(180deg, var(--vz-retro-surface-2), var(--vz-retro-surface));
+}
+.tab[data-active="true"] {
+  box-shadow: var(--vz-shadow-glow-green);
+}
+.results li:hover {
+  border-color: var(--vz-retro-cyan);
+  box-shadow: var(--vz-shadow-glow-cyan);
+  transform: translateY(-2px);
+}
+/* VERZUS STAGE 4 RETRO COMPETITIVE:END */

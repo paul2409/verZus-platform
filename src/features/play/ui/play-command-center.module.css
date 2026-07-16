@@ -1,51 +1,24 @@
-/* VERZUS STAGE 3 PLAY COMMAND CENTER */
+/* VERZUS STAGE 3 RETRO PLAY */
 
 .playRoot {
-  --play-green: var(--vz-color-accent-neon);
-  --play-cyan: var(--vz-color-accent-cyan);
-  --play-red: var(--vz-color-status-danger);
-  --play-magenta: var(--vz-color-status-magenta);
-  --play-gold: var(--vz-color-rank-gold);
-  --play-bg: var(--vz-color-bg-deep);
-  --play-surface: var(--vz-color-surface-base);
-  --play-elevated: var(--vz-color-surface-elevated);
-  --play-text: var(--vz-color-text-primary);
-  --play-muted: var(--vz-color-text-secondary);
-  --play-line: var(--vz-color-border-subtle);
+  --play-green: var(--vz-retro-green);
+  --play-cyan: var(--vz-retro-cyan);
+  --play-red: var(--vz-retro-red);
+  --play-magenta: var(--vz-retro-pink);
+  --play-gold: var(--vz-retro-gold);
+  --play-bg: var(--vz-retro-black);
+  --play-surface: var(--vz-retro-surface);
+  --play-elevated: var(--vz-retro-surface-2);
+  --play-text: var(--vz-retro-white);
+  --play-muted: var(--vz-retro-muted);
+  --play-line: var(--vz-retro-line-soft);
 
   position: relative;
-  width: min(100%, var(--vz-content-max));
+  width: min(100%, var(--vz-shell-content-max));
   margin-inline: auto;
   padding: clamp(0.75rem, 2.4vw, 1.5rem);
   color: var(--play-text);
   isolation: isolate;
-}
-
-.playRoot::before {
-  position: fixed;
-  z-index: -1;
-  inset: 0;
-  pointer-events: none;
-  content: "";
-  background:
-    linear-gradient(var(--play-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--play-line) 1px, transparent 1px),
-    radial-gradient(
-      circle at 18% 0%,
-      color-mix(in srgb, var(--play-cyan) 7%, transparent),
-      transparent 34rem
-    ),
-    radial-gradient(
-      circle at 82% 10%,
-      color-mix(in srgb, var(--play-green) 6%, transparent),
-      transparent 36rem
-    );
-  background-size:
-    4rem 4rem,
-    4rem 4rem,
-    auto,
-    auto;
-  mask-image: linear-gradient(to bottom, black, transparent 92%);
 }
 
 .playRoot :where(a, button) {
@@ -63,10 +36,10 @@
 
 .scenarioToolbar > span {
   color: var(--play-gold);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
 }
 
 .scenarioToolbar > div {
@@ -81,15 +54,15 @@
   padding: 0.45rem 0.6rem;
   color: var(--play-muted);
   border: 1px solid var(--play-line);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-decoration: none;
   text-transform: uppercase;
 }
 
 .scenarioToolbar a[aria-current="page"] {
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   border-color: var(--play-green);
   background: var(--play-green);
 }
@@ -104,10 +77,10 @@
 
 .playPageHeader > div:first-child > span {
   color: var(--play-cyan);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
@@ -125,10 +98,10 @@
   color: var(--play-green);
   border: 1px solid currentColor;
   background: color-mix(in srgb, var(--play-surface) 92%, transparent);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .liveStatus[data-online="false"] {
@@ -140,9 +113,9 @@
   width: 0.5rem;
   height: 0.5rem;
   flex: 0 0 auto;
-  border-radius: 50%;
+  border-radius: 0;
   background: currentColor;
-  box-shadow: 0 0 0.75rem currentColor;
+  box-shadow: none;
 }
 
 .statusStrip,
@@ -152,7 +125,7 @@
 .playHero {
   border: 1px solid var(--play-line);
   background: color-mix(in srgb, var(--play-surface) 96%, transparent);
-  box-shadow: var(--vz-shadow-panel);
+  box-shadow: none;
 }
 
 .statusStrip {
@@ -176,9 +149,9 @@
   height: 3rem;
   flex: 0 0 auto;
   place-items: center;
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   background: linear-gradient(135deg, var(--play-cyan), var(--play-green));
-  clip-path: var(--vz-clip-rank);
+  clip-path: var(--vz-retro-cut-sm);
   font-family: var(--vz-font-display);
   font-size: 1rem;
   font-weight: var(--vz-font-weight-bold);
@@ -204,10 +177,10 @@
 .opportunityBody > span,
 .opportunityMeta dt {
   color: var(--play-muted);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-transform: uppercase;
 }
 
@@ -216,7 +189,7 @@
   color: var(--play-text);
   font-family: var(--vz-font-display);
   font-size: 1.25rem;
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -258,9 +231,9 @@
   top: 0.45rem;
   right: 0.55rem;
   color: var(--play-gold);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .serviceRibbon {
@@ -279,9 +252,9 @@
 }
 
 .serviceRibbon strong {
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .serviceRibbon > span:not(.statusDot) {
@@ -298,11 +271,11 @@
   color: var(--play-cyan);
   border: 1px solid currentColor;
   background: transparent;
-  clip-path: var(--vz-clip-button);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .serviceRibbon button {
@@ -324,9 +297,9 @@
 
 .globalBanner strong {
   color: var(--play-red);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .globalBanner[data-tone="warning"] strong {
@@ -424,10 +397,10 @@
 
 .heroTopline > span {
   color: var(--play-cyan);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
 }
 
 .heroCopy h2 {
@@ -450,8 +423,8 @@
 
 .heroCopy p strong {
   color: var(--play-green);
-  font-family: var(--vz-font-interface);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .heroActions {
@@ -470,10 +443,10 @@
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1rem;
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -482,10 +455,10 @@
 .heroActions a[data-action="primary"],
 .primaryLink,
 .checkInActionLink {
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   border: 1px solid var(--play-green);
   background: var(--play-green);
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .heroActions a[data-action="secondary"],
@@ -493,7 +466,7 @@
   color: var(--play-cyan);
   border: 1px solid color-mix(in srgb, var(--play-cyan) 65%, var(--play-line));
   background: transparent;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .heroScore {
@@ -511,10 +484,10 @@
 .heroScore > small,
 .heroScore div span {
   color: var(--play-muted);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-transform: uppercase;
 }
 
@@ -535,9 +508,9 @@
 
 .heroScore div b {
   color: var(--play-text);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-transform: uppercase;
 }
 
@@ -563,10 +536,10 @@
 
 .widgetHeader span {
   color: var(--play-cyan);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
 }
 
 .widgetHeader h2 {
@@ -579,9 +552,9 @@
   padding: 0.25rem 0.45rem;
   color: var(--play-green);
   border: 1px solid currentColor;
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .primaryActionPanel {
@@ -625,7 +598,7 @@
   color: var(--play-text);
   font-family: var(--vz-font-display);
   font-size: 1.15rem;
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -642,9 +615,9 @@
 .matchCountdown span,
 .matchCountdown small {
   color: var(--play-muted);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .matchCountdown strong {
@@ -677,7 +650,7 @@
   color: var(--play-magenta);
   border: 1px solid currentColor;
   background: var(--play-surface);
-  clip-path: var(--vz-clip-rank);
+  clip-path: var(--vz-retro-cut-sm);
   font-family: var(--vz-font-display);
   font-weight: var(--vz-font-weight-bold);
 }
@@ -690,8 +663,8 @@
   max-width: 100%;
   overflow: hidden;
   color: var(--play-text);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -699,7 +672,7 @@
 
 .competitor small {
   color: var(--play-muted);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .versus {
@@ -732,7 +705,7 @@
   color: var(--play-green);
   font-family: var(--vz-font-display);
   font-size: 1.45rem;
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-transform: uppercase;
 }
 
@@ -744,14 +717,14 @@
 .checkInControl > button {
   min-height: 3rem;
   padding: 0.75rem 1rem;
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   border: 1px solid var(--play-green);
   background: var(--play-green);
-  clip-path: var(--vz-clip-button);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .checkInControl > button:disabled {
@@ -781,7 +754,7 @@
 .checkInFeedback span {
   color: var(--play-muted);
   font-family: var(--vz-font-numeric);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .quickActionGrid {
@@ -802,8 +775,8 @@
   background: color-mix(in srgb, var(--quick-signal) 3%, transparent);
   text-decoration: none;
   transition:
-    border-color var(--vz-duration-ui) var(--vz-ease-standard),
-    transform var(--vz-duration-ui) var(--vz-ease-standard);
+    border-color var(--vz-duration-normal) var(--vz-ease-standard),
+    transform var(--vz-duration-normal) var(--vz-ease-standard);
 }
 
 .quickActionGrid a[data-tone="primary"] {
@@ -829,7 +802,7 @@
   height: 2.4rem;
   place-items: center;
   border: 1px solid currentColor;
-  clip-path: var(--vz-clip-rank);
+  clip-path: var(--vz-retro-cut-sm);
   font-family: var(--vz-font-display);
   font-weight: var(--vz-font-weight-bold);
 }
@@ -842,14 +815,14 @@
 
 .quickActionGrid strong {
   color: var(--quick-signal);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .quickActionGrid small {
   color: var(--play-muted);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .positionLead {
@@ -922,15 +895,15 @@
 
 .positionFooter span {
   color: var(--play-muted);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .positionFooter a {
   color: var(--play-cyan);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .featuredWidget {
@@ -991,7 +964,7 @@
   color: var(--play-text);
   font-family: var(--vz-font-display);
   font-size: 1.05rem;
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -1016,8 +989,8 @@
   margin: 0.1rem 0 0;
   overflow: hidden;
   color: var(--opportunity-signal);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1035,15 +1008,15 @@
 
 .opportunityFooter span {
   color: var(--play-muted);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .opportunityFooter a {
   color: var(--opportunity-signal);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .crewIdentity {
@@ -1060,7 +1033,7 @@
   place-items: center;
   color: var(--play-green);
   border: 1px solid currentColor;
-  clip-path: var(--vz-clip-rank);
+  clip-path: var(--vz-retro-cut-sm);
   font-family: var(--vz-font-display);
   font-weight: var(--vz-font-weight-bold);
 }
@@ -1074,9 +1047,9 @@
 .crewIdentity strong {
   overflow: hidden;
   color: var(--play-text);
-  font-family: var(--vz-font-interface);
+  font-family: var(--vz-font-display);
   font-size: 1.05rem;
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -1116,9 +1089,9 @@
 
 .crewFixture strong {
   color: var(--play-magenta);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-transform: uppercase;
 }
 
@@ -1157,8 +1130,8 @@
 .activityList strong {
   overflow: hidden;
   color: var(--play-text);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -1166,7 +1139,7 @@
 
 .activityList small {
   color: var(--play-muted);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .activityList b {
@@ -1205,16 +1178,16 @@
 
 .widgetState strong {
   color: var(--play-text);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-sm);
-  letter-spacing: var(--vz-tracking-ui);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
+  letter-spacing: var(--vz-letter-spacing-wider);
 }
 
 .widgetState p,
 .widgetState small {
   margin: 0;
   color: var(--play-muted);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .widgetState button {

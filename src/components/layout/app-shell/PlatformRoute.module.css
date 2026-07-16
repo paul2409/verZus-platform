@@ -56,7 +56,7 @@
 }
 
 .primaryPanel {
-  border-color: rgb(0 255 135 / 32%);
+  border-color: color-mix(in srgb, var(--vz-retro-green) 32%, transparent);
 }
 
 .panelEyebrow {
@@ -95,7 +95,7 @@
   min-width: 0;
   padding: 0.75rem;
   border: 1px solid var(--vz-shell-route-panel-border);
-  background: rgb(0 0 0 / 20%);
+  background: color-mix(in srgb, var(--vz-retro-black) 20%, transparent);
 }
 
 .routeFacts dt {
@@ -131,7 +131,7 @@
   color: var(--vz-shell-text);
   border: 1px solid var(--vz-shell-route-panel-border);
   text-decoration: none;
-  background: rgb(255 255 255 / 2%);
+  background: color-mix(in srgb, var(--vz-retro-white) 2%, transparent);
   transition: var(--vz-shell-transition);
 }
 
@@ -139,7 +139,7 @@
 .routeIndex a[aria-current="page"] {
   color: var(--vz-shell-active);
   border-color: var(--vz-shell-border-active);
-  background: rgb(0 255 135 / 7%);
+  background: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
 }
 
 .routeIndex small {
@@ -182,7 +182,11 @@
 .card,
 .notice {
   border-color: var(--vz-retro-line);
-  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 98%, transparent),
+    color-mix(in srgb, var(--vz-retro-black-soft) 98%, transparent)
+  );
   clip-path: var(--vz-retro-cut-md);
 }
 /* VERZUS RETRO_PLATFORM_ROUTE END */
@@ -199,8 +203,41 @@
 .card,
 .panel {
   border-color: var(--vz-ref-line);
-  background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 98%, transparent),
+    color-mix(in srgb, var(--vz-retro-black-soft) 98%, transparent)
+  );
   border-radius: 0;
   clip-path: var(--vz-ref-cut-md);
 }
 /* VERZUS REFERENCE_LOCK_PLATFORM_ROUTE END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.root,
+.route,
+.placeholder {
+  color: var(--vz-color-text-primary);
+  background: transparent;
+}
+
+.panel,
+.card,
+.notice,
+.primaryPanel,
+.section {
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: 0;
+  background: var(--vz-color-panel);
+  clip-path: var(--vz-retro-cut-md);
+  box-shadow: none;
+}
+
+.panelEyebrow,
+.routeIndex {
+  color: var(--vz-retro-cyan);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

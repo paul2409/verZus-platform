@@ -31,7 +31,7 @@
   margin-top: 0.0625rem;
   background: var(--vz-input-background);
   border: var(--vz-border-width-1) solid var(--vz-input-border);
-  border-radius: var(--vz-radius-xs);
+  border-radius: 0;
   box-shadow: var(--vz-shadow-xs);
   transition: var(--vz-transition-interactive);
 }
@@ -121,7 +121,7 @@
 /* VERZUS RETRO_CHECKBOX START */
 .box {
   border-color: var(--vz-retro-line);
-  background: #050609;
+  background: var(--vz-retro-black-soft);
   clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
 }
 .input:checked + .box {
@@ -145,7 +145,7 @@
 .indicator {
   border-radius: 0;
   border-color: var(--vz-ref-line-strong);
-  background: rgb(5 6 10 / 96%);
+  background: color-mix(in srgb, var(--vz-retro-black-soft) 96%, transparent);
   clip-path: var(--vz-ref-cut-xs);
 }
 
@@ -153,7 +153,7 @@
 .input:hover,
 .select:hover,
 .textarea:hover {
-  border-color: rgb(0 229 255 / 54%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 54%, transparent);
 }
 
 .control:focus-within,
@@ -172,7 +172,7 @@
 
 .box {
   border: 1px solid var(--vz-color-border-default);
-  border-radius: var(--vz-radius-xs);
+  border-radius: 0;
   background: var(--vz-color-surface-base);
   box-shadow: none;
 }
@@ -200,3 +200,39 @@
   color: var(--vz-color-status-danger);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.root,
+.control,
+.box,
+.indicator {
+  border-radius: 0;
+}
+
+.box {
+  color: var(--vz-retro-black);
+  border: 1px solid var(--vz-color-border-default);
+  background: var(--vz-retro-black-soft);
+  clip-path: var(--vz-retro-cut-sm);
+  box-shadow: none;
+}
+
+.input:checked + .box,
+.root[data-indeterminate="true"] .box {
+  border-color: var(--vz-retro-green);
+  background: var(--vz-gradient-primary);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.control:focus-within {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+
+.root[data-invalid="true"] .box,
+.error {
+  border-color: var(--vz-retro-red);
+  color: var(--vz-retro-red);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

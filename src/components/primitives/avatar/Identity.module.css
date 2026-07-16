@@ -53,7 +53,7 @@
 .handle,
 .crewTag {
   flex: 0 0 auto;
-  color: var(--vz-identity-accent, var(--vz-surface-accent-cyan, #00e5ff));
+  color: var(--vz-identity-accent, var(--vz-surface-accent-cyan, var(--vz-retro-cyan)));
   font-family: var(--vz-font-display);
   font-size: var(--vz-identity-handle-size, 0.75rem);
   font-weight: 600;
@@ -62,7 +62,7 @@
 }
 
 .crewTag {
-  color: var(--vz-surface-accent-violet, #8a4fff);
+  color: var(--vz-surface-accent-violet, var(--vz-retro-purple));
 }
 
 .badgeSlot {
@@ -146,11 +146,11 @@
 }
 
 .playerIdentity {
-  --vz-identity-accent: var(--vz-surface-accent-green, #00ff87);
+  --vz-identity-accent: var(--vz-surface-accent-green, var(--vz-retro-green));
 }
 
 .crewIdentity {
-  --vz-identity-accent: var(--vz-surface-accent-violet, #8a4fff);
+  --vz-identity-accent: var(--vz-surface-accent-violet, var(--vz-retro-purple));
 }
 
 @media (max-width: 29.999rem) {
@@ -207,3 +207,24 @@
   background: color-mix(in srgb, var(--vz-color-accent-cyan) 6%, transparent);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.identity,
+.playerIdentity,
+.crewIdentity {
+  color: var(--vz-color-text-primary);
+}
+
+.name,
+.crewTag,
+.handle {
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.055em;
+}
+
+.crewTag {
+  color: var(--vz-retro-cyan);
+  text-transform: uppercase;
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

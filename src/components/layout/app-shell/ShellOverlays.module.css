@@ -25,8 +25,8 @@
   border: 1px solid var(--vz-shell-overlay-border);
   border-radius: 0;
   outline: none;
-  background: rgb(255 255 255 / 4%);
-  color: var(--vz-color-text, #f4f7f5);
+  background: color-mix(in srgb, var(--vz-retro-white) 4%, transparent);
+  color: var(--vz-color-text, var(--vz-retro-white));
   font: 600 1rem/1.2 var(--vz-font-interface, sans-serif);
   clip-path: polygon(
     0.6rem 0,
@@ -63,7 +63,7 @@
   justify-content: center;
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--vz-shell-overlay-border);
-  color: var(--vz-color-text, #f4f7f5);
+  color: var(--vz-color-text, var(--vz-retro-white));
   font: 800 0.75rem/1 var(--vz-font-interface, sans-serif);
   letter-spacing: 0.07em;
   text-decoration: none;
@@ -80,15 +80,15 @@
 }
 
 .primaryAction {
-  border-color: color-mix(in srgb, var(--vz-color-primary, #00ff87) 70%, transparent);
-  background: var(--vz-color-primary, #00ff87);
-  color: #031008;
+  border-color: color-mix(in srgb, var(--vz-color-primary, var(--vz-retro-green)) 70%, transparent);
+  background: var(--vz-color-primary, var(--vz-retro-green));
+  color: var(--vz-retro-black-soft);
 }
 
 .secondaryAction,
 .profileLink,
 .notificationLink {
-  background: rgb(255 255 255 / 3%);
+  background: color-mix(in srgb, var(--vz-retro-white) 3%, transparent);
 }
 
 .primaryAction:hover,
@@ -126,7 +126,7 @@
   padding: 0.8rem;
   border: 1px solid color-mix(in srgb, var(--vz-shell-overlay-info) 24%, transparent);
   background: color-mix(in srgb, var(--vz-shell-overlay-info) 5%, transparent);
-  color: var(--vz-color-text, #f4f7f5);
+  color: var(--vz-color-text, var(--vz-retro-white));
   text-decoration: none;
 }
 
@@ -154,7 +154,7 @@
   gap: 0.4rem;
   padding: 0.9rem;
   border: 1px solid var(--vz-shell-overlay-border);
-  background: rgb(255 255 255 / 3%);
+  background: color-mix(in srgb, var(--vz-retro-white) 3%, transparent);
   clip-path: polygon(
     0.55rem 0,
     100% 0,
@@ -166,8 +166,8 @@
 }
 
 .notificationItem[data-unread="true"] {
-  border-color: color-mix(in srgb, var(--vz-color-primary, #00ff87) 55%, transparent);
-  background: color-mix(in srgb, var(--vz-color-primary, #00ff87) 6%, transparent);
+  border-color: color-mix(in srgb, var(--vz-color-primary, var(--vz-retro-green)) 55%, transparent);
+  background: color-mix(in srgb, var(--vz-color-primary, var(--vz-retro-green)) 6%, transparent);
 }
 
 .notificationMeta {
@@ -187,7 +187,7 @@
 }
 
 .notificationItem h3 {
-  color: var(--vz-color-text, #f4f7f5);
+  color: var(--vz-color-text, var(--vz-retro-white));
   font: 800 0.95rem/1.2 var(--vz-font-display, sans-serif);
   text-transform: uppercase;
 }
@@ -217,7 +217,7 @@
   background:
     linear-gradient(
       145deg,
-      color-mix(in srgb, var(--vz-color-primary, #00ff87) 6%, transparent),
+      color-mix(in srgb, var(--vz-color-primary, var(--vz-retro-green)) 6%, transparent),
       transparent 42%
     ),
     var(--vz-shell-overlay-surface);
@@ -238,7 +238,7 @@
   gap: 0.3rem;
   padding: 0.75rem;
   border: 1px solid var(--vz-shell-overlay-border);
-  background: rgb(255 255 255 / 3%);
+  background: color-mix(in srgb, var(--vz-retro-white) 3%, transparent);
 }
 
 .profileSummary strong,
@@ -249,7 +249,7 @@
 }
 
 .profileSummary strong {
-  color: var(--vz-color-text, #f4f7f5);
+  color: var(--vz-color-text, var(--vz-retro-white));
   font: 800 1rem/1.2 var(--vz-font-display, sans-serif);
   text-transform: uppercase;
 }
@@ -271,7 +271,7 @@
   gap: 0.15rem;
   padding: 0.65rem;
   border: 1px solid color-mix(in srgb, var(--vz-shell-overlay-info) 20%, transparent);
-  background: rgb(255 255 255 / 2%);
+  background: color-mix(in srgb, var(--vz-retro-white) 2%, transparent);
 }
 
 .profileMetric span {
@@ -282,7 +282,7 @@
 
 .profileMetric strong {
   overflow: hidden;
-  color: var(--vz-color-text, #f4f7f5);
+  color: var(--vz-color-text, var(--vz-retro-white));
   font-family: var(--vz-font-numeric, monospace);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -309,7 +309,7 @@
   padding: 0.65rem 0.8rem;
   border: 1px solid color-mix(in srgb, var(--vz-shell-overlay-info) 56%, transparent);
   background: color-mix(in srgb, var(--vz-shell-overlay-surface) 96%, transparent);
-  color: var(--vz-color-text, #f4f7f5);
+  color: var(--vz-color-text, var(--vz-retro-white));
   box-shadow: var(--vz-shell-overlay-shadow);
   font: 800 0.72rem/1 var(--vz-font-interface, sans-serif);
   letter-spacing: 0.06em;
@@ -328,7 +328,7 @@
 .loadingDot {
   width: 0.55rem;
   height: 0.55rem;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--vz-shell-overlay-info);
   box-shadow: 0 0 0.8rem color-mix(in srgb, var(--vz-shell-overlay-info) 65%, transparent);
   animation: shell-loading-pulse 1s ease-in-out infinite alternate;
@@ -418,7 +418,7 @@
   padding: 0.7rem 0.85rem;
   border: 1px solid color-mix(in srgb, var(--vz-shell-overlay-danger) 58%, transparent);
   background: color-mix(in srgb, var(--vz-shell-overlay-danger) 10%, transparent);
-  color: var(--vz-color-text, #f4f7f5);
+  color: var(--vz-color-text, var(--vz-retro-white));
   font: 800 0.72rem/1 var(--vz-font-interface, sans-serif);
   letter-spacing: 0.06em;
   text-decoration: none;
@@ -437,22 +437,22 @@
 .profileContent,
 .notificationItem {
   border-color: var(--vz-retro-line);
-  background: #050609;
+  background: var(--vz-retro-black-soft);
   clip-path: var(--vz-retro-cut-sm);
 }
 .shortcut:hover {
-  border-color: rgb(0 229 255 / 52%);
-  background: rgb(0 229 255 / 5%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 52%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent);
 }
 .primaryAction {
-  color: #020305;
+  color: var(--vz-retro-black);
   border-color: var(--vz-retro-green);
   background: var(--vz-retro-green);
   clip-path: var(--vz-retro-cut-sm);
 }
 .secondaryAction {
   color: var(--vz-retro-cyan);
-  border-color: rgb(0 229 255 / 52%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 52%, transparent);
   clip-path: var(--vz-retro-cut-sm);
 }
 /* VERZUS RETRO_SHELL_OVERLAYS END */
@@ -465,15 +465,15 @@
 .profileContent,
 .notificationItem {
   border-color: var(--vz-ref-line);
-  background: rgb(7 8 13 / 96%);
+  background: color-mix(in srgb, var(--vz-retro-black-soft) 96%, transparent);
   border-radius: 0;
   clip-path: var(--vz-ref-cut-sm);
 }
 
 .shortcut:hover {
   color: var(--vz-ref-cyan);
-  border-color: rgb(0 229 255 / 46%);
-  background: rgb(0 229 255 / 5%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 46%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent);
 }
 /* VERZUS REFERENCE_LOCK_SHELL_OVERLAYS END */
 
@@ -547,3 +547,83 @@
   background: var(--vz-color-accent-cyan);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.statusRegion,
+.notificationItem,
+.profileSummary,
+.profileMetric,
+.searchField,
+.shortcut {
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: 0;
+  background: var(--vz-color-panel);
+  clip-path: var(--vz-retro-cut-sm);
+  box-shadow: none;
+}
+
+.sectionLabel {
+  color: var(--vz-retro-cyan);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.searchInput {
+  color: var(--vz-color-text-primary);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 0;
+  background: var(--vz-retro-black-soft);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.searchInput:focus-visible {
+  border-color: var(--vz-retro-green);
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+
+.primaryAction,
+.secondaryAction,
+.profileLink,
+.notificationLink,
+.shortcut,
+.profileFailureLink {
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.primaryAction {
+  color: var(--vz-retro-black);
+  border-color: var(--vz-retro-green);
+  background: var(--vz-gradient-primary);
+}
+
+.secondaryAction,
+.profileLink,
+.notificationLink,
+.shortcut,
+.profileFailureLink {
+  color: var(--vz-retro-cyan);
+  border-color: var(--vz-color-border-information);
+  background: transparent;
+}
+
+.primaryAction:hover {
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.secondaryAction:hover,
+.profileLink:hover,
+.notificationLink:hover,
+.shortcut:hover,
+.profileFailureLink:hover {
+  background: color-mix(in srgb, var(--vz-retro-cyan) 8%, transparent);
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

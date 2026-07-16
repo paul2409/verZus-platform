@@ -66,7 +66,11 @@
     "verify:retro-ui": "node scripts/verify-retro-ui.mjs",
     "verify:reference-ui": "node scripts/verify-reference-ui.mjs",
     "verify:stage5": "node scripts/verify-stage-5-platform.mjs",
-    "stage5:preview": "next dev --hostname 127.0.0.1 --port 3113"
+    "stage5:preview": "next dev --hostname 127.0.0.1 --port 3113",
+    "verify:stage1:retro": "node scripts/verify-stage-1-retro.mjs",
+    "verify:stage2:retro": "node scripts/verify-stage-2-retro.mjs",
+    "verify:stage5:retro": "node scripts/verify-stage-5-retro-platform.mjs",
+    "stage5:retro:preview": "next dev --hostname 127.0.0.1 --port 3117"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [

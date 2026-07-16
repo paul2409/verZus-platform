@@ -5,15 +5,15 @@
   align-items: center;
   padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-8));
   border: 1px solid var(--vz-color-border-subtle);
-  border-left-color: var(--vz-color-accent-cyan);
-  border-radius: var(--vz-radius-panel);
+  border-left-color: var(--vz-retro-cyan);
+  border-radius: 0;
   background:
     linear-gradient(
       120deg,
-      color-mix(in srgb, var(--vz-color-accent-cyan) 8%, transparent),
+      color-mix(in srgb, var(--vz-retro-cyan) 8%, transparent),
       transparent 45%
     ),
-    var(--vz-color-surface-base);
+    var(--vz-color-panel-base);
 }
 
 .identityCopy {
@@ -42,7 +42,7 @@
 .identityCopy p,
 .rankBlock span,
 .rankBlock small {
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
 }
 
 .rankBlock {
@@ -50,13 +50,13 @@
   grid-column: 1 / -1;
   gap: var(--vz-space-1);
   padding: var(--vz-space-4);
-  border: 1px solid color-mix(in srgb, var(--vz-color-rank-gold) 38%, transparent);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-rank-gold) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-gold) 38%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--vz-retro-gold) 5%, transparent);
 }
 
 .rankBlock strong {
-  color: var(--vz-color-rank-gold);
+  color: var(--vz-retro-gold);
   font-family: var(--vz-font-numeric);
   font-size: clamp(2rem, 7vw, 3.5rem);
   line-height: 1;
@@ -80,21 +80,21 @@
   aspect-ratio: 1;
   place-items: center;
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-sm);
+  border-radius: 0;
   font-family: var(--vz-font-numeric);
   font-weight: var(--vz-font-weight-bold);
 }
 
 .formRow span[data-result="win"] {
-  color: var(--vz-color-accent-green);
-  border-color: color-mix(in srgb, var(--vz-color-accent-green) 48%, transparent);
-  background: color-mix(in srgb, var(--vz-color-accent-green) 7%, transparent);
+  color: var(--vz-retro-green);
+  border-color: color-mix(in srgb, var(--vz-retro-green) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
 }
 
 .formRow span[data-result="loss"] {
-  color: var(--vz-color-status-danger);
-  border-color: color-mix(in srgb, var(--vz-color-status-danger) 48%, transparent);
-  background: color-mix(in srgb, var(--vz-color-status-danger) 7%, transparent);
+  color: var(--vz-color-danger);
+  border-color: color-mix(in srgb, var(--vz-color-danger) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-color-danger) 7%, transparent);
 }
 
 @media (min-width: 48rem) {

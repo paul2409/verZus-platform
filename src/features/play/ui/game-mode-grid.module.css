@@ -5,14 +5,10 @@
   height: 100%;
   gap: 0.8rem;
   padding: clamp(0.85rem, 2vw, 1.15rem);
-  border: 1px solid var(--vz-color-border-subtle);
-  border-left-color: color-mix(
-    in srgb,
-    var(--vz-color-accent-cyan) 35%,
-    var(--vz-color-border-subtle)
-  );
-  background: color-mix(in srgb, var(--vz-color-surface-base) 96%, transparent);
-  box-shadow: var(--vz-shadow-panel);
+  border: 1px solid var(--vz-retro-line-soft);
+  border-left-color: color-mix(in srgb, var(--vz-retro-cyan) 35%, var(--vz-retro-line-soft));
+  background: color-mix(in srgb, var(--vz-retro-surface) 96%, transparent);
+  box-shadow: none;
 }
 
 .sectionHeader {
@@ -21,7 +17,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding-bottom: 0.7rem;
-  border-bottom: 1px solid var(--vz-color-border-subtle);
+  border-bottom: 1px solid var(--vz-retro-line-soft);
 }
 
 .sectionHeader > div {
@@ -29,11 +25,11 @@
 }
 
 .sectionHeader span {
-  color: var(--vz-color-accent-cyan);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  color: var(--vz-retro-cyan);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
@@ -48,7 +44,7 @@
 }
 
 .card {
-  --mode-signal: var(--vz-color-accent-neon);
+  --mode-signal: var(--vz-retro-green);
 
   position: relative;
   display: grid;
@@ -56,17 +52,17 @@
   gap: 0.7rem;
   padding: 0.75rem;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--mode-signal) 32%, var(--vz-color-border-subtle));
+  border: 1px solid color-mix(in srgb, var(--mode-signal) 32%, var(--vz-retro-line-soft));
   background:
     linear-gradient(
       135deg,
       color-mix(in srgb, var(--mode-signal) 5%, transparent),
       transparent 48%
     ),
-    color-mix(in srgb, var(--vz-color-bg-deep) 62%, transparent);
+    color-mix(in srgb, var(--vz-retro-black) 62%, transparent);
   transition:
-    border-color var(--vz-duration-ui) var(--vz-ease-standard),
-    transform var(--vz-duration-ui) var(--vz-ease-standard);
+    border-color var(--vz-duration-normal) var(--vz-ease-standard),
+    transform var(--vz-duration-normal) var(--vz-ease-standard);
 }
 
 .card::before {
@@ -80,15 +76,15 @@
 }
 
 .card[data-game-mode-tone="cyan"] {
-  --mode-signal: var(--vz-color-accent-cyan);
+  --mode-signal: var(--vz-retro-cyan);
 }
 
 .card[data-game-mode-tone="gold"] {
-  --mode-signal: var(--vz-color-rank-gold);
+  --mode-signal: var(--vz-retro-gold);
 }
 
 .card[data-game-mode-tone="magenta"] {
-  --mode-signal: var(--vz-color-status-magenta);
+  --mode-signal: var(--vz-retro-pink);
 }
 
 .card:hover,
@@ -111,8 +107,8 @@
   place-items: center;
   color: var(--mode-signal);
   border: 1px solid currentColor;
-  background: var(--vz-color-surface-base);
-  clip-path: var(--vz-clip-rank);
+  background: var(--vz-retro-surface);
+  clip-path: var(--vz-retro-cut-sm);
   font-family: var(--vz-font-display);
   font-size: 0.85rem;
   font-weight: var(--vz-font-weight-bold);
@@ -120,11 +116,11 @@
 
 .cardCopy > span,
 .cardFacts dt {
-  color: var(--vz-color-text-secondary);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-transform: uppercase;
 }
 
@@ -143,12 +139,12 @@
 .cardFacts div {
   min-width: 0;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--vz-color-border-subtle);
+  border-top: 1px solid var(--vz-retro-line-soft);
 }
 
 .cardFacts dd {
   margin: 0.15rem 0 0;
-  color: var(--vz-color-text-primary);
+  color: var(--vz-retro-white);
   font-family: var(--vz-font-numeric);
   font-size: 0.82rem;
 }
@@ -162,17 +158,17 @@
   color: var(--mode-signal);
   border: 1px solid currentColor;
   background: transparent;
-  clip-path: var(--vz-clip-button);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   text-decoration: none;
   text-transform: uppercase;
 }
 
 .cardAction:hover {
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   background: var(--mode-signal);
 }
 

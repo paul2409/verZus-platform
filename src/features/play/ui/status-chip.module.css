@@ -6,14 +6,14 @@
   align-items: center;
   justify-content: center;
   padding: 0.2rem 0.5rem;
-  color: var(--vz-color-text-primary);
+  color: var(--vz-retro-white);
   border: 1px solid currentColor;
-  border-radius: var(--vz-radius-xs);
-  background: color-mix(in srgb, var(--vz-color-bg-deep) 78%, transparent);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--vz-retro-black) 78%, transparent);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wider);
   line-height: 1;
   text-transform: uppercase;
 }
@@ -23,13 +23,13 @@
 }
 
 .scheduled {
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
 }
 
 .verified {
-  color: var(--vz-color-accent-neon);
+  color: var(--vz-retro-green);
 }
 
 .locked {
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-retro-muted);
 }

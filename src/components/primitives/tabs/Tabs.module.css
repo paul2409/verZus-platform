@@ -1,9 +1,9 @@
 .tabs {
-  --vz-tabs-accent: var(--vz-surface-accent-green, #00ff87);
+  --vz-tabs-accent: var(--vz-surface-accent-green, var(--vz-retro-green));
 
   display: grid;
   min-width: 0;
-  color: var(--vz-color-text-primary, #f4f7f8);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
 }
 
 .orientationHorizontal {
@@ -17,15 +17,15 @@
 }
 
 .tonePrimary {
-  --vz-tabs-accent: var(--vz-surface-accent-green, #00ff87);
+  --vz-tabs-accent: var(--vz-surface-accent-green, var(--vz-retro-green));
 }
 
 .toneSecondary {
-  --vz-tabs-accent: var(--vz-surface-accent-cyan, #00e5ff);
+  --vz-tabs-accent: var(--vz-surface-accent-cyan, var(--vz-retro-cyan));
 }
 
 .toneAccent {
-  --vz-tabs-accent: var(--vz-surface-accent-violet, #8a4fff);
+  --vz-tabs-accent: var(--vz-surface-accent-violet, var(--vz-retro-purple));
 }
 
 .sizeSm {
@@ -54,7 +54,7 @@
   padding: var(--vz-tabs-padding, 0.25rem);
   background: var(--vz-tabs-list-background);
   border: 1px solid var(--vz-tabs-list-border);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 5%, transparent);
 }
 
 .orientationHorizontal .list {
@@ -297,11 +297,11 @@
 /* VERZUS RETRO_TABS START */
 .list {
   border: 1px solid var(--vz-retro-line);
-  background: #050609;
+  background: var(--vz-retro-black-soft);
   clip-path: var(--vz-retro-cut-sm);
 }
 .tab {
-  color: #9693aa;
+  color: var(--vz-retro-muted);
   font-family: var(--vz-font-display);
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -309,11 +309,11 @@
 }
 .tab:hover:not(:disabled) {
   color: var(--vz-retro-cyan);
-  background: rgb(0 229 255 / 5%);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent);
 }
 .selected {
   color: var(--vz-retro-green);
-  background: rgb(0 255 135 / 8%);
+  background: color-mix(in srgb, var(--vz-retro-green) 8%, transparent);
 }
 .selected::after {
   background: var(--vz-retro-green);
@@ -323,24 +323,24 @@
 
 /* VERZUS REFERENCE_LOCK_TABS START */
 .list {
-  background: #050609;
+  background: var(--vz-retro-black-soft);
   border-color: var(--vz-ref-line);
   clip-path: var(--vz-ref-cut-sm);
 }
 
 .tab {
-  color: #8f8ba3;
+  color: var(--vz-retro-muted);
   border: 1px solid transparent;
   clip-path: var(--vz-ref-cut-xs);
 }
 
 .tab:hover:not(:disabled) {
   color: var(--vz-ref-cyan);
-  background: rgb(0 229 255 / 5%);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent);
 }
 
 .selected {
-  color: #020305;
+  color: var(--vz-retro-black);
   background: var(--vz-ref-green);
   border-color: var(--vz-ref-green-soft);
   text-shadow: none;
@@ -359,7 +359,7 @@
 .list {
   gap: 0;
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-control);
+  border-radius: 0;
   background: var(--vz-color-surface-base);
 }
 
@@ -412,3 +412,50 @@
   color: var(--vz-color-text-primary);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.tabs,
+.list,
+.tab,
+.panel {
+  border-radius: 0;
+}
+
+.list {
+  border-bottom: 1px solid var(--vz-color-border-subtle);
+  background: transparent;
+}
+
+.tab {
+  color: var(--vz-color-text-tertiary);
+  border: 0;
+  background: transparent;
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.tab:hover:not(:disabled) {
+  color: var(--vz-retro-cyan);
+}
+
+.selected {
+  color: var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-green) 6%, transparent);
+}
+
+.selected::after,
+.tab::after {
+  height: 2px;
+  background: var(--vz-retro-cyan);
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+
+.tab:focus-visible,
+.panel:focus-visible {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

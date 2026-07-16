@@ -1,8 +1,17 @@
 .badge {
-  --vz-badge-color: var(--vz-badge-neutral, #c7d0d6);
-  --vz-badge-background: var(--vz-badge-background-neutral, rgb(49 59 66 / 94%));
-  --vz-badge-border: var(--vz-badge-border-neutral, rgb(199 208 214 / 44%));
-  --vz-badge-shadow: var(--vz-badge-shadow-neutral, inset 0 1px 0 rgb(255 255 255 / 8%));
+  --vz-badge-color: var(--vz-badge-neutral, var(--vz-retro-white));
+  --vz-badge-background: var(
+    --vz-badge-background-neutral,
+    color-mix(in srgb, var(--vz-retro-line) 94%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-neutral,
+    color-mix(in srgb, var(--vz-retro-white) 44%, transparent)
+  );
+  --vz-badge-shadow: var(
+    --vz-badge-shadow-neutral,
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 8%, transparent)
+  );
   --vz-badge-height: var(--vz-badge-height-md, 1.75rem);
   --vz-badge-padding: var(--vz-badge-padding-inline-md, 0.6875rem);
   --vz-badge-gap: var(--vz-badge-gap-md, 0.375rem);
@@ -85,68 +94,137 @@
 }
 
 .variantSolid {
-  color: var(--vz-color-text-inverse, #080a0c);
+  color: var(--vz-color-text-inverse, var(--vz-retro-black-soft));
   background: var(--vz-badge-color);
   border-color: color-mix(in srgb, var(--vz-badge-color) 72%, white);
 }
 
 .variantOutline {
-  background: rgb(4 6 8 / 58%);
+  background: color-mix(in srgb, var(--vz-retro-black-soft) 58%, transparent);
 }
 
 .toneNeutral {
-  --vz-badge-color: var(--vz-badge-neutral, #c7d0d6);
-  --vz-badge-background: var(--vz-badge-background-neutral, rgb(49 59 66 / 94%));
-  --vz-badge-border: var(--vz-badge-border-neutral, rgb(199 208 214 / 44%));
-  --vz-badge-shadow: var(--vz-badge-shadow-neutral, inset 0 1px 0 rgb(255 255 255 / 8%));
+  --vz-badge-color: var(--vz-badge-neutral, var(--vz-retro-white));
+  --vz-badge-background: var(
+    --vz-badge-background-neutral,
+    color-mix(in srgb, var(--vz-retro-line) 94%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-neutral,
+    color-mix(in srgb, var(--vz-retro-white) 44%, transparent)
+  );
+  --vz-badge-shadow: var(
+    --vz-badge-shadow-neutral,
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 8%, transparent)
+  );
 }
 
 .toneInformation {
-  --vz-badge-color: var(--vz-badge-information, #00e5ff);
-  --vz-badge-background: var(--vz-badge-background-information, rgb(0 229 255 / 12%));
-  --vz-badge-border: var(--vz-badge-border-information, rgb(0 229 255 / 56%));
-  --vz-badge-shadow: var(--vz-badge-shadow-information, 0 0 0.75rem rgb(0 229 255 / 14%));
+  --vz-badge-color: var(--vz-badge-information, var(--vz-retro-cyan));
+  --vz-badge-background: var(
+    --vz-badge-background-information,
+    color-mix(in srgb, var(--vz-retro-cyan) 12%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-information,
+    color-mix(in srgb, var(--vz-retro-cyan) 56%, transparent)
+  );
+  --vz-badge-shadow: var(
+    --vz-badge-shadow-information,
+    0 0 0.75rem color-mix(in srgb, var(--vz-retro-cyan) 14%, transparent)
+  );
 }
 
 .tonePositive {
-  --vz-badge-color: var(--vz-badge-positive, #00ff87);
-  --vz-badge-background: var(--vz-badge-background-positive, rgb(0 255 135 / 12%));
-  --vz-badge-border: var(--vz-badge-border-positive, rgb(0 255 135 / 56%));
-  --vz-badge-shadow: var(--vz-badge-shadow-positive, 0 0 0.75rem rgb(0 255 135 / 14%));
+  --vz-badge-color: var(--vz-badge-positive, var(--vz-retro-green));
+  --vz-badge-background: var(
+    --vz-badge-background-positive,
+    color-mix(in srgb, var(--vz-retro-green) 12%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-positive,
+    color-mix(in srgb, var(--vz-retro-green) 56%, transparent)
+  );
+  --vz-badge-shadow: var(
+    --vz-badge-shadow-positive,
+    0 0 0.75rem color-mix(in srgb, var(--vz-retro-green) 14%, transparent)
+  );
 }
 
 .toneWarning {
-  --vz-badge-color: var(--vz-badge-warning, #ffc247);
-  --vz-badge-background: var(--vz-badge-background-warning, rgb(255 194 71 / 12%));
-  --vz-badge-border: var(--vz-badge-border-warning, rgb(255 194 71 / 58%));
-  --vz-badge-shadow: var(--vz-badge-shadow-warning, 0 0 0.75rem rgb(255 194 71 / 15%));
+  --vz-badge-color: var(--vz-badge-warning, var(--vz-retro-gold));
+  --vz-badge-background: var(
+    --vz-badge-background-warning,
+    color-mix(in srgb, var(--vz-retro-gold) 12%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-warning,
+    color-mix(in srgb, var(--vz-retro-gold) 58%, transparent)
+  );
+  --vz-badge-shadow: var(
+    --vz-badge-shadow-warning,
+    0 0 0.75rem color-mix(in srgb, var(--vz-retro-gold) 15%, transparent)
+  );
 }
 
 .toneNegative {
-  --vz-badge-color: var(--vz-badge-negative, #ff3b30);
-  --vz-badge-background: var(--vz-badge-background-negative, rgb(255 59 48 / 12%));
-  --vz-badge-border: var(--vz-badge-border-negative, rgb(255 59 48 / 58%));
-  --vz-badge-shadow: var(--vz-badge-shadow-negative, 0 0 0.75rem rgb(255 59 48 / 15%));
+  --vz-badge-color: var(--vz-badge-negative, var(--vz-retro-red));
+  --vz-badge-background: var(
+    --vz-badge-background-negative,
+    color-mix(in srgb, var(--vz-retro-red) 12%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-negative,
+    color-mix(in srgb, var(--vz-retro-red) 58%, transparent)
+  );
+  --vz-badge-shadow: var(
+    --vz-badge-shadow-negative,
+    0 0 0.75rem color-mix(in srgb, var(--vz-retro-red) 15%, transparent)
+  );
 }
 
 .toneSpecial {
-  --vz-badge-color: var(--vz-badge-special, #8a4fff);
-  --vz-badge-background: var(--vz-badge-background-special, rgb(138 79 255 / 12%));
-  --vz-badge-border: var(--vz-badge-border-special, rgb(138 79 255 / 58%));
-  --vz-badge-shadow: var(--vz-badge-shadow-special, 0 0 0.75rem rgb(138 79 255 / 16%));
+  --vz-badge-color: var(--vz-badge-special, var(--vz-retro-purple));
+  --vz-badge-background: var(
+    --vz-badge-background-special,
+    color-mix(in srgb, var(--vz-retro-purple) 12%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-special,
+    color-mix(in srgb, var(--vz-retro-purple) 58%, transparent)
+  );
+  --vz-badge-shadow: var(
+    --vz-badge-shadow-special,
+    0 0 0.75rem color-mix(in srgb, var(--vz-retro-purple) 16%, transparent)
+  );
 }
 
 .toneLive {
-  --vz-badge-color: var(--vz-badge-live, #ff4fd8);
-  --vz-badge-background: var(--vz-badge-background-live, rgb(255 79 216 / 12%));
-  --vz-badge-border: var(--vz-badge-border-live, rgb(255 79 216 / 62%));
-  --vz-badge-shadow: var(--vz-badge-shadow-live, 0 0 0.9rem rgb(255 79 216 / 20%));
+  --vz-badge-color: var(--vz-badge-live, var(--vz-retro-pink));
+  --vz-badge-background: var(
+    --vz-badge-background-live,
+    color-mix(in srgb, var(--vz-retro-pink) 12%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-live,
+    color-mix(in srgb, var(--vz-retro-pink) 62%, transparent)
+  );
+  --vz-badge-shadow: var(
+    --vz-badge-shadow-live,
+    0 0 0.9rem color-mix(in srgb, var(--vz-retro-pink) 20%, transparent)
+  );
 }
 
 .disabled {
-  --vz-badge-color: var(--vz-badge-disabled, #68737b);
-  --vz-badge-background: var(--vz-badge-background-disabled, rgb(104 115 123 / 8%));
-  --vz-badge-border: var(--vz-badge-border-disabled, rgb(104 115 123 / 26%));
+  --vz-badge-color: var(--vz-badge-disabled, var(--vz-retro-muted));
+  --vz-badge-background: var(
+    --vz-badge-background-disabled,
+    color-mix(in srgb, var(--vz-retro-muted) 8%, transparent)
+  );
+  --vz-badge-border: var(
+    --vz-badge-border-disabled,
+    color-mix(in srgb, var(--vz-retro-muted) 26%, transparent)
+  );
   --vz-badge-shadow: none;
 
   cursor: not-allowed;
@@ -162,7 +240,7 @@
   height: var(--vz-badge-indicator-size-md, 0.5rem);
   flex: 0 0 auto;
   background: currentColor;
-  border-radius: 50%;
+  border-radius: 0;
   box-shadow: var(--vz-status-indicator-ring), var(--vz-status-indicator-glow);
 }
 
@@ -177,27 +255,27 @@
 }
 
 .statusOnline {
-  --vz-badge-color: var(--vz-status-online, #00ff87);
+  --vz-badge-color: var(--vz-status-online, var(--vz-retro-green));
 }
 
 .statusOffline {
-  --vz-badge-color: var(--vz-status-offline, #7e8991);
+  --vz-badge-color: var(--vz-status-offline, var(--vz-retro-muted));
 }
 
 .statusAway {
-  --vz-badge-color: var(--vz-status-away, #ffc247);
+  --vz-badge-color: var(--vz-status-away, var(--vz-retro-gold));
 }
 
 .statusBusy {
-  --vz-badge-color: var(--vz-status-busy, #ff3b30);
+  --vz-badge-color: var(--vz-status-busy, var(--vz-retro-red));
 }
 
 .statusLive {
-  --vz-badge-color: var(--vz-status-live, #ff4fd8);
+  --vz-badge-color: var(--vz-status-live, var(--vz-retro-pink));
 }
 
 .statusLoading {
-  --vz-badge-color: var(--vz-status-loading, #00e5ff);
+  --vz-badge-color: var(--vz-status-loading, var(--vz-retro-cyan));
 }
 
 .pulse .statusIndicator {
@@ -237,7 +315,7 @@
   height: var(--vz-rank-size);
   flex: 0 0 auto;
   place-items: center;
-  color: var(--vz-color-text-primary, #fff);
+  color: var(--vz-color-text-primary, var(--vz-retro-white));
   background: var(--vz-rank-border);
   clip-path: var(--vz-rank-shape);
   box-shadow: var(--vz-rank-shadow);
@@ -255,7 +333,7 @@
   place-items: center;
   background: var(--vz-rank-background);
   clip-path: var(--vz-rank-shape);
-  text-shadow: 0 1px 0 rgb(0 0 0 / 85%);
+  text-shadow: 0 1px 0 color-mix(in srgb, var(--vz-retro-black) 85%, transparent);
 }
 
 .rankBadge.sizeSm {
@@ -286,14 +364,14 @@
   --vz-rank-background: var(--vz-rank-background-silver);
   --vz-rank-border: var(--vz-rank-border-silver);
   --vz-rank-shadow: var(--vz-rank-shadow-silver);
-  color: #101519;
+  color: var(--vz-retro-surface-2);
 }
 
 .rankGold {
   --vz-rank-background: var(--vz-rank-background-gold);
   --vz-rank-border: var(--vz-rank-border-gold);
   --vz-rank-shadow: var(--vz-rank-shadow-gold);
-  color: #211606;
+  color: var(--vz-retro-surface-2);
 }
 
 .rankElite {
@@ -303,8 +381,11 @@
 }
 
 .movementBadge {
-  --vz-movement-color: var(--vz-movement-unchanged, #9da7ae);
-  --vz-movement-background: var(--vz-movement-background-unchanged, rgb(157 167 174 / 7%));
+  --vz-movement-color: var(--vz-movement-unchanged, var(--vz-retro-muted));
+  --vz-movement-background: var(
+    --vz-movement-background-unchanged,
+    color-mix(in srgb, var(--vz-retro-muted) 7%, transparent)
+  );
 
   display: inline-flex;
   min-height: var(--vz-badge-height);
@@ -333,32 +414,47 @@
 }
 
 .movementIncreased {
-  --vz-movement-color: var(--vz-movement-increased, #00ff87);
-  --vz-movement-background: var(--vz-movement-background-increased, rgb(0 255 135 / 8%));
+  --vz-movement-color: var(--vz-movement-increased, var(--vz-retro-green));
+  --vz-movement-background: var(
+    --vz-movement-background-increased,
+    color-mix(in srgb, var(--vz-retro-green) 8%, transparent)
+  );
 }
 
 .movementDecreased {
-  --vz-movement-color: var(--vz-movement-decreased, #ff3b30);
-  --vz-movement-background: var(--vz-movement-background-decreased, rgb(255 59 48 / 8%));
+  --vz-movement-color: var(--vz-movement-decreased, var(--vz-retro-red));
+  --vz-movement-background: var(
+    --vz-movement-background-decreased,
+    color-mix(in srgb, var(--vz-retro-red) 8%, transparent)
+  );
 }
 
 .movementUnchanged {
-  --vz-movement-color: var(--vz-movement-unchanged, #9da7ae);
-  --vz-movement-background: var(--vz-movement-background-unchanged, rgb(157 167 174 / 7%));
+  --vz-movement-color: var(--vz-movement-unchanged, var(--vz-retro-muted));
+  --vz-movement-background: var(
+    --vz-movement-background-unchanged,
+    color-mix(in srgb, var(--vz-retro-muted) 7%, transparent)
+  );
 }
 
 .movementNew {
-  --vz-movement-color: var(--vz-movement-new, #8a4fff);
-  --vz-movement-background: var(--vz-movement-background-new, rgb(138 79 255 / 9%));
+  --vz-movement-color: var(--vz-movement-new, var(--vz-retro-purple));
+  --vz-movement-background: var(
+    --vz-movement-background-new,
+    color-mix(in srgb, var(--vz-retro-purple) 9%, transparent)
+  );
 }
 
 .movementUnranked {
-  --vz-movement-color: var(--vz-movement-unranked, #68737b);
-  --vz-movement-background: var(--vz-movement-background-unranked, rgb(104 115 123 / 7%));
+  --vz-movement-color: var(--vz-movement-unranked, var(--vz-retro-muted));
+  --vz-movement-background: var(
+    --vz-movement-background-unranked,
+    color-mix(in srgb, var(--vz-retro-muted) 7%, transparent)
+  );
 }
 
 .statValue {
-  --vz-stat-color: var(--vz-stat-value-neutral, #f4f7f8);
+  --vz-stat-color: var(--vz-stat-value-neutral, var(--vz-retro-white));
   --vz-stat-size: var(--vz-stat-value-size-md, 1.5rem);
 
   display: grid;
@@ -368,7 +464,7 @@
 }
 
 .statLabel {
-  color: var(--vz-color-text-tertiary, #6e7984);
+  color: var(--vz-color-text-tertiary, var(--vz-retro-muted));
   font-family: var(--vz-font-display);
   font-size: var(--vz-stat-label-size, 0.6875rem);
   font-weight: var(--vz-font-weight-semibold, 600);
@@ -400,34 +496,34 @@
 }
 
 .statDetail {
-  color: var(--vz-color-text-secondary, #8e9aa6);
+  color: var(--vz-color-text-secondary, var(--vz-retro-muted));
   font-family: var(--vz-font-body);
   font-size: var(--vz-stat-detail-size, 0.75rem);
   line-height: 1.35;
 }
 
 .statNeutral {
-  --vz-stat-color: var(--vz-stat-value-neutral, #f4f7f8);
+  --vz-stat-color: var(--vz-stat-value-neutral, var(--vz-retro-white));
 }
 
 .statPositive {
-  --vz-stat-color: var(--vz-stat-value-positive, #00ff87);
+  --vz-stat-color: var(--vz-stat-value-positive, var(--vz-retro-green));
 }
 
 .statInformation {
-  --vz-stat-color: var(--vz-stat-value-information, #00e5ff);
+  --vz-stat-color: var(--vz-stat-value-information, var(--vz-retro-cyan));
 }
 
 .statWarning {
-  --vz-stat-color: var(--vz-stat-value-warning, #ffc247);
+  --vz-stat-color: var(--vz-stat-value-warning, var(--vz-retro-gold));
 }
 
 .statNegative {
-  --vz-stat-color: var(--vz-stat-value-negative, #ff3b30);
+  --vz-stat-color: var(--vz-stat-value-negative, var(--vz-retro-red));
 }
 
 .statSpecial {
-  --vz-stat-color: var(--vz-stat-value-special, #8a4fff);
+  --vz-stat-color: var(--vz-stat-value-special, var(--vz-retro-purple));
 }
 
 .statSizeSm {
@@ -514,29 +610,29 @@
 }
 .tonePositive {
   color: var(--vz-retro-green);
-  border-color: rgb(0 255 135 / 48%);
-  background: rgb(0 255 135 / 7%);
+  border-color: color-mix(in srgb, var(--vz-retro-green) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
 }
 .toneInformation {
   color: var(--vz-retro-cyan);
-  border-color: rgb(0 229 255 / 48%);
-  background: rgb(0 229 255 / 7%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 7%, transparent);
 }
 .toneSpecial {
   color: var(--vz-retro-purple);
-  border-color: rgb(155 98 255 / 48%);
-  background: rgb(155 98 255 / 7%);
+  border-color: color-mix(in srgb, var(--vz-retro-purple) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-purple) 7%, transparent);
 }
 .toneWarning {
   color: var(--vz-retro-gold);
-  border-color: rgb(255 194 71 / 48%);
-  background: rgb(255 194 71 / 7%);
+  border-color: color-mix(in srgb, var(--vz-retro-gold) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-gold) 7%, transparent);
 }
 .toneNegative,
 .toneLive {
   color: var(--vz-retro-red);
-  border-color: rgb(255 59 48 / 48%);
-  background: rgb(255 59 48 / 7%);
+  border-color: color-mix(in srgb, var(--vz-retro-red) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-red) 7%, transparent);
 }
 .rankGold {
   color: var(--vz-retro-gold);
@@ -587,7 +683,7 @@
   min-height: 1.7rem;
   color: var(--vz-color-text-secondary);
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-xs);
+  border-radius: 0;
   background: var(--vz-color-surface-elevated);
   box-shadow: none;
   font-family: var(--vz-font-interface);
@@ -688,3 +784,85 @@
   font-variant-numeric: tabular-nums;
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.badge,
+.movementBadge,
+.rankBadge {
+  position: relative;
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.badge {
+  padding-inline-start: calc(var(--vz-badge-padding) + 0.2rem);
+  background: var(--vz-retro-surface-2);
+  box-shadow: none;
+}
+
+.badge::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  content: "";
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.toneInformation {
+  --vz-badge-color: var(--vz-retro-cyan);
+}
+
+.tonePositive {
+  --vz-badge-color: var(--vz-retro-green);
+}
+
+.toneWarning {
+  --vz-badge-color: var(--vz-retro-gold);
+}
+
+.toneNegative {
+  --vz-badge-color: var(--vz-retro-red);
+}
+
+.toneSpecial {
+  --vz-badge-color: var(--vz-retro-purple);
+}
+
+.toneLive {
+  --vz-badge-color: var(--vz-retro-pink);
+}
+
+.statusIndicator,
+.presenceIndicator {
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.rankBadge,
+.rankInner {
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.rankGold {
+  color: var(--vz-retro-black);
+  box-shadow: var(--vz-shadow-glow-gold);
+}
+
+.rankElite {
+  box-shadow: var(--vz-shadow-glow-purple);
+}
+
+.statNumber,
+.statValue {
+  color: var(--vz-retro-green);
+  font-family: var(--vz-font-display);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

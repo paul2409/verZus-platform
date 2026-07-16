@@ -11,9 +11,9 @@
   display: grid;
   gap: 1.25rem;
   padding: clamp(1.25rem, 4vw, 2rem);
-  background: var(--vz-color-surface-base);
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line-soft);
+  border-radius: 0;
 }
 
 .hero > div:first-child,
@@ -39,11 +39,11 @@
 .hero > div:first-child > p:last-child,
 .warPanel > div:first-child > p:last-child {
   max-width: 48rem;
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-retro-muted);
 }
 
 .eyebrow {
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
   font-family: var(--vz-font-interface);
   font-size: var(--vz-text-xs);
   font-weight: var(--vz-font-weight-bold);
@@ -60,7 +60,7 @@
 
 .heroMetric > span,
 .warMeta > span {
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-retro-muted);
   font-family: var(--vz-font-interface);
   font-size: var(--vz-text-xs);
   letter-spacing: var(--vz-tracking-ui);
@@ -68,7 +68,7 @@
 }
 
 .heroMetric > strong {
-  color: var(--vz-color-accent-neon);
+  color: var(--vz-retro-green);
   font-family: var(--vz-font-numeric);
   font-size: clamp(2.5rem, 8vw, 4rem);
 }
@@ -85,15 +85,15 @@
   align-items: center;
   gap: 0.7rem;
   padding: 0.75rem 1rem;
-  color: var(--vz-color-text-secondary);
-  background: var(--vz-color-surface-base);
-  border: 1px solid var(--vz-color-border-default);
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line);
 }
 
 .search input {
   width: 100%;
   min-width: 0;
-  color: var(--vz-color-text-primary);
+  color: var(--vz-retro-white);
   background: transparent;
   border: 0;
   outline: 0;
@@ -108,7 +108,7 @@
 
 .search:focus-within,
 .controlButton:hover {
-  border-color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-retro-cyan);
 }
 
 .categories {
@@ -123,9 +123,9 @@
   flex: 0 0 auto;
   cursor: pointer;
   padding: 0.65rem 1rem;
-  color: var(--vz-color-text-secondary);
-  background: var(--vz-color-surface-base);
-  border: 1px solid var(--vz-color-border-default);
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
   letter-spacing: var(--vz-tracking-ui);
@@ -133,10 +133,10 @@
 }
 
 .categories button[data-active="true"] {
-  color: var(--vz-color-text-on-accent);
-  background: var(--vz-color-accent-neon);
-  border-color: var(--vz-color-accent-neon);
-  clip-path: var(--vz-clip-button);
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-green);
+  border-color: var(--vz-retro-green);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .section {
@@ -165,7 +165,7 @@
 .warPanel {
   position: relative;
   overflow: hidden;
-  border-color: color-mix(in srgb, var(--vz-color-status-magenta) 38%, transparent);
+  border-color: color-mix(in srgb, var(--vz-retro-pink) 38%, transparent);
 }
 
 .warPanel::before {
@@ -174,7 +174,7 @@
   left: 0;
   width: 3px;
   content: "";
-  background: var(--vz-color-status-magenta);
+  background: var(--vz-retro-pink);
 }
 
 .warMeta {
@@ -183,7 +183,7 @@
 }
 
 .warMeta strong {
-  color: var(--vz-color-rank-gold);
+  color: var(--vz-retro-gold);
   font-family: var(--vz-font-numeric);
   font-size: clamp(1.35rem, 5vw, 2rem);
 }
@@ -218,3 +218,37 @@
     align-items: center;
   }
 }
+/* VERZUS STAGE 4 RETRO COMPETITIVE:BEGIN */
+.hero h1 {
+  background: var(--vz-gradient-brand);
+  background-clip: text;
+  color: transparent;
+}
+.hero,
+.warPanel,
+.search,
+.controlButton,
+.categories button {
+  border-radius: 0;
+}
+.hero,
+.warPanel {
+  clip-path: var(--vz-retro-cut-lg);
+}
+.search,
+.controlButton,
+.categories button {
+  clip-path: var(--vz-retro-cut-sm);
+}
+.hero,
+.warPanel {
+  background: linear-gradient(180deg, var(--vz-retro-surface-2), var(--vz-retro-surface));
+}
+.categories button[data-active="true"] {
+  box-shadow: var(--vz-shadow-glow-green);
+}
+.warPanel {
+  border-color: color-mix(in srgb, var(--vz-retro-pink) 52%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--vz-retro-pink) 18%, transparent);
+}
+/* VERZUS STAGE 4 RETRO COMPETITIVE:END */

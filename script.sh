@@ -2,13 +2,14 @@
 set -euo pipefail
 
 MODE="${1:-install}"
-PORT="${VERZUS_STAGE5_PORT:-3113}"
+PORT="${VERZUS_STAGE5_RETRO_PORT:-3117}"
 
-BACKUP_ROOT=".verzus-backups/stage-5-platform"
+BACKUP_ROOT=".verzus-backups/stage-5-retro-platform"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP_DIR="$BACKUP_ROOT/$STAMP"
-ARCHIVE="$BACKUP_DIR/verzus-stage-5-before.tar.gz"
+ARCHIVE="$BACKUP_DIR/verzus-stage-5-retro-before.tar.gz"
 CREATED_MANIFEST="$BACKUP_DIR/created-files.txt"
+BASELINE_POINTER="$BACKUP_ROOT/baseline.txt"
 
 TARGET_FILES=(
   "package.json"
@@ -53,21 +54,23 @@ TARGET_FILES=(
   "src/features/settings/ui/SettingsScreen.module.css"
   "src/features/settings/ui/SettingsScreen.test.tsx"
   "src/features/settings/ui/index.ts"
-  "docs/design-system/stage-5-platform-contract.md"
+  "docs/design-system/stage-5-retro-platform-contract.md"
+  "docs/design-system/stage-5-retro-audit.md"
+  "reports/stage-5-retro/style-audit.txt"
   "docs/design-system/legacy-theme-retirement.md"
   "docs/runbooks/ui-rollback.md"
-  "scripts/verify-stage-5-platform.mjs"
+  "scripts/verify-stage-5-retro-platform.mjs"
 )
 
 print_plan() {
   cat <<'EOF'
-VERZUS - Stage 5 Platform Completion
+VERZUS Stage 5 — Retro Platform Completion
 
 KEEP
   - All routes, APIs, schemas, adapters, mocks, queries, and view models
   - Authentication and onboarding behavior
   - Play, Leaderboards, Crews, Matches, Compete, and Rewards from Stages 3 and 4
-  - Stage 1 canonical tokens and Stage 2 shared component APIs
+  - Stage 1 retro theme and Stage 2 retro shared component APIs
   - Existing route and widget failure isolation
 
 REUSE
@@ -79,7 +82,7 @@ REUSE
 REPLACE
   - Remaining placeholder screens: Profile, Notifications, Search, and Settings
   - Root loading, error, not-found, and global-error presentation
-  - Auth and onboarding visual overrides with canonical Stage 1 tokens
+  - Auth and onboarding visual overrides with approved retro tokens
   - Token preview values and legacy verifier expectations
   - Obsolete visual verifier logic that expected retired theme imports
 
@@ -94,7 +97,8 @@ CREATE
   - Domain-owned UI for Profile, Notifications, Search, and Settings
   - Domain-neutral operational screen and system-state layouts
   - Stage 5 focused tests and verification script
-  - Final design contract, legacy-theme retirement note, and rollback runbook
+  - Final retro design contract, style audit, legacy-theme retirement note, and rollback runbook
+  - Token-only cleanup for remaining auth, onboarding, platform and preview styles
   - Timestamped rollback archive
 EOF
 }
@@ -104,10 +108,10 @@ require_repo() {
     "package.json"
     "src/app/layout.tsx"
     "src/styles/tokens.css"
-    "src/styles/verzus-visual-system.css"
-    "scripts/verify-visual-foundation.mjs"
-    "scripts/verify-stage-2-shared-ui.mjs"
-    "scripts/verify-stage-3-play.mjs"
+    "src/styles/verzus-retro-system.css"
+    "scripts/verify-stage-1-retro.mjs"
+    "scripts/verify-stage-2-retro.mjs"
+    "scripts/verify-stage-3-retro-play.mjs"
     "scripts/verify-stage-4-competitive.mjs"
   )
 
@@ -153,8 +157,14 @@ Archive: $ARCHIVE
 Mode: $MODE
 EOF
 
+  if [[ ! -f "$BASELINE_POINTER" ]]; then
+    printf '%s\n' "$BACKUP_DIR" > "$BASELINE_POINTER"
+  fi
+
   echo "Rollback archive created:"
   echo "  $ARCHIVE"
+  echo "Stage 5 baseline backup:"
+  echo "  $(cat "$BASELINE_POINTER")"
 }
 
 append_or_replace_block() {
@@ -467,7 +477,7 @@ EOF
   border: 1px solid var(--vz-color-border-subtle);
   border-radius: var(--vz-radius-lg);
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--vz-color-accent-cyan) 7%, transparent), transparent 38%),
+    linear-gradient(135deg, color-mix(in srgb, var(--vz-retro-cyan) 7%, transparent), transparent 38%),
     var(--vz-color-surface-base);
   box-shadow: var(--vz-shadow-panel);
 }
@@ -511,11 +521,11 @@ EOF
 .eyebrow,
 .panelEyebrow {
   margin: 0;
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
@@ -574,27 +584,27 @@ EOF
 }
 
 .panel[data-tone="green"] {
-  --panel-signal: var(--vz-color-accent-green);
+  --panel-signal: var(--vz-retro-green);
 }
 
 .panel[data-tone="cyan"] {
-  --panel-signal: var(--vz-color-accent-cyan);
+  --panel-signal: var(--vz-retro-cyan);
 }
 
 .panel[data-tone="gold"] {
-  --panel-signal: var(--vz-color-rank-gold);
+  --panel-signal: var(--vz-retro-gold);
 }
 
 .panel[data-tone="magenta"] {
-  --panel-signal: var(--vz-color-status-magenta);
+  --panel-signal: var(--vz-retro-pink);
 }
 
 .panel[data-tone="red"] {
-  --panel-signal: var(--vz-color-status-danger);
+  --panel-signal: var(--vz-color-danger);
 }
 
 .panel[data-tone="violet"] {
-  --panel-signal: var(--vz-color-special, var(--vz-color-accent-cyan));
+  --panel-signal: var(--vz-retro-purple, var(--vz-retro-cyan));
 }
 
 .panelHeader {
@@ -648,23 +658,23 @@ EOF
 }
 
 .metricCard[data-tone="green"] {
-  --metric-signal: var(--vz-color-accent-green);
+  --metric-signal: var(--vz-retro-green);
 }
 
 .metricCard[data-tone="cyan"] {
-  --metric-signal: var(--vz-color-accent-cyan);
+  --metric-signal: var(--vz-retro-cyan);
 }
 
 .metricCard[data-tone="gold"] {
-  --metric-signal: var(--vz-color-rank-gold);
+  --metric-signal: var(--vz-retro-gold);
 }
 
 .metricCard[data-tone="magenta"] {
-  --metric-signal: var(--vz-color-status-magenta);
+  --metric-signal: var(--vz-retro-pink);
 }
 
 .metricCard[data-tone="red"] {
-  --metric-signal: var(--vz-color-status-danger);
+  --metric-signal: var(--vz-color-danger);
 }
 
 .metricCard span,
@@ -674,9 +684,9 @@ EOF
 
 .metricCard span {
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
 }
 
@@ -690,7 +700,7 @@ EOF
 }
 
 .metricCard small {
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .signalList {
@@ -717,27 +727,27 @@ EOF
 }
 
 .signalItem[data-tone="green"] {
-  --signal: var(--vz-color-accent-green);
+  --signal: var(--vz-retro-green);
 }
 
 .signalItem[data-tone="cyan"] {
-  --signal: var(--vz-color-accent-cyan);
+  --signal: var(--vz-retro-cyan);
 }
 
 .signalItem[data-tone="gold"] {
-  --signal: var(--vz-color-rank-gold);
+  --signal: var(--vz-retro-gold);
 }
 
 .signalItem[data-tone="magenta"] {
-  --signal: var(--vz-color-status-magenta);
+  --signal: var(--vz-retro-pink);
 }
 
 .signalItem[data-tone="red"] {
-  --signal: var(--vz-color-status-danger);
+  --signal: var(--vz-color-danger);
 }
 
 .signalItem[data-tone="violet"] {
-  --signal: var(--vz-color-special, var(--vz-color-accent-cyan));
+  --signal: var(--vz-retro-purple, var(--vz-retro-cyan));
 }
 
 .signalLeading,
@@ -760,7 +770,7 @@ EOF
   overflow-wrap: anywhere;
   color: var(--vz-color-text-primary);
   font-family: var(--vz-font-interface);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
 }
 
@@ -768,39 +778,39 @@ EOF
   flex: 0 0 auto;
   color: var(--signal);
   font-family: var(--vz-font-numeric);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .signalCopy p {
   margin: 0;
   color: var(--vz-color-text-secondary);
-  font-size: var(--vz-text-sm);
+  font-size: var(--vz-font-size-sm);
 }
 
 .progressMeter {
-  --progress-signal: var(--vz-color-accent-green);
+  --progress-signal: var(--vz-retro-green);
 
   display: grid;
   gap: var(--vz-space-2);
 }
 
 .progressMeter[data-tone="cyan"] {
-  --progress-signal: var(--vz-color-accent-cyan);
+  --progress-signal: var(--vz-retro-cyan);
 }
 
 .progressMeter[data-tone="gold"] {
-  --progress-signal: var(--vz-color-rank-gold);
+  --progress-signal: var(--vz-retro-gold);
 }
 
 .progressMeter[data-tone="magenta"] {
-  --progress-signal: var(--vz-color-status-magenta);
+  --progress-signal: var(--vz-retro-pink);
 }
 
 .progressLabelRow span {
   color: var(--vz-color-text-secondary);
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
-  letter-spacing: var(--vz-tracking-ui);
+  font-size: var(--vz-font-size-xs);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
 }
 
@@ -813,7 +823,7 @@ EOF
   height: 0.45rem;
   overflow: hidden;
   border: 1px solid var(--vz-color-border-subtle);
-  background: var(--vz-color-bg-deep);
+  background: var(--vz-color-background-deep);
 }
 
 .progressTrack span {
@@ -829,24 +839,24 @@ EOF
   justify-content: center;
   padding: var(--vz-space-3) var(--vz-space-4);
   border: 1px solid transparent;
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-decoration: none;
   text-transform: uppercase;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .actionLink[data-variant="primary"] {
-  border-color: var(--vz-color-accent-green);
-  background: var(--vz-color-accent-green);
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
 }
 
 .actionLink[data-variant="secondary"] {
-  border-color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-retro-cyan);
   background: transparent;
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
 }
 
 .actionLink[data-variant="ghost"] {
@@ -856,7 +866,7 @@ EOF
 }
 
 .actionLink:focus-visible {
-  outline: 2px solid var(--vz-color-accent-cyan);
+  outline: 2px solid var(--vz-retro-cyan);
   outline-offset: 3px;
 }
 
@@ -957,7 +967,7 @@ EOF
 
   cat > "src/components/layout/system-state/SystemStateScreen.module.css" <<'EOF'
 .page {
-  --state-signal: var(--vz-color-accent-cyan);
+  --state-signal: var(--vz-retro-cyan);
 
   display: grid;
   min-height: 100svh;
@@ -969,19 +979,19 @@ EOF
       color-mix(in srgb, var(--state-signal) 8%, transparent),
       transparent 32rem
     ),
-    var(--vz-color-bg-deep);
+    var(--vz-color-background-deep);
 }
 
 .page[data-tone="error"] {
-  --state-signal: var(--vz-color-status-danger);
+  --state-signal: var(--vz-color-danger);
 }
 
 .page[data-tone="not-found"] {
-  --state-signal: var(--vz-color-rank-gold);
+  --state-signal: var(--vz-retro-gold);
 }
 
 .page[data-tone="maintenance"] {
-  --state-signal: var(--vz-color-status-magenta);
+  --state-signal: var(--vz-retro-pink);
 }
 
 .card {
@@ -1009,9 +1019,9 @@ EOF
 .reference {
   margin: 0;
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
@@ -1045,17 +1055,17 @@ EOF
   padding: var(--vz-space-3) var(--vz-space-5);
   border: 1px solid var(--state-signal);
   background: var(--state-signal);
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-decoration: none;
   text-transform: uppercase;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .action :is(button, a):focus-visible {
-  outline: 2px solid var(--vz-color-accent-cyan);
+  outline: 2px solid var(--vz-retro-cyan);
   outline-offset: 3px;
 }
 
@@ -1304,10 +1314,10 @@ EOF
   align-items: center;
   padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-8));
   border: 1px solid var(--vz-color-border-subtle);
-  border-left-color: var(--vz-color-accent-cyan);
+  border-left-color: var(--vz-retro-cyan);
   border-radius: var(--vz-radius-panel);
   background:
-    linear-gradient(120deg, color-mix(in srgb, var(--vz-color-accent-cyan) 8%, transparent), transparent 45%),
+    linear-gradient(120deg, color-mix(in srgb, var(--vz-retro-cyan) 8%, transparent), transparent 45%),
     var(--vz-color-surface-base);
 }
 
@@ -1345,13 +1355,13 @@ EOF
   grid-column: 1 / -1;
   gap: var(--vz-space-1);
   padding: var(--vz-space-4);
-  border: 1px solid color-mix(in srgb, var(--vz-color-rank-gold) 38%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-gold) 38%, transparent);
   border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-rank-gold) 5%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-gold) 5%, transparent);
 }
 
 .rankBlock strong {
-  color: var(--vz-color-rank-gold);
+  color: var(--vz-retro-gold);
   font-family: var(--vz-font-numeric);
   font-size: clamp(2rem, 7vw, 3.5rem);
   line-height: 1;
@@ -1381,15 +1391,15 @@ EOF
 }
 
 .formRow span[data-result="win"] {
-  color: var(--vz-color-accent-green);
-  border-color: color-mix(in srgb, var(--vz-color-accent-green) 48%, transparent);
-  background: color-mix(in srgb, var(--vz-color-accent-green) 7%, transparent);
+  color: var(--vz-retro-green);
+  border-color: color-mix(in srgb, var(--vz-retro-green) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
 }
 
 .formRow span[data-result="loss"] {
-  color: var(--vz-color-status-danger);
-  border-color: color-mix(in srgb, var(--vz-color-status-danger) 48%, transparent);
-  background: color-mix(in srgb, var(--vz-color-status-danger) 7%, transparent);
+  color: var(--vz-color-danger);
+  border-color: color-mix(in srgb, var(--vz-color-danger) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-color-danger) 7%, transparent);
 }
 
 @media (min-width: 48rem) {
@@ -1732,7 +1742,7 @@ EOF
   gap: var(--vz-space-3);
   padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-8));
   border: 1px solid var(--vz-color-border-subtle);
-  border-left-color: var(--vz-color-accent-cyan);
+  border-left-color: var(--vz-retro-cyan);
   border-radius: var(--vz-radius-panel);
   background: var(--vz-color-surface-base);
 }
@@ -1741,7 +1751,7 @@ EOF
   color: var(--vz-color-text-primary);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
 }
 
@@ -1760,18 +1770,18 @@ EOF
 .searchRow button {
   min-height: 3rem;
   padding: var(--vz-space-3) var(--vz-space-6);
-  border: 1px solid var(--vz-color-accent-green);
-  background: var(--vz-color-accent-green);
-  color: var(--vz-color-text-on-accent);
+  border: 1px solid var(--vz-retro-green);
+  background: var(--vz-retro-green);
+  color: var(--vz-retro-black);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .searchRow button:focus-visible {
-  outline: 2px solid var(--vz-color-accent-cyan);
+  outline: 2px solid var(--vz-retro-cyan);
   outline-offset: 3px;
 }
 
@@ -2004,11 +2014,11 @@ EOF
 }
 
 .creditGrid span {
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
@@ -2235,18 +2245,18 @@ write_auth_overrides() {
 /* VERZUS STAGE 5 AUTH:BEGIN */
 
 .shell {
-  --auth-accent: var(--vz-color-accent-green);
+  --auth-accent: var(--vz-retro-green);
   --auth-accent-soft: color-mix(in srgb, var(--auth-accent) 12%, transparent);
   --auth-border: color-mix(in srgb, var(--auth-accent) 42%, transparent);
   --auth-panel: var(--vz-color-surface-base);
   --auth-muted: var(--vz-color-text-secondary);
 
   background:
-    linear-gradient(color-mix(in srgb, var(--vz-color-bg-deep) 84%, transparent), var(--vz-color-bg-deep)),
+    linear-gradient(color-mix(in srgb, var(--vz-color-background-deep) 84%, transparent), var(--vz-color-background-deep)),
     linear-gradient(var(--vz-color-border-subtle) 1px, transparent 1px),
     linear-gradient(90deg, var(--vz-color-border-subtle) 1px, transparent 1px),
     radial-gradient(circle at 50% 0%, var(--auth-accent-soft), transparent 36rem),
-    var(--vz-color-bg-deep);
+    var(--vz-color-background-deep);
   background-size:
     auto,
     4rem 4rem,
@@ -2257,15 +2267,15 @@ write_auth_overrides() {
 }
 
 .shell[data-accent="info"] {
-  --auth-accent: var(--vz-color-accent-cyan);
+  --auth-accent: var(--vz-retro-cyan);
 }
 
 .shell[data-accent="warning"] {
-  --auth-accent: var(--vz-color-rank-gold);
+  --auth-accent: var(--vz-retro-gold);
 }
 
 .shell[data-accent="danger"] {
-  --auth-accent: var(--vz-color-status-danger);
+  --auth-accent: var(--vz-color-danger);
 }
 
 .brandName,
@@ -2303,19 +2313,19 @@ write_auth_overrides() {
 .statusStrip,
 .primaryAction,
 .secondaryButton {
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .primaryAction {
   border-color: var(--auth-accent);
   background: var(--auth-accent);
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   box-shadow: none;
 }
 
 .secondaryButton {
-  border-color: var(--vz-color-accent-cyan);
-  color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-retro-cyan);
+  color: var(--vz-retro-cyan);
   background: transparent;
 }
 
@@ -2358,14 +2368,14 @@ EOF
 .submitButton {
   border-color: var(--auth-accent);
   background: var(--auth-accent);
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   box-shadow: none;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .retryButton {
-  border-color: var(--vz-color-status-danger);
-  color: var(--vz-color-status-danger);
+  border-color: var(--vz-color-danger);
+  color: var(--vz-color-danger);
 }
 
 .input:focus-visible,
@@ -2373,7 +2383,7 @@ EOF
 .retryButton:focus-visible,
 .submitButton:focus-visible,
 .codeInput:focus-visible {
-  outline-color: var(--vz-color-accent-cyan);
+  outline-color: var(--vz-retro-cyan);
 }
 
 /* VERZUS STAGE 5 AUTH FORMS:END */
@@ -2401,24 +2411,24 @@ write_onboarding_overrides() {
   background:
     radial-gradient(
       circle at 88% 8%,
-      color-mix(in srgb, var(--vz-color-accent-cyan) 8%, transparent),
+      color-mix(in srgb, var(--vz-retro-cyan) 8%, transparent),
       transparent 32rem
     ),
     radial-gradient(
       circle at 8% 82%,
-      color-mix(in srgb, var(--vz-color-accent-green) 5%, transparent),
+      color-mix(in srgb, var(--vz-retro-green) 5%, transparent),
       transparent 30rem
     ),
-    var(--vz-color-bg-deep);
+    var(--vz-color-background-deep);
 }
 
 .brandMark {
   background: linear-gradient(
     135deg,
-    var(--vz-color-accent-cyan),
-    var(--vz-color-accent-green)
+    var(--vz-retro-cyan),
+    var(--vz-retro-green)
   );
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
 }
 
 .brandCopy small,
@@ -2446,39 +2456,39 @@ write_onboarding_overrides() {
 
 .railStepActive {
   color: var(--vz-color-text-primary);
-  border-color: var(--vz-color-accent-green);
-  background: color-mix(in srgb, var(--vz-color-accent-green) 6%, transparent);
+  border-color: var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-green) 6%, transparent);
 }
 
 .railStepActive .railNumber {
-  color: var(--vz-color-text-on-accent);
-  border-color: var(--vz-color-accent-green);
-  background: var(--vz-color-accent-green);
+  color: var(--vz-retro-black);
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
 }
 
 .railStepComplete .railNumber {
-  color: var(--vz-color-accent-cyan);
-  border-color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
+  border-color: var(--vz-retro-cyan);
 }
 
 .saveNotice {
-  border-left-color: var(--vz-color-accent-green);
-  background: color-mix(in srgb, var(--vz-color-accent-green) 5%, transparent);
+  border-left-color: var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-green) 5%, transparent);
 }
 
 .saveNotice span,
 .desktopHeader > div:first-child span,
 .contextPanel > span,
 .contextPanel div strong {
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
 }
 
 .connectionStatus[data-online="true"] b {
-  color: var(--vz-color-accent-green);
+  color: var(--vz-retro-green);
 }
 
 .connectionStatus b {
-  color: var(--vz-color-status-danger);
+  color: var(--vz-color-danger);
 }
 
 .contextPanel {
@@ -2522,7 +2532,7 @@ write_boundary_overrides() {
 }
 
 :is(.root, .page, .state, .panel, .card) :is(button, a):focus-visible {
-  outline: 2px solid var(--vz-color-accent-cyan);
+  outline: 2px solid var(--vz-retro-cyan);
   outline-offset: 3px;
 }
 
@@ -2558,7 +2568,7 @@ EOF
 }
 
 :is(.boundary, .root, .fallback, .card, .panel) :is(button, a):focus-visible {
-  outline: 2px solid var(--vz-color-accent-cyan);
+  outline: 2px solid var(--vz-retro-cyan);
   outline-offset: 3px;
 }
 
@@ -2607,12 +2617,12 @@ NODE
 }
 
 .hero {
-  border-color: color-mix(in srgb, var(--vz-color-accent-green) 36%, transparent);
+  border-color: color-mix(in srgb, var(--vz-retro-green) 36%, transparent);
   border-radius: var(--vz-radius-lg);
   background:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--vz-color-accent-green) 7%, transparent),
+      color-mix(in srgb, var(--vz-retro-green) 7%, transparent),
       transparent 36%
     ),
     var(--vz-color-surface-base);
@@ -2622,7 +2632,7 @@ NODE
 
 .kicker,
 .sampleEyebrow {
-  color: var(--vz-color-accent-green);
+  color: var(--vz-retro-green);
 }
 
 .description,
@@ -2647,7 +2657,7 @@ NODE
 
 .sectionNav a:focus-visible,
 .previewLink:focus-visible {
-  outline-color: var(--vz-color-accent-cyan);
+  outline-color: var(--vz-retro-cyan);
 }
 
 /* VERZUS STAGE 5 DESIGN GALLERY:END */
@@ -2665,16 +2675,16 @@ EOF
 import styles from "./page.module.css";
 
 const coreTokens = [
-  ["Void canvas", "--vz-color-bg-deep", "#080A0C", "backgroundDeep"],
-  ["Surface base", "--vz-color-surface-base", "#111519", "surfaceBase"],
-  ["Surface elevated", "--vz-color-surface-elevated", "#1A2026", "surfaceElevated"],
-  ["Primary green", "--vz-color-accent-green", "#00FF87", "green"],
-  ["Secondary cyan", "--vz-color-accent-cyan", "#00E5FF", "cyan"],
-  ["Live and danger", "--vz-color-status-danger", "#FF3830", "red"],
-  ["War and rivalry", "--vz-color-status-magenta", "#FF2D87", "magenta"],
-  ["Rank and reward", "--vz-color-rank-gold", "#FFC400", "gold"],
-  ["Primary text", "--vz-color-text-primary", "#F1F0FF", "textPrimary"],
-  ["Secondary text", "--vz-color-text-secondary", "#8A87B8", "textSecondary"],
+  ["Void canvas", "--vz-color-background-deep", "#020305", "backgroundDeep"],
+  ["Surface base", "--vz-color-surface-base", "#06070B", "surfaceBase"],
+  ["Surface elevated", "--vz-color-surface-elevated", "#131620", "surfaceElevated"],
+  ["Primary green", "--vz-retro-green", "#00FF87", "green"],
+  ["Secondary cyan", "--vz-retro-cyan", "#00E5FF", "cyan"],
+  ["Live and danger", "--vz-color-danger", "#FF3B30", "red"],
+  ["War and rivalry", "--vz-retro-pink", "#FF2D87", "magenta"],
+  ["Rank and reward", "--vz-retro-gold", "#FFC400", "gold"],
+  ["Primary text", "--vz-color-text-primary", "#F7F8FB", "textPrimary"],
+  ["Secondary text", "--vz-color-text-secondary", "#8F91A5", "textSecondary"],
 ] as const;
 
 export default function TokenPreviewPage() {
@@ -2682,7 +2692,7 @@ export default function TokenPreviewPage() {
     <main className={styles.page}>
       <section className={styles.shell}>
         <header className={styles.header}>
-          <p className={styles.eyebrow}>11.1 // CANONICAL TOKEN SYSTEM</p>
+          <p className={styles.eyebrow}>11.1 // RETRO TOKEN SYSTEM</p>
           <h1 className={styles.title}>VERZUS VISUAL FOUNDATION</h1>
           <p className={styles.description}>
             Neon colours are operational signals. Green owns positive action, cyan owns information
@@ -2761,11 +2771,11 @@ EOF
   min-height: 100svh;
   padding: clamp(var(--vz-space-4), 4vw, var(--vz-space-10));
   color: var(--vz-color-text-primary);
-  background: var(--vz-color-bg-deep);
+  background: var(--vz-color-background-deep);
 }
 
 .shell {
-  width: min(100%, var(--vz-content-max));
+  width: min(100%, var(--vz-shell-content-max));
   margin-inline: auto;
   overflow: hidden;
   border: 1px solid var(--vz-color-border-subtle);
@@ -2785,10 +2795,10 @@ EOF
   background:
     linear-gradient(
       120deg,
-      color-mix(in srgb, var(--vz-color-accent-green) 7%, transparent),
+      color-mix(in srgb, var(--vz-retro-green) 7%, transparent),
       transparent 34%
     ),
-    var(--vz-color-bg-deep);
+    var(--vz-color-background-deep);
 }
 
 .section + .section {
@@ -2800,11 +2810,11 @@ EOF
 .typeGrid span,
 .semanticGrid span {
   margin: 0;
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
@@ -2828,7 +2838,7 @@ EOF
 }
 
 .sectionTitle {
-  font-size: var(--vz-text-lg);
+  font-size: var(--vz-font-size-lg);
 }
 
 .swatchGrid,
@@ -2864,7 +2874,7 @@ EOF
 }
 
 .backgroundDeep {
-  background: var(--vz-color-bg-deep);
+  background: var(--vz-color-background-deep);
 }
 
 .surfaceBase {
@@ -2876,23 +2886,23 @@ EOF
 }
 
 .green {
-  background: var(--vz-color-accent-green);
+  background: var(--vz-retro-green);
 }
 
 .cyan {
-  background: var(--vz-color-accent-cyan);
+  background: var(--vz-retro-cyan);
 }
 
 .red {
-  background: var(--vz-color-status-danger);
+  background: var(--vz-color-danger);
 }
 
 .magenta {
-  background: var(--vz-color-status-magenta);
+  background: var(--vz-retro-pink);
 }
 
 .gold {
-  background: var(--vz-color-rank-gold);
+  background: var(--vz-retro-gold);
 }
 
 .textPrimary {
@@ -2914,7 +2924,7 @@ EOF
   overflow-wrap: anywhere;
   color: var(--vz-color-text-secondary);
   font-family: var(--vz-font-numeric);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .typeGrid article,
@@ -2928,12 +2938,12 @@ EOF
   color: var(--vz-color-text-primary);
   font-family: var(--vz-font-display);
   font-size: clamp(1.35rem, 4vw, 2.5rem);
-  letter-spacing: var(--vz-tracking-display);
+  letter-spacing: var(--vz-letter-spacing-display);
   text-transform: uppercase;
 }
 
 .semanticGrid article {
-  --semantic: var(--vz-color-accent-cyan);
+  --semantic: var(--vz-retro-cyan);
 
   border-left-color: var(--semantic);
 }
@@ -2945,23 +2955,23 @@ EOF
 }
 
 .primaryAction {
-  --semantic: var(--vz-color-accent-green) !important;
+  --semantic: var(--vz-retro-green) !important;
 }
 
 .secondaryAction {
-  --semantic: var(--vz-color-accent-cyan) !important;
+  --semantic: var(--vz-retro-cyan) !important;
 }
 
 .liveAction {
-  --semantic: var(--vz-color-status-danger) !important;
+  --semantic: var(--vz-color-danger) !important;
 }
 
 .warAction {
-  --semantic: var(--vz-color-status-magenta) !important;
+  --semantic: var(--vz-retro-pink) !important;
 }
 
 .rewardAction {
-  --semantic: var(--vz-color-rank-gold) !important;
+  --semantic: var(--vz-retro-gold) !important;
 }
 
 @media (min-width: 40rem) {
@@ -2992,13 +3002,14 @@ write_compatibility_verifiers() {
 import fs from "node:fs";
 
 const checks = [
-  ["src/app/layout.tsx", 'import "@/styles/verzus-visual-system.css";'],
-  ["src/styles/tokens.css", "--vz-color-accent-green: #00ff87"],
-  ["src/styles/tokens.css", "--vz-color-accent-cyan: #00e5ff"],
-  ["src/components/layout/app-shell/AppShell.module.css", "VERZUS STAGE 2 SHELL:BEGIN"],
-  ["src/features/play/ui/play-command-center.module.css", "VERZUS STAGE 3 PLAY:BEGIN"],
+  ["src/app/layout.tsx", 'data-theme="retro-competitive"'],
+  ["src/app/layout.tsx", 'import "@/styles/verzus-retro-system.css";'],
+  ["src/styles/verzus-retro-system.css", "--vz-retro-green: #00ff87"],
+  ["src/styles/verzus-retro-system.css", "--vz-retro-cyan: #00e5ff"],
+  ["src/components/layout/app-shell/AppShell.module.css", "VERZUS STAGE 2 RETRO SHARED UI:BEGIN"],
+  ["src/features/play/ui/PlayCommandCenter.tsx", "VERZUS STAGE 3 RETRO PLAY"],
   ["scripts/verify-stage-4-competitive.mjs", "Stage 4"],
-  ["scripts/verify-stage-5-platform.mjs", "Stage 5"],
+  ["scripts/verify-stage-5-retro-platform.mjs", "Stage 5"],
 ];
 
 const failures = [];
@@ -3008,42 +3019,49 @@ for (const [file, fragment] of checks) {
     continue;
   }
 
-  const source = fs.readFileSync(file, "utf8");
-  if (!source.includes(fragment)) {
+  const source = fs.readFileSync(file, "utf8").toLowerCase();
+  if (!source.includes(fragment.toLowerCase())) {
     failures.push(`${file}: missing ${fragment}`);
   }
 }
 
+const layout = fs.readFileSync("src/app/layout.tsx", "utf8");
+for (const inactive of [
+  "verzus-reference-lock.css",
+  "verzus-esports-design-system.css",
+  "verzus-font-reference.css",
+  "verzus-visual-system.css",
+]) {
+  if (layout.includes(inactive)) {
+    failures.push(`Inactive theme import remains active: ${inactive}`);
+  }
+}
+
 if (failures.length > 0) {
-  console.error("Canonical VERZUS UI verification failed:\n" + failures.join("\n"));
+  console.error(
+    "Retro VERZUS UI verification failed:\n" +
+      failures.map((failure) => `- ${failure}`).join("\n"),
+  );
   process.exit(1);
 }
 
-console.log("Canonical VERZUS competitive UI markers: PASS");
+console.log("Retro VERZUS competitive UI markers: PASS");
 EOF
 
   cat > "scripts/verify-reference-ui.mjs" <<'EOF'
 import fs from "node:fs";
 
-const layout = fs.readFileSync("src/app/layout.tsx", "utf8");
-const obsoleteImports = [
-  "verzus-retro-system.css",
-  "verzus-reference-lock.css",
-  "verzus-esports-design-system.css",
-  "verzus-font-reference.css",
-];
-
-const failures = obsoleteImports
-  .filter((name) => layout.includes(name))
-  .map((name) => `Obsolete theme import remains active: ${name}`);
-
+const failures = [];
 const checks = [
-  ["src/styles/verzus-visual-system.css", "--vz-clip-button:"],
+  ["src/app/layout.tsx", 'data-theme="retro-competitive"'],
+  ["src/styles/verzus-retro-system.css", "--vz-retro-cut-sm:"],
+  ["src/styles/verzus-retro-system.css", "--vz-retro-cut-md:"],
+  ["src/styles/verzus-retro-system.css", "--vz-retro-cut-lg:"],
   ["src/components/layout/app-shell/BrandMark.tsx", "brandVersion"],
-  ["src/components/primitives/button/Button.module.css", "VERZUS STAGE 2 BUTTON:BEGIN"],
+  ["src/components/primitives/button/Button.module.css", "VERZUS STAGE 2"],
   ["src/features/onboarding/ui/onboarding-experience.module.css", "VERZUS STAGE 5 ONBOARDING:BEGIN"],
-  ["src/features/play/ui/play-command-center.module.css", "VERZUS STAGE 3 PLAY:BEGIN"],
-  ["docs/design-system/stage-5-platform-contract.md", "# VERZUS Stage 5 Platform Contract"],
+  ["src/features/play/ui/PlayCommandCenter.tsx", "VERZUS STAGE 3 RETRO PLAY"],
+  ["docs/design-system/stage-5-retro-platform-contract.md", "# VERZUS Stage 5"],
 ];
 
 for (const [file, expected] of checks) {
@@ -3058,22 +3076,34 @@ for (const [file, expected] of checks) {
   }
 }
 
+const layout = fs.readFileSync("src/app/layout.tsx", "utf8");
+for (const inactive of [
+  "verzus-reference-lock.css",
+  "verzus-esports-design-system.css",
+  "verzus-font-reference.css",
+  "verzus-visual-system.css",
+]) {
+  if (layout.includes(inactive)) {
+    failures.push(`Inactive theme import remains active: ${inactive}`);
+  }
+}
+
 if (failures.length > 0) {
   console.error(
-    "Reference-aligned VERZUS UI verification failed:\n" +
+    "Reference-aligned retro VERZUS UI verification failed:\n" +
       failures.map((item) => `- ${item}`).join("\n"),
   );
   process.exit(1);
 }
 
-console.log("Reference-aligned canonical VERZUS UI markers: PASS");
+console.log("Reference-aligned retro VERZUS UI markers: PASS");
 EOF
 }
 
 write_docs() {
   mkdir -p "docs/design-system" "docs/runbooks" "reports/visual-review" "reports/accessibility" "reports/responsive"
 
-  cat > "docs/design-system/stage-5-platform-contract.md" <<'EOF'
+  cat > "docs/design-system/stage-5-retro-platform-contract.md" <<'EOF'
 # VERZUS Stage 5 Platform Contract
 
 Status: Platform visual completion
@@ -3097,16 +3127,16 @@ Stage 5 does not change feature APIs, schemas, adapters, mocks, query behavior, 
 
 ## Canonical visual rules
 
-- Canvas: `#080A0C`
-- Base surface: `#111519`
-- Elevated surface: `#1A2026`
+- Canvas: `#020305`
+- Base surface: `#06070B`
+- Elevated surface: `#131620`
 - Primary positive action: `#00FF87`
 - Information and focus: `#00E5FF`
-- Live and danger: `#FF3830`
+- Live and danger: `#FF3B30`
 - War and rivalry: `#FF2D87`
 - Rank and reward: `#FFC400`
-- Primary text: `#F1F0FF`
-- Secondary text: `#8A87B8`
+- Primary text: `#F7F8FB`
+- Secondary text: `#8F91A5`
 
 Rajdhani owns display and operational data. Inter owns readable body copy and forms.
 
@@ -3130,7 +3160,7 @@ The following files remain in the repository as historical references but are no
 The active visual stack is:
 
 1. `src/styles/globals.css`
-2. `src/styles/verzus-visual-system.css`
+2. `src/styles/verzus-retro-system.css`
 3. CSS Modules owned by shared components and feature domains
 
 Do not re-import a retired theme file. Move any still-useful rule into canonical tokens, the canonical visual system, a shared primitive, or the owning feature CSS Module.
@@ -3145,7 +3175,7 @@ Each visual stage creates an independent backup:
 - `.verzus-backups/stage-2-primitives/`
 - `.verzus-backups/stage-3-play/`
 - `.verzus-backups/stage-4-competitive/`
-- `.verzus-backups/stage-5-platform/`
+- `.verzus-backups/stage-5-retro-platform/`
 
 To roll back Stage 5, run:
 
@@ -3165,7 +3195,7 @@ EOF
 }
 
 write_stage5_verifier() {
-  cat > "scripts/verify-stage-5-platform.mjs" <<'EOF'
+  cat > "scripts/verify-stage-5-retro-platform.mjs" <<'EOF'
 import fs from "node:fs";
 
 const requiredFiles = [
@@ -3175,7 +3205,9 @@ const requiredFiles = [
   "src/features/notifications/ui/NotificationsScreen.tsx",
   "src/features/search/ui/SearchScreen.tsx",
   "src/features/settings/ui/SettingsScreen.tsx",
-  "docs/design-system/stage-5-platform-contract.md",
+  "docs/design-system/stage-5-retro-platform-contract.md",
+  "docs/design-system/stage-5-retro-audit.md",
+  "reports/stage-5-retro/style-audit.txt",
   "docs/design-system/legacy-theme-retirement.md",
   "docs/runbooks/ui-rollback.md",
 ];
@@ -3191,9 +3223,11 @@ const checks = [
   ["src/components/layout/route-boundary/RouteBoundary.module.css", "VERZUS STAGE 5 ROUTE BOUNDARY:BEGIN"],
   ["src/components/layout/widget-boundary/WidgetBoundary.module.css", "VERZUS STAGE 5 WIDGET BOUNDARY:BEGIN"],
   ["src/app/global-error.tsx", "<SystemStateScreen"],
-  ["src/app/token-preview/page.tsx", "CANONICAL TOKEN SYSTEM"],
-  ["scripts/verify-retro-ui.mjs", "Canonical VERZUS"],
+  ["src/app/token-preview/page.tsx", "RETRO TOKEN SYSTEM"],
+  ["scripts/verify-retro-ui.mjs", "Retro VERZUS"],
   ["scripts/verify-reference-ui.mjs", "Reference-aligned"],
+  ["reports/stage-5-retro/style-audit.txt", "Hardcoded hex values remaining: 0"],
+  ["reports/stage-5-retro/style-audit.txt", "Nonzero border-radius declarations remaining: 0"],
 ];
 
 const failures = [];
@@ -3217,14 +3251,20 @@ for (const [file, marker] of checks) {
 }
 
 const layout = fs.readFileSync("src/app/layout.tsx", "utf8");
-for (const obsolete of [
-  "verzus-retro-system.css",
+if (!layout.includes('data-theme="retro-competitive"')) {
+  failures.push("src/app/layout.tsx: retro theme attribute is missing");
+}
+if (!layout.includes("verzus-retro-system.css")) {
+  failures.push("src/app/layout.tsx: active retro theme import is missing");
+}
+for (const inactive of [
   "verzus-reference-lock.css",
   "verzus-esports-design-system.css",
   "verzus-font-reference.css",
+  "verzus-visual-system.css",
 ]) {
-  if (layout.includes(obsolete)) {
-    failures.push(`src/app/layout.tsx: obsolete import ${obsolete}`);
+  if (layout.includes(inactive)) {
+    failures.push(`src/app/layout.tsx: inactive theme import ${inactive}`);
   }
 }
 
@@ -3240,14 +3280,14 @@ for (const page of [
 }
 
 if (failures.length > 0) {
-  console.error("Stage 5 platform verification failed:");
+  console.error("Stage 5 retro platform verification failed:");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("Stage 5 platform completion markers are installed.");
+console.log("Stage 5 retro platform completion markers are installed.");
 EOF
 }
 
@@ -3257,10 +3297,224 @@ const fs = require("node:fs");
 const file = "package.json";
 const pkg = JSON.parse(fs.readFileSync(file, "utf8"));
 pkg.scripts ??= {};
-pkg.scripts["verify:stage5"] = "node scripts/verify-stage-5-platform.mjs";
-pkg.scripts["stage5:preview"] = "next dev --hostname 127.0.0.1 --port 3113";
+pkg.scripts["verify:stage5:retro"] = "node scripts/verify-stage-5-retro-platform.mjs";
+pkg.scripts["stage5:retro:preview"] = "next dev --hostname 127.0.0.1 --port 3117";
 fs.writeFileSync(file, JSON.stringify(pkg, null, 2) + "\n", "utf8");
 NODE
+}
+
+normalize_stage5_retro_assets() {
+  echo
+  echo "Normalizing remaining Stage 5 styles to retro tokens..."
+
+  mkdir -p "docs/design-system" "reports/stage-5-retro"
+
+  node <<'NODE'
+import fs from "node:fs";
+import path from "node:path";
+
+const roots = [
+  "src/components/layout/operational-screen",
+  "src/components/layout/system-state",
+  "src/components/layout/route-boundary",
+  "src/components/layout/widget-boundary",
+  "src/features/profiles/ui",
+  "src/features/notifications/ui",
+  "src/features/search/ui",
+  "src/features/settings/ui",
+  "src/features/auth",
+  "src/features/onboarding/ui",
+  "src/app/design-system",
+  "src/app/token-preview",
+];
+
+const palette = [
+  ["--vz-retro-black", [2, 3, 5]],
+  ["--vz-retro-black-soft", [6, 7, 11]],
+  ["--vz-retro-surface", [10, 12, 18]],
+  ["--vz-retro-surface-2", [15, 17, 24]],
+  ["--vz-retro-surface-3", [19, 22, 32]],
+  ["--vz-retro-line", [43, 37, 64]],
+  ["--vz-retro-green", [0, 255, 135]],
+  ["--vz-retro-green-bright", [73, 255, 173]],
+  ["--vz-retro-cyan", [0, 229, 255]],
+  ["--vz-retro-purple", [155, 98, 255]],
+  ["--vz-retro-blue", [74, 158, 255]],
+  ["--vz-retro-orange", [255, 138, 31]],
+  ["--vz-retro-gold", [255, 194, 71]],
+  ["--vz-retro-red", [255, 59, 48]],
+  ["--vz-retro-pink", [255, 45, 135]],
+  ["--vz-retro-white", [247, 248, 251]],
+  ["--vz-retro-muted", [143, 145, 165]],
+];
+
+const aliasReplacements = new Map([
+  ["--vz-color-information", "--vz-color-info"],
+  ["--vz-color-primary", "--vz-color-action-primary"],
+  ["--vz-color-surface", "--vz-color-panel"],
+  ["--vz-color-text", "--vz-color-text-primary"],
+  ["--vz-surface-accent-green", "--vz-retro-green"],
+  ["--vz-surface-accent-cyan", "--vz-retro-cyan"],
+  ["--vz-surface-accent-violet", "--vz-retro-purple"],
+  ["--vz-surface-accent-magenta", "--vz-retro-pink"],
+  ["--vz-surface-accent-gold", "--vz-retro-gold"],
+  ["--vz-surface-accent-red", "--vz-retro-red"],
+  ["--vz-surface-accent-silver", "--vz-retro-muted"],
+]);
+
+const listFiles = (root) => {
+  if (!fs.existsSync(root)) return [];
+  const entries = fs.readdirSync(root, { withFileTypes: true });
+  return entries.flatMap((entry) => {
+    const full = path.join(root, entry.name);
+    if (entry.isDirectory()) return listFiles(full);
+    return full.endsWith(".css") ? [full] : [];
+  });
+};
+
+const cssFiles = [...new Set(roots.flatMap(listFiles))];
+
+const expandHex = (value) => {
+  const hex = value.slice(1);
+  if (hex.length === 3 || hex.length === 4) {
+    return hex.split("").map((char) => char + char).join("");
+  }
+  return hex;
+};
+
+const nearestToken = (hexValue) => {
+  const expanded = expandHex(hexValue);
+  const rgbHex = expanded.slice(0, 6);
+  const alphaHex = expanded.length === 8 ? expanded.slice(6, 8) : null;
+  const rgb = [0, 2, 4].map((offset) => Number.parseInt(rgbHex.slice(offset, offset + 2), 16));
+
+  let best = palette[0];
+  let bestDistance = Number.POSITIVE_INFINITY;
+  for (const candidate of palette) {
+    const distance = candidate[1].reduce(
+      (sum, channel, index) => sum + (channel - rgb[index]) ** 2,
+      0,
+    );
+    if (distance < bestDistance) {
+      best = candidate;
+      bestDistance = distance;
+    }
+  }
+
+  if (alphaHex) {
+    const alpha = Number.parseInt(alphaHex, 16) / 255;
+    const percentage = Math.max(1, Math.min(100, Math.round(alpha * 100)));
+    return `color-mix(in srgb, var(${best[0]}) ${percentage}%, transparent)`;
+  }
+
+  return `var(${best[0]})`;
+};
+
+const hexPattern = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{4}\b|#[0-9a-fA-F]{3}\b/g;
+
+for (const file of cssFiles) {
+  let source = fs.readFileSync(file, "utf8");
+
+  for (const [from, to] of aliasReplacements) {
+    source = source.replaceAll(from, to);
+  }
+
+  source = source.replace(hexPattern, (match) => nearestToken(match));
+  source = source.replace(/border-radius\s*:\s*[^;]+;/g, "border-radius: 0;");
+  source = source.replace(/border-(?:start|end)-(?:start|end)-radius\s*:\s*[^;]+;/g, (match) =>
+    match.replace(/:[^;]+;/, ": 0;"),
+  );
+
+  fs.writeFileSync(file, source, "utf8");
+}
+
+const tokenPreview = "src/app/token-preview/page.tsx";
+if (fs.existsSync(tokenPreview)) {
+  let source = fs.readFileSync(tokenPreview, "utf8");
+  source = source.replace(
+    /const coreTokens = \[[\s\S]*?\] as const;/,
+    `const coreTokens = [
+  ["Void canvas", "--vz-color-background-deep", "backgroundDeep"],
+  ["Surface base", "--vz-color-surface-base", "surfaceBase"],
+  ["Surface elevated", "--vz-color-surface-elevated", "surfaceElevated"],
+  ["Primary green", "--vz-retro-green", "green"],
+  ["Secondary cyan", "--vz-retro-cyan", "cyan"],
+  ["Live and danger", "--vz-color-danger", "red"],
+  ["War and rivalry", "--vz-retro-pink", "magenta"],
+  ["Rank and reward", "--vz-retro-gold", "gold"],
+  ["Primary text", "--vz-color-text-primary", "textPrimary"],
+  ["Secondary text", "--vz-color-text-secondary", "textSecondary"],
+] as const;`,
+  );
+  source = source.replace(
+    /coreTokens\.map\(\(\[name, token, value, className\]\) =>/,
+    "coreTokens.map(([name, token, className]) =>",
+  );
+  source = source.replace(/\s*<p className=\{styles\.tokenValue\}>\{value\}<\/p>/, "");
+  fs.writeFileSync(tokenPreview, source, "utf8");
+}
+
+const generatedCss = cssFiles.map((file) => fs.readFileSync(file, "utf8")).join("\n");
+const remainingHex = generatedCss.match(hexPattern) ?? [];
+const radiusDeclarations = [...generatedCss.matchAll(/border-radius\s*:\s*([^;]+);/g)];
+const remainingRadius = radiusDeclarations.filter((match) => match[1].trim() !== "0");
+const atmosphereOwners = cssFiles.filter((file) => {
+  const source = fs.readFileSync(file, "utf8");
+  return /body::before|body::after/.test(source);
+});
+
+const report = [
+  "VERZUS Stage 5 retro style audit",
+  `Generated: ${new Date().toISOString()}`,
+  `CSS files scanned: ${cssFiles.length}`,
+  `Hardcoded hex values remaining: ${remainingHex.length}`,
+  `Nonzero border-radius declarations remaining: ${remainingRadius.length}`,
+  `Stage 5 files declaring body atmosphere layers: ${atmosphereOwners.length}`,
+  ...atmosphereOwners.map((file) => `  - ${file}`),
+  "",
+  "Stage 5 source boundary:",
+  ...roots.map((root) => `  - ${root}`),
+].join("\n");
+
+fs.writeFileSync("reports/stage-5-retro/style-audit.txt", report + "\n", "utf8");
+
+if (remainingHex.length > 0 || remainingRadius.length > 0 || atmosphereOwners.length > 0) {
+  console.error(report);
+  process.exit(1);
+}
+
+console.log(report);
+NODE
+
+  cat > "docs/design-system/stage-5-retro-audit.md" <<'EOF'
+# VERZUS Stage 5 Retro Audit
+
+Stage 5 normalizes the remaining platform presentation to the active `retro-competitive` system.
+
+## Audited areas
+
+- Authentication
+- Onboarding
+- Profile
+- Notifications
+- Search
+- Settings
+- Root system states
+- Route and widget boundaries
+- Design-system gallery
+- Token preview
+
+## Enforced rules
+
+- No hardcoded hexadecimal colours in the Stage 5 CSS boundary
+- No nonzero border radii in the Stage 5 CSS boundary
+- No Stage 5 component owns `body::before` or `body::after`
+- The global grid and scanlines remain owned by `verzus-retro-system.css`
+- Inactive legacy themes remain present but are not imported globally
+- Existing routes, APIs, hooks, schemas, mocks and domain behaviour remain unchanged
+
+The machine-readable result is stored in `reports/stage-5-retro/style-audit.txt`.
+EOF
 }
 
 format_files() {
@@ -3291,10 +3545,12 @@ format_files() {
     "src/features/notifications/ui" \
     "src/features/search/ui" \
     "src/features/settings/ui" \
-    "docs/design-system/stage-5-platform-contract.md" \
+    "docs/design-system/stage-5-retro-platform-contract.md" \
+    "docs/design-system/stage-5-retro-audit.md" \
+    "reports/stage-5-retro/style-audit.txt" \
     "docs/design-system/legacy-theme-retirement.md" \
     "docs/runbooks/ui-rollback.md" \
-    "scripts/verify-stage-5-platform.mjs" \
+    "scripts/verify-stage-5-retro-platform.mjs" \
     "scripts/verify-retro-ui.mjs" \
     "scripts/verify-reference-ui.mjs" \
     --write
@@ -3321,15 +3577,16 @@ install_stage5() {
   write_compatibility_verifiers
   write_docs
   write_stage5_verifier
+  normalize_stage5_retro_assets
   patch_package_json
   format_files
 
   echo
   echo "Running narrow Stage 5 marker verification..."
-  node scripts/verify-stage-5-platform.mjs
+  node scripts/verify-stage-5-retro-platform.mjs
 
   echo
-  echo "Stage 5 platform completion installed."
+  echo "Stage 5 retro platform completion installed."
   echo "No API, schema, adapter, query, auth behavior, or Play contract was changed."
   echo "Rollback archive: $ARCHIVE"
 }
@@ -3338,7 +3595,7 @@ verify_stage5() {
   require_repo
 
   echo "Running Stage 5 marker verification..."
-  node scripts/verify-stage-5-platform.mjs
+  node scripts/verify-stage-5-retro-platform.mjs
 
   echo
   echo "Running focused ESLint..."
@@ -3390,7 +3647,7 @@ release_gate() {
   npm run build
 
   echo
-  echo "Running canonical visual marker checks..."
+  echo "Running retro visual marker checks..."
   node scripts/verify-retro-ui.mjs
   node scripts/verify-reference-ui.mjs
   node scripts/m4-visual-review.mjs --scan-only
@@ -3408,16 +3665,23 @@ preview_stage5() {
 rollback_stage5() {
   require_repo
 
-  local latest
-  latest="$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n 1)"
+  local selected=""
 
-  if [[ -z "$latest" ]]; then
+  if [[ -f "$BASELINE_POINTER" ]]; then
+    selected="$(cat "$BASELINE_POINTER")"
+  fi
+
+  if [[ -z "$selected" || ! -d "$selected" ]]; then
+    selected="$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n 1)"
+  fi
+
+  if [[ -z "$selected" ]]; then
     echo "No Stage 5 backup found."
     exit 1
   fi
 
-  local archive="$latest/verzus-stage-5-before.tar.gz"
-  local created="$latest/created-files.txt"
+  local archive="$selected/verzus-stage-5-retro-before.tar.gz"
+  local created="$selected/created-files.txt"
 
   if [[ ! -f "$archive" ]]; then
     echo "Backup archive not found: $archive"
@@ -3434,6 +3698,7 @@ rollback_stage5() {
   fi
 
   tar -xzf "$archive"
+  rm -f "$BASELINE_POINTER"
   echo "Stage 5 rollback completed."
 }
 

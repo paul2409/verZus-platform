@@ -7,7 +7,7 @@
   color: var(--vz-input-text);
   background: var(--vz-input-background);
   border: var(--vz-border-width-1) solid var(--vz-input-border);
-  border-radius: var(--vz-radius-control);
+  border-radius: 0;
   box-shadow: var(--vz-shadow-control);
   transition: var(--vz-transition-interactive);
 }
@@ -90,7 +90,7 @@
   color: var(--vz-color-text-tertiary);
   background: transparent;
   border: 0;
-  border-radius: var(--vz-radius-sm);
+  border-radius: 0;
   cursor: pointer;
 }
 
@@ -136,12 +136,12 @@
 /* VERZUS RETRO_INPUT START */
 .root {
   border-color: var(--vz-retro-line);
-  background: rgb(4 5 9 / 94%);
+  background: color-mix(in srgb, var(--vz-retro-black-soft) 94%, transparent);
   clip-path: var(--vz-retro-cut-sm);
 }
 
 .root:hover:not(.disabled):not(.readOnly) {
-  border-color: rgb(0 229 255 / 46%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 46%, transparent);
 }
 
 .root:focus-within:not(.disabled) {
@@ -164,7 +164,7 @@
 .indicator {
   border-radius: 0;
   border-color: var(--vz-ref-line-strong);
-  background: rgb(5 6 10 / 96%);
+  background: color-mix(in srgb, var(--vz-retro-black-soft) 96%, transparent);
   clip-path: var(--vz-ref-cut-xs);
 }
 
@@ -172,7 +172,7 @@
 .input:hover,
 .select:hover,
 .textarea:hover {
-  border-color: rgb(0 229 255 / 54%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 54%, transparent);
 }
 
 .control:focus-within,
@@ -192,7 +192,7 @@
 
 .control {
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-control);
+  border-radius: 0;
   background: var(--vz-color-surface-base);
   box-shadow: none;
 }
@@ -226,3 +226,54 @@
   border-color: var(--vz-color-status-danger);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.root,
+.control,
+.box,
+.input,
+.adornmentButton {
+  border-radius: 0;
+}
+
+.control,
+.box {
+  color: var(--vz-color-text-primary);
+  border: 1px solid var(--vz-color-border-default);
+  background: var(--vz-retro-black-soft);
+  clip-path: var(--vz-retro-cut-sm);
+  box-shadow: none;
+}
+
+.input {
+  color: var(--vz-color-text-primary);
+  background: transparent;
+}
+
+.input::placeholder {
+  color: var(--vz-color-text-muted);
+}
+
+.root:hover:not(.disabled):not(.readOnly) .control,
+.control:hover:not(.disabled) {
+  border-color: var(--vz-retro-cyan);
+}
+
+.root:focus-within:not(.disabled) .control,
+.control:focus-within {
+  border-color: var(--vz-retro-green);
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+
+.invalid,
+.invalid:focus-within {
+  border-color: var(--vz-retro-red);
+}
+
+.adornmentButton {
+  color: var(--vz-retro-cyan);
+  clip-path: var(--vz-retro-cut-sm);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

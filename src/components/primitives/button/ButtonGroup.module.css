@@ -50,3 +50,9 @@
   }
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.group {
+  border-radius: 0;
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

@@ -73,7 +73,7 @@
   margin-top: 0.0625rem;
   background: var(--vz-input-background);
   border: var(--vz-border-width-1) solid var(--vz-input-border);
-  border-radius: var(--vz-radius-full);
+  border-radius: 0;
   box-shadow: var(--vz-shadow-xs);
   transition: var(--vz-transition-interactive);
 }
@@ -82,7 +82,7 @@
   width: 0.625rem;
   height: 0.625rem;
   background: var(--vz-color-text-inverse);
-  border-radius: var(--vz-radius-full);
+  border-radius: 0;
   content: "";
   opacity: 0;
   transform: scale(0.5);
@@ -135,12 +135,12 @@
 /* VERZUS RETRO_RADIO START */
 .indicator {
   border-color: var(--vz-retro-line);
-  background: #050609;
+  background: var(--vz-retro-black-soft);
 }
 .input:checked + .indicator {
   border-color: var(--vz-retro-green);
   box-shadow:
-    0 0 0 3px rgb(0 255 135 / 12%),
+    0 0 0 3px color-mix(in srgb, var(--vz-retro-green) 12%, transparent),
     var(--vz-shadow-glow-green);
 }
 .label {
@@ -159,7 +159,7 @@
 .indicator {
   border-radius: 0;
   border-color: var(--vz-ref-line-strong);
-  background: rgb(5 6 10 / 96%);
+  background: color-mix(in srgb, var(--vz-retro-black-soft) 96%, transparent);
   clip-path: var(--vz-ref-cut-xs);
 }
 
@@ -167,7 +167,7 @@
 .input:hover,
 .select:hover,
 .textarea:hover {
-  border-color: rgb(0 229 255 / 54%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 54%, transparent);
 }
 
 .control:focus-within,
@@ -216,3 +216,39 @@
   color: var(--vz-color-status-danger);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.option,
+.control,
+.box,
+.indicator,
+.indicator::after {
+  border-radius: 0;
+}
+
+.option,
+.box {
+  border: 1px solid var(--vz-color-border-default);
+  background: var(--vz-retro-black-soft);
+  clip-path: var(--vz-retro-cut-sm);
+  box-shadow: none;
+}
+
+.input:checked + .box {
+  border-color: var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-green) 10%, var(--vz-retro-black-soft));
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.indicator::after {
+  background: var(--vz-retro-green);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.control:focus-within,
+.input:focus-visible + .box {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

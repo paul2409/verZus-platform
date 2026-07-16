@@ -4,7 +4,7 @@
   margin-inline: auto;
   padding: clamp(1rem, 3vw, 2.5rem);
   padding-bottom: clamp(4rem, 8vw, 7rem);
-  color: var(--vz-color-text-primary, #f4fbff);
+  color: var(--vz-color-text-primary-primary, var(--vz-retro-white));
 }
 
 .hero {
@@ -55,7 +55,7 @@
 .kicker,
 .sampleEyebrow {
   margin: 0 0 0.5rem;
-  color: var(--vz-surface-accent-green, #00ff87);
+  color: var(--vz-retro-green, var(--vz-retro-green));
   font-family: var(--vz-font-display, Rajdhani, sans-serif);
   font-size: 0.78rem;
   font-weight: 700;
@@ -78,7 +78,7 @@
 .description {
   max-width: 65ch;
   margin: 1rem 0 0;
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-primary-secondary, var(--vz-retro-muted));
   font-size: clamp(0.98rem, 2vw, 1.15rem);
   line-height: 1.7;
 }
@@ -99,7 +99,7 @@
 }
 
 .summaryCard strong {
-  color: var(--vz-surface-accent-cyan, #00e5ff);
+  color: var(--vz-retro-cyan, var(--vz-retro-cyan));
   font-family: var(--vz-font-display, Rajdhani, sans-serif);
   font-size: clamp(1.8rem, 5vw, 3rem);
   line-height: 1;
@@ -107,7 +107,7 @@
 
 .summaryCard span {
   overflow-wrap: anywhere;
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-primary-secondary, var(--vz-retro-muted));
   font-size: 0.78rem;
   line-height: 1.35;
 }
@@ -132,7 +132,7 @@
   flex: 0 0 auto;
   min-height: 2.75rem;
   padding: 0.75rem 0.9rem;
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-primary-secondary, var(--vz-retro-muted));
   font-family: var(--vz-font-display, Rajdhani, sans-serif);
   font-size: 0.78rem;
   font-weight: 700;
@@ -142,13 +142,13 @@
 }
 
 .sectionNav a:hover {
-  color: var(--vz-surface-accent-green, #00ff87);
+  color: var(--vz-retro-green, var(--vz-retro-green));
   background: rgb(0 255 135 / 7%);
 }
 
 .sectionNav a:focus-visible,
 .previewLink:focus-visible {
-  outline: 2px solid var(--vz-surface-accent-cyan, #00e5ff);
+  outline: 2px solid var(--vz-retro-cyan, var(--vz-retro-cyan));
   outline-offset: 2px;
 }
 
@@ -214,7 +214,7 @@
 }
 
 .swatchItem small {
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-primary-secondary, var(--vz-retro-muted));
   line-height: 1.4;
 }
 
@@ -237,31 +237,31 @@
 }
 
 .swatch[data-swatch="green"] {
-  --swatch-colour: var(--vz-surface-accent-green, #00ff87);
+  --swatch-colour: var(--vz-retro-green, var(--vz-retro-green));
 }
 
 .swatch[data-swatch="cyan"] {
-  --swatch-colour: var(--vz-surface-accent-cyan, #00e5ff);
+  --swatch-colour: var(--vz-retro-cyan, var(--vz-retro-cyan));
 }
 
 .swatch[data-swatch="violet"] {
-  --swatch-colour: var(--vz-surface-accent-violet, #8a4fff);
+  --swatch-colour: var(--vz-retro-purple, var(--vz-retro-purple));
 }
 
 .swatch[data-swatch="magenta"] {
-  --swatch-colour: var(--vz-surface-accent-magenta, #ff4fd8);
+  --swatch-colour: var(--vz-retro-pink, var(--vz-retro-pink));
 }
 
 .swatch[data-swatch="gold"] {
-  --swatch-colour: var(--vz-surface-accent-gold, #ffc247);
+  --swatch-colour: var(--vz-retro-gold, var(--vz-retro-gold));
 }
 
 .swatch[data-swatch="red"] {
-  --swatch-colour: var(--vz-surface-accent-red, #ff3b30);
+  --swatch-colour: var(--vz-retro-red, var(--vz-retro-red));
 }
 
 .swatch[data-swatch="silver"] {
-  --swatch-colour: var(--vz-surface-accent-silver, #c7d0d6);
+  --swatch-colour: var(--vz-retro-muted, var(--vz-retro-white));
 }
 
 .displaySample {
@@ -278,7 +278,7 @@
 .catalogCard p,
 .stateCard p,
 .approvalGrid p {
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-primary-secondary, var(--vz-retro-muted));
   line-height: 1.6;
 }
 
@@ -375,7 +375,7 @@
   gap: 0.45rem;
   margin: 0;
   padding-left: 1rem;
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-primary-secondary, var(--vz-retro-muted));
   font-size: 0.88rem;
 }
 
@@ -386,7 +386,7 @@
   min-height: 2.75rem;
   padding: 0.75rem 1rem;
   border: 1px solid rgb(0 229 255 / 38%);
-  color: var(--vz-surface-accent-cyan, #00e5ff);
+  color: var(--vz-retro-cyan, var(--vz-retro-cyan));
   background: rgb(0 229 255 / 7%);
   font-family: var(--vz-font-display, Rajdhani, sans-serif);
   font-size: 0.85rem;
@@ -397,7 +397,7 @@
 }
 
 .previewLink:hover {
-  border-color: var(--vz-surface-accent-cyan, #00e5ff);
+  border-color: var(--vz-retro-cyan, var(--vz-retro-cyan));
   background: rgb(0 229 255 / 13%);
 }
 
@@ -438,13 +438,13 @@
 }
 
 .viewportCard strong {
-  color: var(--vz-surface-accent-green, #00ff87);
+  color: var(--vz-retro-green, var(--vz-retro-green));
   font-family: var(--vz-font-display, Rajdhani, sans-serif);
   font-size: 1.5rem;
 }
 
 .viewportCard span {
-  color: var(--vz-color-text-secondary, #aeb8bf);
+  color: var(--vz-color-text-primary-secondary, var(--vz-retro-muted));
   font-size: 0.82rem;
   line-height: 1.4;
 }
@@ -525,26 +525,26 @@
 /* VERZUS STAGE 5 DESIGN GALLERY:BEGIN */
 
 .page {
-  color: var(--vz-color-text-primary);
+  color: var(--vz-color-text-primary-primary);
 }
 
 .hero {
-  border-color: color-mix(in srgb, var(--vz-color-accent-green) 36%, transparent);
-  border-radius: var(--vz-radius-lg);
+  border-color: color-mix(in srgb, var(--vz-retro-green) 36%, transparent);
+  border-radius: 0;
   background:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--vz-color-accent-green) 7%, transparent),
+      color-mix(in srgb, var(--vz-retro-green) 7%, transparent),
       transparent 36%
     ),
-    var(--vz-color-surface-base);
+    var(--vz-color-panel-base);
   box-shadow: var(--vz-shadow-panel);
   clip-path: none;
 }
 
 .kicker,
 .sampleEyebrow {
-  color: var(--vz-color-accent-green);
+  color: var(--vz-retro-green);
 }
 
 .description,
@@ -555,21 +555,21 @@
 .catalogCard p,
 .stateCard p,
 .approvalGrid p {
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
 }
 
 .summaryCard,
 .sampleBlock,
 .sectionNav {
   border-color: var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--vz-color-panel-elevated) 72%, transparent);
   box-shadow: none;
 }
 
 .sectionNav a:focus-visible,
 .previewLink:focus-visible {
-  outline-color: var(--vz-color-accent-cyan);
+  outline-color: var(--vz-retro-cyan);
 }
 
 /* VERZUS STAGE 5 DESIGN GALLERY:END */

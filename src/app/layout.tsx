@@ -11,7 +11,7 @@ import type { ReactNode } from "react";
 import { AppProviders } from "./providers";
 
 import "@/styles/globals.css";
-import "@/styles/verzus-visual-system.css";
+import "@/styles/verzus-retro-system.css";
 export const metadata: Metadata = {
   title: {
     default: "VERZUS",

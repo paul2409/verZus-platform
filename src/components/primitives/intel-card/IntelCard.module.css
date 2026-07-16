@@ -35,7 +35,11 @@
   background:
     linear-gradient(90deg, var(--intel-accent), transparent 24%) top left / 100% 1px no-repeat,
     linear-gradient(180deg, var(--intel-accent), transparent 30%) top left / 1px 100% no-repeat,
-    repeating-linear-gradient(90deg, transparent 0 15px, rgb(255 255 255 / 2%) 15px 16px);
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 15px,
+      color-mix(in srgb, var(--vz-retro-white) 2%, transparent) 15px 16px
+    );
   opacity: 0.72;
 }
 
@@ -96,7 +100,11 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.75rem var(--vz-intel-padding);
-  background: linear-gradient(180deg, rgb(13 18 21 / 96%), rgb(5 8 10 / 94%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 96%, transparent),
+    color-mix(in srgb, var(--vz-retro-black-soft) 94%, transparent)
+  );
   border-bottom: 1px solid color-mix(in srgb, var(--intel-accent) 28%, var(--vz-intel-border));
 }
 
@@ -142,7 +150,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid currentColor;
-  background: rgb(4 8 9 / 72%);
+  background: color-mix(in srgb, var(--vz-retro-black-soft) 72%, transparent);
   box-shadow: inset 0 0 0.65rem color-mix(in srgb, currentColor 12%, transparent);
   clip-path: polygon(
     0.35rem 0,
@@ -210,8 +218,8 @@
   margin: 0.75rem var(--vz-intel-padding) 0;
   padding: 0.65rem 0.75rem;
   color: var(--vz-intel-warning);
-  background: rgb(255 206 92 / 8%);
-  border: 1px solid rgb(255 206 92 / 28%);
+  background: color-mix(in srgb, var(--vz-retro-gold) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-gold) 28%, transparent);
   font-size: 0.78rem;
 }
 
@@ -241,7 +249,13 @@
   display: block;
   overflow: hidden;
   background:
-    linear-gradient(90deg, transparent, rgb(255 255 255 / 8%), transparent), rgb(255 255 255 / 5%);
+    linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--vz-retro-white) 8%, transparent),
+      transparent
+    ),
+    color-mix(in srgb, var(--vz-retro-white) 5%, transparent);
   background-size: 180% 100%;
   animation: intelShimmer 1.4s linear infinite;
 }
@@ -439,26 +453,30 @@
 }
 
 .actionPrimary {
-  color: #03110a;
-  background: linear-gradient(135deg, #72ff87, var(--vz-intel-player));
+  color: var(--vz-retro-black-soft);
+  background: linear-gradient(135deg, var(--vz-retro-green-bright), var(--vz-intel-player));
   border-color: var(--vz-intel-player);
 }
 
 .actionSecondary {
   color: var(--intel-accent);
-  background: color-mix(in srgb, var(--intel-accent) 7%, rgb(4 8 10 / 88%));
+  background: color-mix(
+    in srgb,
+    var(--intel-accent) 7%,
+    color-mix(in srgb, var(--vz-retro-black-soft) 88%, transparent)
+  );
   border-color: color-mix(in srgb, var(--intel-accent) 48%, transparent);
 }
 
 .actionDanger {
   color: var(--vz-intel-danger);
-  background: rgb(255 78 85 / 7%);
-  border-color: rgb(255 78 85 / 48%);
+  background: color-mix(in srgb, var(--vz-retro-red) 7%, transparent);
+  border-color: color-mix(in srgb, var(--vz-retro-red) 48%, transparent);
 }
 
 .actionGhost {
   color: var(--vz-intel-muted);
-  background: rgb(255 255 255 / 2%);
+  background: color-mix(in srgb, var(--vz-retro-white) 2%, transparent);
 }
 
 .actionDisabled {
@@ -516,11 +534,15 @@
 .card,
 .surface {
   border-color: var(--vz-retro-line);
-  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 98%, transparent),
+    color-mix(in srgb, var(--vz-retro-black-soft) 98%, transparent)
+  );
   clip-path: var(--vz-retro-cut-md);
 }
 .card:hover {
-  border-color: rgb(155 98 255 / 60%);
+  border-color: color-mix(in srgb, var(--vz-retro-purple) 60%, transparent);
   box-shadow: var(--vz-shadow-glow-purple);
   transform: translateY(-2px);
 }
@@ -539,18 +561,22 @@
 .container,
 .article {
   border-color: var(--vz-ref-line);
-  background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--vz-retro-surface-2) 98%, transparent),
+    color-mix(in srgb, var(--vz-retro-black-soft) 98%, transparent)
+  );
   border-radius: 0;
   clip-path: var(--vz-ref-cut-md);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 3%),
-    0 1rem 2.25rem rgb(0 0 0 / 28%);
+    inset 0 1px 0 color-mix(in srgb, var(--vz-retro-white) 3%, transparent),
+    0 1rem 2.25rem color-mix(in srgb, var(--vz-retro-black) 28%, transparent);
 }
 
 .card:hover,
 .root:hover,
 .article:hover {
-  border-color: rgb(0 229 255 / 46%);
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 46%, transparent);
   transform: translateY(-2px);
 }
 
@@ -576,7 +602,7 @@
 .container,
 .surface {
   border-color: var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
+  border-radius: 0;
   background: var(--vz-color-surface-base);
   box-shadow: none;
 }
@@ -670,3 +696,96 @@
   background: transparent;
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.root,
+.container,
+.card,
+.surface,
+.frame,
+.article,
+.statusPill,
+.action {
+  border-radius: 0;
+}
+
+.card,
+.surface,
+.article {
+  position: relative;
+  color: var(--vz-color-text-primary);
+  border: 1px solid var(--vz-color-border-subtle);
+  background: var(--vz-color-panel);
+  clip-path: var(--vz-retro-cut-lg);
+  box-shadow: none;
+}
+
+.card::before,
+.article::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  content: "";
+  background: var(--vz-gradient-brand);
+  box-shadow: var(--vz-shadow-glow-purple);
+}
+
+.card:hover,
+.article:hover,
+.root:hover {
+  border-color: var(--vz-retro-purple);
+  box-shadow: var(--vz-shadow-glow-purple);
+}
+
+.eyebrow,
+.sectionCode,
+.statusPill,
+.tag {
+  color: var(--vz-retro-cyan);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.heading,
+.title,
+.headerTitle,
+.metric {
+  font-family: var(--vz-font-display);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.action {
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.actionPrimary {
+  color: var(--vz-retro-black);
+  border-color: var(--vz-retro-green);
+  background: var(--vz-gradient-primary);
+}
+
+.actionSecondary {
+  color: var(--vz-retro-cyan);
+  border-color: var(--vz-retro-cyan);
+  background: transparent;
+}
+
+.actionDanger {
+  color: var(--vz-retro-red);
+  border-color: var(--vz-retro-red);
+  background: transparent;
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+  box-shadow: var(--vz-shadow-focus);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */

@@ -6,7 +6,7 @@ Each visual stage creates an independent backup:
 - `.verzus-backups/stage-2-primitives/`
 - `.verzus-backups/stage-3-play/`
 - `.verzus-backups/stage-4-competitive/`
-- `.verzus-backups/stage-5-platform/`
+- `.verzus-backups/stage-5-retro-platform/`
 
 To roll back Stage 5, run:
 

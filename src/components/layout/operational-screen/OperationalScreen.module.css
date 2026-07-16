@@ -12,14 +12,14 @@
   padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-10));
   overflow: hidden;
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-lg);
+  border-radius: 0;
   background:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--vz-color-accent-cyan) 7%, transparent),
+      color-mix(in srgb, var(--vz-retro-cyan) 7%, transparent),
       transparent 38%
     ),
-    var(--vz-color-surface-base);
+    var(--vz-color-panel-base);
   box-shadow: var(--vz-shadow-panel);
 }
 
@@ -62,11 +62,11 @@
 .eyebrow,
 .panelEyebrow {
   margin: 0;
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-label);
+  letter-spacing: var(--vz-letter-spacing-widest);
   text-transform: uppercase;
 }
 
@@ -79,7 +79,7 @@
 .description {
   max-width: 66ch;
   margin: 0;
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
   font-size: clamp(1rem, 2vw, 1.125rem);
 }
 
@@ -110,8 +110,8 @@
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
-  background: var(--vz-color-surface-base);
+  border-radius: 0;
+  background: var(--vz-color-panel-base);
   box-shadow: var(--vz-shadow-panel);
 }
 
@@ -125,27 +125,27 @@
 }
 
 .panel[data-tone="green"] {
-  --panel-signal: var(--vz-color-accent-green);
+  --panel-signal: var(--vz-retro-green);
 }
 
 .panel[data-tone="cyan"] {
-  --panel-signal: var(--vz-color-accent-cyan);
+  --panel-signal: var(--vz-retro-cyan);
 }
 
 .panel[data-tone="gold"] {
-  --panel-signal: var(--vz-color-rank-gold);
+  --panel-signal: var(--vz-retro-gold);
 }
 
 .panel[data-tone="magenta"] {
-  --panel-signal: var(--vz-color-status-magenta);
+  --panel-signal: var(--vz-retro-pink);
 }
 
 .panel[data-tone="red"] {
-  --panel-signal: var(--vz-color-status-danger);
+  --panel-signal: var(--vz-color-danger);
 }
 
 .panel[data-tone="violet"] {
-  --panel-signal: var(--vz-color-special, var(--vz-color-accent-cyan));
+  --panel-signal: var(--vz-retro-purple, var(--vz-retro-cyan));
 }
 
 .panelHeader {
@@ -168,7 +168,7 @@
 .panelHeader p:not(.panelEyebrow) {
   max-width: 58ch;
   margin: 0;
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
 }
 
 .panelAction {
@@ -187,47 +187,47 @@
 }
 
 .metricCard {
-  --metric-signal: var(--vz-color-text-primary);
+  --metric-signal: var(--vz-color-text-primary-primary);
 
   display: grid;
   gap: var(--vz-space-1);
   min-width: 0;
   padding: var(--vz-space-4);
   border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 82%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--vz-color-panel-elevated) 82%, transparent);
 }
 
 .metricCard[data-tone="green"] {
-  --metric-signal: var(--vz-color-accent-green);
+  --metric-signal: var(--vz-retro-green);
 }
 
 .metricCard[data-tone="cyan"] {
-  --metric-signal: var(--vz-color-accent-cyan);
+  --metric-signal: var(--vz-retro-cyan);
 }
 
 .metricCard[data-tone="gold"] {
-  --metric-signal: var(--vz-color-rank-gold);
+  --metric-signal: var(--vz-retro-gold);
 }
 
 .metricCard[data-tone="magenta"] {
-  --metric-signal: var(--vz-color-status-magenta);
+  --metric-signal: var(--vz-retro-pink);
 }
 
 .metricCard[data-tone="red"] {
-  --metric-signal: var(--vz-color-status-danger);
+  --metric-signal: var(--vz-color-danger);
 }
 
 .metricCard span,
 .metricCard small {
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
 }
 
 .metricCard span {
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
   font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
 }
 
@@ -241,7 +241,7 @@
 }
 
 .metricCard small {
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .signalList {
@@ -263,32 +263,32 @@
   padding: var(--vz-space-4);
   border: 1px solid var(--vz-color-border-subtle);
   border-left-color: var(--signal);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 70%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--vz-color-panel-elevated) 70%, transparent);
 }
 
 .signalItem[data-tone="green"] {
-  --signal: var(--vz-color-accent-green);
+  --signal: var(--vz-retro-green);
 }
 
 .signalItem[data-tone="cyan"] {
-  --signal: var(--vz-color-accent-cyan);
+  --signal: var(--vz-retro-cyan);
 }
 
 .signalItem[data-tone="gold"] {
-  --signal: var(--vz-color-rank-gold);
+  --signal: var(--vz-retro-gold);
 }
 
 .signalItem[data-tone="magenta"] {
-  --signal: var(--vz-color-status-magenta);
+  --signal: var(--vz-retro-pink);
 }
 
 .signalItem[data-tone="red"] {
-  --signal: var(--vz-color-status-danger);
+  --signal: var(--vz-color-danger);
 }
 
 .signalItem[data-tone="violet"] {
-  --signal: var(--vz-color-special, var(--vz-color-accent-cyan));
+  --signal: var(--vz-retro-purple, var(--vz-retro-cyan));
 }
 
 .signalLeading,
@@ -309,9 +309,9 @@
 .signalTitleRow strong {
   min-width: 0;
   overflow-wrap: anywhere;
-  color: var(--vz-color-text-primary);
+  color: var(--vz-color-text-primary-primary);
   font-family: var(--vz-font-interface);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
 }
 
@@ -319,39 +319,39 @@
   flex: 0 0 auto;
   color: var(--signal);
   font-family: var(--vz-font-numeric);
-  font-size: var(--vz-text-xs);
+  font-size: var(--vz-font-size-xs);
 }
 
 .signalCopy p {
   margin: 0;
-  color: var(--vz-color-text-secondary);
-  font-size: var(--vz-text-sm);
+  color: var(--vz-color-text-primary-secondary);
+  font-size: var(--vz-font-size-sm);
 }
 
 .progressMeter {
-  --progress-signal: var(--vz-color-accent-green);
+  --progress-signal: var(--vz-retro-green);
 
   display: grid;
   gap: var(--vz-space-2);
 }
 
 .progressMeter[data-tone="cyan"] {
-  --progress-signal: var(--vz-color-accent-cyan);
+  --progress-signal: var(--vz-retro-cyan);
 }
 
 .progressMeter[data-tone="gold"] {
-  --progress-signal: var(--vz-color-rank-gold);
+  --progress-signal: var(--vz-retro-gold);
 }
 
 .progressMeter[data-tone="magenta"] {
-  --progress-signal: var(--vz-color-status-magenta);
+  --progress-signal: var(--vz-retro-pink);
 }
 
 .progressLabelRow span {
-  color: var(--vz-color-text-secondary);
+  color: var(--vz-color-text-primary-secondary);
   font-family: var(--vz-font-interface);
-  font-size: var(--vz-text-xs);
-  letter-spacing: var(--vz-tracking-ui);
+  font-size: var(--vz-font-size-xs);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-transform: uppercase;
 }
 
@@ -364,7 +364,7 @@
   height: 0.45rem;
   overflow: hidden;
   border: 1px solid var(--vz-color-border-subtle);
-  background: var(--vz-color-bg-deep);
+  background: var(--vz-color-background-deep);
 }
 
 .progressTrack span {
@@ -380,34 +380,34 @@
   justify-content: center;
   padding: var(--vz-space-3) var(--vz-space-4);
   border: 1px solid transparent;
-  color: var(--vz-color-text-on-accent);
+  color: var(--vz-retro-black);
   font-family: var(--vz-font-interface);
   font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-tracking-ui);
+  letter-spacing: var(--vz-letter-spacing-wide);
   text-decoration: none;
   text-transform: uppercase;
-  clip-path: var(--vz-clip-button);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .actionLink[data-variant="primary"] {
-  border-color: var(--vz-color-accent-green);
-  background: var(--vz-color-accent-green);
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
 }
 
 .actionLink[data-variant="secondary"] {
-  border-color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-retro-cyan);
   background: transparent;
-  color: var(--vz-color-accent-cyan);
+  color: var(--vz-retro-cyan);
 }
 
 .actionLink[data-variant="ghost"] {
   border-color: var(--vz-color-border-default);
   background: transparent;
-  color: var(--vz-color-text-primary);
+  color: var(--vz-color-text-primary-primary);
 }
 
 .actionLink:focus-visible {
-  outline: 2px solid var(--vz-color-accent-cyan);
+  outline: 2px solid var(--vz-retro-cyan);
   outline-offset: 3px;
 }
 

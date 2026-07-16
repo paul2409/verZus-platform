@@ -1,8 +1,9 @@
+/* VERZUS STAGE 4 RETRO COMPETITIVE */
 .hero {
   display: grid;
   min-width: 0;
   grid-template-columns: 4.75rem minmax(0, 1fr);
-  gap: 0.85rem;
+  gap: var(--vz-space-3);
   align-items: center;
 }
 
@@ -10,7 +11,7 @@
   width: 4.75rem;
   height: 4.75rem;
   object-fit: contain;
-  filter: drop-shadow(0 0 0.85rem rgb(164 79 255 / 28%));
+  filter: drop-shadow(var(--vz-shadow-glow-purple));
 }
 
 .identity {
@@ -22,7 +23,7 @@
   min-width: 0;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: var(--vz-space-2);
 }
 
 .nameRow h3,
@@ -32,49 +33,56 @@
 
 .nameRow h3 {
   overflow: hidden;
-  font-family: var(--font-rajdhani, "Arial Narrow", sans-serif);
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-display);
   font-size: clamp(1.15rem, 6cqi, 1.8rem);
   line-height: 1;
+  letter-spacing: 0.055em;
   text-overflow: ellipsis;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
 .nameRow p {
-  margin-top: 0.3rem;
-  color: var(--vz-intel-muted);
-  font-size: 0.72rem;
+  margin-top: var(--vz-space-1);
+  color: var(--vz-retro-muted);
+  font-size: var(--vz-text-xs);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.65rem;
+  gap: var(--vz-space-2);
+  margin-top: var(--vz-space-3);
 }
 
 .trust {
   display: none;
   min-width: 4.5rem;
-  padding: 0.55rem;
+  padding: var(--vz-space-3);
   text-align: center;
-  border: 1px solid rgb(164 79 255 / 48%);
+  background: color-mix(in srgb, var(--vz-retro-purple) 6%, var(--vz-retro-surface));
+  border: 1px solid var(--vz-retro-purple);
+  clip-path: var(--vz-retro-cut-sm);
+  box-shadow: var(--vz-shadow-glow-purple);
 }
 
 .trust span,
 .trust strong {
   display: block;
-  font-family: var(--font-rajdhani, "Arial Narrow", sans-serif);
+  font-family: var(--vz-font-display);
   text-transform: uppercase;
 }
 
 .trust span {
-  color: var(--vz-intel-muted);
-  font-size: 0.62rem;
+  color: var(--vz-retro-muted);
+  font-size: var(--vz-text-xs);
 }
 
 .trust strong {
-  color: var(--vz-intel-crew);
+  color: var(--vz-retro-green);
   font-size: 1.35rem;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 @container intel-card (min-width: 32rem) {
@@ -102,43 +110,3 @@
     height: 7rem;
   }
 }
-
-/* VERZUS RETRO_CREW_INTEL START */
-.root,
-.card {
-  border-color: var(--vz-retro-line);
-  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
-  clip-path: var(--vz-retro-cut-md);
-}
-/* VERZUS RETRO_CREW_INTEL END */
-
-/* VERZUS REFERENCE_LOCK_FEATURE_CARD START */
-.card,
-.root,
-.frame,
-.container,
-.article {
-  border-color: var(--vz-ref-line);
-  background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
-  border-radius: 0;
-  clip-path: var(--vz-ref-cut-md);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 3%),
-    0 1rem 2.25rem rgb(0 0 0 / 28%);
-}
-
-.card:hover,
-.root:hover,
-.article:hover {
-  border-color: rgb(0 229 255 / 46%);
-  transform: translateY(-2px);
-}
-
-.title,
-.heading,
-.eyebrow {
-  font-family: var(--vz-font-display);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-/* VERZUS REFERENCE_LOCK_FEATURE_CARD END */

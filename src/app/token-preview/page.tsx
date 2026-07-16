@@ -1,16 +1,16 @@
 import styles from "./page.module.css";
 
 const coreTokens = [
-  ["Void canvas", "--vz-color-bg-deep", "#080A0C", "backgroundDeep"],
-  ["Surface base", "--vz-color-surface-base", "#111519", "surfaceBase"],
-  ["Surface elevated", "--vz-color-surface-elevated", "#1A2026", "surfaceElevated"],
-  ["Primary green", "--vz-color-accent-green", "#00FF87", "green"],
-  ["Secondary cyan", "--vz-color-accent-cyan", "#00E5FF", "cyan"],
-  ["Live and danger", "--vz-color-status-danger", "#FF3830", "red"],
-  ["War and rivalry", "--vz-color-status-magenta", "#FF2D87", "magenta"],
-  ["Rank and reward", "--vz-color-rank-gold", "#FFC400", "gold"],
-  ["Primary text", "--vz-color-text-primary", "#F1F0FF", "textPrimary"],
-  ["Secondary text", "--vz-color-text-secondary", "#8A87B8", "textSecondary"],
+  ["Void canvas", "--vz-color-background-deep", "backgroundDeep"],
+  ["Surface base", "--vz-color-surface-base", "surfaceBase"],
+  ["Surface elevated", "--vz-color-surface-elevated", "surfaceElevated"],
+  ["Primary green", "--vz-retro-green", "green"],
+  ["Secondary cyan", "--vz-retro-cyan", "cyan"],
+  ["Live and danger", "--vz-color-danger", "red"],
+  ["War and rivalry", "--vz-retro-pink", "magenta"],
+  ["Rank and reward", "--vz-retro-gold", "gold"],
+  ["Primary text", "--vz-color-text-primary", "textPrimary"],
+  ["Secondary text", "--vz-color-text-secondary", "textSecondary"],
 ] as const;
 
 export default function TokenPreviewPage() {
@@ -18,7 +18,7 @@ export default function TokenPreviewPage() {
     <main className={styles.page}>
       <section className={styles.shell}>
         <header className={styles.header}>
-          <p className={styles.eyebrow}>11.1 // CANONICAL TOKEN SYSTEM</p>
+          <p className={styles.eyebrow}>11.1 // RETRO TOKEN SYSTEM</p>
           <h1 className={styles.title}>VERZUS VISUAL FOUNDATION</h1>
           <p className={styles.description}>
             Neon colours are operational signals. Green owns positive action, cyan owns information
@@ -29,13 +29,12 @@ export default function TokenPreviewPage() {
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Production colour contract</h2>
           <div className={styles.swatchGrid}>
-            {coreTokens.map(([name, token, value, className]) => (
+            {coreTokens.map(([name, token, className]) => (
               <article className={styles.swatchCard} key={token}>
                 <div aria-hidden="true" className={`${styles.swatch} ${styles[className]}`} />
                 <div>
                   <h3 className={styles.swatchName}>{name}</h3>
                   <p className={styles.tokenName}>{token}</p>
-                  <p className={styles.tokenValue}>{value}</p>
                 </div>
               </article>
             ))}

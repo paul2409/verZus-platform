@@ -72,7 +72,7 @@
 /* VERZUS RETRO_FORM_FIELD START */
 .label,
 .legend {
-  color: #b5b2c6;
+  color: var(--vz-retro-muted);
   font-family: var(--vz-font-display);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -132,3 +132,26 @@
   color: var(--vz-color-status-danger);
 }
 /* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 2 RETRO SHARED UI:BEGIN */
+.label,
+.legend {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.description,
+.hint,
+.optional {
+  color: var(--vz-retro-cyan);
+}
+
+.error,
+.required,
+.invalid {
+  color: var(--vz-retro-red);
+}
+/* VERZUS STAGE 2 RETRO SHARED UI:END */
