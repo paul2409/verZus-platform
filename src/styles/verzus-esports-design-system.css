@@ -1,0 +1,262 @@
+/*
+ * VERZUS PREMIUM ESPORTS DESIGN SYSTEM
+ *
+ * Colour is semantic, not decorative:
+ * Cyan = live, active, primary information and Play actions
+ * Pink = rivalry, alerts and opponent pressure
+ * Gold = rewards, timers and VS Credits
+ * Green = confirmed, verified and wins
+ * Violet = structure, borders and inactive controls
+ */
+
+:root,
+html[data-theme="retro-competitive"] {
+  color-scheme: dark;
+
+  --vz-esports-void: #0a0a14;
+  --vz-esports-panel: #12101f;
+  --vz-esports-panel-raised: #18152a;
+  --vz-esports-violet: #7f5af0;
+  --vz-esports-cyan: #00e5ff;
+  --vz-esports-pink: #ff3ea5;
+  --vz-esports-gold: #ffc400;
+  --vz-esports-green: #39ff14;
+  --vz-esports-text: #f1f0ff;
+  --vz-esports-muted: #8a87b8;
+  --vz-esports-line: rgb(127 90 240 / 56%);
+  --vz-esports-line-soft: rgb(127 90 240 / 24%);
+
+  --vz-font-display: "Rajdhani", "Arial Narrow", sans-serif;
+  --vz-font-body: "Inter Variable", "Inter", system-ui, sans-serif;
+  --vz-font-numeric: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  --vz-retro-black: var(--vz-esports-void);
+  --vz-retro-black-soft: #0d0c18;
+  --vz-retro-surface: var(--vz-esports-panel);
+  --vz-retro-surface-2: var(--vz-esports-panel-raised);
+  --vz-retro-surface-3: #1d1932;
+  --vz-retro-line: var(--vz-esports-violet);
+  --vz-retro-line-soft: var(--vz-esports-line-soft);
+  --vz-retro-green: var(--vz-esports-green);
+  --vz-retro-green-bright: #7dff67;
+  --vz-retro-cyan: var(--vz-esports-cyan);
+  --vz-retro-purple: var(--vz-esports-violet);
+  --vz-retro-blue: #4f8dff;
+  --vz-retro-orange: var(--vz-esports-gold);
+  --vz-retro-gold: var(--vz-esports-gold);
+  --vz-retro-red: var(--vz-esports-pink);
+  --vz-retro-pink: var(--vz-esports-pink);
+  --vz-retro-white: var(--vz-esports-text);
+  --vz-retro-muted: var(--vz-esports-muted);
+
+  --vz-color-background-deep: var(--vz-esports-void);
+  --vz-color-background: var(--vz-esports-void);
+  --vz-color-background-elevated: #0d0c18;
+  --vz-color-background-muted: var(--vz-esports-panel);
+  --vz-color-surface-base: var(--vz-esports-panel);
+  --vz-color-surface-elevated: var(--vz-esports-panel-raised);
+  --vz-color-surface-interactive: #1d1932;
+  --vz-color-panel: rgb(18 16 31 / 97%);
+  --vz-color-panel-muted: rgb(18 16 31 / 88%);
+  --vz-color-panel-hover: rgb(29 25 50 / 98%);
+  --vz-color-panel-active: rgb(0 229 255 / 7%);
+
+  --vz-color-text-primary: var(--vz-esports-text);
+  --vz-color-text-secondary: var(--vz-esports-muted);
+  --vz-color-text-tertiary: #706d9d;
+  --vz-color-text-muted: #5f5c83;
+  --vz-color-text-brand: var(--vz-esports-cyan);
+  --vz-color-text-link: var(--vz-esports-cyan);
+
+  --vz-color-action-primary: var(--vz-esports-cyan);
+  --vz-color-action-primary-hover: #62f2ff;
+  --vz-color-action-primary-active: #00b9ce;
+  --vz-color-action-secondary: var(--vz-esports-violet);
+  --vz-color-action-secondary-hover: #a78bff;
+  --vz-color-action-secondary-active: #6341d4;
+
+  --vz-color-success: var(--vz-esports-green);
+  --vz-color-info: var(--vz-esports-cyan);
+  --vz-color-warning: var(--vz-esports-gold);
+  --vz-color-danger: var(--vz-esports-pink);
+  --vz-color-status-live: var(--vz-esports-cyan);
+  --vz-color-status-upcoming: var(--vz-esports-violet);
+  --vz-color-status-completed: var(--vz-esports-green);
+  --vz-color-status-cancelled: var(--vz-esports-pink);
+
+  --vz-color-border-subtle: rgb(127 90 240 / 16%);
+  --vz-color-border-default: rgb(127 90 240 / 32%);
+  --vz-color-border-strong: rgb(127 90 240 / 62%);
+  --vz-color-border-active: var(--vz-esports-cyan);
+  --vz-color-border-information: var(--vz-esports-cyan);
+  --vz-color-border-warning: var(--vz-esports-gold);
+  --vz-color-border-danger: var(--vz-esports-pink);
+  --vz-color-focus-ring: var(--vz-esports-cyan);
+  --vz-color-focus-ring-secondary: var(--vz-esports-violet);
+
+  --vz-gradient-brand: linear-gradient(90deg, var(--vz-esports-cyan), var(--vz-esports-violet));
+  --vz-gradient-brand-horizontal: linear-gradient(
+    90deg,
+    var(--vz-esports-cyan),
+    var(--vz-esports-violet)
+  );
+  --vz-gradient-primary: linear-gradient(180deg, #62f2ff, var(--vz-esports-cyan));
+
+  --vz-radius-xs: 2px;
+  --vz-radius-sm: 3px;
+  --vz-radius-md: 4px;
+  --vz-radius-lg: 4px;
+  --vz-radius-xl: 4px;
+
+  --vz-shadow-focus: 0 0 0 2px rgb(0 229 255 / 24%);
+  --vz-shadow-glow-green: 0 0 14px rgb(57 255 20 / 16%);
+  --vz-shadow-glow-cyan: 0 0 14px rgb(0 229 255 / 16%);
+  --vz-shadow-glow-purple: 0 0 14px rgb(127 90 240 / 18%);
+  --vz-shadow-glow-gold: 0 0 14px rgb(255 196 0 / 16%);
+
+  --vz-shell-background:
+    linear-gradient(rgb(10 10 20 / 96%), rgb(10 10 20 / 99%)),
+    radial-gradient(circle at 16% 8%, rgb(0 229 255 / 6%), transparent 25rem),
+    radial-gradient(circle at 84% 14%, rgb(127 90 240 / 8%), transparent 28rem),
+    var(--vz-esports-void);
+  --vz-shell-border: var(--vz-esports-line-soft);
+  --vz-shell-text: var(--vz-esports-text);
+  --vz-shell-muted: var(--vz-esports-muted);
+  --vz-shell-active: var(--vz-esports-cyan);
+  --vz-shell-partial: var(--vz-esports-gold);
+  --vz-shell-danger: var(--vz-esports-pink);
+
+  --vz-bottom-nav-surface: linear-gradient(180deg, rgb(18 16 31 / 98%), rgb(10 10 20 / 100%));
+  --vz-bottom-nav-surface-elevated: linear-gradient(
+    180deg,
+    rgb(24 21 42 / 99%),
+    rgb(10 10 20 / 100%)
+  );
+  --vz-bottom-nav-border: rgb(127 90 240 / 38%);
+  --vz-bottom-nav-border-strong: rgb(0 229 255 / 70%);
+  --vz-bottom-nav-shadow: none;
+  --vz-bottom-nav-shadow-floating: none;
+  --vz-bottom-nav-item-text: var(--vz-esports-muted);
+  --vz-bottom-nav-item-hover: var(--vz-esports-text);
+  --vz-bottom-nav-item-active: var(--vz-esports-cyan);
+  --vz-bottom-nav-item-partial: var(--vz-esports-gold);
+  --vz-bottom-nav-item-background-active: rgb(0 229 255 / 8%);
+  --vz-bottom-nav-item-background-hover: rgb(127 90 240 / 8%);
+  --vz-bottom-nav-item-background-partial: rgb(255 196 0 / 7%);
+  --vz-bottom-nav-prominent-background: linear-gradient(180deg, #62f2ff, var(--vz-esports-cyan));
+  --vz-bottom-nav-prominent-foreground: var(--vz-esports-void);
+  --vz-bottom-nav-prominent-ring: 0 0 0 2px rgb(0 229 255 / 22%);
+}
+
+html[data-theme="retro-competitive"] {
+  min-width: 320px;
+  background: var(--vz-esports-void);
+}
+
+html[data-theme="retro-competitive"] body {
+  min-height: 100vh;
+  color: var(--vz-esports-text);
+  background:
+    linear-gradient(rgb(10 10 20 / 95%), rgb(10 10 20 / 98%)),
+    radial-gradient(circle at 15% 10%, rgb(0 229 255 / 6%), transparent 26rem),
+    radial-gradient(circle at 82% 18%, rgb(127 90 240 / 8%), transparent 30rem),
+    var(--vz-esports-void);
+  background-attachment: fixed;
+  font-family: var(--vz-font-body);
+}
+
+html[data-theme="retro-competitive"] body::before {
+  opacity: 0.14;
+  background-image:
+    linear-gradient(rgb(127 90 240 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 229 255 / 3%) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+html[data-theme="retro-competitive"] body::after {
+  opacity: 0.05;
+}
+
+html[data-theme="retro-competitive"] :is(h1, h2, h3, h4, h5, h6, button, nav a, th) {
+  font-family: var(--vz-font-display);
+}
+
+html[data-theme="retro-competitive"] :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--vz-esports-text);
+  font-weight: 700;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+html[data-theme="retro-competitive"] :is(p, li, dd, input, textarea, select) {
+  font-family: var(--vz-font-body);
+}
+
+html[data-theme="retro-competitive"] :is(td, time, output, [data-numeric]) {
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+html[data-theme="retro-competitive"] :is(p, li, dd) {
+  color: var(--vz-color-text-secondary);
+}
+
+html[data-theme="retro-competitive"] ::selection {
+  color: var(--vz-esports-void);
+  background: var(--vz-esports-cyan);
+}
+
+html[data-theme="retro-competitive"] :focus-visible {
+  outline-color: var(--vz-esports-cyan);
+}
+
+html[data-theme="retro-competitive"] a[data-navigation-current="true"] {
+  color: var(--vz-esports-cyan) !important;
+  border-color: rgb(0 229 255 / 44%) !important;
+  background: rgb(0 229 255 / 7%) !important;
+}
+
+html[data-theme="retro-competitive"] [data-bottom-navigation-items="5"] li:nth-child(1) {
+  --vz-nav-signal: var(--vz-esports-cyan);
+}
+
+html[data-theme="retro-competitive"] [data-bottom-navigation-items="5"] li:nth-child(2) {
+  --vz-nav-signal: var(--vz-esports-pink);
+}
+
+html[data-theme="retro-competitive"] [data-bottom-navigation-items="5"] li:nth-child(3) {
+  --vz-nav-signal: var(--vz-esports-gold);
+}
+
+html[data-theme="retro-competitive"] [data-bottom-navigation-items="5"] li:nth-child(4) {
+  --vz-nav-signal: var(--vz-esports-green);
+}
+
+html[data-theme="retro-competitive"] [data-bottom-navigation-items="5"] li:nth-child(5) {
+  --vz-nav-signal: var(--vz-esports-violet);
+}
+
+html[data-theme="retro-competitive"]
+  [data-bottom-navigation-items="5"]
+  li[data-navigation-current="true"] {
+  color: var(--vz-nav-signal) !important;
+}
+
+html[data-theme="retro-competitive"]
+  [data-bottom-navigation-items="5"]
+  li[data-navigation-current="true"]
+  a {
+  border-top-color: var(--vz-nav-signal) !important;
+  background: transparent !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="retro-competitive"] *,
+  html[data-theme="retro-competitive"] *::before,
+  html[data-theme="retro-competitive"] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

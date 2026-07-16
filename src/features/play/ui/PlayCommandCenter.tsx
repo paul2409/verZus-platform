@@ -9,6 +9,7 @@ import type { PlayScenario } from "../model";
 import { recordPlayTelemetry } from "../telemetry/play-telemetry";
 import { usePlayCommandCenterTelemetry } from "../telemetry/use-play-telemetry";
 import { CrewPulseWidget } from "./CrewPulseWidget";
+import { GameModeGrid } from "./GameModeGrid";
 import { CurrentPositionWidget } from "./CurrentPositionWidget";
 import { OpportunityRail } from "./OpportunityRail";
 import { PlayHero } from "./PlayHero";
@@ -19,6 +20,7 @@ import { RecentActivityWidget } from "./RecentActivityWidget";
 import { ScenarioToolbar } from "./ScenarioToolbar";
 import { usePlayCommandCenter } from "./usePlayCommandCenter";
 import styles from "./play-command-center.module.css";
+import premiumStyles from "./play-premium.module.css";
 
 export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
   const controller = usePlayCommandCenter(scenario);
@@ -59,6 +61,20 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
       data-play-variant={viewModel.variant}
     >
       <ScenarioToolbar active={viewModel.variant} />
+
+      <header className={premiumStyles.playHeader}>
+        <div className={premiumStyles.playHeaderCopy}>
+          <span>LIVE COMPETITIVE DASHBOARD</span>
+          <h1>PLAY</h1>
+        </div>
+        <div className={premiumStyles.playHeaderStatus} data-online={viewModel.online}>
+          <i aria-hidden="true" />
+          <div>
+            <strong>{viewModel.online ? "NETWORK LIVE" : "OFFLINE MODE"}</strong>
+            <small>Choose a game, protect check-in, improve your weekly rank.</small>
+          </div>
+        </div>
+      </header>
 
       <WidgetBoundary
         name="play-player-status"
@@ -103,6 +119,8 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           </span>
         </div>
       ) : null}
+
+      <GameModeGrid />
 
       <main className={styles.lobbyGrid}>
         <div className={styles.heroArea}>

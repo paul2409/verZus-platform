@@ -1688,3 +1688,263 @@
   filter: brightness(1.06);
 }
 /* VERZUS REFERENCE_LOCK_PLAY END */
+
+/* VERZUS PREMIUM_ESPORTS_PLAY START */
+.playRoot {
+  --play-green: var(--vz-esports-cyan);
+  --play-green-bright: #62f2ff;
+  --play-green-deep: #073843;
+  --play-cyan: var(--vz-esports-cyan);
+  --play-blue: var(--vz-esports-violet);
+  --play-orange: var(--vz-esports-gold);
+  --play-amber: var(--vz-esports-gold);
+  --play-brown: #765b13;
+  --play-red: var(--vz-esports-pink);
+  --play-purple: var(--vz-esports-violet);
+  --play-panel: rgb(18 16 31 / 97%);
+  --play-panel-raised: rgb(24 21 42 / 98%);
+  --play-border: rgb(127 90 240 / 56%);
+  --play-border-muted: rgb(127 90 240 / 24%);
+
+  color: var(--vz-esports-text);
+  background:
+    radial-gradient(circle at 18% 8%, rgb(0 229 255 / 6%), transparent 28rem),
+    radial-gradient(circle at 82% 16%, rgb(127 90 240 / 8%), transparent 30rem),
+    var(--vz-esports-void);
+}
+
+.playRoot::before {
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgb(127 90 240 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 229 255 / 3%) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.playRoot::after {
+  opacity: 0.04;
+}
+
+.statusStrip,
+.liveRibbon,
+.globalBanner,
+.widget,
+.playHero,
+.matchCard,
+.checkInControl,
+.quickActionGrid a,
+.opportunityCard {
+  border-color: var(--play-border-muted);
+  border-radius: 0;
+  background-color: var(--vz-esports-panel);
+  box-shadow: none;
+}
+
+.statusStrip,
+.widget,
+.playHero,
+.matchCard,
+.checkInControl,
+.quickActionGrid a,
+.opportunityCard {
+  clip-path: polygon(
+    10px 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%,
+    0 10px
+  );
+}
+
+.statusStrip::before,
+.widget::before,
+.playHero::before {
+  background: var(--vz-esports-cyan);
+  box-shadow: none;
+}
+
+.liveRibbon {
+  color: var(--vz-esports-cyan);
+  border-color: rgb(0 229 255 / 42%);
+  background: rgb(18 16 31 / 92%);
+}
+
+.statusDot[data-online="true"] {
+  background: var(--vz-esports-cyan);
+  box-shadow: none;
+}
+
+.globalBanner {
+  color: var(--vz-esports-gold);
+  border-left-color: var(--vz-esports-gold);
+}
+
+.degradedBanner {
+  color: var(--vz-esports-pink);
+  border-left-color: var(--vz-esports-pink);
+}
+
+.widgetHeader > div > span,
+.playerIdentity > div > span,
+.matchTopline span,
+.positionGrid span,
+.opportunityBody > span {
+  color: var(--vz-esports-muted);
+}
+
+.widgetHeader b,
+.matchTopline b,
+.stalePill {
+  color: var(--vz-esports-cyan);
+  border-color: currentColor;
+  background: rgb(0 229 255 / 6%);
+}
+
+.matchCard {
+  border-left: 3px solid var(--vz-esports-pink);
+}
+
+.matchTopline b,
+.versus {
+  color: var(--vz-esports-pink);
+}
+
+.playerFacts strong,
+.positionGrid strong,
+.matchMeta,
+.competitor small,
+.positionFooter span,
+.opportunityFooter span {
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.primaryLink,
+.checkInActionLink,
+.checkInControl > button,
+.heroActions a:first-child {
+  color: var(--vz-esports-void);
+  border-color: var(--vz-esports-cyan);
+  background: var(--vz-esports-cyan);
+  box-shadow: none;
+}
+
+.primaryLink:hover,
+.checkInActionLink:hover,
+.checkInControl > button:hover,
+.heroActions a:first-child:hover {
+  color: var(--vz-esports-void);
+  border-color: #62f2ff;
+  background: #62f2ff;
+  transform: translateY(-1px);
+}
+
+.secondaryLink,
+.heroActions a:nth-child(2) {
+  color: var(--vz-esports-violet);
+  border-color: var(--vz-esports-violet);
+  background: transparent;
+  box-shadow: none;
+}
+
+.secondaryLink:hover,
+.heroActions a:nth-child(2):hover {
+  color: var(--vz-esports-text);
+  background: rgb(127 90 240 / 12%);
+}
+
+.progressTrack span {
+  background: linear-gradient(90deg, var(--vz-esports-cyan), var(--vz-esports-green));
+  box-shadow: none;
+}
+
+.quickActionGrid a {
+  --action-accent: var(--vz-esports-violet);
+}
+
+.quickActionGrid a:nth-child(4n + 1) {
+  --action-accent: var(--vz-esports-cyan);
+  color: var(--vz-esports-cyan);
+  border-color: rgb(0 229 255 / 46%);
+}
+
+.quickActionGrid a:nth-child(4n + 2) {
+  --action-accent: var(--vz-esports-violet);
+  color: var(--vz-esports-violet);
+  border-color: rgb(127 90 240 / 46%);
+}
+
+.quickActionGrid a:nth-child(4n + 3) {
+  --action-accent: var(--vz-esports-gold);
+  color: var(--vz-esports-gold);
+  border-color: rgb(255 196 0 / 46%);
+}
+
+.quickActionGrid a:nth-child(4n + 4) {
+  --action-accent: var(--vz-esports-green);
+  color: var(--vz-esports-green);
+  border-color: rgb(57 255 20 / 42%);
+}
+
+.quickActionGrid a:hover,
+.opportunityCard:hover {
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+
+.opportunityCard[data-tone="green"] {
+  --card-accent: var(--vz-esports-cyan);
+}
+
+.opportunityCard[data-tone="cyan"] {
+  --card-accent: var(--vz-esports-cyan);
+}
+
+.opportunityCard[data-tone="orange"] {
+  --card-accent: var(--vz-esports-gold);
+}
+
+.opportunityCard[data-tone="purple"] {
+  --card-accent: var(--vz-esports-violet);
+}
+
+.opportunityCard[data-featured="true"] {
+  border-color: rgb(255 196 0 / 56%);
+}
+
+.opportunityMeta b {
+  color: var(--vz-esports-gold);
+}
+
+.competitorMark {
+  color: var(--vz-esports-cyan);
+  border-color: var(--vz-esports-cyan);
+  background: rgb(0 229 255 / 8%);
+  box-shadow: none;
+}
+
+.competitorMarkOpponent {
+  color: var(--vz-esports-pink);
+  border-color: var(--vz-esports-pink);
+  background: rgb(255 62 165 / 8%);
+}
+
+@media (max-width: 30rem) {
+  .playRoot {
+    padding-inline: 0.75rem;
+  }
+
+  .widgetHeader h2 {
+    font-size: 1.08rem;
+  }
+
+  .heroCopy,
+  .matchMeta,
+  .opportunityBody small,
+  .positionFooter,
+  .quickActionGrid small {
+    font-size: 0.875rem;
+  }
+}
+/* VERZUS PREMIUM_ESPORTS_PLAY END */

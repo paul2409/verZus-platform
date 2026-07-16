@@ -13,3 +13,7 @@ export { RecentActivityWidget } from "./RecentActivityWidget";
 export { usePlayCommandCenter } from "./usePlayCommandCenter";
 export { PlayDisabledState } from "./PlayDisabledState";
 export { PlayHero } from "./PlayHero";
+
+export { GameModeCard } from "./GameModeCard";
+export { GameModeGrid } from "./GameModeGrid";
+export { StatusChip } from "./StatusChip";

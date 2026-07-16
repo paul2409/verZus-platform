@@ -14,6 +14,7 @@ import "@/styles/globals.css";
 import "@/styles/verzus-reference-lock.css";
 
 import "@/styles/verzus-font-reference.css";
+import "@/styles/verzus-esports-design-system.css";
 export const metadata: Metadata = {
   title: {
     default: "VERZUS",
@@ -35,7 +36,7 @@ type RootLayoutProps = Readonly<{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" data-theme="verzus-reference">
+    <html lang="en" data-theme="retro-competitive">
       <body>
         <AppProviders>{children}</AppProviders>
       </body>
