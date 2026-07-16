@@ -1558,6 +1558,15 @@
   border-radius: 0;
   clip-path: var(--vz-retro-cut-sm);
   box-shadow: var(--vz-shadow-glow-cyan);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.brandMarkSvg {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: block;
 }
 
 .brandWord {

@@ -1,196 +1,103 @@
-import { Badge } from "@/components/primitives/badge";
-import { Button } from "@/components/primitives/button";
 import { Icon } from "@/components/primitives/icon";
 
-import { MatchIdentity, MatchTimelineStep } from "../components";
-import { matchPreviewMock } from "../mocks/match.mock";
-import type { MatchViewModel } from "../model/match.types";
 import styles from "./MatchesScreen.module.css";
 
-const scheduledMatches: readonly MatchViewModel[] = [
-  matchPreviewMock,
+const activeMatches = [
   {
-    ...matchPreviewMock,
-    id: "crew-war-week-14",
-    competitionName: "Crew Verzus War · Week 14",
-    roundLabel: "Mainland Titans vs Lagos Lynx",
-    status: "scheduled",
-    timerLabel: "02:45:20",
-    away: {
-      ...matchPreviewMock.away,
-      id: "player-femiskillz",
-      name: "FEMISKILLZ",
-      handle: "@femiskillz",
-      initials: "FS",
-      tone: "red",
-    },
+    id: "cod-titan",
+    time: "LIVE",
+    live: true,
+    match: "TITANONE vs XENOLYNX",
+    game: "COD",
+    tone: "orange" as const,
+    detail: "BO5 · SQUAD",
+    ranks: "#18 vs #15",
   },
   {
-    ...matchPreviewMock,
-    id: "ranked-ladder-02",
-    competitionName: "EA FC Ranked Ladder",
-    roundLabel: "Promotion Match",
-    status: "both-ready",
-    timerLabel: "00:03:14",
-    away: {
-      ...matchPreviewMock.away,
-      id: "player-prodigy",
-      name: "PRODIGY",
-      handle: "@prodigy",
-      initials: "PR",
-      tone: "cyan",
-    },
+    id: "fc-prodigy",
+    time: "19:15",
+    live: false,
+    match: "PRODIGY vs BLAQBIRD",
+    game: "EA FC",
+    tone: "green" as const,
+    detail: "BO3 · 1V1",
+    ranks: "#07 vs #11",
   },
-];
-
-const recentResults = [
-  { game: "EA FC", opponent: "KAIRO", score: "3 - 2", result: "WIN", tone: "positive" },
-  { game: "Clash", opponent: "R3DSTORM", score: "1 - 0", result: "WIN", tone: "positive" },
-  { game: "League", opponent: "ADEACE", score: "18 - 9", result: "WIN", tone: "positive" },
-  { game: "COD", opponent: "SHADOW OPS", score: "1 - 3", result: "LOSS", tone: "negative" },
+  {
+    id: "clash-mainland",
+    time: "20:00",
+    live: false,
+    match: "MAINLAND vs LAGOS LYNX",
+    game: "CLASH",
+    tone: "blue" as const,
+    detail: "BO5 · CREW",
+    ranks: "#03 vs #05",
+  },
+  {
+    id: "league-kairo",
+    time: "21:30",
+    live: false,
+    match: "KAIRO vs R3DSTORM",
+    game: "LEAGUE",
+    tone: "purple" as const,
+    detail: "BO3 · DUO",
+    ranks: "#12 vs #09",
+  },
 ] as const;
 
 export function MatchesScreen() {
   return (
     <main className={styles.page} data-stage-4-screen="matches">
       <header className={styles.header}>
-        <div>
-          <p className={styles.eyebrow}>05.0 // MATCH CONTROL</p>
-          <h1>Matches</h1>
-          <p>
-            Check in, enter verified lobbies and submit results without losing access to the rest of
-            the platform.
-          </p>
-        </div>
-        <Badge tone="live" variant="outline">
-          2 actions pending
-        </Badge>
+        <p className={styles.eyebrow}>05.0 // WATCH LANE</p>
+        <h1>ACTIVE MATCHES</h1>
       </header>
 
-      <nav aria-label="Match views" className={styles.tabs}>
-        <button aria-current="page" className={styles.tab} data-active="true" type="button">
-          Upcoming
-        </button>
-        <button className={styles.tab} type="button">
-          Live
-        </button>
-        <button className={styles.tab} type="button">
-          Results
-        </button>
-        <button className={styles.tab} type="button">
-          Disputes
-        </button>
-      </nav>
-
-      <section aria-labelledby="next-match-title" className={styles.featuredSection}>
-        <div className={styles.sectionHeading}>
-          <div>
-            <p className={styles.eyebrow}>05.1 // NEXT ACTION</p>
-            <h2 id="next-match-title">Next scheduled match</h2>
-          </div>
-          <Badge tone="warning" variant="outline">
-            Check-in closes soon
-          </Badge>
+      <section aria-labelledby="active-matches-title" className={styles.table} data-vz-surface="panel">
+        <h2 className={styles.srOnly} id="active-matches-title">
+          Active matches
+        </h2>
+        <div aria-hidden="true" className={styles.tableHeader}>
+          <span>TIME</span>
+          <span>MATCH</span>
+          <span>#</span>
         </div>
-
-        <div className={styles.featuredGrid}>
-          <MatchIdentity
-            actions={
-              <div className={styles.actionRow}>
-                <Button leadingIcon="check" variant="primary">
-                  Check in now
-                </Button>
-                <Button leadingIcon="eye" variant="secondary">
-                  View match
-                </Button>
+        <ul className={styles.rows}>
+          {activeMatches.map((row) => (
+            <li
+              className={styles.row}
+              data-tone={row.tone}
+              data-vz-surface="row"
+              key={row.id}
+            >
+              <span className={styles.accent} data-tone={row.tone} />
+              <div className={styles.timeCell} data-live={row.live ? "true" : undefined}>
+                {row.time}
               </div>
-            }
-            match={scheduledMatches[0]!}
-          />
-
-          <aside aria-label="Match readiness timeline" className={styles.timelinePanel}>
-            <header>
-              <p className={styles.eyebrow}>Readiness</p>
-              <h3>Match protocol</h3>
-            </header>
-            <ol className={styles.timeline}>
-              <MatchTimelineStep
-                detail="Identity and platform eligibility confirmed"
-                label="Verified"
-                state="complete"
-              />
-              <MatchTimelineStep
-                detail="Check-in window is currently open"
-                label="Check in"
-                state="current"
-              />
-              <MatchTimelineStep
-                detail="Lobby code unlocks when both players are ready"
-                label="Open lobby"
-                state="future"
-              />
-              <MatchTimelineStep
-                detail="Submit result evidence after the match"
-                label="Report result"
-                state="future"
-              />
-            </ol>
-          </aside>
-        </div>
-      </section>
-
-      <section aria-labelledby="schedule-title" className={styles.section}>
-        <div className={styles.sectionHeading}>
-          <div>
-            <p className={styles.eyebrow}>05.2 // SCHEDULE</p>
-            <h2 id="schedule-title">Upcoming queue</h2>
-          </div>
-          <Button size="sm" variant="secondary">
-            Calendar view
-          </Button>
-        </div>
-
-        <div className={styles.matchGrid}>
-          {scheduledMatches.slice(1).map((match) => (
-            <MatchIdentity
-              actions={
-                <Button fullWidth leadingIcon="chevron-right" variant="secondary">
-                  Open match room
-                </Button>
-              }
-              key={match.id}
-              match={match}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section aria-labelledby="recent-title" className={styles.section}>
-        <div className={styles.sectionHeading}>
-          <div>
-            <p className={styles.eyebrow}>05.3 // VERIFIED RESULTS</p>
-            <h2 id="recent-title">Recent matches</h2>
-          </div>
-        </div>
-
-        <ul className={styles.results}>
-          {recentResults.map((result) => (
-            <li key={`${result.game}-${result.opponent}`}>
-              <span className={styles.gameIcon}>
-                <Icon decorative name="gamepad" size="sm" />
-              </span>
-              <div>
-                <strong>{result.game}</strong>
-                <span>vs {result.opponent}</span>
+              <div className={styles.matchCell}>
+                <strong>{row.match}</strong>
+                <span>
+                  <i data-tone={row.tone} />
+                  {row.game}
+                  <b>·</b>
+                  {row.detail}
+                </span>
               </div>
-              <strong className={styles.score}>{result.score}</strong>
-              <Badge tone={result.tone} variant="outline">
-                {result.result}
-              </Badge>
+              <div className={styles.actionCell}>
+                <span>{row.ranks}</span>
+                <button className={styles.watchButton} data-vz-cta="primary" type="button">
+                  WATCH
+                </button>
+              </div>
             </li>
           ))}
         </ul>
       </section>
+
+      <p className={styles.footerNote}>
+        <Icon decorative name="eye" size="xs" />
+        LIVE AND UPCOMING LOBBIES REFRESH AUTOMATICALLY
+      </p>
     </main>
   );
 }

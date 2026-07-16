@@ -12,7 +12,7 @@
 }
 
 .playHeaderCopy > span {
-  color: var(--vz-esports-cyan);
+  color: var(--vz-retro-cyan);
   font-family: var(--vz-font-display);
   font-size: 0.6875rem;
   font-weight: 700;
@@ -33,9 +33,9 @@
   min-width: min(100%, 12rem);
   gap: 0.55rem;
   padding: 0.6rem 0.75rem;
-  color: var(--vz-esports-cyan);
+  color: var(--vz-retro-cyan);
   border: 1px solid currentColor;
-  background: rgb(18 16 31 / 78%);
+  background: rgb(17 21 25 / 78%);
 }
 
 .playHeaderStatus > i {
@@ -46,7 +46,7 @@
 }
 
 .playHeaderStatus[data-online="false"] {
-  color: var(--vz-esports-muted);
+  color: var(--vz-retro-muted);
 }
 
 .playHeaderStatus strong,
@@ -63,7 +63,7 @@
 
 .playHeaderStatus small {
   margin-top: 0.1rem;
-  color: var(--vz-esports-muted);
+  color: var(--vz-retro-muted);
   font-size: 0.72rem;
 }
 

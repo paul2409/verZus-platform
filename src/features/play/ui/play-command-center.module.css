@@ -89,6 +89,108 @@
   font-size: clamp(2.5rem, 9vw, 5.5rem);
 }
 
+.actionStrip {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.actionCard {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem 1.1rem;
+  background: linear-gradient(180deg, var(--play-elevated), var(--play-surface));
+  border: 1px solid var(--play-line);
+  clip-path: var(--vz-retro-cut-md);
+}
+
+.actionCard[data-tone="checkin"] {
+  border-color: color-mix(in srgb, var(--play-cyan) 55%, transparent);
+  box-shadow: inset 3px 0 0 var(--play-cyan);
+}
+
+.actionCard[data-tone="climb"] {
+  border-color: color-mix(in srgb, var(--play-green) 55%, transparent);
+  box-shadow: inset 3px 0 0 var(--play-green);
+}
+
+.actionCard header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.actionCard header > span {
+  color: var(--play-muted);
+  font-family: var(--vz-font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.actionCard > strong {
+  color: var(--play-text);
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.15rem, 4vw, 1.55rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.actionCard > p {
+  margin: 0;
+  color: var(--play-muted);
+  font-size: 0.82rem;
+}
+
+.actionCard > a,
+.actionCard > button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  padding: 0.65rem 1rem;
+  color: var(--vz-retro-black);
+  cursor: pointer;
+  border: 0;
+  font-family: var(--vz-font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.actionCard[data-tone="checkin"] > a,
+.actionCard[data-tone="checkin"] > button {
+  background: var(--play-cyan);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+.actionCard[data-tone="climb"] > a {
+  background: var(--play-green);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.actionCard > a:hover,
+.actionCard > button:hover:not(:disabled) {
+  box-shadow: var(--vz-shadow-glow-green);
+  filter: brightness(1.06);
+}
+
+.actionCard > button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+@media (min-width: 40rem) {
+  .actionStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .liveStatus {
   display: inline-flex;
   min-height: 2.5rem;

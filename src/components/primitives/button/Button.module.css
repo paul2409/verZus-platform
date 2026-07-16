@@ -534,7 +534,8 @@
   color: var(--vz-retro-black);
   border-color: var(--vz-retro-green-bright);
   background: var(--vz-retro-green-bright);
-  box-shadow: var(--vz-shadow-glow-green);
+  box-shadow: 0 0 18px rgb(0 255 135 / 35%);
+  filter: brightness(1.05);
 }
 
 .secondary,

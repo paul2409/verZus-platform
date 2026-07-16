@@ -1,11 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { IntelCardProvider } from "@/components/primitives/intel-card";
+
 import { LeaderboardScreen } from "./LeaderboardScreen";
 
 describe("LeaderboardScreen", () => {
   it("renders game lanes, rankings and the current-player position", () => {
-    render(<LeaderboardScreen />);
+    render(
+      <IntelCardProvider>
+        <LeaderboardScreen />
+      </IntelCardProvider>,
+    );
 
     expect(screen.getByRole("heading", { name: "Rankings" })).toBeVisible();
     expect(screen.getByRole("button", { name: /EA FC/i })).toHaveAttribute("aria-current", "page");

@@ -1,0 +1,5 @@
+.host {
+  display: grid;
+  min-width: 0;
+  padding: 0.25rem;
+}

@@ -1,0 +1,28 @@
+.trigger {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  text-transform: inherit;
+  transition:
+    color 160ms ease,
+    text-shadow 160ms ease;
+}
+
+.trigger:hover,
+.trigger:focus-visible {
+  color: var(--vz-retro-cyan);
+  text-shadow: 0 0 12px rgb(0 229 255 / 35%);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+}

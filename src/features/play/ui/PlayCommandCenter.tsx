@@ -12,6 +12,7 @@ import { CrewPulseWidget } from "./CrewPulseWidget";
 import { CurrentPositionWidget } from "./CurrentPositionWidget";
 import { GameModeGrid } from "./GameModeGrid";
 import { OpportunityRail } from "./OpportunityRail";
+import { PlayActionStrip } from "./PlayActionStrip";
 import { PlayHero } from "./PlayHero";
 import { PlayerStatusStrip } from "./PlayerStatusStrip";
 import { PrimaryActionPanel } from "./PrimaryActionPanel";
@@ -71,6 +72,12 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           <span>{viewModel.online ? "LIVE OPERATIONS" : "OFFLINE MODE"}</span>
         </div>
       </header>
+
+      <PlayActionStrip
+        checkInAction={checkInAction}
+        currentCheckIn={viewModel.currentCheckIn}
+        nextMatch={viewModel.nextMatch}
+      />
 
       <WidgetBoundary
         name="play-player-status"

@@ -1,12 +1,14 @@
+"use client";
+
 import Link from "next/link";
 
 import { Avatar } from "@/components/primitives/avatar";
 import { Badge, MovementBadge, RankBadge } from "@/components/primitives/badge";
 import { Icon } from "@/components/primitives/icon";
+import { ClickableIntelEntity } from "@/components/primitives/intel-card";
 
 import { leaderboardEntries } from "../mocks/leaderboard.mock";
 import styles from "./LeaderboardScreen.module.css";
-
 const games = [
   { id: "ea-fc", label: "EA FC", icon: "gamepad" as const, active: true },
   { id: "cod", label: "COD", icon: "target" as const, active: false },
@@ -59,7 +61,15 @@ function RankingRow({ index }: { index: number }) {
           verified={entry.player.verified}
         />
         <div className={styles.playerCopy}>
-          <strong>{entry.player.name}</strong>
+          <strong>
+            <ClickableIntelEntity
+              entityId={entry.player.id}
+              entityType="player"
+              label={entry.player.name}
+            >
+              {entry.player.name}
+            </ClickableIntelEntity>
+          </strong>
           <span>
             TRUST {trust} <b>•</b> {tier}
           </span>

@@ -35,6 +35,10 @@
   text-transform: uppercase;
 }
 
+.positionLabel {
+  color: var(--vz-retro-cyan);
+}
+
 .gameTabs,
 .filters {
   display: grid;
@@ -248,9 +252,10 @@
   gap: 0.65rem;
   align-items: center;
   padding: 1rem;
-  background: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
-  border: 1px solid var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 7%, transparent);
+  border: 1px solid var(--vz-retro-cyan);
   clip-path: var(--vz-retro-cut-sm);
+  box-shadow: var(--vz-shadow-glow-cyan);
 }
 
 .positionStats {
@@ -374,15 +379,36 @@
   background: color-mix(in srgb, var(--vz-retro-cyan) 5%, var(--vz-retro-surface));
 }
 .row[data-current-player="true"] {
-  background: color-mix(in srgb, var(--vz-retro-green) 8%, var(--vz-retro-surface));
+  background: color-mix(in srgb, var(--vz-retro-cyan) 8%, var(--vz-retro-surface));
   box-shadow:
-    inset 0 0 0 1px var(--vz-retro-green),
-    var(--vz-shadow-glow-green);
+    inset 0 0 0 1px var(--vz-retro-cyan),
+    var(--vz-shadow-glow-cyan);
 }
-.gameTab[data-active="true"] {
-  box-shadow: var(--vz-shadow-glow-green);
+
+.row[data-current-player="true"]::before {
+  background: var(--vz-retro-cyan);
 }
+
+.cta {
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-cyan);
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+
 .cta:hover {
-  box-shadow: var(--vz-shadow-glow-green);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 88%, white);
+  box-shadow: 0 0 18px rgb(0 229 255 / 35%);
+}
+
+.gameTab {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.filter {
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.playerCopy b {
+  color: var(--vz-retro-purple);
 }
 /* VERZUS STAGE 4 RETRO COMPETITIVE:END */

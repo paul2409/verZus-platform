@@ -73,7 +73,21 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
   },
 ];
 
+/** Dock order: Rewards | Leaderboards | Play | Crew | Profile */
 export const mobileShellNavigationItems: readonly ShellNavigationItem[] = [
+  {
+    ...shellNavigationItems[5]!,
+    label: "Rewards",
+    shortLabel: "Rewards",
+  },
+  {
+    id: "leaderboards",
+    href: "/compete",
+    label: "Leaderboards",
+    shortLabel: "Ranks",
+    icon: "trophy",
+    activePrefixes: ["/compete", "/leaderboards", "/matches"],
+  },
   {
     ...shellNavigationItems[0]!,
     label: "Play",
@@ -83,17 +97,6 @@ export const mobileShellNavigationItems: readonly ShellNavigationItem[] = [
     ...shellNavigationItems[4]!,
     label: "Crew",
     shortLabel: "Crew",
-  },
-  {
-    ...shellNavigationItems[2]!,
-    label: "Watch",
-    shortLabel: "Watch",
-    icon: "play",
-  },
-  {
-    ...shellNavigationItems[5]!,
-    label: "Rewards",
-    shortLabel: "Rewards",
   },
   {
     ...shellNavigationItems[6]!,

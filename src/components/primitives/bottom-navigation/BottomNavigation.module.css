@@ -662,8 +662,21 @@
 
 .current .action {
   color: var(--vz-retro-green);
-  background: color-mix(in srgb, var(--vz-retro-green) 10%, transparent);
-  box-shadow: inset 0 0 18px color-mix(in srgb, var(--vz-retro-green) 8%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-green) 8%, transparent);
+}
+
+.current .iconWrap,
+.prominent.current .iconWrap,
+.current .action .iconWrap {
+  color: var(--vz-retro-green);
+  border: 1px solid var(--vz-retro-green);
+  background: color-mix(in srgb, var(--vz-retro-green) 12%, transparent);
+  clip-path: var(--vz-retro-cut-sm);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.current .label {
+  color: var(--vz-retro-green);
 }
 
 .current .activeRail {
