@@ -1526,3 +1526,94 @@
   text-transform: uppercase;
 }
 /* VERZUS REFERENCE_LOCK_ONBOARDING END */
+
+/* VERZUS STAGE 5 ONBOARDING:BEGIN */
+
+.page,
+.loadingPage {
+  color: var(--vz-color-text-primary);
+  background:
+    radial-gradient(
+      circle at 88% 8%,
+      color-mix(in srgb, var(--vz-color-accent-cyan) 8%, transparent),
+      transparent 32rem
+    ),
+    radial-gradient(
+      circle at 8% 82%,
+      color-mix(in srgb, var(--vz-color-accent-green) 5%, transparent),
+      transparent 30rem
+    ),
+    var(--vz-color-bg-deep);
+}
+
+.brandMark {
+  background: linear-gradient(135deg, var(--vz-color-accent-cyan), var(--vz-color-accent-green));
+  color: var(--vz-color-text-on-accent);
+}
+
+.brandCopy small,
+.railStep,
+.saveNotice p,
+.desktopHeader > div:first-child span,
+.connectionStatus span,
+.contextPanel p,
+.contextPanel div p {
+  color: var(--vz-color-text-secondary);
+}
+
+.stepRail,
+.desktopHeader,
+.mobileHeader,
+.contextPanel {
+  border-color: var(--vz-color-border-subtle);
+  background: color-mix(in srgb, var(--vz-color-surface-base) 94%, transparent);
+}
+
+.railStep:hover {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-border-default);
+}
+
+.railStepActive {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-accent-green);
+  background: color-mix(in srgb, var(--vz-color-accent-green) 6%, transparent);
+}
+
+.railStepActive .railNumber {
+  color: var(--vz-color-text-on-accent);
+  border-color: var(--vz-color-accent-green);
+  background: var(--vz-color-accent-green);
+}
+
+.railStepComplete .railNumber {
+  color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-color-accent-cyan);
+}
+
+.saveNotice {
+  border-left-color: var(--vz-color-accent-green);
+  background: color-mix(in srgb, var(--vz-color-accent-green) 5%, transparent);
+}
+
+.saveNotice span,
+.desktopHeader > div:first-child span,
+.contextPanel > span,
+.contextPanel div strong {
+  color: var(--vz-color-accent-cyan);
+}
+
+.connectionStatus[data-online="true"] b {
+  color: var(--vz-color-accent-green);
+}
+
+.connectionStatus b {
+  color: var(--vz-color-status-danger);
+}
+
+.contextPanel {
+  border-radius: var(--vz-radius-panel);
+  box-shadow: var(--vz-shadow-panel);
+}
+
+/* VERZUS STAGE 5 ONBOARDING:END */

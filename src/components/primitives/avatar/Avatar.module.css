@@ -422,3 +422,69 @@
   border-color: var(--vz-ref-black);
 }
 /* VERZUS REFERENCE_LOCK_AVATAR END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.avatar {
+  color: var(--vz-color-text-primary);
+}
+
+.frame {
+  padding: 1px;
+  border: 0;
+  background: linear-gradient(135deg, var(--vz-color-accent-cyan), var(--vz-color-status-magenta));
+  box-shadow: none;
+}
+
+.content,
+.visual {
+  background: var(--vz-color-surface-elevated);
+}
+
+.initials {
+  color: var(--vz-color-text-on-accent);
+  background: linear-gradient(
+    135deg,
+    var(--vz-color-accent-cyan),
+    color-mix(in srgb, var(--vz-color-accent-cyan) 44%, var(--vz-color-status-magenta))
+  );
+  font-family: var(--vz-font-interface);
+  font-weight: 700;
+}
+
+.toneGreen .frame {
+  background: linear-gradient(135deg, var(--vz-color-accent-green), var(--vz-color-accent-cyan));
+}
+
+.toneCyan .frame {
+  background: var(--vz-color-accent-cyan);
+}
+
+.toneViolet .frame {
+  background: var(--vz-color-status-magenta);
+}
+
+.toneGold .frame {
+  background: var(--vz-color-rank-gold);
+}
+
+.toneRed .frame {
+  background: var(--vz-color-status-danger);
+}
+
+.presenceOnline {
+  background: var(--vz-color-accent-green);
+}
+
+.presenceAway {
+  background: var(--vz-color-rank-gold);
+}
+
+.presenceBusy {
+  background: var(--vz-color-status-danger);
+}
+
+.verifiedMark {
+  color: var(--vz-color-text-on-accent);
+  background: var(--vz-color-accent-cyan);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

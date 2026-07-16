@@ -350,3 +350,65 @@
   display: none;
 }
 /* VERZUS REFERENCE_LOCK_TABS END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.tabs {
+  color: var(--vz-color-text-primary);
+}
+
+.list {
+  gap: 0;
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-control);
+  background: var(--vz-color-surface-base);
+}
+
+.tab {
+  min-height: 2.75rem;
+  color: var(--vz-color-text-secondary);
+  border: 0;
+  border-right: 1px solid var(--vz-color-border-subtle);
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--vz-font-interface);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tab:last-child {
+  border-right: 0;
+}
+
+.tab:hover:not(:disabled) {
+  color: var(--vz-color-text-primary);
+  background: color-mix(in srgb, var(--vz-color-accent-cyan) 5%, transparent);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: -2px;
+}
+
+.selected {
+  color: var(--vz-color-accent-cyan);
+  background: color-mix(in srgb, var(--vz-color-accent-cyan) 7%, transparent);
+  box-shadow: inset 0 -2px 0 var(--vz-color-accent-cyan);
+}
+
+.tonePrimary .selected {
+  color: var(--vz-color-accent-green);
+  background: color-mix(in srgb, var(--vz-color-accent-green) 8%, transparent);
+  box-shadow: inset 0 -2px 0 var(--vz-color-accent-green);
+}
+
+.toneAccent .selected {
+  color: var(--vz-color-status-magenta);
+  background: color-mix(in srgb, var(--vz-color-status-magenta) 7%, transparent);
+  box-shadow: inset 0 -2px 0 var(--vz-color-status-magenta);
+}
+
+.panel {
+  color: var(--vz-color-text-primary);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

@@ -158,3 +158,47 @@
   box-shadow: var(--vz-shadow-focus);
 }
 /* VERZUS REFERENCE_LOCK_FORM_CONTROL END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.root,
+.control {
+  color: var(--vz-color-text-primary);
+}
+
+.track {
+  border: 1px solid var(--vz-color-border-default);
+  background: var(--vz-color-surface-elevated);
+  box-shadow: none;
+}
+
+.input:checked + .track {
+  border-color: var(--vz-color-accent-green);
+  background: color-mix(in srgb, var(--vz-color-accent-green) 28%, var(--vz-color-surface-base));
+}
+
+.thumb {
+  background: var(--vz-color-text-secondary);
+  box-shadow: none;
+}
+
+.input:checked + .track .thumb {
+  background: var(--vz-color-accent-green);
+}
+
+.input:focus-visible + .track {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+.label {
+  color: var(--vz-color-text-primary);
+}
+
+.description {
+  color: var(--vz-color-text-secondary);
+}
+
+.error {
+  color: var(--vz-color-status-danger);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

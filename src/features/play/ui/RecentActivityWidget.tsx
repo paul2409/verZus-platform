@@ -1,4 +1,4 @@
-// VERZUS M5 STEPS 5.5-5.8
+// VERZUS STAGE 3 RECENT ACTIVITY
 "use client";
 
 import Link from "next/link";
@@ -44,7 +44,7 @@ export function RecentActivityWidget({
         <>
           <div className={styles.activityList}>
             {view.data.map((activity) => (
-              <article key={activity.activityId}>
+              <article data-activity-type={activity.type} key={activity.activityId}>
                 <span aria-hidden="true">›</span>
                 <div>
                   <strong>{activity.title}</strong>
@@ -52,7 +52,7 @@ export function RecentActivityWidget({
                     {activity.detail} · {formatActivityTime(activity.occurredAt)}
                   </small>
                 </div>
-                <b>
+                <b data-numeric>
                   {activity.pointsDelta === null
                     ? "—"
                     : `${activity.pointsDelta > 0 ? "+" : ""}${activity.pointsDelta}`}

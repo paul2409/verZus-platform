@@ -332,3 +332,75 @@
   border-color: rgb(255 194 71 / 54%);
 }
 /* VERZUS REFERENCE_LOCK_ROUTE_BOUNDARY END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.root,
+.content {
+  color: var(--vz-color-text-primary);
+}
+
+.root {
+  border-color: var(--vz-color-border-subtle);
+  background: var(--vz-color-surface-base);
+  box-shadow: none;
+}
+
+.eyebrow,
+.marker {
+  color: var(--vz-color-accent-cyan);
+}
+
+.description,
+.errorId {
+  color: var(--vz-color-text-secondary);
+}
+
+.action {
+  color: var(--vz-color-text-on-accent);
+  border-color: var(--vz-color-accent-green);
+  background: var(--vz-color-accent-green);
+  clip-path: var(--vz-clip-button);
+}
+
+.secondaryAction {
+  color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-color-accent-cyan);
+  background: transparent;
+  clip-path: var(--vz-clip-button);
+}
+
+.skeleton,
+.skeletonLine {
+  background: linear-gradient(
+    90deg,
+    var(--vz-color-surface-base),
+    var(--vz-color-surface-elevated),
+    var(--vz-color-surface-base)
+  );
+}
+/* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 5 ROUTE BOUNDARY:BEGIN */
+
+.root,
+.page,
+.state,
+.panel,
+.card {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel);
+  background: var(--vz-color-surface-base);
+  box-shadow: var(--vz-shadow-panel);
+}
+
+:is(.root, .page, .state, .panel, .card) :is(p, small) {
+  color: var(--vz-color-text-secondary);
+}
+
+:is(.root, .page, .state, .panel, .card) :is(button, a):focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+/* VERZUS STAGE 5 ROUTE BOUNDARY:END */

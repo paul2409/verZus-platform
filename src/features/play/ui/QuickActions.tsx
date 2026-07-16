@@ -1,3 +1,5 @@
+// VERZUS STAGE 3 QUICK ACTIONS
+
 import Link from "next/link";
 
 import { WidgetFrame } from "./WidgetFrame";
@@ -7,30 +9,30 @@ const actions = [
   {
     href: "/compete",
     label: "FIND MATCH",
-    detail: "Quick competitive queue",
+    detail: "Open competitive queue",
     glyph: "▶",
-    tone: "green",
-  },
-  {
-    href: "/compete",
-    label: "CREATE MATCH",
-    detail: "Open a custom lobby",
-    glyph: "+",
-    tone: "cyan",
-  },
-  {
-    href: "/crews",
-    label: "JOIN CREW",
-    detail: "Find compatible players",
-    glyph: "◎",
-    tone: "orange",
+    tone: "primary",
   },
   {
     href: "/leaderboards/weekly",
-    label: "VIEW RANKINGS",
+    label: "VIEW RANK",
     detail: "Track weekly movement",
-    glyph: "▥",
-    tone: "purple",
+    glyph: "#",
+    tone: "info",
+  },
+  {
+    href: "/crews",
+    label: "CREW HQ",
+    detail: "Check War Week status",
+    glyph: "◎",
+    tone: "war",
+  },
+  {
+    href: "/compete",
+    label: "VIEW RULES",
+    detail: "Competition requirements",
+    glyph: "i",
+    tone: "neutral",
   },
 ] as const;
 

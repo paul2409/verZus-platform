@@ -1136,3 +1136,309 @@
   }
 }
 /* VERZUS REFERENCE_LOCK_SHELL END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.shell {
+  color: var(--vz-color-text-primary);
+  background: var(--vz-color-bg-deep);
+}
+
+.shell::before {
+  opacity: 0.14;
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--vz-color-text-primary) 2%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--vz-color-text-primary) 2%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 3rem 3rem;
+}
+
+.topBar {
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: var(--vz-shell-top-height);
+  padding: 0.65rem clamp(0.75rem, 2.5vw, 1.5rem);
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--vz-color-border-subtle);
+  background: color-mix(in srgb, var(--vz-color-bg-deep) 94%, transparent);
+  box-shadow: none;
+  backdrop-filter: blur(1rem);
+}
+
+.topBarStart,
+.topBarActions {
+  min-width: 0;
+}
+
+.topBarActions {
+  justify-content: flex-end;
+  gap: 0.15rem;
+}
+
+.brand {
+  gap: 0.55rem;
+  color: var(--vz-color-text-primary);
+}
+
+.brandGlyph {
+  display: none;
+}
+
+.brandWord {
+  overflow: visible;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    var(--vz-color-accent-cyan),
+    var(--vz-color-text-primary) 48%,
+    var(--vz-color-status-magenta)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.35rem, 4vw, 1.85rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.brandVersion {
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-interface);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.topBarActionLink,
+.mobileMenuButton {
+  display: inline-grid;
+}
+
+.topBarActionLink {
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  color: var(--vz-color-text-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--vz-radius-control);
+  text-decoration: none;
+  transition:
+    color var(--vz-duration-fast) var(--vz-ease-standard),
+    border-color var(--vz-duration-fast) var(--vz-ease-standard),
+    background-color var(--vz-duration-fast) var(--vz-ease-standard);
+}
+
+.topBarActionLink:hover {
+  color: var(--vz-color-accent-cyan);
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 42%, transparent);
+  background: color-mix(in srgb, var(--vz-color-accent-cyan) 7%, transparent);
+}
+
+.tabletNavigation {
+  min-width: 0;
+}
+
+.profileControl {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.profileCopy,
+.profileChevron {
+  display: none;
+}
+
+.notificationButtonWrap {
+  position: relative;
+}
+
+.topBarBadge {
+  top: 0.1rem;
+  right: 0.1rem;
+  min-width: 0.55rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  padding: 0;
+  overflow: hidden;
+  color: transparent;
+  border: 1px solid var(--vz-color-bg-deep);
+  background: var(--vz-color-status-magenta);
+}
+
+.profileControl:focus-visible,
+.brand:focus-visible,
+.navigationLink:focus-visible,
+.topBarActionLink:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+.globalStatus,
+.globalStatusCompact {
+  color: var(--vz-color-text-secondary);
+  border-color: var(--vz-color-border-subtle);
+  background: var(--vz-color-surface-base);
+}
+
+.globalStatus[data-shell-status="operational"] svg,
+.sidebarStatus[data-shell-status="operational"] .statusDot {
+  color: var(--vz-color-accent-green);
+  background: var(--vz-color-accent-green);
+}
+
+.pageContainer {
+  padding-inline: clamp(1rem, 3vw, 2rem);
+}
+
+.pageEyebrow {
+  color: var(--vz-color-accent-cyan);
+  font-family: var(--vz-font-interface);
+  letter-spacing: var(--vz-tracking-label);
+}
+
+.pageHeader h1 {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  letter-spacing: var(--vz-tracking-display);
+}
+
+.pageHeaderCopy > p:not(.pageEyebrow),
+.breadcrumbs {
+  color: var(--vz-color-text-secondary);
+}
+
+.navigationList {
+  gap: 0.3rem;
+}
+
+.navigationLink {
+  min-height: 2.85rem;
+  color: var(--vz-color-text-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--vz-radius-control);
+  font-family: var(--vz-font-interface);
+  font-weight: 600;
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+}
+
+.navigationLink:hover {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-border-subtle);
+  background: color-mix(in srgb, var(--vz-color-text-primary) 3%, transparent);
+}
+
+.navigationLink[aria-current="page"] {
+  color: var(--vz-color-accent-green);
+  border-color: color-mix(in srgb, var(--vz-color-accent-green) 44%, transparent);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--vz-color-accent-green) 12%, transparent),
+    transparent
+  );
+  box-shadow: inset 2px 0 0 var(--vz-color-accent-green);
+}
+
+.navigationPartial {
+  color: var(--vz-color-rank-gold);
+}
+
+.sidebar {
+  border-right: 1px solid var(--vz-color-border-subtle);
+  background: var(--vz-color-surface-base);
+  box-shadow: none;
+}
+
+.sidebarProfile,
+.sidebarMeta,
+.sidebarStatus,
+.sidebarSupplement {
+  border-color: var(--vz-color-border-subtle);
+}
+
+.sidebarProfile strong,
+.sidebarMetric strong,
+.sidebarStatus strong {
+  color: var(--vz-color-text-primary);
+}
+
+.sidebarProfile span,
+.sidebarMetric span,
+.sidebarStatus span {
+  color: var(--vz-color-text-secondary);
+}
+
+.sidebarMetric strong {
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums;
+}
+
+.sidebarStatus {
+  background: color-mix(in srgb, var(--vz-color-surface-elevated) 78%, transparent);
+}
+
+.drawerProfile {
+  padding: 1rem;
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel);
+  background: var(--vz-color-surface-base);
+}
+
+@media (min-width: 48rem) {
+  .mobileMenuButton {
+    display: inline-grid;
+  }
+
+  .tabletNavigation {
+    display: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  .mobileNavigationOnly {
+    display: none;
+  }
+
+  .sidebar {
+    display: grid;
+  }
+}
+
+@media (max-width: 27rem) {
+  .topBar {
+    padding-inline: 0.6rem;
+  }
+
+  .topBarActions {
+    gap: 0;
+  }
+
+  .topBarActionLink,
+  .topBarActions button,
+  .profileControl {
+    width: 2.25rem;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    min-height: 2.25rem;
+  }
+
+  .brandWord {
+    font-size: 1.2rem;
+  }
+
+  .brandVersion {
+    font-size: 0.5rem;
+  }
+}
+/* VERZUS STAGE 2 SHARED UI:END */

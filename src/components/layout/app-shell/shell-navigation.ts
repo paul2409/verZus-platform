@@ -74,9 +74,30 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
 ];
 
 export const mobileShellNavigationItems: readonly ShellNavigationItem[] = [
-  shellNavigationItems[0]!,
-  shellNavigationItems[1]!,
-  shellNavigationItems[4]!,
-  shellNavigationItems[5]!,
-  shellNavigationItems[6]!,
+  {
+    ...shellNavigationItems[0]!,
+    label: "Play",
+    shortLabel: "Play",
+  },
+  {
+    ...shellNavigationItems[4]!,
+    label: "Crew",
+    shortLabel: "Crew",
+  },
+  {
+    ...shellNavigationItems[2]!,
+    label: "Watch",
+    shortLabel: "Watch",
+    icon: "play",
+  },
+  {
+    ...shellNavigationItems[5]!,
+    label: "Rewards",
+    shortLabel: "Rewards",
+  },
+  {
+    ...shellNavigationItems[6]!,
+    label: "Profile",
+    shortLabel: "Profile",
+  },
 ];

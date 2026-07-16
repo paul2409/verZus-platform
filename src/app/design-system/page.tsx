@@ -45,8 +45,8 @@ export default function DesignSystemPage() {
     <main className={styles.page}>
       <header className={styles.hero}>
         <div className={styles.heroCopy}>
-          <p className={styles.kicker}>VERZUS Design System / M2 / Step 17</p>
-          <h1 className={styles.title}>Unified Design-System Gallery</h1>
+          <p className={styles.kicker}>11.0 // PLATFORM VISUAL CONTRACT</p>
+          <h1 className={styles.title}>VERZUS Competitive UI System</h1>
           <p className={styles.description}>
             One visual audit route for the approved foundation, reusable primitives, responsive
             presentations, competitive modules and failure states built in Steps 1-19.

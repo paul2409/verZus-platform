@@ -1,3 +1,5 @@
+// VERZUS STAGE 3 STATUS CHIP
+
 import type { HTMLAttributes } from "react";
 
 import styles from "./status-chip.module.css";

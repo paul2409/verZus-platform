@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { NotificationsScreen } from "@/features/notifications/ui";
 
 const route = getPlatformRouteById("notifications");
 
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function NotificationsPage() {
-  return <PlatformRoutePlaceholder routeId="notifications" />;
+  return <NotificationsScreen />;
 }

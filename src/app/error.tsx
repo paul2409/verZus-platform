@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+import { SystemStateScreen } from "@/components/layout/system-state";
+
 type RootErrorProps = {
   error: Error & { digest?: string };
   reset: () => void;
@@ -13,12 +15,17 @@ export default function RootError({ error, reset }: RootErrorProps) {
   }, [error]);
 
   return (
-    <main>
-      <h1>This section is temporarily unavailable</h1>
-      <p>Other VERZUS areas remain available. Retry this section when ready.</p>
-      <button type="button" onClick={reset}>
-        Retry
-      </button>
-    </main>
+    <SystemStateScreen
+      action={
+        <button onClick={reset} type="button">
+          Retry section
+        </button>
+      }
+      description="This route failed independently. Other VERZUS areas remain available."
+      eyebrow="ROUTE FAILURE"
+      reference={error.digest ?? "ROUTE-UNAVAILABLE"}
+      title="SECTION TEMPORARILY UNAVAILABLE"
+      tone="error"
+    />
   );
 }

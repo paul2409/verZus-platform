@@ -1,14 +1,16 @@
+// VERZUS STAGE 3 GAME MODE CARD
+
 import Link from "next/link";
 
 import { StatusChip, type StatusChipTone } from "./StatusChip";
 import styles from "./game-mode-grid.module.css";
 
-export type GameModeTone = "cyan" | "violet" | "gold" | "pink";
+export type GameModeTone = "green" | "cyan" | "gold" | "magenta";
 
 export type GameModeCardProps = {
   game: string;
   mode: string;
-  players: string;
+  participation: string;
   requirement: string;
   status: string;
   statusTone: StatusChipTone;
@@ -20,7 +22,7 @@ export type GameModeCardProps = {
 export function GameModeCard({
   game,
   mode,
-  players,
+  participation,
   requirement,
   status,
   statusTone,
@@ -44,8 +46,8 @@ export function GameModeCard({
 
       <dl className={styles.cardFacts}>
         <div>
-          <dt>PLAYERS</dt>
-          <dd>{players}</dd>
+          <dt>FORMAT</dt>
+          <dd>{participation}</dd>
         </div>
         <div>
           <dt>ENTRY</dt>

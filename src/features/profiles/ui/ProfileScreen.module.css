@@ -1,0 +1,109 @@
+.identityCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--vz-space-4);
+  align-items: center;
+  padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-8));
+  border: 1px solid var(--vz-color-border-subtle);
+  border-left-color: var(--vz-color-accent-cyan);
+  border-radius: var(--vz-radius-panel);
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--vz-color-accent-cyan) 8%, transparent),
+      transparent 45%
+    ),
+    var(--vz-color-surface-base);
+}
+
+.identityCopy {
+  display: grid;
+  gap: var(--vz-space-2);
+  min-width: 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vz-space-2);
+}
+
+.identityCopy h2,
+.identityCopy p,
+.rankBlock span,
+.rankBlock small {
+  margin: 0;
+}
+
+.identityCopy h2 {
+  font-size: clamp(1.75rem, 5vw, 3.25rem);
+}
+
+.identityCopy p,
+.rankBlock span,
+.rankBlock small {
+  color: var(--vz-color-text-secondary);
+}
+
+.rankBlock {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: var(--vz-space-1);
+  padding: var(--vz-space-4);
+  border: 1px solid color-mix(in srgb, var(--vz-color-rank-gold) 38%, transparent);
+  border-radius: var(--vz-radius-md);
+  background: color-mix(in srgb, var(--vz-color-rank-gold) 5%, transparent);
+}
+
+.rankBlock strong {
+  color: var(--vz-color-rank-gold);
+  font-family: var(--vz-font-numeric);
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 1;
+}
+
+.progressStack {
+  display: grid;
+  gap: var(--vz-space-4);
+  margin-bottom: var(--vz-space-5);
+}
+
+.formRow {
+  display: flex;
+  gap: var(--vz-space-2);
+  margin-bottom: var(--vz-space-5);
+}
+
+.formRow span {
+  display: grid;
+  width: 2.4rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-sm);
+  font-family: var(--vz-font-numeric);
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.formRow span[data-result="win"] {
+  color: var(--vz-color-accent-green);
+  border-color: color-mix(in srgb, var(--vz-color-accent-green) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-color-accent-green) 7%, transparent);
+}
+
+.formRow span[data-result="loss"] {
+  color: var(--vz-color-status-danger);
+  border-color: color-mix(in srgb, var(--vz-color-status-danger) 48%, transparent);
+  background: color-mix(in srgb, var(--vz-color-status-danger) 7%, transparent);
+}
+
+@media (min-width: 48rem) {
+  .identityCard {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .rankBlock {
+    grid-column: auto;
+    min-width: 11rem;
+  }
+}

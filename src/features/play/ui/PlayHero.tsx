@@ -1,12 +1,19 @@
+// VERZUS STAGE 3 HERO
+
 import Link from "next/link";
 
-import type { NextMatch, RecommendedCompetition } from "../model";
+import type { CurrentPosition, NextMatch, PlayerStatus, RecommendedCompetition } from "../model";
 import type { PlayWidgetView } from "../view-model";
+import { StatusChip } from "./StatusChip";
 import styles from "./play-command-center.module.css";
+
+function formatNumber(value: number): string {
+  return new Intl.NumberFormat("en-GB").format(value);
+}
 
 function formatStart(value: string | undefined): string {
   if (!value) {
-    return "SEASON LIVE";
+    return "SCHEDULE PENDING";
   }
 
   return new Intl.DateTimeFormat("en-GB", {
@@ -19,91 +26,78 @@ function formatStart(value: string | undefined): string {
   }).format(new Date(value));
 }
 
-function gameTone(value: string): "football" | "royale" | "arena" | "combat" | "default" {
-  const game = value.toLowerCase();
-
-  if (game.includes("fc") || game.includes("football")) {
-    return "football";
-  }
-
-  if (game.includes("clash") || game.includes("royale")) {
-    return "royale";
-  }
-
-  if (game.includes("league") || game.includes("arena")) {
-    return "arena";
-  }
-
-  if (game.includes("cod") || game.includes("combat")) {
-    return "combat";
-  }
-
-  return "default";
-}
-
 export function PlayHero({
   competitions,
+  currentPosition,
   nextMatch,
   online,
+  playerStatus,
 }: {
   competitions: PlayWidgetView<RecommendedCompetition[]>;
+  currentPosition: PlayWidgetView<CurrentPosition>;
   nextMatch: PlayWidgetView<NextMatch>;
   online: boolean;
+  playerStatus: PlayWidgetView<PlayerStatus>;
 }) {
   const competition =
     competitions.data?.find((item) => item.isFeatured) ?? competitions.data?.[0] ?? null;
   const match = nextMatch.data;
-  const title = competition?.title ?? match?.competitionName ?? "Retro Rivalry";
-  const game = competition?.game ?? match?.game ?? "VERZUS";
-  const start = competition?.startsAt ?? match?.startsAt;
-  const href = competition
-    ? `/compete/${competition.competitionId}`
-    : match
-      ? `/matches/${match.matchId}`
-      : "/compete";
-  const status = !online
-    ? "OFFLINE"
-    : competition?.isFeatured
-      ? "FEATURED EVENT"
-      : match?.status
-        ? match.status.replaceAll("_", " ").toUpperCase()
-        : "SEASON LIVE";
+  const player = playerStatus.data;
+  const position = currentPosition.data;
+  const primaryHref = match ? `/matches/${match.matchId}` : "/compete";
+  const primaryLabel = match ? "OPEN MATCH ROOM" : "QUEUE RANKED";
+  const eventLabel = competition?.title ?? match?.competitionName ?? "WEEKLY CREW VERZUS";
 
   return (
-    <section className={styles.playHero} data-game-tone={gameTone(game)}>
-      <div className={styles.heroAtmosphere} aria-hidden="true">
-        <span className={styles.heroSun} />
-        <span className={styles.heroGrid} />
-        <span className={styles.heroFighterLeft} />
-        <span className={styles.heroFighterRight} />
+    <section className={styles.playHero} aria-labelledby="play-hero-title">
+      <div className={styles.heroGrid} aria-hidden="true" />
+      <div className={styles.heroSignal} aria-hidden="true">
+        <span />
+        <span />
+        <span />
       </div>
 
-      <div className={styles.heroContent}>
-        <div className={styles.heroEyebrow}>
-          <span>SEASON 7</span>
-          <b>{status}</b>
+      <div className={styles.heroCopy}>
+        <div className={styles.heroTopline}>
+          <span>{"06 /" + "/ HOME HUD"}</span>
+          <StatusChip tone={online ? "live" : "locked"}>
+            {online ? (player?.weekLabel ?? "WEEK LIVE") : "OFFLINE"}
+          </StatusChip>
         </div>
 
-        <p className={styles.heroGame}>{game}</p>
-        <h1>{title}</h1>
-        <p className={styles.heroCopy}>
-          Enter the next verified competition, protect your check-in window, and move your weekly
-          rank.
+        <h2 id="play-hero-title">
+          EVERY GAME
+          <span>IS A VERZUS</span>
+        </h2>
+
+        <p>
+          Welcome back, <strong>{player?.handle ?? "PLAYER"}</strong>. Your next verified action,
+          weekly rank, Crew signal, and eligible competitions are ready below.
         </p>
 
-        <div className={styles.heroMeta}>
-          <span>{formatStart(start)}</span>
-          <span>{competition?.format ?? match?.format ?? "Competitive queue"}</span>
-          <span>{competition?.rewardLabel ?? "Verified competition"}</span>
-        </div>
-
         <div className={styles.heroActions}>
-          <Link href={href}>
-            {competition ? "VIEW COMPETITION" : match ? "VIEW MATCH" : "FIND COMPETITION"}
+          <Link data-action="primary" href={primaryHref}>
+            {primaryLabel}
           </Link>
-          <Link href="/leaderboards/weekly">VIEW WEEKLY RANK</Link>
+          <Link data-action="secondary" href="/profile">
+            VIEW PLAYER CARD
+          </Link>
         </div>
       </div>
+
+      <aside className={styles.heroScore} aria-label="Current weekly competitive score">
+        <span>VS POINTS</span>
+        <strong data-numeric>{position ? formatNumber(position.points) : "—"}</strong>
+        <small>
+          {position
+            ? `RANK #${position.rank} · ${position.wins}W-${position.losses}L · ${position.streak}`
+            : "WEEKLY POSITION UNAVAILABLE"}
+        </small>
+        <div>
+          <span>{eventLabel}</span>
+          <b>{formatStart(competition?.startsAt ?? match?.startsAt)}</b>
+        </div>
+      </aside>
     </section>
   );
 }

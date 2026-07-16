@@ -183,3 +183,46 @@
   box-shadow: var(--vz-shadow-focus);
 }
 /* VERZUS REFERENCE_LOCK_FORM_CONTROL END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.root,
+.control {
+  color: var(--vz-color-text-primary);
+}
+
+.control {
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-control);
+  background: var(--vz-color-surface-base);
+  box-shadow: none;
+}
+
+.control:hover:not(.disabled) {
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 38%, transparent);
+}
+
+.control:focus-within {
+  border-color: var(--vz-color-accent-cyan);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--vz-color-accent-cyan) 34%, transparent);
+}
+
+.input {
+  min-width: 0;
+  color: var(--vz-color-text-primary);
+  background: transparent;
+}
+
+.input::placeholder {
+  color: var(--vz-color-text-secondary);
+  opacity: 0.7;
+}
+
+.leadingIcon,
+.endAdornment {
+  color: var(--vz-color-text-secondary);
+}
+
+.invalid {
+  border-color: var(--vz-color-status-danger);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

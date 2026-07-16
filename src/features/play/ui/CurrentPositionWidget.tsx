@@ -1,7 +1,8 @@
-// VERZUS M5 STEPS 5.5-5.8
+// VERZUS STAGE 3 CURRENT POSITION
 "use client";
 
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import type { CurrentPosition } from "../model";
 import type { PlayWidgetView } from "../view-model";
@@ -20,10 +21,13 @@ export function CurrentPositionWidget({
   view: PlayWidgetView<CurrentPosition>;
   onRetry: () => void;
 }) {
+  const progress = view.data ? Math.min(100, (view.data.points / view.data.targetPoints) * 100) : 0;
+  const progressStyle = { "--play-progress": `${progress}%` } as CSSProperties;
+
   return (
     <WidgetFrame
-      eyebrow="02 · CURRENT POSITION"
-      title="Weekly status"
+      eyebrow="02 · WEEKLY POSITION"
+      title="Your competitive status"
       status={view.stale ? "STALE" : "LIVE"}
     >
       {!view.data ? (
@@ -35,31 +39,38 @@ export function CurrentPositionWidget({
         />
       ) : (
         <>
-          <div className={styles.positionGrid}>
+          <div className={styles.positionLead}>
+            <div>
+              <span>YOUR RANK</span>
+              <strong data-rank>#{view.data.rank}</strong>
+              <small>{view.data.movement.toUpperCase()} THIS WEEK</small>
+            </div>
             <div>
               <span>VS POINTS</span>
-              <strong>{formatNumber(view.data.points)}</strong>
-            </div>
-            <div>
-              <span>RANK</span>
-              <strong>#{view.data.rank}</strong>
-            </div>
-            <div>
-              <span>WIN RATE</span>
-              <strong>{view.data.winRate}%</strong>
-            </div>
-            <div>
-              <span>STREAK</span>
-              <strong>{view.data.streak}</strong>
+              <strong data-numeric>{formatNumber(view.data.points)}</strong>
+              <small>{view.data.tier.toUpperCase()}</small>
             </div>
           </div>
 
-          <div className={styles.progressTrack}>
-            <span
-              style={{
-                width: `${Math.min(100, (view.data.points / view.data.targetPoints) * 100)}%`,
-              }}
-            />
+          <dl className={styles.positionGrid}>
+            <div>
+              <dt>RECORD</dt>
+              <dd>
+                {view.data.wins}W–{view.data.losses}L
+              </dd>
+            </div>
+            <div>
+              <dt>WIN RATE</dt>
+              <dd>{view.data.winRate}%</dd>
+            </div>
+            <div>
+              <dt>STREAK</dt>
+              <dd>{view.data.streak}</dd>
+            </div>
+          </dl>
+
+          <div className={styles.progressTrack} style={progressStyle}>
+            <span />
           </div>
 
           <div className={styles.positionFooter}>

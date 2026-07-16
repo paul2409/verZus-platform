@@ -1,0 +1,85 @@
+/*
+ * VERZUS canonical visual-system compatibility layer.
+ *
+ * Imported after globals.css. This file establishes stable global
+ * signals and atmosphere only. Feature composition remains untouched
+ * until its approved stage.
+ */
+
+:root {
+  accent-color: var(--vz-visual-primary);
+}
+
+html {
+  background: var(--vz-visual-canvas);
+}
+
+body {
+  color: var(--vz-visual-text);
+  background-color: var(--vz-visual-canvas);
+}
+
+::selection {
+  color: var(--vz-color-text-primary);
+  background: rgb(0 229 255 / 28%);
+}
+
+:focus-visible {
+  outline-color: var(--vz-visual-secondary);
+}
+
+[data-verzus-surface] {
+  border: var(--vz-border-width-1) solid var(--vz-visual-border);
+  border-radius: var(--vz-visual-radius-card);
+  background: var(--vz-visual-surface);
+  box-shadow: var(--vz-visual-shadow-panel);
+}
+
+[data-verzus-surface="elevated"] {
+  background: var(--vz-visual-surface-elevated);
+}
+
+[data-verzus-action="primary"] {
+  border-color: var(--vz-visual-primary);
+  background: var(--vz-visual-primary);
+  color: var(--vz-color-text-inverse);
+  clip-path: var(--vz-visual-clip-button);
+}
+
+[data-verzus-action="secondary"] {
+  border-color: var(--vz-visual-secondary);
+  background: transparent;
+  color: var(--vz-visual-secondary);
+  clip-path: var(--vz-visual-clip-button);
+}
+
+[data-verzus-status="live"],
+[data-verzus-status="danger"] {
+  color: var(--vz-visual-live);
+}
+
+[data-verzus-status="war"],
+[data-verzus-status="rivalry"] {
+  color: var(--vz-visual-war);
+}
+
+[data-verzus-status="reward"],
+[data-verzus-status="timer"] {
+  color: var(--vz-visual-reward);
+}
+
+[data-verzus-status="success"],
+[data-verzus-status="confirmed"] {
+  color: var(--vz-visual-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -944,3 +944,99 @@
   -webkit-background-clip: text;
 }
 /* VERZUS REFERENCE_LOCK_AUTH_SCREENS END */
+
+/* VERZUS STAGE 5 AUTH:BEGIN */
+
+.shell {
+  --auth-accent: var(--vz-color-accent-green);
+  --auth-accent-soft: color-mix(in srgb, var(--auth-accent) 12%, transparent);
+  --auth-border: color-mix(in srgb, var(--auth-accent) 42%, transparent);
+  --auth-panel: var(--vz-color-surface-base);
+  --auth-muted: var(--vz-color-text-secondary);
+
+  background:
+    linear-gradient(
+      color-mix(in srgb, var(--vz-color-bg-deep) 84%, transparent),
+      var(--vz-color-bg-deep)
+    ),
+    linear-gradient(var(--vz-color-border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--vz-color-border-subtle) 1px, transparent 1px),
+    radial-gradient(circle at 50% 0%, var(--auth-accent-soft), transparent 36rem),
+    var(--vz-color-bg-deep);
+  background-size:
+    auto,
+    4rem 4rem,
+    4rem 4rem,
+    auto,
+    auto;
+  color: var(--vz-color-text-primary);
+}
+
+.shell[data-accent="info"] {
+  --auth-accent: var(--vz-color-accent-cyan);
+}
+
+.shell[data-accent="warning"] {
+  --auth-accent: var(--vz-color-rank-gold);
+}
+
+.shell[data-accent="danger"] {
+  --auth-accent: var(--vz-color-status-danger);
+}
+
+.brandName,
+.title,
+.cardTitle,
+.securityTitle,
+.noticeTitle,
+.stateItemTitle {
+  color: var(--vz-color-text-primary);
+}
+
+.description,
+.cardDescription,
+.helpText,
+.securityCopy,
+.noticeCopy,
+.stateItemCopy {
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-body);
+}
+
+.card,
+.securityPanel,
+.statePanel,
+.loadingPanel {
+  border-color: var(--auth-border);
+  border-radius: var(--vz-radius-panel);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--auth-accent) 4%, transparent),
+      transparent 45%
+    ),
+    var(--vz-color-surface-base);
+  box-shadow: var(--vz-shadow-panel);
+  clip-path: none;
+}
+
+.statusStrip,
+.primaryAction,
+.secondaryButton {
+  clip-path: var(--vz-clip-button);
+}
+
+.primaryAction {
+  border-color: var(--auth-accent);
+  background: var(--auth-accent);
+  color: var(--vz-color-text-on-accent);
+  box-shadow: none;
+}
+
+.secondaryButton {
+  border-color: var(--vz-color-accent-cyan);
+  color: var(--vz-color-accent-cyan);
+  background: transparent;
+}
+
+/* VERZUS STAGE 5 AUTH:END */

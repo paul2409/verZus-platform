@@ -1,4 +1,4 @@
-// VERZUS RETRO GAMING PLAY OVERHAUL
+// VERZUS STAGE 3 PLAY COMMAND CENTER
 
 "use client";
 
@@ -9,8 +9,8 @@ import type { PlayScenario } from "../model";
 import { recordPlayTelemetry } from "../telemetry/play-telemetry";
 import { usePlayCommandCenterTelemetry } from "../telemetry/use-play-telemetry";
 import { CrewPulseWidget } from "./CrewPulseWidget";
-import { GameModeGrid } from "./GameModeGrid";
 import { CurrentPositionWidget } from "./CurrentPositionWidget";
+import { GameModeGrid } from "./GameModeGrid";
 import { OpportunityRail } from "./OpportunityRail";
 import { PlayHero } from "./PlayHero";
 import { PlayerStatusStrip } from "./PlayerStatusStrip";
@@ -20,7 +20,6 @@ import { RecentActivityWidget } from "./RecentActivityWidget";
 import { ScenarioToolbar } from "./ScenarioToolbar";
 import { usePlayCommandCenter } from "./usePlayCommandCenter";
 import styles from "./play-command-center.module.css";
-import premiumStyles from "./play-premium.module.css";
 
 export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
   const controller = usePlayCommandCenter(scenario);
@@ -62,17 +61,14 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
     >
       <ScenarioToolbar active={viewModel.variant} />
 
-      <header className={premiumStyles.playHeader}>
-        <div className={premiumStyles.playHeaderCopy}>
-          <span>LIVE COMPETITIVE DASHBOARD</span>
+      <header className={styles.playPageHeader}>
+        <div>
+          <span>{"06.0 /" + "/ PLAY LANE"}</span>
           <h1>PLAY</h1>
         </div>
-        <div className={premiumStyles.playHeaderStatus} data-online={viewModel.online}>
+        <div className={styles.liveStatus} data-online={viewModel.online}>
           <i aria-hidden="true" />
-          <div>
-            <strong>{viewModel.online ? "NETWORK LIVE" : "OFFLINE MODE"}</strong>
-            <small>Choose a game, protect check-in, improve your weekly rank.</small>
-          </div>
+          <span>{viewModel.online ? "LIVE OPERATIONS" : "OFFLINE MODE"}</span>
         </div>
       </header>
 
@@ -86,9 +82,9 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
         />
       </WidgetBoundary>
 
-      <div className={styles.liveRibbon} data-online={viewModel.online}>
-        <span className={styles.statusDot} data-online={viewModel.online} />
-        <strong>{viewModel.online ? "PLAY NETWORK ONLINE" : "OFFLINE MODE"}</strong>
+      <div className={styles.serviceRibbon} data-online={viewModel.online}>
+        <span className={styles.statusDot} aria-hidden="true" />
+        <strong>{viewModel.online ? "PLAY NETWORK ONLINE" : "NETWORK UNAVAILABLE"}</strong>
         <span>
           {controller.refreshing
             ? "Synchronising live modules"
@@ -104,30 +100,30 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
       </div>
 
       {!viewModel.online ? (
-        <div className={styles.globalBanner}>
+        <div className={styles.globalBanner} role="status">
           <strong>OFFLINE MODE</strong>
           <span>
-            Network actions are disabled. Navigation and cached information remain available.
+            Network actions are disabled. Navigation and saved information remain available.
           </span>
         </div>
       ) : viewModel.partialFailureCount > 0 ? (
-        <div className={`${styles.globalBanner} ${styles.degradedBanner}`}>
+        <div className={styles.globalBanner} data-tone="warning" role="status">
           <strong>PARTIAL SERVICE DEGRADATION</strong>
           <span>
-            Failed modules remain isolated. Match, check-in, navigation, and other healthy widgets
+            Failed widgets remain isolated. Match, check-in, navigation, and healthy modules
             continue working.
           </span>
         </div>
       ) : null}
 
-      <GameModeGrid />
-
-      <main className={styles.lobbyGrid}>
+      <main className={styles.commandGrid}>
         <div className={styles.heroArea}>
           <PlayHero
             competitions={viewModel.recommendedCompetitions}
+            currentPosition={viewModel.currentPosition}
             nextMatch={viewModel.nextMatch}
             online={viewModel.online}
+            playerStatus={viewModel.playerStatus}
           />
         </div>
 
@@ -159,6 +155,10 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           </WidgetBoundary>
         </div>
 
+        <div className={styles.modesArea}>
+          <GameModeGrid />
+        </div>
+
         <div className={styles.competitionArea}>
           <WidgetBoundary
             name="play-opportunities"
@@ -174,18 +174,6 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           </WidgetBoundary>
         </div>
 
-        <div className={styles.crewArea}>
-          <WidgetBoundary
-            name="play-crew-pulse"
-            resetKeys={[viewModel.crewSummary.state, viewModel.crewSummary.requestId]}
-          >
-            <CrewPulseWidget
-              view={viewModel.crewSummary}
-              onRetry={() => retryWidget("crew-summary", retry.crewSummary)}
-            />
-          </WidgetBoundary>
-        </div>
-
         <div className={styles.activityArea}>
           <WidgetBoundary
             name="play-recent-activity"
@@ -194,6 +182,18 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
             <RecentActivityWidget
               view={viewModel.recentActivity}
               onRetry={() => retryWidget("recent-activity", retry.recentActivity)}
+            />
+          </WidgetBoundary>
+        </div>
+
+        <div className={styles.crewArea}>
+          <WidgetBoundary
+            name="play-crew-pulse"
+            resetKeys={[viewModel.crewSummary.state, viewModel.crewSummary.requestId]}
+          >
+            <CrewPulseWidget
+              view={viewModel.crewSummary}
+              onRetry={() => retryWidget("crew-summary", retry.crewSummary)}
             />
           </WidgetBoundary>
         </div>

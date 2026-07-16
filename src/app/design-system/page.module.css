@@ -521,3 +521,55 @@
     box-shadow: none;
   }
 }
+
+/* VERZUS STAGE 5 DESIGN GALLERY:BEGIN */
+
+.page {
+  color: var(--vz-color-text-primary);
+}
+
+.hero {
+  border-color: color-mix(in srgb, var(--vz-color-accent-green) 36%, transparent);
+  border-radius: var(--vz-radius-lg);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--vz-color-accent-green) 7%, transparent),
+      transparent 36%
+    ),
+    var(--vz-color-surface-base);
+  box-shadow: var(--vz-shadow-panel);
+  clip-path: none;
+}
+
+.kicker,
+.sampleEyebrow {
+  color: var(--vz-color-accent-green);
+}
+
+.description,
+.summaryCard span,
+.swatchItem small,
+.bodySample,
+.controlCopy,
+.catalogCard p,
+.stateCard p,
+.approvalGrid p {
+  color: var(--vz-color-text-secondary);
+}
+
+.summaryCard,
+.sampleBlock,
+.sectionNav {
+  border-color: var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-md);
+  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
+  box-shadow: none;
+}
+
+.sectionNav a:focus-visible,
+.previewLink:focus-visible {
+  outline-color: var(--vz-color-accent-cyan);
+}
+
+/* VERZUS STAGE 5 DESIGN GALLERY:END */

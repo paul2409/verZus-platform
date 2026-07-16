@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { ProfileScreen } from "@/features/profiles/ui";
 
 const route = getPlatformRouteById("profile");
 
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function ProfilePage() {
-  return <PlatformRoutePlaceholder routeId="profile" />;
+  return <ProfileScreen />;
 }

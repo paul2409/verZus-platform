@@ -1,8 +1,8 @@
-// VERZUS M5 STEPS 5.5-5.8
+// VERZUS STAGE 3 PLAYER STATUS
 "use client";
 
-import type { PlayWidgetView } from "../view-model";
 import type { PlayerStatus } from "../model";
+import type { PlayWidgetView } from "../view-model";
 import { PlayWidgetStatePanel } from "./PlayWidgetState";
 import styles from "./play-command-center.module.css";
 
@@ -15,7 +15,7 @@ export function PlayerStatusStrip({
 }) {
   if (!view.data) {
     return (
-      <section className={styles.statusStrip}>
+      <section className={styles.statusStrip} aria-label="Player status">
         <PlayWidgetStatePanel
           state={view.state}
           errorCode={view.errorCode}
@@ -31,34 +31,36 @@ export function PlayerStatusStrip({
   return (
     <section className={styles.statusStrip} aria-label="Player status">
       <div className={styles.playerIdentity}>
-        <span className={styles.playerAvatar}>{player.handle.slice(0, 2)}</span>
+        <span className={styles.playerAvatar} aria-hidden="true">
+          {player.handle.slice(0, 2)}
+        </span>
         <div>
-          <span>PLAYER COMMAND</span>
+          <span>WELCOME BACK</span>
           <strong>{player.handle}</strong>
           <small>
-            {player.gameLane} · {player.locationLabel}
+            {player.primaryGame} · {player.gameLane} · {player.locationLabel}
           </small>
         </div>
       </div>
 
-      <div className={styles.playerFacts}>
+      <dl className={styles.playerFacts}>
         <div>
-          <span>WEEK</span>
-          <strong>{player.weekLabel}</strong>
+          <dt>WEEK</dt>
+          <dd>{player.weekLabel}</dd>
         </div>
         <div>
-          <span>TRUST</span>
-          <strong>{player.trustScore}</strong>
+          <dt>TRUST</dt>
+          <dd>{player.trustScore}</dd>
         </div>
         <div>
-          <span>STATUS</span>
-          <strong>{player.trustTier}</strong>
+          <dt>TIER</dt>
+          <dd>{player.trustTier}</dd>
         </div>
         <div>
-          <span>ALERTS</span>
-          <strong>{player.unreadNotifications}</strong>
+          <dt>ALERTS</dt>
+          <dd>{player.unreadNotifications}</dd>
         </div>
-      </div>
+      </dl>
 
       {view.stale ? <span className={styles.stalePill}>REFRESHING</span> : null}
     </section>

@@ -1,4 +1,4 @@
-// VERZUS M5 STEPS 5.5-5.8
+// VERZUS STAGE 3 WIDGET FRAME
 
 import type { ReactNode } from "react";
 

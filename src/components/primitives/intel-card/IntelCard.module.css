@@ -562,3 +562,111 @@
   text-transform: uppercase;
 }
 /* VERZUS REFERENCE_LOCK_FEATURE_CARD END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.card,
+.frame,
+.container,
+.article {
+  color: var(--vz-color-text-primary);
+}
+
+.card,
+.frame,
+.container,
+.surface {
+  border-color: var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel);
+  background: var(--vz-color-surface-base);
+  box-shadow: none;
+}
+
+.variantPlayer,
+.variantMatch,
+.variantCrew,
+.variantWar {
+  border-left: 2px solid var(--vz-color-accent-cyan);
+}
+
+.variantCrew {
+  border-left-color: var(--vz-color-accent-green);
+}
+
+.variantWar {
+  border-left-color: var(--vz-color-status-magenta);
+}
+
+.eyebrow,
+.sectionCode,
+.tag,
+.toneInformation {
+  color: var(--vz-color-accent-cyan);
+}
+
+.headerTitle,
+.title,
+.heading,
+.metric strong {
+  color: var(--vz-color-text-primary);
+}
+
+.metric,
+.sectionBody,
+.partialNotice,
+.staleNotice {
+  color: var(--vz-color-text-secondary);
+}
+
+.statusPill,
+.tag {
+  border-color: var(--vz-color-border-subtle);
+  background: var(--vz-color-surface-elevated);
+}
+
+.tonePositive,
+.stateDefault {
+  color: var(--vz-color-accent-green);
+}
+
+.toneWarning,
+.stateStale {
+  color: var(--vz-color-rank-gold);
+}
+
+.toneDanger,
+.stateError,
+.stateOffline {
+  color: var(--vz-color-status-danger);
+}
+
+.toneSpecial {
+  color: var(--vz-color-status-magenta);
+}
+
+.actionPrimary {
+  color: var(--vz-color-text-on-accent);
+  border-color: var(--vz-color-accent-green);
+  background: var(--vz-color-accent-green);
+  clip-path: var(--vz-clip-button);
+}
+
+.actionSecondary {
+  color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-color-accent-cyan);
+  background: transparent;
+  clip-path: var(--vz-clip-button);
+}
+
+.actionDanger {
+  color: var(--vz-color-status-danger);
+  border-color: var(--vz-color-status-danger);
+  background: transparent;
+  clip-path: var(--vz-clip-button);
+}
+
+.actionGhost {
+  color: var(--vz-color-text-secondary);
+  border-color: var(--vz-color-border-subtle);
+  background: transparent;
+}
+/* VERZUS STAGE 2 SHARED UI:END */

@@ -1,4 +1,4 @@
-// VERZUS M5 STEPS 5.9-5.13
+// VERZUS STAGE 3 CHECK IN
 
 "use client";
 
@@ -24,6 +24,18 @@ function actionLabel(checkIn: CurrentCheckIn, action: PlayCheckInAction): string
   }
 
   return "CHECK-IN UNAVAILABLE";
+}
+
+function formatWindow(value: string | null): string {
+  if (!value) {
+    return "NOT SCHEDULED";
+  }
+
+  return new Intl.DateTimeFormat("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date(value));
 }
 
 export function CheckInControl({
@@ -58,9 +70,12 @@ export function CheckInControl({
 
   return (
     <div className={styles.checkInControl} aria-live="polite">
-      <div className={styles.checkInStatus}>
+      <div className={styles.checkInStatus} data-state={checkIn.state}>
         <span>CHECK-IN STATE</span>
         <strong>{checkIn.state.replaceAll("_", " ")}</strong>
+        <small>
+          {formatWindow(checkIn.opensAt)}–{formatWindow(checkIn.closesAt)}
+        </small>
       </div>
 
       {canEnterMatch && match ? (
@@ -93,12 +108,10 @@ export function CheckInControl({
 
       {action.state === "success" || checkIn.state === "checked_in" ? (
         <small className={styles.checkInSuccess}>
-          Check-in is confirmed by the server and survives refresh.
+          Check-in confirmed by the server. Your match place is protected.
         </small>
       ) : (
-        <small>
-          Check-in is server-authoritative, idempotent, and protected from duplicate clicks.
-        </small>
+        <small>Check-in is server-authoritative and protected from duplicate clicks.</small>
       )}
     </div>
   );

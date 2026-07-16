@@ -1,14 +1,13 @@
 import fs from "node:fs";
 
 const checks = [
-  ["src/app/layout.tsx", 'data-theme="retro-competitive"'],
-  ["src/app/layout.tsx", 'import "@/styles/verzus-retro-system.css";'],
-  ["src/styles/verzus-retro-system.css", "--vz-retro-green: #00ff87"],
-  ["src/components/layout/app-shell/AppShell.module.css", "VERZUS RETRO_SHELL START"],
-  ["src/components/primitives/button/Button.module.css", "VERZUS RETRO_BUTTONS START"],
-  ["src/features/leaderboards/components/Leaderboard.module.css", "VERZUS RETRO_LEADERBOARD START"],
-  ["src/features/onboarding/ui/onboarding-experience.module.css", "VERZUS RETRO_ONBOARDING START"],
-  ["src/features/play/ui/play-command-center.module.css", "VERZUS RETRO_PLAY START"],
+  ["src/app/layout.tsx", 'import "@/styles/verzus-visual-system.css";'],
+  ["src/styles/tokens.css", "--vz-color-accent-green: #00ff87"],
+  ["src/styles/tokens.css", "--vz-color-accent-cyan: #00e5ff"],
+  ["src/components/layout/app-shell/AppShell.module.css", "VERZUS STAGE 2 SHELL:BEGIN"],
+  ["src/features/play/ui/play-command-center.module.css", "VERZUS STAGE 3 PLAY:BEGIN"],
+  ["scripts/verify-stage-4-competitive.mjs", "Stage 4"],
+  ["scripts/verify-stage-5-platform.mjs", "Stage 5"],
 ];
 
 const failures = [];
@@ -17,13 +16,16 @@ for (const [file, fragment] of checks) {
     failures.push(`${file}: missing`);
     continue;
   }
+
   const source = fs.readFileSync(file, "utf8");
-  if (!source.includes(fragment)) failures.push(`${file}: missing ${fragment}`);
+  if (!source.includes(fragment)) {
+    failures.push(`${file}: missing ${fragment}`);
+  }
 }
 
 if (failures.length > 0) {
-  console.error("Retro UI verification failed:\n" + failures.join("\n"));
+  console.error("Canonical VERZUS UI verification failed:\n" + failures.join("\n"));
   process.exit(1);
 }
 
-console.log("Retro UI installation markers: PASS");
+console.log("Canonical VERZUS competitive UI markers: PASS");

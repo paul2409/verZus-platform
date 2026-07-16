@@ -581,3 +581,110 @@
   --vz-badge-color: var(--vz-ref-red);
 }
 /* VERZUS REFERENCE_LOCK_BADGE END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.badge {
+  min-height: 1.7rem;
+  color: var(--vz-color-text-secondary);
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-xs);
+  background: var(--vz-color-surface-elevated);
+  box-shadow: none;
+  font-family: var(--vz-font-interface);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.variantSoft,
+.variantOutline {
+  background: color-mix(in srgb, var(--vz-color-surface-elevated) 82%, transparent);
+}
+
+.variantSolid {
+  color: var(--vz-color-text-on-accent);
+}
+
+.toneInformation {
+  color: var(--vz-color-accent-cyan);
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 52%, transparent);
+}
+
+.tonePositive {
+  color: var(--vz-color-accent-green);
+  border-color: color-mix(in srgb, var(--vz-color-accent-green) 52%, transparent);
+}
+
+.toneWarning {
+  color: var(--vz-color-rank-gold);
+  border-color: color-mix(in srgb, var(--vz-color-rank-gold) 52%, transparent);
+}
+
+.toneNegative,
+.toneLive {
+  color: var(--vz-color-status-danger);
+  border-color: color-mix(in srgb, var(--vz-color-status-danger) 58%, transparent);
+}
+
+.toneSpecial {
+  color: var(--vz-color-status-magenta);
+  border-color: color-mix(in srgb, var(--vz-color-status-magenta) 52%, transparent);
+}
+
+.rankBadge {
+  border-radius: 0;
+  clip-path: var(--vz-clip-rank);
+  box-shadow: none;
+}
+
+.rankGold {
+  color: var(--vz-color-rank-gold);
+  border-color: var(--vz-color-rank-gold);
+  background: color-mix(in srgb, var(--vz-color-rank-gold) 10%, var(--vz-color-surface-base));
+}
+
+.rankSilver {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-text-secondary);
+  background: var(--vz-color-surface-elevated);
+}
+
+.rankBronze {
+  color: var(--vz-color-rank-gold);
+  border-color: color-mix(in srgb, var(--vz-color-rank-gold) 48%, transparent);
+}
+
+.rankElite {
+  color: var(--vz-color-status-magenta);
+  border-color: color-mix(in srgb, var(--vz-color-status-magenta) 58%, transparent);
+}
+
+.movementIncreased,
+.statPositive {
+  color: var(--vz-color-accent-green);
+}
+
+.movementDecreased,
+.statNegative {
+  color: var(--vz-color-status-danger);
+}
+
+.statInformation {
+  color: var(--vz-color-accent-cyan);
+}
+
+.statWarning {
+  color: var(--vz-color-rank-gold);
+}
+
+.statSpecial {
+  color: var(--vz-color-status-magenta);
+}
+
+.statNumber,
+.movementValue,
+.rankInner {
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums;
+}
+/* VERZUS STAGE 2 SHARED UI:END */

@@ -1,0 +1,1 @@
+export { CompetitionDiscoveryScreen } from "./CompetitionDiscoveryScreen";

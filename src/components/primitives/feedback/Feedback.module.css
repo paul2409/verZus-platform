@@ -786,3 +786,83 @@
   clip-path: var(--vz-retro-cut-sm);
 }
 /* VERZUS RETRO_FEEDBACK END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.systemState,
+.toast,
+.skeleton,
+.sectionHeader {
+  color: var(--vz-color-text-primary);
+}
+
+.systemState,
+.toast {
+  border-color: var(--vz-color-border-subtle);
+  background: var(--vz-color-surface-base);
+  box-shadow: none;
+}
+
+.stateTitle,
+.toastTitle,
+.sectionTitle {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+}
+
+.stateDescription,
+.toastDescription,
+.sectionDescription {
+  color: var(--vz-color-text-secondary);
+}
+
+.stateLoading,
+.stateRetrying,
+.toastInformation {
+  --vz-state-accent: var(--vz-color-accent-cyan);
+  --vz-state-accent-rgb: 0 229 255;
+}
+
+.stateSuccess,
+.toastSuccess {
+  --vz-state-accent: var(--vz-color-accent-green);
+  --vz-state-accent-rgb: 0 255 135;
+}
+
+.stateError,
+.stateUnauthorized,
+.stateForbidden,
+.toastError {
+  --vz-state-accent: var(--vz-color-status-danger);
+  --vz-state-accent-rgb: 255 56 48;
+}
+
+.stateMaintenance,
+.toastWarning {
+  --vz-state-accent: var(--vz-color-rank-gold);
+  --vz-state-accent-rgb: 255 196 0;
+}
+
+.statePartialFailure {
+  --vz-state-accent: var(--vz-color-status-magenta);
+  --vz-state-accent-rgb: 255 45 135;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--vz-color-surface-base),
+    var(--vz-color-surface-elevated),
+    var(--vz-color-surface-base)
+  );
+}
+
+.divider {
+  border-color: var(--vz-color-border-subtle);
+}
+
+.dividerAccent {
+  border-color: var(--vz-color-accent-cyan);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

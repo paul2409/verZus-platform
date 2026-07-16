@@ -1,33 +1,35 @@
+/* VERZUS STAGE 3 STATUS CHIP */
+
 .chip {
   display: inline-flex;
   min-height: 1.45rem;
   align-items: center;
   justify-content: center;
   padding: 0.2rem 0.5rem;
-  color: var(--vz-esports-text);
+  color: var(--vz-color-text-primary);
   border: 1px solid currentColor;
-  border-radius: 3px;
-  background: rgb(10 10 20 / 72%);
-  font-family: var(--vz-font-display);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.11em;
+  border-radius: var(--vz-radius-xs);
+  background: color-mix(in srgb, var(--vz-color-bg-deep) 78%, transparent);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-ui);
   line-height: 1;
   text-transform: uppercase;
 }
 
 .live {
-  color: var(--vz-esports-cyan);
+  color: var(--vz-color-status-live);
 }
 
 .scheduled {
-  color: var(--vz-esports-violet);
+  color: var(--vz-color-accent-cyan);
 }
 
 .verified {
-  color: var(--vz-esports-green);
+  color: var(--vz-color-accent-neon);
 }
 
 .locked {
-  color: var(--vz-esports-muted);
+  color: var(--vz-color-text-secondary);
 }

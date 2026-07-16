@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { SearchScreen } from "@/features/search/ui";
 
 const route = getPlatformRouteById("search");
 
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function SearchPage() {
-  return <PlatformRoutePlaceholder routeId="search" />;
+  return <SearchScreen />;
 }

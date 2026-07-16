@@ -1,17 +1,27 @@
+/* VERZUS STAGE 3 GAME MODE GRID */
+
 .section {
   display: grid;
-  gap: 0.85rem;
-  margin-top: 1rem;
+  height: 100%;
+  gap: 0.8rem;
   padding: clamp(0.85rem, 2vw, 1.15rem);
-  border: 1px solid var(--vz-esports-line-soft);
-  background: rgb(18 16 31 / 78%);
+  border: 1px solid var(--vz-color-border-subtle);
+  border-left-color: color-mix(
+    in srgb,
+    var(--vz-color-accent-cyan) 35%,
+    var(--vz-color-border-subtle)
+  );
+  background: color-mix(in srgb, var(--vz-color-surface-base) 96%, transparent);
+  box-shadow: var(--vz-shadow-panel);
 }
 
 .sectionHeader {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--vz-color-border-subtle);
 }
 
 .sectionHeader > div {
@@ -19,183 +29,162 @@
 }
 
 .sectionHeader span {
-  color: var(--vz-esports-cyan);
-  font-family: var(--vz-font-display);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  color: var(--vz-color-accent-cyan);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-tracking-label);
   text-transform: uppercase;
 }
 
 .sectionHeader h2 {
-  margin: 0.15rem 0 0;
-  font-size: clamp(1.25rem, 3vw, 1.8rem);
-  line-height: 1;
+  margin-top: 0.2rem;
+  font-size: clamp(1.25rem, 4vw, 1.85rem);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.75rem;
+  gap: 0.55rem;
 }
 
 .card {
-  --mode-signal: var(--vz-esports-cyan);
+  --mode-signal: var(--vz-color-accent-neon);
 
   position: relative;
   display: grid;
   min-width: 0;
-  gap: 0.9rem;
-  padding: 0.95rem;
+  gap: 0.7rem;
+  padding: 0.75rem;
   overflow: hidden;
-  border: 1px solid var(--vz-esports-line);
+  border: 1px solid color-mix(in srgb, var(--mode-signal) 32%, var(--vz-color-border-subtle));
   background:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--mode-signal) 7%, transparent),
-      transparent 46%
+      color-mix(in srgb, var(--mode-signal) 5%, transparent),
+      transparent 48%
     ),
-    var(--vz-esports-panel);
-  clip-path: polygon(
-    10px 0,
-    100% 0,
-    100% calc(100% - 10px),
-    calc(100% - 10px) 100%,
-    0 100%,
-    0 10px
-  );
+    color-mix(in srgb, var(--vz-color-bg-deep) 62%, transparent);
   transition:
-    transform 150ms ease,
-    border-color 150ms ease,
-    background-color 150ms ease;
+    border-color var(--vz-duration-ui) var(--vz-ease-standard),
+    transform var(--vz-duration-ui) var(--vz-ease-standard);
 }
 
 .card::before {
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
-  width: 3.25rem;
-  height: 2px;
+  width: 2px;
   content: "";
   background: var(--mode-signal);
 }
 
-.card[data-game-mode-tone="violet"] {
-  --mode-signal: var(--vz-esports-violet);
+.card[data-game-mode-tone="cyan"] {
+  --mode-signal: var(--vz-color-accent-cyan);
 }
 
 .card[data-game-mode-tone="gold"] {
-  --mode-signal: var(--vz-esports-gold);
+  --mode-signal: var(--vz-color-rank-gold);
 }
 
-.card[data-game-mode-tone="pink"] {
-  --mode-signal: var(--vz-esports-pink);
+.card[data-game-mode-tone="magenta"] {
+  --mode-signal: var(--vz-color-status-magenta);
 }
 
-.card:hover {
-  border-color: var(--mode-signal);
-  transform: translateY(-2px);
-}
-
+.card:hover,
 .card:focus-within {
   border-color: var(--mode-signal);
+  transform: translateY(-1px);
 }
 
 .cardTopline {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .glyph {
   display: grid;
-  width: 2.65rem;
-  height: 2.65rem;
+  width: 2.55rem;
+  height: 2.55rem;
   place-items: center;
   color: var(--mode-signal);
   border: 1px solid currentColor;
-  background: rgb(10 10 20 / 72%);
+  background: var(--vz-color-surface-base);
+  clip-path: var(--vz-clip-rank);
   font-family: var(--vz-font-display);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  font-weight: var(--vz-font-weight-bold);
 }
 
 .cardCopy > span,
 .cardFacts dt {
-  color: var(--vz-esports-muted);
-  font-family: var(--vz-font-display);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-semibold);
+  letter-spacing: var(--vz-tracking-ui);
   text-transform: uppercase;
 }
 
 .cardCopy h3 {
-  margin: 0.15rem 0 0;
+  margin-top: 0.15rem;
   font-size: 1.08rem;
-  line-height: 1.05;
 }
 
 .cardFacts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
+  gap: 0.45rem;
   margin: 0;
 }
 
 .cardFacts div {
   min-width: 0;
-  padding-top: 0.55rem;
-  border-top: 1px solid var(--vz-esports-line-soft);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--vz-color-border-subtle);
 }
 
 .cardFacts dd {
-  margin: 0.2rem 0 0;
-  color: var(--vz-esports-text);
+  margin: 0.15rem 0 0;
+  color: var(--vz-color-text-primary);
   font-family: var(--vz-font-numeric);
   font-size: 0.82rem;
 }
 
 .cardAction {
   display: inline-flex;
-  min-height: 2.7rem;
+  min-height: 2.55rem;
   align-items: center;
   justify-content: center;
-  padding: 0.65rem 0.8rem;
+  padding: 0.6rem 0.75rem;
   color: var(--mode-signal);
   border: 1px solid currentColor;
   background: transparent;
-  font-family: var(--vz-font-display);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.09em;
+  clip-path: var(--vz-clip-button);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-ui);
   text-decoration: none;
   text-transform: uppercase;
 }
 
 .cardAction:hover {
-  color: var(--vz-esports-void);
+  color: var(--vz-color-text-on-accent);
   background: var(--mode-signal);
 }
 
-@media (min-width: 40rem) {
+@media (min-width: 32rem) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 70rem) {
+@media (min-width: 78rem) {
   .grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 27rem) {
-  .sectionHeader {
-    align-items: flex-start;
-    flex-direction: column;
   }
 }
 

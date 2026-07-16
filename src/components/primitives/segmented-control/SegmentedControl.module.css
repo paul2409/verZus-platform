@@ -231,3 +231,52 @@
   box-shadow: var(--vz-shadow-glow-green);
 }
 /* VERZUS REFERENCE_LOCK_SEGMENTED END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.root {
+  gap: 0;
+  padding: 2px;
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-control);
+  background: var(--vz-color-surface-base);
+}
+
+.item {
+  min-height: 2.5rem;
+  color: var(--vz-color-text-secondary);
+  border: 0;
+  border-radius: calc(var(--vz-radius-control) - 2px);
+  background: transparent;
+  font-family: var(--vz-font-interface);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.item:hover:not(:disabled) {
+  color: var(--vz-color-text-primary);
+  background: color-mix(in srgb, var(--vz-color-text-primary) 3%, transparent);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: -2px;
+}
+
+.selected,
+.tonePrimary .selected {
+  color: var(--vz-color-text-on-accent);
+  background: var(--vz-color-accent-green);
+  box-shadow: none;
+}
+
+.toneSecondary .selected {
+  color: var(--vz-color-bg-deep);
+  background: var(--vz-color-accent-cyan);
+}
+
+.toneAccent .selected {
+  color: var(--vz-color-text-primary);
+  background: var(--vz-color-status-magenta);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

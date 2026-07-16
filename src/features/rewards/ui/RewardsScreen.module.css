@@ -1,0 +1,234 @@
+.page {
+  display: grid;
+  width: min(100%, 78rem);
+  gap: clamp(2rem, 5vw, 4rem);
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.header,
+.sectionHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.header > div,
+.sectionHeading > div {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.header h1,
+.header p,
+.section h2,
+.section p {
+  margin: 0;
+}
+
+.header h1 {
+  font-size: clamp(2.4rem, 9vw, 4.8rem);
+}
+
+.header > div > p:last-child {
+  max-width: 48rem;
+  color: var(--vz-color-text-secondary);
+}
+
+.eyebrow {
+  color: var(--vz-color-accent-cyan);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.section {
+  display: grid;
+  gap: 1rem;
+}
+
+.sectionHeading h2 {
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+}
+
+.balanceGrid,
+.poolGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.balanceGrid {
+  margin: 0;
+}
+
+.balanceGrid > div,
+.poolGrid article {
+  position: relative;
+  display: grid;
+  gap: 0.45rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  background: var(--vz-color-surface-base);
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel);
+}
+
+.balanceGrid > div::before,
+.poolGrid article::before {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 3px;
+  content: "";
+  background: var(--vz-color-accent-cyan);
+}
+
+.balanceGrid > div[data-tone="green"]::before,
+.poolGrid article[data-tone="green"]::before {
+  background: var(--vz-color-accent-neon);
+}
+
+.balanceGrid > div[data-tone="gold"]::before {
+  background: var(--vz-color-rank-gold);
+}
+
+.poolGrid article[data-tone="pink"]::before {
+  background: var(--vz-color-status-magenta);
+}
+
+.balanceGrid dt,
+.balanceGrid span,
+.poolGrid footer span {
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+}
+
+.balanceGrid dd {
+  margin: 0;
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-numeric);
+  font-size: clamp(2rem, 7vw, 3.25rem);
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.balanceGrid > div[data-tone="green"] dd {
+  color: var(--vz-color-accent-neon);
+}
+
+.balanceGrid > div[data-tone="cyan"] dd {
+  color: var(--vz-color-accent-cyan);
+}
+
+.balanceGrid > div[data-tone="gold"] dd {
+  color: var(--vz-color-rank-gold);
+}
+
+.poolGrid article {
+  gap: 1rem;
+}
+
+.poolGrid article header,
+.poolGrid article footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.poolGrid article > div {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.poolGrid h3 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.poolGrid article > div > strong {
+  color: var(--vz-color-rank-gold);
+  font-family: var(--vz-font-numeric);
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+}
+
+.poolGrid footer {
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--vz-color-border-subtle);
+}
+
+.poolGrid footer strong {
+  color: var(--vz-color-accent-cyan);
+  font-family: var(--vz-font-numeric);
+}
+
+.poolIcon,
+.activityIcon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  color: var(--vz-color-rank-gold);
+  background: color-mix(in srgb, var(--vz-color-rank-gold) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vz-color-rank-gold) 24%, transparent);
+  clip-path: var(--vz-clip-rank);
+}
+
+.activityList {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activityList li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  background: var(--vz-color-surface-base);
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-md);
+}
+
+.activityList li > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.activityList li > div strong {
+  overflow: hidden;
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  letter-spacing: var(--vz-tracking-ui);
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.activityList li > div span {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+}
+
+.amount {
+  color: var(--vz-color-accent-neon);
+  font-family: var(--vz-font-numeric);
+  font-size: 1.1rem;
+}
+
+@media (min-width: 40rem) {
+  .balanceGrid,
+  .poolGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

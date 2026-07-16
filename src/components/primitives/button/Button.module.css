@@ -370,3 +370,115 @@
   border-color: var(--vz-ref-line);
 }
 /* VERZUS REFERENCE_LOCK_BUTTON END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.button {
+  min-height: 2.75rem;
+  color: var(--vz-color-text-primary);
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-family: var(--vz-font-interface);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  clip-path: var(--vz-clip-button);
+  transition:
+    transform var(--vz-duration-fast) var(--vz-ease-standard),
+    color var(--vz-duration-fast) var(--vz-ease-standard),
+    background-color var(--vz-duration-fast) var(--vz-ease-standard),
+    border-color var(--vz-duration-fast) var(--vz-ease-standard),
+    box-shadow var(--vz-duration-fast) var(--vz-ease-standard);
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+.primary {
+  color: var(--vz-color-text-on-accent);
+  border-color: var(--vz-color-accent-green);
+  background: var(--vz-color-accent-green);
+}
+
+.primary:hover:not(:disabled) {
+  color: var(--vz-color-text-on-accent);
+  border-color: var(--vz-color-accent-green);
+  background: var(--vz-color-accent-green);
+  box-shadow: var(--vz-glow-green);
+}
+
+.secondary,
+.accent {
+  color: var(--vz-color-accent-cyan);
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 66%, transparent);
+  background: transparent;
+}
+
+.secondary:hover:not(:disabled),
+.accent:hover:not(:disabled) {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-accent-cyan);
+  background: color-mix(in srgb, var(--vz-color-accent-cyan) 8%, transparent);
+  box-shadow: var(--vz-glow-cyan);
+}
+
+.danger {
+  color: var(--vz-color-status-danger);
+  border-color: color-mix(in srgb, var(--vz-color-status-danger) 72%, transparent);
+  background: transparent;
+}
+
+.danger:hover:not(:disabled) {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-status-danger);
+  background: color-mix(in srgb, var(--vz-color-status-danger) 10%, transparent);
+  box-shadow: var(--vz-glow-live);
+}
+
+.ghost {
+  color: var(--vz-color-text-secondary);
+  border-color: transparent;
+  background: transparent;
+  clip-path: none;
+}
+
+.ghost:hover:not(:disabled) {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-border-subtle);
+  background: color-mix(in srgb, var(--vz-color-text-primary) 4%, transparent);
+}
+
+.sm {
+  min-height: 2.5rem;
+  padding-inline: 0.85rem;
+  font-size: 0.75rem;
+}
+
+.md {
+  min-height: 2.875rem;
+  padding-inline: 1.1rem;
+  font-size: 0.8125rem;
+}
+
+.lg {
+  min-height: 3.25rem;
+  padding-inline: 1.35rem;
+  font-size: 0.9rem;
+}
+
+.spinner {
+  border-color: color-mix(in srgb, currentColor 28%, transparent);
+  border-top-color: currentColor;
+}
+/* VERZUS STAGE 2 SHARED UI:END */

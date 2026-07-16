@@ -340,3 +340,67 @@
   border-radius: 0;
 }
 /* VERZUS REFERENCE_LOCK_OVERLAY END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.backdrop {
+  background: color-mix(in srgb, var(--vz-color-bg-deep) 82%, transparent);
+  backdrop-filter: blur(0.35rem);
+}
+
+.dialog,
+.modal,
+.drawer,
+.popoverContent,
+.tooltip {
+  color: var(--vz-color-text-primary);
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel);
+  background: var(--vz-color-surface-elevated);
+  box-shadow: none;
+}
+
+.dialog,
+.modal,
+.drawer {
+  max-height: min(92svh, 52rem);
+  overflow: hidden;
+}
+
+.dialogBody {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.dialogTitle {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+}
+
+.dialogDescription {
+  color: var(--vz-color-text-secondary);
+}
+
+.dialogHeader,
+.dialogFooter {
+  border-color: var(--vz-color-border-subtle);
+}
+
+.dialogClose {
+  color: var(--vz-color-text-secondary);
+  border-color: var(--vz-color-border-subtle);
+  background: transparent;
+}
+
+.dialogClose:hover {
+  color: var(--vz-color-status-danger);
+  border-color: color-mix(in srgb, var(--vz-color-status-danger) 48%, transparent);
+}
+
+.dialogClose:focus-visible,
+.popoverTrigger:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+/* VERZUS STAGE 2 SHARED UI:END */

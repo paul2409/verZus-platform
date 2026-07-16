@@ -103,3 +103,32 @@
   color: var(--vz-ref-red);
 }
 /* VERZUS REFERENCE_LOCK_FORM_FIELD END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.field,
+.labelRow,
+.legend {
+  color: var(--vz-color-text-primary);
+}
+
+.label,
+.legend {
+  font-family: var(--vz-font-interface);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.required {
+  color: var(--vz-color-status-magenta);
+}
+
+.optional,
+.hint,
+.description {
+  color: var(--vz-color-text-secondary);
+}
+
+.error {
+  color: var(--vz-color-status-danger);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

@@ -33,3 +33,20 @@
     align-items: center;
   }
 }
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.group {
+  gap: 0.65rem;
+}
+
+@media (max-width: 35rem) {
+  .responsive {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .responsive > * {
+    width: 100%;
+  }
+}
+/* VERZUS STAGE 2 SHARED UI:END */

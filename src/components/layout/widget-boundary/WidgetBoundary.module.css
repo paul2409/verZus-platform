@@ -286,3 +286,63 @@
   clip-path: var(--vz-ref-cut-sm);
 }
 /* VERZUS REFERENCE_LOCK_WIDGET_BOUNDARY END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.root,
+.boundary,
+.fallback {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-border-subtle);
+  background: var(--vz-color-surface-base);
+  box-shadow: none;
+}
+
+.eyebrow,
+.marker,
+.reference {
+  color: var(--vz-color-accent-cyan);
+}
+
+.description {
+  color: var(--vz-color-text-secondary);
+}
+
+.action {
+  color: var(--vz-color-text-on-accent);
+  border-color: var(--vz-color-accent-green);
+  background: var(--vz-color-accent-green);
+  clip-path: var(--vz-clip-button);
+}
+
+.secondaryAction {
+  color: var(--vz-color-accent-cyan);
+  border-color: var(--vz-color-accent-cyan);
+  background: transparent;
+  clip-path: var(--vz-clip-button);
+}
+/* VERZUS STAGE 2 SHARED UI:END */
+
+/* VERZUS STAGE 5 WIDGET BOUNDARY:BEGIN */
+
+.boundary,
+.root,
+.fallback,
+.card,
+.panel {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel);
+  background: var(--vz-color-surface-base);
+  box-shadow: var(--vz-shadow-panel);
+}
+
+:is(.boundary, .root, .fallback, .card, .panel) :is(p, small) {
+  color: var(--vz-color-text-secondary);
+}
+
+:is(.boundary, .root, .fallback, .card, .panel) :is(button, a):focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+/* VERZUS STAGE 5 WIDGET BOUNDARY:END */

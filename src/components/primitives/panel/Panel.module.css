@@ -882,3 +882,97 @@
     0 1.2rem 2.5rem rgb(0 0 0 / 28%);
 }
 /* VERZUS REFERENCE_LOCK_PANEL END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.panel {
+  color: var(--vz-color-text-primary);
+}
+
+.panelSurface,
+.module {
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel);
+  background: var(--vz-color-surface-base);
+  box-shadow: var(--vz-shadow-panel);
+}
+
+.outerFrame,
+.innerFrame {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.railTop,
+.railBottom,
+.cornerTopLeft,
+.cornerTopRight,
+.cornerBottomLeft,
+.cornerBottomRight {
+  opacity: 0.32;
+}
+
+.tonePrimary .panelSurface,
+.moduleSelected {
+  border-color: color-mix(in srgb, var(--vz-color-accent-green) 48%, transparent);
+  box-shadow: inset 2px 0 0 var(--vz-color-accent-green);
+}
+
+.toneSecondary .panelSurface {
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 44%, transparent);
+}
+
+.toneAccent .panelSurface {
+  border-color: color-mix(in srgb, var(--vz-color-status-magenta) 44%, transparent);
+}
+
+.toneWarning .panelSurface {
+  border-color: color-mix(in srgb, var(--vz-color-rank-gold) 44%, transparent);
+}
+
+.toneDanger .panelSurface {
+  border-color: color-mix(in srgb, var(--vz-color-status-danger) 44%, transparent);
+}
+
+.moduleInteractive:hover {
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 44%, transparent);
+  background: var(--vz-color-surface-elevated);
+}
+
+.moduleInteractive:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+.eyebrow,
+.statusInformation {
+  color: var(--vz-color-accent-cyan);
+}
+
+.title,
+.moduleHeader {
+  color: var(--vz-color-text-primary);
+}
+
+.description {
+  color: var(--vz-color-text-secondary);
+}
+
+.statusPositive,
+.moduleStateSuccess {
+  color: var(--vz-color-accent-green);
+}
+
+.statusWarning,
+.moduleStateMaintenance,
+.moduleStateStale {
+  color: var(--vz-color-rank-gold);
+}
+
+.statusNegative,
+.moduleStateError,
+.moduleStateUnauthorized,
+.moduleStateForbidden {
+  color: var(--vz-color-status-danger);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

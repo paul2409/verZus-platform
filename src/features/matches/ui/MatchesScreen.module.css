@@ -1,0 +1,203 @@
+.page {
+  display: grid;
+  width: min(100%, 78rem);
+  gap: clamp(2rem, 5vw, 4rem);
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.header,
+.sectionHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.header > div,
+.sectionHeading > div,
+.timelinePanel header {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.header h1,
+.header p,
+.sectionHeading h2,
+.sectionHeading p,
+.timelinePanel h3,
+.timelinePanel p {
+  margin: 0;
+}
+
+.header h1 {
+  font-size: clamp(2.4rem, 9vw, 4.8rem);
+}
+
+.header > div > p:last-child {
+  max-width: 48rem;
+  color: var(--vz-color-text-secondary);
+}
+
+.eyebrow {
+  color: var(--vz-color-accent-cyan);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.tab {
+  min-height: 3rem;
+  cursor: pointer;
+  color: var(--vz-color-text-secondary);
+  background: var(--vz-color-surface-base);
+  border: 1px solid var(--vz-color-border-default);
+  font-family: var(--vz-font-interface);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+}
+
+.tab[data-active="true"] {
+  color: var(--vz-color-accent-neon);
+  background: color-mix(in srgb, var(--vz-color-accent-neon) 7%, transparent);
+  border-color: var(--vz-color-accent-neon);
+  clip-path: var(--vz-clip-button);
+}
+
+.featuredSection,
+.section {
+  display: grid;
+  gap: 1rem;
+}
+
+.sectionHeading h2 {
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+}
+
+.featuredGrid,
+.matchGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.timelinePanel {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--vz-color-surface-base);
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel);
+}
+
+.timelinePanel h3 {
+  font-size: 1.45rem;
+}
+
+.timeline {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.results {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.results li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  background: var(--vz-color-surface-base);
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-md);
+}
+
+.results li > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.1rem;
+}
+
+.results li > div strong {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-display);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+}
+
+.results li > div span {
+  overflow: hidden;
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gameIcon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  color: var(--vz-color-accent-cyan);
+  background: color-mix(in srgb, var(--vz-color-accent-cyan) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vz-color-accent-cyan) 24%, transparent);
+  clip-path: var(--vz-clip-rank);
+}
+
+.score {
+  color: var(--vz-color-rank-gold);
+  font-family: var(--vz-font-numeric);
+  font-size: 1.1rem;
+}
+
+@media (min-width: 40rem) {
+  .tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .matchGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .featuredGrid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.7fr);
+    align-items: start;
+  }
+}
+
+@media (max-width: 31rem) {
+  .results li {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .results li > :last-child {
+    grid-column: 2 / -1;
+    justify-self: start;
+  }
+}

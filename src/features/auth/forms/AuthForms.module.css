@@ -398,3 +398,49 @@
   text-transform: uppercase;
 }
 /* VERZUS REFERENCE_LOCK_AUTH_FORMS END */
+
+/* VERZUS STAGE 5 AUTH FORMS:BEGIN */
+
+.inputShell,
+.codeInput,
+.passwordRules,
+.errorSummary {
+  border-radius: var(--vz-radius-control);
+  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
+  clip-path: none;
+}
+
+.input,
+.help,
+.errorMessage,
+.checkboxRow,
+.passwordRule {
+  font-family: var(--vz-font-body);
+}
+
+.input {
+  color: var(--vz-color-text-primary);
+}
+
+.submitButton {
+  border-color: var(--auth-accent);
+  background: var(--auth-accent);
+  color: var(--vz-color-text-on-accent);
+  box-shadow: none;
+  clip-path: var(--vz-clip-button);
+}
+
+.retryButton {
+  border-color: var(--vz-color-status-danger);
+  color: var(--vz-color-status-danger);
+}
+
+.input:focus-visible,
+.visibilityButton:focus-visible,
+.retryButton:focus-visible,
+.submitButton:focus-visible,
+.codeInput:focus-visible {
+  outline-color: var(--vz-color-accent-cyan);
+}
+
+/* VERZUS STAGE 5 AUTH FORMS:END */

@@ -1,3 +1,4 @@
+// VERZUS STAGE 3 OPPORTUNITIES
 "use client";
 
 import Link from "next/link";
@@ -19,11 +20,11 @@ function formatStart(value: string): string {
   }).format(new Date(value));
 }
 
-function gameTone(game: string, index: number): "green" | "cyan" | "orange" | "purple" {
+function gameTone(game: string, index: number): "green" | "cyan" | "gold" | "magenta" {
   const normalized = game.toLowerCase();
 
   if (normalized.includes("fc") || normalized.includes("football")) {
-    return "orange";
+    return "gold";
   }
 
   if (normalized.includes("clash") || normalized.includes("royale")) {
@@ -31,10 +32,10 @@ function gameTone(game: string, index: number): "green" | "cyan" | "orange" | "p
   }
 
   if (normalized.includes("league")) {
-    return "purple";
+    return "magenta";
   }
 
-  return (["green", "cyan", "orange", "purple"] as const)[index % 4] ?? "green";
+  return (["green", "cyan", "gold", "magenta"] as const)[index % 4] ?? "green";
 }
 
 export function OpportunityRail({
@@ -48,8 +49,8 @@ export function OpportunityRail({
 
   return (
     <WidgetFrame
-      eyebrow="FEATURED COMPETITIONS"
-      title="Enter the arena"
+      eyebrow="04 · FEATURED COMPETITIONS"
+      title="Eligible opportunities"
       status={featured ? "FEATURED" : `${view.data?.length ?? 0} OPEN`}
       className={featured ? styles.featuredWidget : undefined}
     >
@@ -80,10 +81,16 @@ export function OpportunityRail({
                 <strong>{competition.title}</strong>
                 <small>{competition.format}</small>
 
-                <div className={styles.opportunityMeta}>
-                  <b>{competition.rewardLabel}</b>
-                  <small>{competition.entryLabel}</small>
-                </div>
+                <dl className={styles.opportunityMeta}>
+                  <div>
+                    <dt>REWARD</dt>
+                    <dd>{competition.rewardLabel}</dd>
+                  </div>
+                  <div>
+                    <dt>ENTRY</dt>
+                    <dd>{competition.entryLabel}</dd>
+                  </div>
+                </dl>
               </div>
 
               <footer className={styles.opportunityFooter}>

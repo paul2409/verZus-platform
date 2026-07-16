@@ -882,3 +882,103 @@
   --vz-card-accent: var(--vz-ref-red);
 }
 /* VERZUS REFERENCE_LOCK_CARD END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.card {
+  color: var(--vz-color-text-primary);
+}
+
+.outerFrame,
+.innerFrame,
+.cardSurface {
+  border-radius: var(--vz-radius-panel);
+}
+
+.cardSurface {
+  border: 1px solid var(--vz-color-border-subtle);
+  background: var(--vz-color-surface-base);
+  box-shadow: var(--vz-shadow-panel);
+}
+
+.outerFrame,
+.innerFrame {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.foilLayer,
+.cornerTopLeft,
+.cornerTopRight,
+.cornerBottomLeft,
+.cornerBottomRight {
+  opacity: 0.28;
+}
+
+.tonePrimary .cardSurface {
+  border-color: color-mix(in srgb, var(--vz-color-accent-green) 42%, transparent);
+}
+
+.toneSecondary .cardSurface {
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 42%, transparent);
+}
+
+.toneAccent .cardSurface {
+  border-color: color-mix(in srgb, var(--vz-color-status-magenta) 42%, transparent);
+}
+
+.toneWarning .cardSurface {
+  border-color: color-mix(in srgb, var(--vz-color-rank-gold) 42%, transparent);
+}
+
+.toneDanger .cardSurface {
+  border-color: color-mix(in srgb, var(--vz-color-status-danger) 42%, transparent);
+}
+
+.interactive .cardSurface {
+  transition:
+    transform var(--vz-duration-ui) var(--vz-ease-standard),
+    border-color var(--vz-duration-ui) var(--vz-ease-standard),
+    background-color var(--vz-duration-ui) var(--vz-ease-standard);
+}
+
+.interactive:hover .cardSurface {
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 44%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--vz-color-surface-elevated) 72%,
+    var(--vz-color-surface-base)
+  );
+  transform: translateY(-2px);
+}
+
+.interactive:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+.selected .cardSurface {
+  border-color: var(--vz-color-accent-green);
+  box-shadow: inset 2px 0 0 var(--vz-color-accent-green);
+}
+
+.eyebrow,
+.statLabel {
+  color: var(--vz-color-accent-cyan);
+}
+
+.title,
+.statValue {
+  color: var(--vz-color-text-primary);
+}
+
+.description,
+.statDetail {
+  color: var(--vz-color-text-secondary);
+}
+
+.statValue {
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums;
+}
+/* VERZUS STAGE 2 SHARED UI:END */

@@ -64,7 +64,9 @@
     "m5:verify:technical": "npm run format:check && npm run lint && npm run typecheck && npm run test:m5:unit && npm run check:boundaries && npm run build && node scripts/verify-m5.mjs --technical",
     "m5:verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run check:boundaries && npm run build && npm run test:e2e:m5 && npm run test:visual:m5 && node scripts/verify-m5.mjs",
     "verify:retro-ui": "node scripts/verify-retro-ui.mjs",
-    "verify:reference-ui": "node scripts/verify-reference-ui.mjs"
+    "verify:reference-ui": "node scripts/verify-reference-ui.mjs",
+    "verify:stage5": "node scripts/verify-stage-5-platform.mjs",
+    "stage5:preview": "next dev --hostname 127.0.0.1 --port 3113"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [

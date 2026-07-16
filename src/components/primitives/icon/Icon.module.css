@@ -71,3 +71,26 @@
     stroke-width: var(--vz-icon-stroke-width-strong);
   }
 }
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.neutral,
+.muted {
+  color: var(--vz-color-text-secondary);
+}
+
+.primary {
+  color: var(--vz-color-accent-green);
+}
+
+.secondary {
+  color: var(--vz-color-accent-cyan);
+}
+
+.danger {
+  color: var(--vz-color-status-danger);
+}
+
+.warning {
+  color: var(--vz-color-rank-gold);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

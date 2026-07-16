@@ -80,7 +80,7 @@
   --vz-color-red-200: #ffaba6;
   --vz-color-red-300: #ff7c74;
   --vz-color-red-400: #ff5147;
-  --vz-color-red-500: #ff3b30;
+  --vz-color-red-500: #ff3830;
   --vz-color-red-600: #dc2b22;
   --vz-color-red-700: #b5201a;
   --vz-color-red-800: #8d1a16;
@@ -95,7 +95,7 @@
   --vz-color-warning-100: #fff0ad;
   --vz-color-warning-200: #ffe46f;
   --vz-color-warning-300: #ffd431;
-  --vz-color-warning-400: #ffc247;
+  --vz-color-warning-400: #ffc400;
   --vz-color-warning-500: #e5a500;
   --vz-color-warning-600: #bb7900;
   --vz-color-warning-700: #955600;
@@ -118,7 +118,7 @@
 
   --vz-color-bronze-500: #cd7f47;
   --vz-color-silver-500: #c8d0d8;
-  --vz-color-gold-500: #ffc247;
+  --vz-color-gold-500: #ffc400;
 
   /* ================================================================
      SEMANTIC — APPLICATION SURFACES
@@ -134,8 +134,8 @@
   --vz-color-surface-interactive: var(--vz-color-neutral-800);
   --vz-color-surface-selected: rgb(0 255 135 / 8%);
   --vz-color-surface-information: rgb(0 229 255 / 7%);
-  --vz-color-surface-danger: rgb(255 59 48 / 8%);
-  --vz-color-surface-warning: rgb(255 194 71 / 8%);
+  --vz-color-surface-danger: rgb(255 56 48 / 8%);
+  --vz-color-surface-warning: rgb(255 196 0 / 8%);
 
   --vz-color-surface-1: var(--vz-color-surface-base);
   --vz-color-surface-2: var(--vz-color-surface-elevated);
@@ -154,8 +154,8 @@
      SEMANTIC — TEXT
      ================================================================ */
 
-  --vz-color-text-primary: #ffffff;
-  --vz-color-text-secondary: #8e9aa6;
+  --vz-color-text-primary: #f1f0ff;
+  --vz-color-text-secondary: #8a87b8;
   --vz-color-text-tertiary: #6e7984;
   --vz-color-text-muted: #505a64;
   --vz-color-text-disabled: #353e47;
@@ -213,7 +213,7 @@
   --vz-color-border-brand: rgb(0 255 135 / 62%);
   --vz-color-border-brand-strong: var(--vz-color-green-500);
   --vz-color-border-secondary: rgb(0 229 255 / 64%);
-  --vz-color-border-accent: rgb(255 194 71 / 62%);
+  --vz-color-border-accent: rgb(255 196 0 / 62%);
 
   --vz-color-border-success: rgb(0 255 135 / 62%);
   --vz-color-border-info: rgb(0 229 255 / 62%);
@@ -222,10 +222,10 @@
      SEMANTIC — FOCUS AND SELECTION
      ================================================================ */
 
-  --vz-color-focus-ring: var(--vz-color-green-500);
+  --vz-color-focus-ring: var(--vz-color-cyan-500);
   --vz-color-focus-ring-secondary: var(--vz-color-cyan-500);
 
-  --vz-color-selection-background: rgb(0 255 135 / 32%);
+  --vz-color-selection-background: rgb(0 229 255 / 28%);
   --vz-color-selection-text: var(--vz-color-neutral-0);
 
   /* ================================================================
@@ -258,7 +258,7 @@
     rgb(0 229 255 / 3%) 100%
   );
 
-  --vz-gradient-danger: linear-gradient(180deg, rgb(255 59 48 / 18%) 0%, rgb(255 59 48 / 7%) 100%);
+  --vz-gradient-danger: linear-gradient(180deg, rgb(255 56 48 / 18%) 0%, rgb(255 56 48 / 7%) 100%);
 
   --vz-gradient-surface: linear-gradient(
     145deg,
@@ -276,7 +276,7 @@
     transparent 100%
   );
 
-  --vz-gradient-rank-gold: linear-gradient(135deg, #ffe083 0%, #ffc247 50%, #8a5b00 100%);
+  --vz-gradient-rank-gold: linear-gradient(135deg, #ffe083 0%, #ffc400 50%, #8a5b00 100%);
 
   --vz-gradient-rank-silver: linear-gradient(135deg, #ffffff 0%, #c8d0d8 52%, #68737d 100%);
 
@@ -292,7 +292,7 @@
   --vz-font-body:
     "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  --vz-font-numeric: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --vz-font-numeric: "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
 
   --vz-font-mono: "IBM Plex Mono", "Roboto Mono", "SFMono-Regular", Consolas, monospace;
 
@@ -468,11 +468,11 @@
 
   --vz-glow-cyan-operational: 0 0 20px rgb(0 229 255 / 34%);
 
-  --vz-glow-red-subtle: 0 0 12px rgb(255 59 48 / 24%);
+  --vz-glow-red-subtle: 0 0 12px rgb(255 56 48 / 24%);
 
-  --vz-glow-red-critical: 0 0 24px rgb(255 59 48 / 42%);
+  --vz-glow-red-critical: 0 0 24px rgb(255 56 48 / 42%);
 
-  --vz-glow-warning-subtle: 0 0 12px rgb(255 194 71 / 24%);
+  --vz-glow-warning-subtle: 0 0 12px rgb(255 196 0 / 24%);
 
   /* Compatibility glow aliases */
 
@@ -631,7 +631,7 @@
   --vz-button-secondary-border: var(--vz-color-cyan-500);
 
   --vz-button-danger-background: rgb(17 21 25 / 92%);
-  --vz-button-danger-background-hover: rgb(255 59 48 / 9%);
+  --vz-button-danger-background-hover: rgb(255 56 48 / 9%);
   --vz-button-danger-text: var(--vz-color-red-500);
   --vz-button-danger-border: var(--vz-color-red-500);
 
@@ -820,7 +820,7 @@
   --vz-color-accent-orange-50: #fff7e6;
   --vz-color-accent-orange-100: #ffe9b8;
   --vz-color-accent-orange-200: #ffd780;
-  --vz-color-accent-orange-300: #ffc247;
+  --vz-color-accent-orange-300: #ffc400;
   --vz-color-accent-orange-400: #f5aa22;
   --vz-color-accent-orange-500: #df8f00;
   --vz-color-accent-orange-600: #b86f00;
@@ -897,8 +897,8 @@
   --vz-surface-accent-cyan: var(--vz-color-cyan-500, #00e5ff);
   --vz-surface-accent-violet: #8a4fff;
   --vz-surface-accent-magenta: #ff4fd8;
-  --vz-surface-accent-gold: #ffc247;
-  --vz-surface-accent-red: var(--vz-color-red-500, #ff3b30);
+  --vz-surface-accent-gold: #ffc400;
+  --vz-surface-accent-red: var(--vz-color-red-500, #ff3830);
   --vz-surface-accent-silver: #c7d0d6;
 
   /* ================================================================
@@ -1080,7 +1080,7 @@
     rgb(0 229 255 / 24%) 34%,
     rgb(138 79 255 / 22%) 50%,
     rgb(255 79 216 / 18%) 64%,
-    rgb(255 194 71 / 20%) 78%,
+    rgb(255 196 0 / 20%) 78%,
     transparent 94%
   );
 
@@ -1115,7 +1115,7 @@
   --vz-card-glow-common: 0 0 1.25rem rgb(135 146 155 / 14%);
   --vz-card-glow-rare: 0 0 1.5rem rgb(0 229 255 / 24%);
   --vz-card-glow-epic: 0 0 1.75rem rgb(138 79 255 / 26%);
-  --vz-card-glow-legendary: 0 0 2rem rgb(255 194 71 / 30%);
+  --vz-card-glow-legendary: 0 0 2rem rgb(255 196 0 / 30%);
 
   /* ================================================================
      PANEL FRAME
@@ -1159,10 +1159,10 @@
 
   --vz-module-border: rgb(174 184 191 / 20%);
   --vz-module-border-active: rgb(0 255 135 / 58%);
-  --vz-module-error-background: rgb(255 59 48 / 6%);
-  --vz-module-error-border: rgb(255 59 48 / 58%);
-  --vz-module-stale-background: rgb(255 194 71 / 5%);
-  --vz-module-stale-border: rgb(255 194 71 / 52%);
+  --vz-module-error-background: rgb(255 56 48 / 6%);
+  --vz-module-error-border: rgb(255 56 48 / 58%);
+  --vz-module-stale-background: rgb(255 196 0 / 5%);
+  --vz-module-stale-border: rgb(255 196 0 / 52%);
 
   /* ================================================================
      MOTION
@@ -1241,9 +1241,9 @@
 
   --vz-badge-background-positive: linear-gradient(180deg, rgb(0 255 135 / 18%), rgb(3 22 14 / 98%));
 
-  --vz-badge-background-warning: linear-gradient(180deg, rgb(255 194 71 / 20%), rgb(27 19 4 / 98%));
+  --vz-badge-background-warning: linear-gradient(180deg, rgb(255 196 0 / 20%), rgb(27 19 4 / 98%));
 
-  --vz-badge-background-negative: linear-gradient(180deg, rgb(255 59 48 / 19%), rgb(27 7 6 / 98%));
+  --vz-badge-background-negative: linear-gradient(180deg, rgb(255 56 48 / 19%), rgb(27 7 6 / 98%));
 
   --vz-badge-background-special: linear-gradient(180deg, rgb(138 79 255 / 20%), rgb(16 8 31 / 98%));
 
@@ -1262,8 +1262,8 @@
   --vz-badge-neutral: var(--vz-surface-accent-silver, #c7d0d6);
   --vz-badge-information: var(--vz-surface-accent-cyan, #00e5ff);
   --vz-badge-positive: var(--vz-surface-accent-green, #00ff87);
-  --vz-badge-warning: var(--vz-surface-accent-gold, #ffc247);
-  --vz-badge-negative: var(--vz-surface-accent-red, #ff3b30);
+  --vz-badge-warning: var(--vz-surface-accent-gold, #ffc400);
+  --vz-badge-negative: var(--vz-surface-accent-red, #ff3830);
   --vz-badge-special: var(--vz-surface-accent-violet, #8a4fff);
   --vz-badge-live: var(--vz-surface-accent-magenta, #ff4fd8);
   --vz-badge-disabled: #68737b;
@@ -1275,8 +1275,8 @@
   --vz-badge-border-neutral: rgb(199 208 214 / 44%);
   --vz-badge-border-information: rgb(0 229 255 / 56%);
   --vz-badge-border-positive: rgb(0 255 135 / 56%);
-  --vz-badge-border-warning: rgb(255 194 71 / 58%);
-  --vz-badge-border-negative: rgb(255 59 48 / 58%);
+  --vz-badge-border-warning: rgb(255 196 0 / 58%);
+  --vz-badge-border-negative: rgb(255 56 48 / 58%);
   --vz-badge-border-special: rgb(138 79 255 / 58%);
   --vz-badge-border-live: rgb(255 79 216 / 62%);
   --vz-badge-border-disabled: rgb(104 115 123 / 26%);
@@ -1285,8 +1285,8 @@
   --vz-badge-shadow-information:
     0 0 0.75rem rgb(0 229 255 / 14%), inset 0 1px 0 rgb(255 255 255 / 9%);
   --vz-badge-shadow-positive: 0 0 0.75rem rgb(0 255 135 / 14%), inset 0 1px 0 rgb(255 255 255 / 9%);
-  --vz-badge-shadow-warning: 0 0 0.75rem rgb(255 194 71 / 15%), inset 0 1px 0 rgb(255 255 255 / 9%);
-  --vz-badge-shadow-negative: 0 0 0.75rem rgb(255 59 48 / 15%), inset 0 1px 0 rgb(255 255 255 / 9%);
+  --vz-badge-shadow-warning: 0 0 0.75rem rgb(255 196 0 / 15%), inset 0 1px 0 rgb(255 255 255 / 9%);
+  --vz-badge-shadow-negative: 0 0 0.75rem rgb(255 56 48 / 15%), inset 0 1px 0 rgb(255 255 255 / 9%);
   --vz-badge-shadow-special: 0 0 0.75rem rgb(138 79 255 / 16%), inset 0 1px 0 rgb(255 255 255 / 9%);
   --vz-badge-shadow-live: 0 0 0.9rem rgb(255 79 216 / 20%), inset 0 1px 0 rgb(255 255 255 / 10%);
 
@@ -1296,8 +1296,8 @@
 
   --vz-status-online: var(--vz-surface-accent-green, #00ff87);
   --vz-status-offline: #7e8991;
-  --vz-status-away: var(--vz-surface-accent-gold, #ffc247);
-  --vz-status-busy: var(--vz-surface-accent-red, #ff3b30);
+  --vz-status-away: var(--vz-surface-accent-gold, #ffc400);
+  --vz-status-busy: var(--vz-surface-accent-red, #ff3830);
   --vz-status-live: var(--vz-surface-accent-magenta, #ff4fd8);
   --vz-status-loading: var(--vz-surface-accent-cyan, #00e5ff);
 
@@ -1327,7 +1327,7 @@
 
   --vz-rank-background-silver: linear-gradient(145deg, #f0f4f6, #89949c 40%, #252c31 72%, #c3ccd2);
 
-  --vz-rank-background-gold: linear-gradient(145deg, #fff1a8, #ffc247 36%, #61420c 72%, #d79516);
+  --vz-rank-background-gold: linear-gradient(145deg, #fff1a8, #ffc400 36%, #61420c 72%, #d79516);
 
   --vz-rank-background-elite: linear-gradient(145deg, #dbc9ff, #8a4fff 36%, #211040 72%, #ff4fd8);
 
@@ -1340,7 +1340,7 @@
   --vz-rank-shadow-standard: 0 0.5rem 1rem rgb(0 0 0 / 38%);
   --vz-rank-shadow-bronze: 0 0.5rem 1rem rgb(0 0 0 / 40%), 0 0 0.875rem rgb(211 138 85 / 18%);
   --vz-rank-shadow-silver: 0 0.5rem 1rem rgb(0 0 0 / 40%), 0 0 0.875rem rgb(213 221 226 / 16%);
-  --vz-rank-shadow-gold: 0 0.5rem 1rem rgb(0 0 0 / 42%), 0 0 1rem rgb(255 194 71 / 22%);
+  --vz-rank-shadow-gold: 0 0.5rem 1rem rgb(0 0 0 / 42%), 0 0 1rem rgb(255 196 0 / 22%);
   --vz-rank-shadow-elite: 0 0.5rem 1rem rgb(0 0 0 / 44%), 0 0 1.125rem rgb(138 79 255 / 28%);
 
   /* ================================================================
@@ -1348,13 +1348,13 @@
      ================================================================ */
 
   --vz-movement-increased: var(--vz-surface-accent-green, #00ff87);
-  --vz-movement-decreased: var(--vz-surface-accent-red, #ff3b30);
+  --vz-movement-decreased: var(--vz-surface-accent-red, #ff3830);
   --vz-movement-unchanged: #9da7ae;
   --vz-movement-new: var(--vz-surface-accent-violet, #8a4fff);
   --vz-movement-unranked: #68737b;
 
   --vz-movement-background-increased: rgb(0 255 135 / 8%);
-  --vz-movement-background-decreased: rgb(255 59 48 / 8%);
+  --vz-movement-background-decreased: rgb(255 56 48 / 8%);
   --vz-movement-background-unchanged: rgb(157 167 174 / 7%);
   --vz-movement-background-new: rgb(138 79 255 / 9%);
   --vz-movement-background-unranked: rgb(104 115 123 / 7%);
@@ -1366,8 +1366,8 @@
   --vz-stat-value-neutral: var(--vz-color-text-primary, #f4f7f8);
   --vz-stat-value-positive: var(--vz-surface-accent-green, #00ff87);
   --vz-stat-value-information: var(--vz-surface-accent-cyan, #00e5ff);
-  --vz-stat-value-warning: var(--vz-surface-accent-gold, #ffc247);
-  --vz-stat-value-negative: var(--vz-surface-accent-red, #ff3b30);
+  --vz-stat-value-warning: var(--vz-surface-accent-gold, #ffc400);
+  --vz-stat-value-negative: var(--vz-surface-accent-red, #ff3830);
   --vz-stat-value-special: var(--vz-surface-accent-violet, #8a4fff);
 
   --vz-stat-value-size-sm: 1.125rem;
@@ -1417,21 +1417,21 @@
   --vz-avatar-border: rgb(199 208 214 / 44%);
   --vz-avatar-inner-border: rgb(255 255 255 / 10%);
   --vz-avatar-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 42%), inset 0 1px 0 rgb(255 255 255 / 8%);
-  --vz-avatar-suspended-overlay: rgb(255 59 48 / 40%);
+  --vz-avatar-suspended-overlay: rgb(255 56 48 / 40%);
 
   /* Avatar tones */
   --vz-avatar-tone-neutral: var(--vz-surface-accent-silver, #c7d0d6);
   --vz-avatar-tone-green: var(--vz-surface-accent-green, #00ff87);
   --vz-avatar-tone-cyan: var(--vz-surface-accent-cyan, #00e5ff);
   --vz-avatar-tone-violet: var(--vz-surface-accent-violet, #8a4fff);
-  --vz-avatar-tone-gold: var(--vz-surface-accent-gold, #ffc247);
-  --vz-avatar-tone-red: var(--vz-surface-accent-red, #ff3b30);
+  --vz-avatar-tone-gold: var(--vz-surface-accent-gold, #ffc400);
+  --vz-avatar-tone-red: var(--vz-surface-accent-red, #ff3830);
 
   /* Presence */
   --vz-avatar-presence-online: var(--vz-status-online, #00ff87);
   --vz-avatar-presence-offline: var(--vz-status-offline, #7e8991);
-  --vz-avatar-presence-away: var(--vz-status-away, #ffc247);
-  --vz-avatar-presence-busy: var(--vz-status-busy, #ff3b30);
+  --vz-avatar-presence-away: var(--vz-status-away, #ffc400);
+  --vz-avatar-presence-busy: var(--vz-status-busy, #ff3830);
 
   /* Shapes */
   --vz-avatar-shape-circle: circle(50% at 50% 50%);
@@ -1709,11 +1709,11 @@
   --vz-bottom-nav-item-text: #87929b;
   --vz-bottom-nav-item-hover: #dce4e8;
   --vz-bottom-nav-item-active: var(--vz-surface-accent-green, #00ff87);
-  --vz-bottom-nav-item-partial: var(--vz-surface-accent-gold, #ffc247);
+  --vz-bottom-nav-item-partial: var(--vz-surface-accent-gold, #ffc400);
   --vz-bottom-nav-item-disabled: #59636a;
   --vz-bottom-nav-item-background-active: rgb(0 255 135 / 8%);
   --vz-bottom-nav-item-background-hover: rgb(255 255 255 / 4%);
-  --vz-bottom-nav-item-background-partial: rgb(255 194 71 / 6%);
+  --vz-bottom-nav-item-background-partial: rgb(255 196 0 / 6%);
 
   --vz-bottom-nav-prominent-size: 3.75rem;
   --vz-bottom-nav-prominent-background: linear-gradient(
@@ -1728,8 +1728,8 @@
 
   --vz-navigation-badge-neutral: #c7d0d6;
   --vz-navigation-badge-primary: var(--vz-surface-accent-green, #00ff87);
-  --vz-navigation-badge-warning: var(--vz-surface-accent-gold, #ffc247);
-  --vz-navigation-badge-danger: var(--vz-surface-accent-red, #ff3b30);
+  --vz-navigation-badge-warning: var(--vz-surface-accent-gold, #ffc400);
+  --vz-navigation-badge-danger: var(--vz-surface-accent-red, #ff3830);
   --vz-navigation-badge-surface: #080c0f;
 
   --vz-bottom-nav-transition:
@@ -1748,8 +1748,8 @@
   --vz-feedback-neutral: var(--vz-surface-accent-silver, #c7d0d6);
   --vz-feedback-information: var(--vz-surface-accent-cyan, #00e5ff);
   --vz-feedback-positive: var(--vz-surface-accent-green, #00ff87);
-  --vz-feedback-warning: var(--vz-surface-accent-gold, #ffc247);
-  --vz-feedback-negative: var(--vz-surface-accent-red, #ff3b30);
+  --vz-feedback-warning: var(--vz-surface-accent-gold, #ffc400);
+  --vz-feedback-negative: var(--vz-surface-accent-red, #ff3830);
   --vz-feedback-special: var(--vz-surface-accent-violet, #8a4fff);
   --vz-feedback-partial: var(--vz-surface-accent-magenta, #ff4fd8);
 
@@ -1866,7 +1866,7 @@
   --vz-shell-text: #f4f7f8;
   --vz-shell-muted: #8d9aa2;
   --vz-shell-active: #00ff87;
-  --vz-shell-partial: #ffc247;
+  --vz-shell-partial: #ffc400;
   --vz-shell-danger: #ff4e55;
   --vz-shell-information: #00e5ff;
   --vz-shell-shadow: 0 1.5rem 4rem rgb(0 0 0 / 45%), inset 0 1px 0 rgb(255 255 255 / 4%);
@@ -1885,7 +1885,7 @@
 :root {
   --vz-shell-nav-loading: #00e5ff;
   --vz-shell-nav-error: #ff4e55;
-  --vz-shell-nav-partial: #ffc247;
+  --vz-shell-nav-partial: #ffc400;
   --vz-shell-nav-feature: #a46fff;
   --vz-shell-nav-disabled-opacity: 0.42;
   --vz-shell-nav-state-ring: 0 0 0 1px currentColor;
@@ -2001,7 +2001,7 @@
   --vz-color-green-900: #174d21;
 
   --vz-color-warning-300: #ffd36a;
-  --vz-color-warning-400: #ffc247;
+  --vz-color-warning-400: #ffc400;
   --vz-color-warning-500: #ff9d24;
   --vz-color-warning-600: #c97218;
 
@@ -2024,10 +2024,10 @@
   --vz-color-border-strong: #29563d;
   --vz-color-border-brand: rgb(121 255 59 / 58%);
   --vz-color-border-brand-strong: #79ff3b;
-  --vz-color-border-accent: rgb(255 194 71 / 60%);
+  --vz-color-border-accent: rgb(255 196 0 / 60%);
 
   --vz-gradient-brand: linear-gradient(135deg, #a4ff63 0%, #79ff3b 58%, #18d9ff 100%);
-  --vz-gradient-brand-horizontal: linear-gradient(90deg, #79ff3b 0%, #a4ff63 62%, #ffc247 100%);
+  --vz-gradient-brand-horizontal: linear-gradient(90deg, #79ff3b 0%, #a4ff63 62%, #ffc400 100%);
   --vz-gradient-primary: linear-gradient(180deg, #a4ff63 0%, #79ff3b 100%);
   --vz-gradient-panel: linear-gradient(180deg, rgb(13 29 22 / 96%) 0%, rgb(6 14 11 / 98%) 100%);
 
@@ -2040,8 +2040,60 @@
   --vz-shell-border: rgb(121 255 59 / 18%);
   --vz-shell-border-active: rgb(121 255 59 / 58%);
   --vz-shell-active: #79ff3b;
-  --vz-shell-partial: #ffc247;
+  --vz-shell-partial: #ffc400;
   --vz-shell-information: #18d9ff;
   --vz-shell-nav-feature: #9d68ff;
 }
 /* VERZUS RETRO GAMING COLOUR OVERRIDES END */
+
+/* VERZUS STAGE 1 FOUNDATION:BEGIN */
+
+/*
+ * Canonical aliases for Stage 2-5 migrations.
+ * New and edited components consume these semantic tokens rather than
+ * creating local colour systems.
+ */
+:root {
+  --vz-visual-canvas: var(--vz-color-neutral-950);
+  --vz-visual-surface: var(--vz-color-neutral-900);
+  --vz-visual-surface-elevated: var(--vz-color-neutral-850);
+
+  --vz-visual-primary: var(--vz-color-green-500);
+  --vz-visual-secondary: var(--vz-color-cyan-500);
+  --vz-visual-live: var(--vz-color-red-500);
+  --vz-visual-war: var(--vz-color-pink-500);
+  --vz-visual-reward: var(--vz-color-warning-400);
+
+  --vz-visual-text: var(--vz-color-text-primary);
+  --vz-visual-text-muted: var(--vz-color-text-secondary);
+  --vz-visual-border: rgb(255 255 255 / 6%);
+
+  --vz-visual-radius-card: 1rem;
+  --vz-visual-radius-control: 0.5rem;
+  --vz-visual-notch-sm: 0.5rem;
+  --vz-visual-notch-md: 0.75rem;
+
+  --vz-visual-shadow-panel: inset 0 1px 0 rgb(255 255 255 / 3%);
+  --vz-visual-glow-primary: 0 0 1rem rgb(0 255 135 / 16%);
+  --vz-visual-glow-secondary: 0 0 1rem rgb(0 229 255 / 14%);
+
+  --vz-visual-clip-button: polygon(
+    var(--vz-visual-notch-sm) 0,
+    100% 0,
+    100% calc(100% - var(--vz-visual-notch-sm)),
+    calc(100% - var(--vz-visual-notch-sm)) 100%,
+    0 100%,
+    0 var(--vz-visual-notch-sm)
+  );
+
+  --vz-visual-clip-rank: polygon(
+    0 var(--vz-visual-notch-sm),
+    var(--vz-visual-notch-sm) 0,
+    100% 0,
+    100% calc(100% - var(--vz-visual-notch-sm)),
+    calc(100% - var(--vz-visual-notch-sm)) 100%,
+    0 100%
+  );
+}
+
+/* VERZUS STAGE 1 FOUNDATION:END */

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { RewardsScreen } from "@/features/rewards";
 
 const route = getPlatformRouteById("rewards");
 
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function RewardsPage() {
-  return <PlatformRoutePlaceholder routeId="rewards" />;
+  return <RewardsScreen />;
 }

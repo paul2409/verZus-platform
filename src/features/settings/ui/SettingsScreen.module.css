@@ -1,0 +1,52 @@
+.switchStack {
+  display: grid;
+  gap: var(--vz-space-4);
+}
+
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vz-space-3);
+  margin-top: var(--vz-space-5);
+}
+
+.creditGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--vz-space-3);
+}
+
+.creditGrid article {
+  display: grid;
+  gap: var(--vz-space-2);
+  padding: var(--vz-space-4);
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-md);
+  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
+}
+
+.creditGrid span {
+  color: var(--vz-color-accent-cyan);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.creditGrid strong {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-interface);
+  text-transform: uppercase;
+}
+
+.creditGrid p {
+  margin: 0;
+  color: var(--vz-color-text-secondary);
+}
+
+@media (min-width: 48rem) {
+  .creditGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

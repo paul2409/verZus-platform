@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { CompetitionDiscoveryScreen } from "@/features/competitions";
 
 const route = getPlatformRouteById("compete");
 
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function CompetePage() {
-  return <PlatformRoutePlaceholder routeId="compete" />;
+  return <CompetitionDiscoveryScreen />;
 }

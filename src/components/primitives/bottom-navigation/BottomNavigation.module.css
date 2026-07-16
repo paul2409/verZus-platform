@@ -521,3 +521,92 @@
   border-color: var(--vz-ref-black);
 }
 /* VERZUS REFERENCE_LOCK_BOTTOM_NAV END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.navigation {
+  color: var(--vz-color-text-secondary);
+}
+
+.frame,
+.surface {
+  border: 1px solid var(--vz-color-border-subtle);
+  border-radius: var(--vz-radius-panel) var(--vz-radius-panel) 0 0;
+  background: color-mix(in srgb, var(--vz-color-bg-deep) 96%, transparent);
+  box-shadow: none;
+  backdrop-filter: blur(1rem);
+}
+
+.list {
+  min-height: var(--vz-mobile-nav-height);
+}
+
+.action {
+  min-width: 0;
+  color: var(--vz-color-text-secondary);
+  border: 0;
+  background: transparent;
+  font-family: var(--vz-font-interface);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.action:hover:not([aria-disabled="true"]) {
+  color: var(--vz-color-text-primary);
+  background: color-mix(in srgb, var(--vz-color-text-primary) 3%, transparent);
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: -3px;
+}
+
+.current {
+  color: var(--vz-color-accent-green);
+  background: color-mix(in srgb, var(--vz-color-accent-green) 7%, transparent);
+}
+
+.activeRail {
+  height: 2px;
+  background: var(--vz-color-accent-green);
+  box-shadow: var(--vz-glow-green);
+}
+
+.current .iconWrap {
+  color: var(--vz-color-accent-green);
+  filter: drop-shadow(
+    0 0 0.35rem color-mix(in srgb, var(--vz-color-accent-green) 42%, transparent)
+  );
+}
+
+.statePartial {
+  color: var(--vz-color-rank-gold);
+}
+
+.stateDisabled {
+  color: var(--vz-color-text-disabled);
+}
+
+.prominent {
+  transform: none;
+}
+
+.navigationBadge,
+.navigationBadgeDot {
+  border-color: var(--vz-color-bg-deep);
+  background: var(--vz-color-status-magenta);
+}
+
+.badgePrimary {
+  background: var(--vz-color-accent-green);
+}
+
+.badgeWarning {
+  background: var(--vz-color-rank-gold);
+}
+
+.badgeDanger {
+  background: var(--vz-color-status-magenta);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

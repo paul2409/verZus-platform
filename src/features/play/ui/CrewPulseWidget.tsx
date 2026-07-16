@@ -1,4 +1,4 @@
-// VERZUS M5 STEPS 5.5-5.8
+// VERZUS STAGE 3 CREW PULSE
 "use client";
 
 import Link from "next/link";
@@ -22,7 +22,7 @@ export function CrewPulseWidget({
 }) {
   return (
     <WidgetFrame
-      eyebrow="03 · CREW PULSE"
+      eyebrow="06 · CREW SIGNAL"
       title="Crew status"
       status={view.data?.liveActivityCount ? `${view.data.liveActivityCount} LIVE` : "CREW"}
     >
@@ -45,7 +45,7 @@ export function CrewPulseWidget({
       ) : (
         <>
           <div className={styles.crewIdentity}>
-            <span>{view.data.tag}</span>
+            <span aria-hidden="true">{view.data.tag}</span>
             <div>
               <strong>{view.data.name}</strong>
               <small>
@@ -54,18 +54,18 @@ export function CrewPulseWidget({
             </div>
           </div>
 
-          <div className={styles.crewMetrics}>
+          <dl className={styles.crewMetrics}>
             <div>
-              <span>ONLINE</span>
-              <strong>
+              <dt>ONLINE</dt>
+              <dd>
                 {view.data.onlineMembers}/{view.data.totalMembers}
-              </strong>
+              </dd>
             </div>
             <div>
-              <span>LIVE ACTIVITY</span>
-              <strong>{view.data.liveActivityCount}</strong>
+              <dt>LIVE ACTIVITY</dt>
+              <dd>{view.data.liveActivityCount}</dd>
             </div>
-          </div>
+          </dl>
 
           <div className={styles.crewFixture}>
             <span>NEXT CREW FIXTURE</span>

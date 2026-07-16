@@ -1,3 +1,5 @@
+// VERZUS STAGE 3 GAME MODE GRID
+
 import { GameModeCard, type GameModeCardProps } from "./GameModeCard";
 import { StatusChip } from "./StatusChip";
 import styles from "./game-mode-grid.module.css";
@@ -6,29 +8,29 @@ const modes: readonly GameModeCardProps[] = [
   {
     game: "EA FC",
     mode: "Rookie Cup",
-    players: "128 active",
+    participation: "1V1",
     requirement: "Rookie tier",
     status: "Live",
     statusTone: "live",
-    tone: "cyan",
+    tone: "green",
     glyph: "FC",
     href: "/compete?game=ea-fc",
   },
   {
     game: "League of Legends",
     mode: "Ranked",
-    players: "64 queued",
+    participation: "5V5",
     requirement: "Level 30+",
     status: "Scheduled",
     statusTone: "scheduled",
-    tone: "violet",
+    tone: "cyan",
     glyph: "L",
     href: "/compete?game=league-of-legends",
   },
   {
     game: "Clash Royale",
     mode: "Ladder",
-    players: "96 active",
+    participation: "1V1",
     requirement: "Trophy gate",
     status: "Verified",
     statusTone: "verified",
@@ -39,11 +41,11 @@ const modes: readonly GameModeCardProps[] = [
   {
     game: "COD Mobile",
     mode: "Squad Battles",
-    players: "40 squads",
+    participation: "5V5",
     requirement: "Full squad",
     status: "Locked",
     statusTone: "locked",
-    tone: "pink",
+    tone: "magenta",
     glyph: "CM",
     href: "/compete?game=cod-mobile",
   },
@@ -57,7 +59,7 @@ export function GameModeGrid() {
           <span>GAME DIRECTORY</span>
           <h2 id="play-game-modes-title">Choose your arena</h2>
         </div>
-        <StatusChip tone="live">4 modes online</StatusChip>
+        <StatusChip tone="live">4 GAME LANES</StatusChip>
       </header>
 
       <div className={styles.grid}>

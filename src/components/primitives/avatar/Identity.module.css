@@ -187,3 +187,23 @@
     forced-color-adjust: auto;
   }
 }
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.name,
+.primaryLine {
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-interface);
+}
+
+.handle,
+.subtitle,
+.metadata {
+  color: var(--vz-color-text-secondary);
+}
+
+.crewTag {
+  color: var(--vz-color-accent-cyan);
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 42%, transparent);
+  background: color-mix(in srgb, var(--vz-color-accent-cyan) 6%, transparent);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

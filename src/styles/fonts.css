@@ -43,3 +43,15 @@
     "tnum" 1,
     "lnum" 1;
 }
+
+/* VERZUS STAGE 1 FONT LOCK:BEGIN */
+
+:root {
+  --vz-font-display: "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
+  --vz-font-body:
+    "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --vz-font-numeric: "Rajdhani", "Arial Narrow", "Segoe UI", sans-serif;
+}
+
+/* VERZUS STAGE 1 FONT LOCK:END */

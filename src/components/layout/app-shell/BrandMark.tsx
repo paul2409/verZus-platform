@@ -9,9 +9,8 @@ export function BrandMark() {
         V
       </span>
       <span className={styles.brandWord}>VERZUS</span>
-      <span aria-hidden="true">{"/" + "/ V.01"}</span>
       <span aria-hidden="true" className={styles.brandVersion}>
-        // V.01
+        {"/" + "/ V.01"}
       </span>
     </Link>
   );

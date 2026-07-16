@@ -1,8 +1,9 @@
-// VERZUS M3 STEP 3.7
+// VERZUS STAGE 2 SHARED UI
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { IconButton } from "@/components/primitives/icon";
+import { Icon, IconButton } from "@/components/primitives/icon";
 
 import { WidgetBoundary } from "../widget-boundary";
 import styles from "./AppShell.module.css";
@@ -47,13 +48,6 @@ export function TopBar({
   return (
     <header className={styles.topBar}>
       <div className={styles.topBarStart}>
-        <IconButton
-          className={styles.mobileMenuButton}
-          icon="more-horizontal"
-          label="Open navigation menu"
-          onClick={onMenuOpen}
-          size="md"
-        />
         <BrandMark />
       </div>
 
@@ -69,6 +63,22 @@ export function TopBar({
       </nav>
 
       <div className={styles.topBarActions}>
+        <Link
+          aria-label="Open leaderboards"
+          className={styles.topBarActionLink}
+          href="/leaderboards/weekly"
+        >
+          <Icon decorative name="trophy" size="md" />
+        </Link>
+
+        <IconButton
+          className={styles.mobileMenuButton}
+          icon="more-horizontal"
+          label="Open navigation menu"
+          onClick={onMenuOpen}
+          size="md"
+        />
+
         <IconButton icon="search" label="Search" onClick={onSearchOpen} size="md" />
 
         <span className={styles.notificationButtonWrap}>

@@ -1,83 +1,41 @@
 import styles from "./page.module.css";
 
 const coreTokens = [
-  {
-    name: "Background deep",
-    token: "--vz-color-background-deep",
-    value: "#080A0C",
-    className: styles.backgroundDeep,
-  },
-  {
-    name: "Surface base",
-    token: "--vz-color-surface-base",
-    value: "#111519",
-    className: styles.surfaceBase,
-  },
-  {
-    name: "Surface elevated",
-    token: "--vz-color-surface-elevated",
-    value: "#1A2026",
-    className: styles.surfaceElevated,
-  },
-  {
-    name: "Accent neon",
-    token: "--vz-color-green-500",
-    value: "#00FF87",
-    className: styles.green,
-  },
-  {
-    name: "Accent cyan",
-    token: "--vz-color-cyan-500",
-    value: "#00E5FF",
-    className: styles.cyan,
-  },
-  {
-    name: "Danger",
-    token: "--vz-color-red-500",
-    value: "#FF3B30",
-    className: styles.red,
-  },
-  {
-    name: "Text primary",
-    token: "--vz-color-text-primary",
-    value: "#FFFFFF",
-    className: styles.textPrimary,
-  },
-  {
-    name: "Text secondary",
-    token: "--vz-color-text-secondary",
-    value: "#8E9AA6",
-    className: styles.textSecondary,
-  },
-];
+  ["Void canvas", "--vz-color-bg-deep", "#080A0C", "backgroundDeep"],
+  ["Surface base", "--vz-color-surface-base", "#111519", "surfaceBase"],
+  ["Surface elevated", "--vz-color-surface-elevated", "#1A2026", "surfaceElevated"],
+  ["Primary green", "--vz-color-accent-green", "#00FF87", "green"],
+  ["Secondary cyan", "--vz-color-accent-cyan", "#00E5FF", "cyan"],
+  ["Live and danger", "--vz-color-status-danger", "#FF3830", "red"],
+  ["War and rivalry", "--vz-color-status-magenta", "#FF2D87", "magenta"],
+  ["Rank and reward", "--vz-color-rank-gold", "#FFC400", "gold"],
+  ["Primary text", "--vz-color-text-primary", "#F1F0FF", "textPrimary"],
+  ["Secondary text", "--vz-color-text-secondary", "#8A87B8", "textSecondary"],
+] as const;
 
 export default function TokenPreviewPage() {
   return (
     <main className={styles.page}>
       <section className={styles.shell}>
         <header className={styles.header}>
-          <p className={styles.eyebrow}>M2 // APPROVED TOKEN SYSTEM</p>
-
+          <p className={styles.eyebrow}>11.1 // CANONICAL TOKEN SYSTEM</p>
           <h1 className={styles.title}>VERZUS VISUAL FOUNDATION</h1>
-
           <p className={styles.description}>
-            The approved dark, competitive, electric system is active. Green owns primary
-            operations, cyan owns secondary interaction, and red owns dangerous or urgent states.
+            Neon colours are operational signals. Green owns positive action, cyan owns information
+            and focus, red owns live danger, magenta owns rivalry, and gold owns rank and rewards.
           </p>
         </header>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Core colour contract</h2>
-
+          <h2 className={styles.sectionTitle}>Production colour contract</h2>
           <div className={styles.swatchGrid}>
-            {coreTokens.map((token) => (
-              <article className={styles.swatchCard} key={token.token}>
-                <div aria-hidden="true" className={`${styles.swatch} ${token.className}`} />
-
+            {coreTokens.map(([name, token, value, className]) => (
+              <article className={styles.swatchCard} key={token}>
+                <div aria-hidden="true" className={`${styles.swatch} ${styles[className]}`} />
                 <div>
-                  <h3 className={styles.swatchName}>{token.name}</h3>
-                  <p className={styles.tokenName}>{token.token}</p>
-                  <p className={styles.tokenValue}>{token.value}</p>
+                  <h3 className={styles.swatchName}>{name}</h3>
+                  <p className={styles.tokenName}>{token}</p>
+                  <p className={styles.tokenValue}>{value}</p>
                 </div>
               </article>
             ))}
@@ -85,68 +43,44 @@ export default function TokenPreviewPage() {
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Operational semantics</h2>
+          <h2 className={styles.sectionTitle}>Typography contract</h2>
+          <div className={styles.typeGrid}>
+            <article>
+              <span>Rajdhani / Display</span>
+              <strong>PLAY. RANK. RISE.</strong>
+              <p>Uppercase headings, navigation, labels, ranks, scores, and timers.</p>
+            </article>
+            <article>
+              <span>Inter / Body</span>
+              <strong>Readable operational copy</strong>
+              <p>Forms, rules, descriptions, help text, and long interface content.</p>
+            </article>
+          </div>
+        </section>
 
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Signal semantics</h2>
           <div className={styles.semanticGrid}>
             <article className={styles.primaryAction}>
-              <p className={styles.controlLabel}>Primary action</p>
+              <span>Primary action</span>
               <strong>CHECK IN NOW</strong>
             </article>
-
             <article className={styles.secondaryAction}>
-              <p className={styles.controlLabel}>Secondary action</p>
-              <strong>VIEW CARD</strong>
+              <span>Information</span>
+              <strong>VIEW MATCH</strong>
             </article>
-
-            <article className={styles.dangerAction}>
-              <p className={styles.controlLabel}>Danger action</p>
-              <strong>REPORT ISSUE</strong>
+            <article className={styles.liveAction}>
+              <span>Live danger</span>
+              <strong>ROUND 3 / 5</strong>
             </article>
-          </div>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Surface and status hierarchy</h2>
-
-          <div className={styles.surfaceGrid}>
-            <article className={styles.baseCard}>
-              <span className={styles.statusOnline}>ONLINE</span>
-              <h3>Surface base</h3>
-              <p>Standard card, table row, and module background.</p>
+            <article className={styles.warAction}>
+              <span>Rivalry</span>
+              <strong>WAR WEEK ACTIVE</strong>
             </article>
-
-            <article className={styles.elevatedCard}>
-              <span className={styles.statusInfo}>IN GAME</span>
-              <h3>Surface elevated</h3>
-              <p>Hover state, dropdown, popover, or elevated module.</p>
+            <article className={styles.rewardAction}>
+              <span>Rank and reward</span>
+              <strong>2,310 VS POINTS</strong>
             </article>
-
-            <article className={styles.liveCard}>
-              <span className={styles.statusLive}>LIVE</span>
-              <h3>Urgent live state</h3>
-              <p>Red remains reserved for danger and urgent operations.</p>
-            </article>
-          </div>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Radius and glow</h2>
-
-          <div className={styles.geometryGrid}>
-            <div className={styles.controlGeometry}>
-              <span>8px</span>
-              <p>Buttons and inputs</p>
-            </div>
-
-            <div className={styles.cardGeometry}>
-              <span>16px</span>
-              <p>Cards and containers</p>
-            </div>
-
-            <div className={styles.glowGeometry}>
-              <span>ACTIVE</span>
-              <p>Controlled green operational glow</p>
-            </div>
           </div>
         </section>
       </section>

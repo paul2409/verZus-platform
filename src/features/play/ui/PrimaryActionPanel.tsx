@@ -1,4 +1,4 @@
-// VERZUS M5 STEPS 5.9-5.13
+// VERZUS STAGE 3 PRIMARY ACTION
 
 "use client";
 
@@ -27,9 +27,9 @@ export function PrimaryActionPanel({
 }) {
   return (
     <WidgetFrame
-      eyebrow="01 · PRIMARY ACTION"
-      title="Your next battle"
-      status={nextMatch.data?.status.replaceAll("_", " ").toUpperCase() ?? "PLAY"}
+      eyebrow="01 · NEXT ACTION"
+      title="Next scheduled match"
+      status={nextMatch.data?.status.replaceAll("_", " ").toUpperCase() ?? "READY"}
       className={styles.primaryActionPanel}
     >
       <div className={styles.primaryActionGrid}>

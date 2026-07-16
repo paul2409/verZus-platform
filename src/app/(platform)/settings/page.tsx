@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { SettingsScreen } from "@/features/settings/ui";
 
 const route = getPlatformRouteById("settings");
 
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function SettingsPage() {
-  return <PlatformRoutePlaceholder routeId="settings" />;
+  return <SettingsScreen />;
 }

@@ -476,3 +476,74 @@
   background: rgb(0 229 255 / 5%);
 }
 /* VERZUS REFERENCE_LOCK_SHELL_OVERLAYS END */
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.searchForm,
+.profileContent,
+.notificationList,
+.statusRegion {
+  color: var(--vz-color-text-primary);
+}
+
+.searchField,
+.shortcut,
+.notificationItem,
+.profileSummary,
+.profileMetric,
+.profileLinks,
+.statusRegion {
+  border-color: var(--vz-color-border-subtle);
+  background: var(--vz-color-surface-base);
+  box-shadow: none;
+}
+
+.sectionLabel,
+.profileMetric span,
+.notificationMeta,
+.searchShortcuts {
+  color: var(--vz-color-text-secondary);
+}
+
+.primaryAction {
+  color: var(--vz-color-text-on-accent);
+  border-color: var(--vz-color-accent-green);
+  background: var(--vz-color-accent-green);
+  clip-path: var(--vz-clip-button);
+  box-shadow: none;
+}
+
+.secondaryAction,
+.profileLink,
+.notificationLink,
+.profileFailureLink {
+  color: var(--vz-color-accent-cyan);
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 52%, transparent);
+  background: transparent;
+  clip-path: var(--vz-clip-button);
+}
+
+.primaryAction:hover {
+  box-shadow: var(--vz-glow-green);
+}
+
+.secondaryAction:hover,
+.profileLink:hover,
+.notificationLink:hover,
+.profileFailureLink:hover {
+  background: color-mix(in srgb, var(--vz-color-accent-cyan) 7%, transparent);
+  box-shadow: var(--vz-glow-cyan);
+}
+
+.shortcut:focus-visible,
+.notificationItem:focus-visible,
+.profileLink:focus-visible,
+.notificationLink:focus-visible,
+.profileFailureLink:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+.loadingDot {
+  background: var(--vz-color-accent-cyan);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

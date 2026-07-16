@@ -1,0 +1,144 @@
+.page {
+  --state-signal: var(--vz-color-accent-cyan);
+
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  padding: var(--vz-space-5);
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--state-signal) 8%, transparent),
+      transparent 32rem
+    ),
+    var(--vz-color-bg-deep);
+}
+
+.page[data-tone="error"] {
+  --state-signal: var(--vz-color-status-danger);
+}
+
+.page[data-tone="not-found"] {
+  --state-signal: var(--vz-color-rank-gold);
+}
+
+.page[data-tone="maintenance"] {
+  --state-signal: var(--vz-color-status-magenta);
+}
+
+.card {
+  position: relative;
+  display: grid;
+  width: min(100%, 38rem);
+  gap: var(--vz-space-4);
+  padding: clamp(var(--vz-space-6), 7vw, var(--vz-space-12));
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--state-signal) 46%, transparent);
+  border-radius: var(--vz-radius-lg);
+  background: var(--vz-color-surface-base);
+  box-shadow: var(--vz-shadow-panel);
+}
+
+.signal {
+  position: absolute;
+  inset-block: var(--vz-space-4);
+  left: 0;
+  width: 3px;
+  background: var(--state-signal);
+}
+
+.eyebrow,
+.reference {
+  margin: 0;
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--state-signal);
+}
+
+.card h1 {
+  margin: 0;
+  font-size: clamp(2rem, 8vw, 4rem);
+}
+
+.description,
+.reference {
+  color: var(--vz-color-text-secondary);
+}
+
+.description {
+  max-width: 54ch;
+  margin: 0;
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vz-space-3);
+}
+
+.action :is(button, a) {
+  min-height: 2.75rem;
+  padding: var(--vz-space-3) var(--vz-space-5);
+  border: 1px solid var(--state-signal);
+  background: var(--state-signal);
+  color: var(--vz-color-text-on-accent);
+  font-family: var(--vz-font-interface);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-ui);
+  text-decoration: none;
+  text-transform: uppercase;
+  clip-path: var(--vz-clip-button);
+}
+
+.action :is(button, a):focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+.loadingBars {
+  display: grid;
+  gap: var(--vz-space-2);
+}
+
+.loadingBars span {
+  height: 0.6rem;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--state-signal) 48%, transparent),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: system-state-scan 1.25s linear infinite;
+}
+
+.loadingBars span:nth-child(2) {
+  width: 78%;
+}
+
+.loadingBars span:nth-child(3) {
+  width: 56%;
+}
+
+@keyframes system-state-scan {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingBars span {
+    animation: none;
+    background: color-mix(in srgb, var(--state-signal) 30%, transparent);
+  }
+}

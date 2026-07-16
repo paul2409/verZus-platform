@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { MatchesScreen } from "@/features/matches";
 
 const route = getPlatformRouteById("matches");
 
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function MatchesPage() {
-  return <PlatformRoutePlaceholder routeId="matches" />;
+  return <MatchesScreen />;
 }

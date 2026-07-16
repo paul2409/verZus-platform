@@ -129,3 +129,43 @@
     border-width: var(--vz-border-width-2);
   }
 }
+
+/* VERZUS STAGE 2 SHARED UI:BEGIN */
+.button {
+  color: var(--vz-color-text-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--vz-radius-control);
+  background: transparent;
+  box-shadow: none;
+}
+
+.button:hover:not(:disabled) {
+  color: var(--vz-color-text-primary);
+  border-color: var(--vz-color-border-subtle);
+  background: color-mix(in srgb, var(--vz-color-text-primary) 4%, transparent);
+  transform: none;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--vz-color-accent-cyan);
+  outline-offset: 3px;
+}
+
+.primary {
+  color: var(--vz-color-accent-green);
+  border-color: color-mix(in srgb, var(--vz-color-accent-green) 38%, transparent);
+  background: color-mix(in srgb, var(--vz-color-accent-green) 6%, transparent);
+}
+
+.secondary {
+  color: var(--vz-color-accent-cyan);
+  border-color: color-mix(in srgb, var(--vz-color-accent-cyan) 38%, transparent);
+  background: color-mix(in srgb, var(--vz-color-accent-cyan) 6%, transparent);
+}
+
+.danger {
+  color: var(--vz-color-status-danger);
+  border-color: color-mix(in srgb, var(--vz-color-status-danger) 38%, transparent);
+  background: color-mix(in srgb, var(--vz-color-status-danger) 6%, transparent);
+}
+/* VERZUS STAGE 2 SHARED UI:END */

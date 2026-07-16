@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { getPlatformRouteById, PlatformRoutePlaceholder } from "@/components/layout/app-shell";
+import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { LeaderboardScreen } from "@/features/leaderboards";
 
 const route = getPlatformRouteById("leaderboards-weekly");
 
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function WeeklyLeaderboardPage() {
-  return <PlatformRoutePlaceholder routeId="leaderboards-weekly" />;
+  return <LeaderboardScreen />;
 }
