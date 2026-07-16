@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+  <title id="title">VERZUS championship trophy</title>
+  <desc id="desc">A futuristic dark trophy with a glowing green VERZUS mark and cyan and purple light trails.</desc>
+  <defs>
+    <linearGradient id="cup" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9f9ff"/>
+      <stop offset=".25" stop-color="#456b8f"/>
+      <stop offset=".52" stop-color="#05080d"/>
+      <stop offset=".78" stop-color="#48306d"/>
+      <stop offset="1" stop-color="#d7c5ff"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00e5ff"/>
+      <stop offset="1" stop-color="#00ff87"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#00e5ff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#00e5ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <rect width="960" height="520" fill="#05070b"/>
+  <g opacity=".46">
+    <path d="M0 95H960M0 190H960M0 285H960M0 380H960M0 475H960" stroke="#2b2540"/>
+    <path d="M96 0V520M192 0V520M288 0V520M384 0V520M480 0V520M576 0V520M672 0V520M768 0V520M864 0V520" stroke="#2b2540"/>
+  </g>
+  <ellipse cx="480" cy="265" rx="340" ry="220" fill="url(#glow)" filter="url(#soft)"/>
+  <g fill="none" stroke-linecap="square">
+    <path d="M40 110L265 185L118 245L330 315" stroke="#00e5ff" stroke-width="3"/>
+    <path d="M920 70L695 170L860 245L650 330" stroke="#9b62ff" stroke-width="3"/>
+    <path d="M40 390L250 335L140 455" stroke="#ff2d87" stroke-width="2"/>
+    <path d="M920 410L710 345L845 475" stroke="#00ff87" stroke-width="2"/>
+  </g>
+  <g transform="translate(310 38)">
+    <path d="M56 64C20 66 8 94 13 132C18 174 48 198 86 202" fill="none" stroke="url(#cup)" stroke-width="24"/>
+    <path d="M284 64C320 66 332 94 327 132C322 174 292 198 254 202" fill="none" stroke="url(#cup)" stroke-width="24"/>
+    <path d="M72 30H268L248 212C242 268 211 300 170 300C129 300 98 268 92 212Z" fill="url(#cup)" stroke="#8fefff" stroke-opacity=".55" stroke-width="3"/>
+    <path d="M122 300H218V355H122Z" fill="#17202a" stroke="#7c52ae" stroke-width="3"/>
+    <path d="M88 355H252L280 402H60Z" fill="url(#cup)" stroke="#8fefff" stroke-opacity=".5" stroke-width="3"/>
+    <path d="M122 114L170 216L218 114L194 128L170 176L146 128Z" fill="url(#brand)" filter="url(#soft)" opacity=".55"/>
+    <path d="M122 114L170 216L218 114L194 128L170 176L146 128Z" fill="url(#brand)"/>
+  </g>
+</svg>

@@ -1,0 +1,301 @@
+.entryPanel {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--vz-retro-green) 55%, var(--vz-retro-line));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--vz-retro-green) 7%, transparent),
+      transparent 48%
+    ),
+    color-mix(in srgb, var(--vz-retro-surface) 97%, transparent);
+  clip-path: var(--vz-retro-cut-md);
+}
+
+.entryPanel > span,
+.dialogBody header > span {
+  color: var(--vz-retro-green);
+  font-family: var(--vz-font-interface);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+}
+
+.entryPanel h2,
+.dialogBody h3 {
+  margin: 0;
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-display);
+  text-transform: uppercase;
+}
+
+.entryPanel h2 {
+  font-size: 1rem;
+}
+
+.entryPanel > p,
+.dialogBody header p,
+.manageNote {
+  margin: 0;
+  color: var(--vz-retro-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.entryHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.entryHeading b {
+  padding: 0.24rem 0.45rem;
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-green);
+  font-family: var(--vz-font-interface);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+}
+
+.summaryGrid,
+.manageGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--vz-retro-line);
+}
+
+.summaryGrid > div,
+.manageGrid > div {
+  min-width: 0;
+  padding: 0.72rem;
+  background: var(--vz-retro-black);
+}
+
+.summaryGrid dt,
+.manageGrid dt {
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-interface);
+  font-size: 0.58rem;
+  letter-spacing: 0.09em;
+}
+
+.summaryGrid dd,
+.manageGrid dd {
+  margin: 0.22rem 0 0;
+  overflow-wrap: anywhere;
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.rulesLink {
+  justify-self: center;
+  color: var(--vz-retro-cyan);
+  font-family: var(--vz-font-interface);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.entryState {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: start;
+  padding: 0.75rem;
+  border: 1px solid var(--vz-retro-line);
+  background: var(--vz-retro-black);
+}
+
+.entryState > svg {
+  color: var(--vz-retro-cyan);
+}
+
+.entryState > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.entryState strong {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-interface);
+  font-size: 0.72rem;
+}
+
+.entryState p,
+.entryState small {
+  margin: 0;
+  color: var(--vz-retro-muted);
+  font-size: 0.68rem;
+}
+
+.entryState button {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.confirmedRecord {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--vz-retro-green) 60%, var(--vz-retro-line));
+  background: color-mix(in srgb, var(--vz-retro-green) 8%, var(--vz-retro-black));
+}
+
+.confirmedIcon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-green);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.confirmedRecord > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.confirmedRecord span {
+  color: var(--vz-retro-green);
+  font-family: var(--vz-font-interface);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.confirmedRecord strong {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+  font-size: 1rem;
+}
+
+.confirmedRecord small {
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.64rem;
+}
+
+.dialogBody {
+  display: grid;
+  gap: 1rem;
+}
+
+.dialogBody header {
+  display: grid;
+  gap: 0.45rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--vz-retro-line);
+}
+
+.dialogBody h3 {
+  font-size: clamp(1.25rem, 5vw, 2rem);
+  line-height: 0.95;
+}
+
+.requirementList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.requirementList p {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0.65rem;
+  color: var(--vz-retro-muted);
+  border-left: 2px solid var(--vz-retro-cyan);
+  background: var(--vz-retro-black);
+  font-size: 0.76rem;
+}
+
+.requirementList svg {
+  flex: 0 0 auto;
+  color: var(--vz-retro-cyan);
+}
+
+.dialogActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.mutationError {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.7rem;
+  color: var(--vz-retro-red);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-red) 60%, var(--vz-retro-line));
+  background: color-mix(in srgb, var(--vz-retro-red) 7%, var(--vz-retro-black));
+  font-family: var(--vz-font-interface);
+  font-size: 0.68rem;
+}
+
+.mutationError small {
+  color: var(--vz-retro-muted);
+}
+
+.manageGrid {
+  margin-top: 0;
+}
+
+.manageGrid > div:last-child dd {
+  color: var(--vz-retro-green);
+}
+
+@media (min-width: 48rem) {
+  .entryPanel {
+    padding: 1.1rem;
+  }
+
+  .entryState {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .entryState button {
+    grid-column: auto;
+    width: auto;
+  }
+}
+
+@media (max-width: 29.99rem) {
+  .summaryGrid,
+  .manageGrid,
+  .dialogActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.primaryLink {
+  display: inline-grid;
+  min-height: var(--vz-control-height-md);
+  place-items: center;
+  padding-inline: var(--vz-space-5);
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-green);
+  border: 1px solid var(--vz-retro-green);
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  font-size: var(--vz-font-size-sm);
+  font-weight: 700;
+  letter-spacing: var(--vz-letter-spacing-wider);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.primaryLink:focus-visible {
+  outline: var(--vz-border-width-2) solid var(--vz-color-focus-ring);
+  outline-offset: var(--vz-space-1);
+}

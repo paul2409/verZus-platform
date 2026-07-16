@@ -1,0 +1,50 @@
+/* VERZUS M6.7 COMPETITION RELEASE GATE */
+
+.disabled {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 6vw, 72px);
+}
+
+.disabled section {
+  width: min(100%, 720px);
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid var(--vz-color-border, #39324d);
+  background: var(--vz-color-surface-raised, #111019);
+  box-shadow: 0 0 36px rgb(0 229 255 / 10%);
+}
+
+.disabled span,
+.disabled h1,
+.disabled a {
+  font-family: var(--vz-font-display, sans-serif);
+  letter-spacing: 0.06em;
+}
+
+.disabled span {
+  color: var(--vz-color-cyan-400, #00e5ff);
+  font-size: 0.75rem;
+}
+
+.disabled h1 {
+  margin: 12px 0;
+  font-size: clamp(1.75rem, 7vw, 3.5rem);
+  line-height: 0.95;
+}
+
+.disabled p {
+  max-width: 58ch;
+  color: var(--vz-color-text-muted, #b4afc2);
+}
+
+.disabled a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 20px;
+  padding: 0 18px;
+  border: 1px solid var(--vz-color-cyan-400, #00e5ff);
+  color: var(--vz-color-cyan-400, #00e5ff);
+  text-decoration: none;
+}

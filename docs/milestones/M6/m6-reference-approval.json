@@ -1,0 +1,17 @@
+{
+  "marker": "VERZUS M6.7 VISUAL APPROVAL",
+  "status": "pending",
+  "requiredViewports": [390, 768, 1440],
+  "requiredScenarios": [
+    "discovery-normal",
+    "discovery-empty",
+    "detail-normal",
+    "entry-closed",
+    "waitlist",
+    "partial-failure",
+    "offline",
+    "maintenance"
+  ],
+  "approvedAt": null,
+  "approvedBy": null
+}

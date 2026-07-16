@@ -1,0 +1,792 @@
+.hero,
+.journey,
+.competitionCard,
+.sidePanel,
+.emptyState {
+  border: 1px solid var(--vz-retro-line);
+  background: color-mix(in srgb, var(--vz-retro-surface) 96%, transparent);
+}
+
+.hero {
+  position: relative;
+  display: grid;
+  min-height: 18rem;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--vz-retro-purple) 68%, var(--vz-retro-line));
+  clip-path: var(--vz-retro-cut-lg);
+}
+
+.hero::before,
+.hero::after {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  content: "";
+}
+
+.hero::before {
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--vz-retro-black) 96%, transparent) 0%,
+      color-mix(in srgb, var(--vz-retro-black) 42%, transparent) 52%,
+      color-mix(in srgb, var(--vz-retro-black) 90%, transparent) 100%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--vz-retro-purple) 16%, transparent),
+      transparent 45%
+    );
+}
+
+.hero::after {
+  inset: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0,
+    transparent 78px,
+    color-mix(in srgb, var(--vz-retro-cyan) 12%, transparent) 79px,
+    transparent 81px
+  );
+  opacity: 0.45;
+}
+
+.heroCopy,
+.heroPrize {
+  position: relative;
+  z-index: 4;
+}
+
+.heroCopy {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  padding: 1.35rem;
+}
+
+.featuredLabel,
+.liveBadge,
+.cardStatus,
+.entryState {
+  width: fit-content;
+  padding: 0.28rem 0.55rem;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-purple);
+  font-family: var(--vz-font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroCopy h2 {
+  max-width: 12ch;
+  margin: 0;
+  color: var(--vz-retro-white);
+  font-size: clamp(2rem, 8vw, 3.8rem);
+  line-height: 0.9;
+}
+
+.heroSeason,
+.heroMeta,
+.heroPrize p,
+.heroPrize > span,
+.heroPrize time {
+  font-family: var(--vz-font-interface);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroSeason {
+  margin: 0;
+  color: var(--vz-retro-white);
+  font-size: 0.82rem;
+}
+
+.heroSeason span {
+  color: var(--vz-retro-green);
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: var(--vz-retro-muted);
+  font-size: 0.75rem;
+}
+
+.heroMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.heroMeta span:first-child {
+  color: var(--vz-retro-cyan);
+}
+
+.heroArtwork {
+  position: relative;
+  z-index: 1;
+  min-height: 15rem;
+}
+
+.heroArtwork img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroPrize {
+  display: grid;
+  align-content: center;
+  gap: 0.4rem;
+  padding: 1.2rem 1.35rem 1.5rem;
+  border-top: 1px solid var(--vz-retro-line);
+  background: color-mix(in srgb, var(--vz-retro-black) 82%, transparent);
+}
+
+.liveBadge {
+  position: absolute;
+  top: -13.7rem;
+  right: 1rem;
+  background: var(--vz-retro-red);
+}
+
+.heroPrize p {
+  margin: 0.55rem 0 0;
+  color: var(--vz-retro-muted);
+  font-size: 0.72rem;
+}
+
+.heroPrize > strong {
+  color: var(--vz-retro-green);
+  font-family: var(--vz-font-numeric);
+  font-size: clamp(2rem, 8vw, 3rem);
+  line-height: 0.9;
+}
+
+.heroPrize > span:not(.liveBadge) {
+  color: var(--vz-retro-white);
+  font-size: 0.72rem;
+}
+
+.heroPrize time {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.primaryAction,
+.secondaryAction,
+.cardAction,
+.browseAction,
+.emptyState button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.primaryAction {
+  width: 100%;
+  margin-top: 0.8rem;
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-green);
+  border: 1px solid var(--vz-retro-green);
+}
+
+.primaryAction:hover {
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.journey {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: -1px 0 0;
+  padding: 1rem;
+  list-style: none;
+  clip-path: var(--vz-retro-cut-md);
+}
+
+.journey li {
+  position: relative;
+  display: grid;
+  gap: 0.45rem;
+  justify-items: center;
+  text-align: center;
+}
+
+.journey li:not(:last-child)::after {
+  position: absolute;
+  top: 0.95rem;
+  left: calc(50% + 1.35rem);
+  width: calc(100% - 2.7rem);
+  height: 1px;
+  content: "";
+  background: var(--vz-retro-line);
+}
+
+.journey li > span {
+  z-index: 1;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-black);
+  border: 1px solid var(--vz-retro-muted);
+  font-family: var(--vz-font-numeric);
+}
+
+.journey strong,
+.journey small {
+  display: block;
+  font-family: var(--vz-font-interface);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.journey strong {
+  color: var(--vz-retro-cyan);
+  font-size: 0.72rem;
+}
+
+.journey small {
+  color: var(--vz-retro-muted);
+  font-size: 0.58rem;
+}
+
+.competitionCard {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr) auto;
+  gap: 0;
+  min-height: 7rem;
+  overflow: hidden;
+  clip-path: var(--vz-retro-cut-sm);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.competitionCard:hover {
+  border-color: color-mix(in srgb, var(--vz-retro-cyan) 56%, var(--vz-retro-line));
+  background: color-mix(in srgb, var(--vz-retro-surface-2) 90%, transparent);
+}
+
+.cardArtwork {
+  position: relative;
+  min-height: 7rem;
+  overflow: hidden;
+  border-right: 1px solid var(--vz-retro-line);
+}
+
+.cardArtwork img {
+  object-fit: cover;
+}
+
+.cardStatus {
+  position: absolute;
+  z-index: 2;
+  top: 0.45rem;
+  left: 0.45rem;
+}
+
+.competitionCard[data-state="live"] .cardStatus {
+  background: var(--vz-retro-red);
+}
+
+.competitionCard[data-state="upcoming"] .cardStatus {
+  background: var(--vz-retro-purple);
+}
+
+.competitionCard[data-state="entered"] .cardStatus {
+  background: var(--vz-retro-green);
+  color: var(--vz-retro-black);
+}
+
+.cardIdentity {
+  display: grid;
+  min-width: 0;
+  align-content: center;
+  gap: 0.3rem;
+  padding: 0.9rem 1rem;
+}
+
+.cardIdentity h3 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--vz-retro-white);
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardIdentity p,
+.cardIdentity > span,
+.cardMetric span {
+  margin: 0;
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-interface);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cardIdentity > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.cardMetric {
+  display: none;
+  min-width: 8.4rem;
+  align-content: center;
+  gap: 0.35rem;
+  padding: 0.8rem 1rem;
+  border-left: 1px solid var(--vz-retro-line);
+}
+
+.cardMetric strong {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.84rem;
+}
+
+.cardMetric:first-of-type strong {
+  color: var(--vz-retro-green);
+  font-size: 1.25rem;
+}
+
+.cardAction {
+  align-self: center;
+  min-width: 4.6rem;
+  margin: 0.8rem;
+  padding-inline: 0.75rem;
+  color: var(--vz-retro-cyan);
+  background: transparent;
+  border: 1px solid var(--vz-retro-cyan);
+}
+
+.cardAction[data-action="manage"] {
+  color: var(--vz-retro-green);
+  border-color: var(--vz-retro-green);
+}
+
+.cardAction:hover {
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+
+.sidePanel {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+  clip-path: var(--vz-retro-cut-md);
+}
+
+.sidePanel h2 {
+  margin: 0;
+  color: var(--vz-retro-white);
+  font-size: 1rem;
+}
+
+.sidePanel label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sidePanel label > span,
+.sidePanel p {
+  margin: 0;
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-interface);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sidePanel select,
+.desktopSelects select {
+  min-height: 2.5rem;
+  padding: 0.55rem 2rem 0.55rem 0.7rem;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-black);
+  border: 1px solid var(--vz-retro-line);
+  border-radius: 0;
+  font-family: var(--vz-font-interface);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+}
+
+.secondaryAction {
+  color: var(--vz-retro-cyan);
+  background: transparent;
+  border: 1px solid var(--vz-retro-cyan);
+}
+
+.sidePanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.sidePanelHeader a,
+.sidePanel nav a,
+.sectionTitleRow a {
+  color: var(--vz-retro-cyan);
+  font-family: var(--vz-font-interface);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.entryName {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.04em;
+}
+
+.entryState {
+  color: var(--vz-retro-green);
+  background: transparent;
+  padding: 0;
+}
+
+.sidePanel nav {
+  display: grid;
+}
+
+.sidePanel nav a {
+  display: flex;
+  min-height: 2.35rem;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--vz-retro-line);
+}
+
+.emptyState {
+  display: grid;
+  min-height: 16rem;
+  place-items: center;
+  align-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  clip-path: var(--vz-retro-cut-md);
+}
+
+.emptyState h3,
+.emptyState p {
+  margin: 0;
+}
+
+.emptyState h3 {
+  color: var(--vz-retro-white);
+}
+
+.emptyState p {
+  max-width: 38rem;
+  color: var(--vz-retro-muted);
+}
+
+.emptyState button,
+.browseAction {
+  color: var(--vz-retro-white);
+  background: transparent;
+  border: 1px solid var(--vz-retro-line);
+}
+
+.browseAction {
+  width: 100%;
+}
+
+@media (min-width: 48rem) {
+  .hero {
+    grid-template-columns: minmax(16rem, 0.9fr) minmax(20rem, 1.45fr) minmax(14rem, 0.75fr);
+  }
+
+  .heroCopy {
+    align-content: center;
+    padding: 1.8rem;
+  }
+
+  .heroArtwork {
+    min-height: 22rem;
+  }
+
+  .heroPrize {
+    border-top: 0;
+    border-left: 1px solid var(--vz-retro-line);
+  }
+
+  .liveBadge {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .journey {
+    padding: 1.1rem 2rem;
+  }
+
+  .competitionCard {
+    grid-template-columns: 10rem minmax(13rem, 1fr) minmax(8rem, auto) minmax(8rem, auto) auto;
+  }
+
+  .cardMetric {
+    display: grid;
+  }
+}
+
+/* VERZUS M6.2 SEARCH FILTER URL STATE:BEGIN */
+.searchRegion {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.searchField {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  min-height: 3rem;
+  align-items: center;
+  gap: 0.6rem;
+  padding-inline: 0.8rem;
+  color: var(--vz-retro-cyan);
+  background: var(--vz-retro-black);
+  border: 1px solid var(--vz-retro-line);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.searchField:focus-within {
+  border-color: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-focus);
+}
+
+.searchField input {
+  width: 100%;
+  min-width: 0;
+  color: var(--vz-retro-white);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-family: var(--vz-font-interface);
+  font-size: max(0.875rem, 14px);
+  font-weight: 600;
+  letter-spacing: 0.07em;
+}
+
+.searchField input::placeholder {
+  color: var(--vz-retro-muted);
+}
+
+.searchField button,
+.clearLink {
+  display: inline-grid;
+  min-width: 2rem;
+  min-height: 2rem;
+  place-items: center;
+  padding: 0;
+  color: var(--vz-retro-muted);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+.resultStatus {
+  display: flex;
+  min-height: 1.1rem;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-interface);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.resultStatus strong {
+  color: var(--vz-retro-cyan);
+  font-family: var(--vz-font-numeric);
+}
+
+.resultStatus span {
+  color: var(--vz-retro-gold);
+}
+
+.pagination {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem;
+  border: 1px solid var(--vz-retro-line);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.pagination button {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: var(--vz-retro-cyan);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--vz-retro-cyan);
+  border-radius: 0;
+  font-family: var(--vz-font-interface);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+}
+
+.pagination button:disabled {
+  color: var(--vz-retro-muted);
+  cursor: not-allowed;
+  border-color: var(--vz-retro-line);
+  opacity: 0.55;
+}
+
+.pagination > span {
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-interface);
+  font-size: 0.66rem;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
+
+.pagination strong {
+  color: var(--vz-retro-green);
+  font-family: var(--vz-font-numeric);
+}
+
+.previousIcon {
+  transform: rotate(180deg);
+}
+
+.clearLink {
+  min-width: auto;
+  min-height: auto;
+  color: var(--vz-retro-cyan);
+  font-family: var(--vz-font-interface);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.secondaryAction {
+  text-decoration: none;
+}
+
+@media (min-width: 48rem) {
+  .searchRegion {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .searchField {
+    max-width: 34rem;
+  }
+
+  .resultStatus {
+    justify-content: end;
+  }
+}
+
+@media (max-width: 30rem) {
+  .pagination button {
+    font-size: 0;
+  }
+
+  .pagination button svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+/* VERZUS M6.2 SEARCH FILTER URL STATE:END */
+
+/* VERZUS M6.3 — independent resource states */
+.resourceState {
+  display: grid;
+  min-height: 8rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line);
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-md);
+}
+
+.resourceState[data-compact="true"] {
+  min-height: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 0.75rem;
+}
+
+.resourceState[data-state="offline"],
+.resourceState[data-state="maintenance"],
+.resourceState[data-state="partial_failure"],
+.resourceState[data-state="error"] {
+  border-color: color-mix(in srgb, var(--vz-retro-red) 56%, var(--vz-retro-line));
+}
+
+.resourceState h3,
+.resourceState p,
+.resourceState small {
+  margin: 0;
+}
+
+.resourceState h3 {
+  color: var(--vz-retro-white);
+  font-size: 0.9rem;
+}
+
+.resourceState p,
+.resourceState small {
+  color: var(--vz-retro-muted);
+  font-size: 0.7rem;
+}
+
+.resourceState button {
+  min-height: 2.5rem;
+  padding-inline: 0.85rem;
+  color: var(--vz-retro-cyan);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--vz-retro-cyan);
+  border-radius: 0;
+  clip-path: var(--vz-retro-cut-sm);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.freshnessBadge {
+  width: fit-content;
+  padding: 0.2rem 0.45rem;
+  color: var(--vz-retro-gold);
+  background: color-mix(in srgb, var(--vz-retro-gold) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-gold) 55%, var(--vz-retro-line));
+  font-family: var(--vz-font-interface);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}

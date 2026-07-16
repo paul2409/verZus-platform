@@ -1,0 +1,110 @@
+/* VERZUS M6.7 COMPETITION REVIEW HUB */
+
+.page {
+  width: min(100% - 32px, 1120px);
+  margin-inline: auto;
+  padding: 48px 0 96px;
+}
+
+.page header span,
+.page h1,
+.page h2,
+.metrics strong,
+.scenarios a {
+  font-family: var(--vz-font-display, sans-serif);
+  letter-spacing: 0.06em;
+}
+
+.page header span {
+  color: var(--vz-color-green-400, #00ff87);
+}
+.page h1 {
+  margin: 10px 0;
+  font-size: clamp(2rem, 7vw, 5rem);
+  line-height: 0.9;
+}
+.page header p {
+  max-width: 68ch;
+  color: var(--vz-color-text-muted, #b4afc2);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 32px 0;
+}
+
+.metrics article,
+.widths,
+.scenarios,
+.gate {
+  border: 1px solid var(--vz-color-border, #39324d);
+  background: var(--vz-color-surface-raised, #111019);
+}
+
+.metrics article {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+.metrics span {
+  color: var(--vz-color-text-muted, #b4afc2);
+  font-size: 0.75rem;
+}
+.metrics strong {
+  color: var(--vz-color-cyan-400, #00e5ff);
+  font-size: 2rem;
+}
+.widths,
+.gate {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.widths div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.widths span {
+  padding: 8px 12px;
+  border: 1px solid var(--vz-color-purple-400, #9b62ff);
+}
+.scenarios {
+  padding: 20px;
+}
+.scenarios article {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  border-top: 1px solid var(--vz-color-border, #39324d);
+}
+.scenarios article > span {
+  color: var(--vz-color-pink-400, #ff2d87);
+}
+.scenarios a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 14px;
+  color: var(--vz-color-cyan-400, #00e5ff);
+}
+.gate code {
+  color: var(--vz-color-warning-400, #ffc247);
+}
+
+@media (max-width: 767px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .scenarios article {
+    grid-template-columns: 36px 1fr;
+    padding: 10px 0;
+  }
+  .scenarios a {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+}

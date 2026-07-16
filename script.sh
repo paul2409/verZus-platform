@@ -2,3736 +2,658 @@
 set -euo pipefail
 
 MODE="${1:-install}"
-PORT="${VERZUS_STAGE5_RETRO_PORT:-3117}"
-
-BACKUP_ROOT=".verzus-backups/stage-5-retro-platform"
+SCRIPT_NAME="VERZUS_M6_6_7_Competition_Testing_Observability_Release.sh"
+BACKUP_ROOT=".verzus-backups/m6-6-7-testing-observability-release"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-BACKUP_DIR="$BACKUP_ROOT/$STAMP"
-ARCHIVE="$BACKUP_DIR/verzus-stage-5-retro-before.tar.gz"
-CREATED_MANIFEST="$BACKUP_DIR/created-files.txt"
-BASELINE_POINTER="$BACKUP_ROOT/baseline.txt"
-
-TARGET_FILES=(
-  "package.json"
-  "src/app/global-error.tsx"
-  "src/app/error.tsx"
-  "src/app/loading.tsx"
-  "src/app/not-found.tsx"
-  "src/app/(platform)/profile/page.tsx"
-  "src/app/(platform)/notifications/page.tsx"
-  "src/app/(platform)/search/page.tsx"
-  "src/app/(platform)/settings/page.tsx"
-  "src/app/design-system/page.tsx"
-  "src/app/design-system/page.module.css"
-  "src/app/token-preview/page.tsx"
-  "src/app/token-preview/page.module.css"
-  "src/features/auth/ui/AuthScreens.module.css"
-  "src/features/auth/forms/AuthForms.module.css"
-  "src/features/onboarding/ui/onboarding-experience.module.css"
-  "src/components/layout/route-boundary/RouteBoundary.module.css"
-  "src/components/layout/widget-boundary/WidgetBoundary.module.css"
-  "scripts/verify-retro-ui.mjs"
-  "scripts/verify-reference-ui.mjs"
-  "src/components/layout/operational-screen/OperationalScreen.tsx"
-  "src/components/layout/operational-screen/OperationalScreen.module.css"
-  "src/components/layout/operational-screen/index.ts"
-  "src/components/layout/system-state/SystemStateScreen.tsx"
-  "src/components/layout/system-state/SystemStateScreen.module.css"
-  "src/components/layout/system-state/index.ts"
-  "src/features/profiles/ui/ProfileScreen.tsx"
-  "src/features/profiles/ui/ProfileScreen.module.css"
-  "src/features/profiles/ui/ProfileScreen.test.tsx"
-  "src/features/profiles/ui/index.ts"
-  "src/features/notifications/ui/NotificationsScreen.tsx"
-  "src/features/notifications/ui/NotificationsScreen.module.css"
-  "src/features/notifications/ui/NotificationsScreen.test.tsx"
-  "src/features/notifications/ui/index.ts"
-  "src/features/search/ui/SearchScreen.tsx"
-  "src/features/search/ui/SearchScreen.module.css"
-  "src/features/search/ui/SearchScreen.test.tsx"
-  "src/features/search/ui/index.ts"
-  "src/features/settings/ui/SettingsScreen.tsx"
-  "src/features/settings/ui/SettingsScreen.module.css"
-  "src/features/settings/ui/SettingsScreen.test.tsx"
-  "src/features/settings/ui/index.ts"
-  "docs/design-system/stage-5-retro-platform-contract.md"
-  "docs/design-system/stage-5-retro-audit.md"
-  "reports/stage-5-retro/style-audit.txt"
-  "docs/design-system/legacy-theme-retirement.md"
-  "docs/runbooks/ui-rollback.md"
-  "scripts/verify-stage-5-retro-platform.mjs"
-)
+BACKUP_DIR="${BACKUP_ROOT}/${STAMP}"
+ARCHIVE="${BACKUP_DIR}/verzus-m6-6-7-before.tar.gz"
+PAYLOAD_FILE="${TMPDIR:-/tmp}/verzus-m6-6-7-payload-${STAMP}.tar.gz"
 
 print_plan() {
-  cat <<'EOF'
-VERZUS Stage 5 — Retro Platform Completion
+  cat <<'PLAN'
+VERZUS M6.7 - Competition Testing, Observability and Release
 
 KEEP
-  - All routes, APIs, schemas, adapters, mocks, queries, and view models
-  - Authentication and onboarding behavior
-  - Play, Leaderboards, Crews, Matches, Compete, and Rewards from Stages 3 and 4
-  - Stage 1 retro theme and Stage 2 retro shared component APIs
-  - Existing route and widget failure isolation
+  - Approved M6.1 discovery composition and original competition artwork
+  - M6.2 search, filters, sorting, pagination and URL state
+  - M6.3 Zod contracts, adapters, query resources and independent APIs
+  - M6.4 details, rules, participants and bracket resources
+  - M6.5 server-authoritative, idempotent and refresh-persistent entry
+  - M6.6 lifecycle policy, edge states and guarded entry mutation
+  - Existing App Shell, navigation, authentication and retro-competitive tokens
 
 REUSE
-  - Rajdhani display typography and Inter body typography
-  - AppShell, PageContainer, shared primitives, and route boundaries
-  - Existing auth forms and onboarding state machine
-  - Existing design-system gallery components
+  - Existing M6 unit and component tests through the repository test suite
+  - Existing M6 preview server on port 3118
+  - Existing request-ID, structured-error and failure-injection conventions
+  - Existing lint, typecheck, test, build and Playwright tooling
+  - Existing immutable release SHA and application environment variables
 
 REPLACE
-  - Remaining placeholder screens: Profile, Notifications, Search, and Settings
-  - Root loading, error, not-found, and global-error presentation
-  - Auth and onboarding visual overrides with approved retro tokens
-  - Token preview values and legacy verifier expectations
-  - Obsolete visual verifier logic that expected retired theme imports
+  - Competition detail stage marker from M6.6 to M6.7
+  - Informal milestone completion with an executable technical and approval gate
+  - Untraceable preview output with release, health and checksum evidence
 
 DELETE
-  - No route
-  - No domain logic
-  - No API contract
-  - No test from earlier milestones
-  - No historical theme file
+  - No approved screen composition
+  - No competition API, entry persistence or lifecycle policy
+  - No shared primitive, shell route, navigation or artwork
+  - No historical test or release evidence
 
 CREATE
-  - Domain-owned UI for Profile, Notifications, Search, and Settings
-  - Domain-neutral operational screen and system-state layouts
-  - Stage 5 focused tests and verification script
-  - Final retro design contract, style audit, legacy-theme retirement note, and rollback runbook
-  - Token-only cleanup for remaining auth, onboarding, platform and preview styles
-  - Timestamped rollback archive
-EOF
+  - Competition feature flag and controlled degradation boundary
+  - Allowlisted client telemetry and structured server ingestion
+  - Competition health endpoint with stage, environment and release metadata
+  - Unit, integration, E2E, accessibility and failure-injection coverage
+  - Visual regression baselines at 390px, 768px and 1440px
+  - Explicit visual approval manifest and review hub
+  - Full M6 completion verifier and immutable artifact packager
+  - Rollback runbook and timestamped pre-install archive
+PLAN
+}
+
+require_repo_root() {
+  [[ -f package.json && -d src/app && -d src/features ]] || {
+    echo "Error: run $SCRIPT_NAME from the VERZUS repository root."
+    exit 1
+  }
 }
 
 require_repo() {
+  require_repo_root
+
   local required=(
-    "package.json"
-    "src/app/layout.tsx"
-    "src/styles/tokens.css"
-    "src/styles/verzus-retro-system.css"
-    "scripts/verify-stage-1-retro.mjs"
-    "scripts/verify-stage-2-retro.mjs"
-    "scripts/verify-stage-3-retro-play.mjs"
-    "scripts/verify-stage-4-competitive.mjs"
+    package.json
+    .env.example
+    src/app/layout.tsx
+    'src/app/(platform)/compete/page.tsx'
+    'src/app/(platform)/compete/[competitionId]/page.tsx'
+    src/features/competitions/index.ts
+    src/features/competitions/details/ui/CompetitionDetailScreen.tsx
+    src/features/competitions/lifecycle/model/competition-lifecycle.types.ts
+    src/features/competitions/lifecycle/server/competition-entry-lifecycle.guard.ts
+    'src/app/api/competitions/[competitionId]/lifecycle/route.ts'
+    'src/app/api/competitions/[competitionId]/entry/route.ts'
+    scripts/verify-m6-6-6.mjs
   )
 
-  local missing=0
+  local file
   for file in "${required[@]}"; do
-    if [[ ! -f "$file" ]]; then
-      echo "Missing prerequisite: $file"
-      missing=1
-    fi
+    [[ -f "$file" ]] || {
+      echo "Error: missing M6.6 prerequisite: $file"
+      echo "Apply and verify M6.6 before running M6.7."
+      exit 1
+    }
   done
 
-  if [[ "$missing" -ne 0 ]]; then
-    echo
-    echo "Stage 5 requires Stages 1, 2, 3, and 4 to be installed first."
-    echo "Run this script from the VERZUS repository root."
+  grep -q 'data-theme="retro-competitive"' src/app/layout.tsx || {
+    echo "Error: the approved retro-competitive theme is not active."
+    exit 1
+  }
+
+  grep -Eq 'data-m6-stage="6\.(6|7)"' \
+    src/features/competitions/details/ui/CompetitionDetailScreen.tsx || {
+      echo "Error: M6.7 requires the M6.6 competition detail screen."
+      exit 1
+    }
+
+  if [[ -f 'src/app/(platform)/compete/layout.tsx' ]] && \
+    ! grep -q 'VERZUS M6.7 COMPETITION RELEASE GATE' \
+      'src/app/(platform)/compete/layout.tsx'; then
+    echo "Error: refusing to overwrite an unowned /compete layout."
+    echo "Wrap that layout manually with CompetitionFeatureGate, then rerun."
     exit 1
   fi
+
+  if [[ -d src/features/competitions/release ]] && \
+    ! grep -q 'VERZUS M6.7 COMPETITION RELEASE GATE' \
+      src/features/competitions/release/competition-release.config.ts 2>/dev/null; then
+    echo "Error: refusing to overwrite an unowned competitions/release domain."
+    exit 1
+  fi
+
+  if [[ -d src/features/competitions/telemetry ]] && \
+    ! grep -q 'VERZUS M6.7 COMPETITION TELEMETRY' \
+      src/features/competitions/telemetry/competition-telemetry.schema.ts 2>/dev/null; then
+    echo "Error: refusing to overwrite an unowned competitions/telemetry domain."
+    exit 1
+  fi
+
+  if [[ "${VERZUS_SKIP_M6_PREREQ_VERIFY:-0}" != "1" ]] && \
+    grep -q 'data-m6-stage="6.6"' \
+      src/features/competitions/details/ui/CompetitionDetailScreen.tsx; then
+    echo "Running M6.6 prerequisite marker verification..."
+    node scripts/verify-m6-6-6.mjs
+  fi
 }
 
-create_backup() {
+backup_current_state() {
   mkdir -p "$BACKUP_DIR"
-  : > "$CREATED_MANIFEST"
 
-  local existing=()
-  for file in "${TARGET_FILES[@]}"; do
-    if [[ -e "$file" ]]; then
-      existing+=("$file")
-    else
-      printf '%s\n' "$file" >> "$CREATED_MANIFEST"
-    fi
+  local paths=(
+    package.json
+    .env.example
+    src/features/competitions/index.ts
+    src/features/competitions/details/ui/CompetitionDetailScreen.tsx
+    docs/milestones/M6
+    scripts/verify-m6-6-6.mjs
+  )
+
+  local optional=(
+    'src/app/(platform)/compete/layout.tsx'
+    'src/app/(preview)/m6-competition-review'
+    'src/app/api/telemetry/competitions'
+    'src/app/api/health/competitions'
+    src/features/competitions/release
+    src/features/competitions/telemetry
+    tests/e2e/m6
+    tests/visual/m6-competitions.visual.spec.ts
+    tests/visual/m6-competitions.visual.spec.ts-snapshots
+    tests/integration/m6-competition-release.integration.test.ts
+    playwright.m6.config.ts
+    docs/runbooks/m6-competition-rollback.md
+    scripts/approve-m6-visuals.mjs
+    scripts/package-m6-release.mjs
+    scripts/verify-m6-6-7.mjs
+    reports/m6-verification.json
+  )
+
+  local candidate
+  for candidate in "${optional[@]}"; do
+    [[ -e "$candidate" ]] && paths+=("$candidate")
   done
 
-  if [[ "${#existing[@]}" -gt 0 ]]; then
-    tar -czf "$ARCHIVE" "${existing[@]}"
-  else
-    tar -czf "$ARCHIVE" --files-from /dev/null
-  fi
+  tar -czf "$ARCHIVE" "${paths[@]}"
 
-  cat > "$BACKUP_DIR/manifest.txt" <<EOF
-VERZUS Stage 5 backup
+  cat > "$BACKUP_DIR/manifest.txt" <<MANIFEST
+VERZUS M6.7 backup
 Created: $(date -Iseconds)
+Branch: $(git branch --show-current 2>/dev/null || echo unavailable)
+Commit: $(git rev-parse HEAD 2>/dev/null || echo unavailable)
 Archive: $ARCHIVE
-Mode: $MODE
-EOF
+Rollback: bash ./$SCRIPT_NAME rollback
+MANIFEST
 
-  if [[ ! -f "$BASELINE_POINTER" ]]; then
-    printf '%s\n' "$BACKUP_DIR" > "$BASELINE_POINTER"
-  fi
-
-  echo "Rollback archive created:"
-  echo "  $ARCHIVE"
-  echo "Stage 5 baseline backup:"
-  echo "  $(cat "$BASELINE_POINTER")"
+  echo "Rollback archive created: $ARCHIVE"
 }
 
-append_or_replace_block() {
-  local file="$1"
-  local begin="$2"
-  local end="$3"
-  local block_file="$4"
+extract_payload() {
+  cat > "${PAYLOAD_FILE}.b64" <<'PAYLOAD'
+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
+PAYLOAD
 
-  node - "$file" "$begin" "$end" "$block_file" <<'NODE'
+  base64 --decode "${PAYLOAD_FILE}.b64" > "$PAYLOAD_FILE"
+  tar -xzf "$PAYLOAD_FILE"
+  rm -f "$PAYLOAD_FILE" "${PAYLOAD_FILE}.b64"
+}
+
+patch_repository() {
+  node <<'NODE'
 const fs = require("node:fs");
+const path = require("node:path");
 
-const [file, begin, end, blockFile] = process.argv.slice(2);
-let source = fs.readFileSync(file, "utf8");
-const block = fs.readFileSync(blockFile, "utf8").trimEnd();
-
-const start = source.indexOf(begin);
-const finish = source.indexOf(end);
-
-if ((start === -1) !== (finish === -1)) {
-  throw new Error(`Malformed marker block in ${file}.`);
-}
-
-if (start !== -1) {
-  const after = finish + end.length;
-  source =
-    source.slice(0, start).trimEnd() +
-    "\n\n" +
-    block +
-    "\n" +
-    source.slice(after).trimStart();
-} else {
-  source = source.trimEnd() + "\n\n" + block + "\n";
-}
-
-fs.writeFileSync(file, source, "utf8");
-NODE
-}
-
-write_operational_screen() {
-  mkdir -p "src/components/layout/operational-screen"
-
-  cat > "src/components/layout/operational-screen/OperationalScreen.tsx" <<'EOF'
-import Link from "next/link";
-import type { HTMLAttributes, ReactNode } from "react";
-
-import { PageContainer } from "@/components/layout/app-shell";
-
-import styles from "./OperationalScreen.module.css";
-
-export type OperationalTone =
-  | "neutral"
-  | "green"
-  | "cyan"
-  | "gold"
-  | "magenta"
-  | "red"
-  | "violet";
-
-type OperationalPageProps = HTMLAttributes<HTMLDivElement> & {
-  children: ReactNode;
+const read = (file) => fs.readFileSync(file, "utf8");
+const write = (file, value) => {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, value.endsWith("\n") ? value : `${value}\n`, "utf8");
 };
 
-type OperationalHeaderProps = {
-  eyebrow: string;
-  title: string;
-  description: string;
-  status?: ReactNode;
-  actions?: ReactNode;
-};
+const layoutFile = "src/app/(platform)/compete/layout.tsx";
+if (!fs.existsSync(layoutFile)) {
+  write(
+    layoutFile,
+    `// VERZUS M6.7 COMPETITION RELEASE GATE
 
-type OperationalPanelProps = HTMLAttributes<HTMLElement> & {
-  children: ReactNode;
-  title: string;
-  eyebrow?: string;
-  description?: string;
-  tone?: OperationalTone;
-  action?: ReactNode;
-};
-
-type OperationalGridProps = HTMLAttributes<HTMLDivElement> & {
-  children: ReactNode;
-  columns?: 1 | 2 | 3;
-};
-
-type MetricCardProps = {
-  label: string;
-  value: string;
-  detail?: string;
-  tone?: OperationalTone;
-};
-
-type SignalItemProps = {
-  title: string;
-  description: string;
-  meta?: string;
-  tone?: OperationalTone;
-  leading?: ReactNode;
-  trailing?: ReactNode;
-};
-
-type ProgressMeterProps = {
-  label: string;
-  value: number;
-  max: number;
-  detail: string;
-  tone?: OperationalTone;
-};
-
-type OperationalActionLinkProps = {
-  href: string;
-  children: ReactNode;
-  variant?: "primary" | "secondary" | "ghost";
-};
-
-function joinClassNames(...values: Array<string | false | null | undefined>) {
-  return values.filter(Boolean).join(" ");
-}
-
-export function OperationalPage({ children, className, ...props }: OperationalPageProps) {
-  return (
-    <PageContainer width="wide">
-      <div {...props} className={joinClassNames(styles.page, className)}>
-        {children}
-      </div>
-    </PageContainer>
-  );
-}
-
-export function OperationalHeader({
-  eyebrow,
-  title,
-  description,
-  status,
-  actions,
-}: OperationalHeaderProps) {
-  return (
-    <header className={styles.header}>
-      <div className={styles.headerCopy}>
-        <div className={styles.headerSignalRow}>
-          <p className={styles.eyebrow}>{eyebrow}</p>
-          {status ? <div className={styles.headerStatus}>{status}</div> : null}
-        </div>
-        <h1>{title}</h1>
-        <p className={styles.description}>{description}</p>
-      </div>
-      {actions ? <div className={styles.headerActions}>{actions}</div> : null}
-    </header>
-  );
-}
-
-export function OperationalPanel({
-  children,
-  title,
-  eyebrow,
-  description,
-  tone = "neutral",
-  action,
-  className,
-  ...props
-}: OperationalPanelProps) {
-  return (
-    <section
-      {...props}
-      className={joinClassNames(styles.panel, className)}
-      data-tone={tone}
-    >
-      <header className={styles.panelHeader}>
-        <div>
-          {eyebrow ? <p className={styles.panelEyebrow}>{eyebrow}</p> : null}
-          <h2>{title}</h2>
-          {description ? <p>{description}</p> : null}
-        </div>
-        {action ? <div className={styles.panelAction}>{action}</div> : null}
-      </header>
-      <div className={styles.panelBody}>{children}</div>
-    </section>
-  );
-}
-
-export function OperationalGrid({
-  children,
-  columns = 2,
-  className,
-  ...props
-}: OperationalGridProps) {
-  return (
-    <div
-      {...props}
-      className={joinClassNames(styles.grid, className)}
-      data-columns={columns}
-    >
-      {children}
-    </div>
-  );
-}
-
-export function MetricGrid({
-  children,
-  className,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div {...props} className={joinClassNames(styles.metricGrid, className)}>
-      {children}
-    </div>
-  );
-}
-
-export function MetricCard({ label, value, detail, tone = "neutral" }: MetricCardProps) {
-  return (
-    <article className={styles.metricCard} data-tone={tone}>
-      <span>{label}</span>
-      <strong data-numeric>{value}</strong>
-      {detail ? <small>{detail}</small> : null}
-    </article>
-  );
-}
-
-export function SignalList({
-  children,
-  className,
-  ...props
-}: HTMLAttributes<HTMLUListElement>) {
-  return (
-    <ul {...props} className={joinClassNames(styles.signalList, className)}>
-      {children}
-    </ul>
-  );
-}
-
-export function SignalItem({
-  title,
-  description,
-  meta,
-  tone = "neutral",
-  leading,
-  trailing,
-}: SignalItemProps) {
-  return (
-    <li className={styles.signalItem} data-tone={tone}>
-      {leading ? <div className={styles.signalLeading}>{leading}</div> : null}
-      <div className={styles.signalCopy}>
-        <div className={styles.signalTitleRow}>
-          <strong>{title}</strong>
-          {meta ? <span>{meta}</span> : null}
-        </div>
-        <p>{description}</p>
-      </div>
-      {trailing ? <div className={styles.signalTrailing}>{trailing}</div> : null}
-    </li>
-  );
-}
-
-export function ProgressMeter({
-  label,
-  value,
-  max,
-  detail,
-  tone = "green",
-}: ProgressMeterProps) {
-  const percentage = Math.max(0, Math.min(100, (value / max) * 100));
-
-  return (
-    <div className={styles.progressMeter} data-tone={tone}>
-      <div className={styles.progressLabelRow}>
-        <span>{label}</span>
-        <strong data-numeric>{detail}</strong>
-      </div>
-      <div
-        aria-label={`${label}: ${detail}`}
-        aria-valuemax={max}
-        aria-valuemin={0}
-        aria-valuenow={value}
-        className={styles.progressTrack}
-        role="progressbar"
-      >
-        <span style={{ width: `${percentage}%` }} />
-      </div>
-    </div>
-  );
-}
-
-export function OperationalActionLink({
-  href,
-  children,
-  variant = "primary",
-}: OperationalActionLinkProps) {
-  return (
-    <Link className={styles.actionLink} data-variant={variant} href={href}>
-      {children}
-    </Link>
-  );
-}
-EOF
-
-  cat > "src/components/layout/operational-screen/OperationalScreen.module.css" <<'EOF'
-.page {
-  display: grid;
-  gap: var(--vz-space-5);
-  padding-block: clamp(var(--vz-space-4), 4vw, var(--vz-space-10));
-  padding-bottom: calc(var(--vz-mobile-nav-height) + var(--vz-space-8));
-}
-
-.header {
-  position: relative;
-  display: grid;
-  gap: var(--vz-space-5);
-  padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-10));
-  overflow: hidden;
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-lg);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--vz-retro-cyan) 7%, transparent), transparent 38%),
-    var(--vz-color-surface-base);
-  box-shadow: var(--vz-shadow-panel);
-}
-
-.header::after {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  content: "";
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent 0,
-    transparent 5px,
-    rgb(255 255 255 / 1.2%) 6px
-  );
-}
-
-.headerCopy,
-.headerActions {
-  position: relative;
-  z-index: 1;
-}
-
-.headerCopy {
-  display: grid;
-  gap: var(--vz-space-3);
-  min-width: 0;
-}
-
-.headerSignalRow,
-.headerActions,
-.panelHeader,
-.signalTitleRow,
-.progressLabelRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--vz-space-3);
-}
-
-.eyebrow,
-.panelEyebrow {
-  margin: 0;
-  color: var(--vz-retro-cyan);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-font-size-xs);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-widest);
-  text-transform: uppercase;
-}
-
-.header h1 {
-  max-width: 14ch;
-  margin: 0;
-  font-size: clamp(2.35rem, 8vw, 5.5rem);
-}
-
-.description {
-  max-width: 66ch;
-  margin: 0;
-  color: var(--vz-color-text-secondary);
-  font-size: clamp(1rem, 2vw, 1.125rem);
-}
-
-.headerActions {
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.headerStatus {
-  flex: 0 0 auto;
-}
-
-.grid {
-  display: grid;
-  gap: var(--vz-space-4);
-  min-width: 0;
-}
-
-.grid[data-columns="2"],
-.grid[data-columns="3"] {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.panel {
-  --panel-signal: var(--vz-color-border-default);
-
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
-  background: var(--vz-color-surface-base);
-  box-shadow: var(--vz-shadow-panel);
-}
-
-.panel::before {
-  position: absolute;
-  inset-block: var(--vz-space-3);
-  left: 0;
-  width: 2px;
-  content: "";
-  background: var(--panel-signal);
-}
-
-.panel[data-tone="green"] {
-  --panel-signal: var(--vz-retro-green);
-}
-
-.panel[data-tone="cyan"] {
-  --panel-signal: var(--vz-retro-cyan);
-}
-
-.panel[data-tone="gold"] {
-  --panel-signal: var(--vz-retro-gold);
-}
-
-.panel[data-tone="magenta"] {
-  --panel-signal: var(--vz-retro-pink);
-}
-
-.panel[data-tone="red"] {
-  --panel-signal: var(--vz-color-danger);
-}
-
-.panel[data-tone="violet"] {
-  --panel-signal: var(--vz-retro-purple, var(--vz-retro-cyan));
-}
-
-.panelHeader {
-  align-items: flex-start;
-  padding: var(--vz-space-5);
-  border-bottom: 1px solid var(--vz-color-border-subtle);
-}
-
-.panelHeader > div:first-child {
-  display: grid;
-  gap: var(--vz-space-2);
-  min-width: 0;
-}
-
-.panelHeader h2 {
-  margin: 0;
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
-}
-
-.panelHeader p:not(.panelEyebrow) {
-  max-width: 58ch;
-  margin: 0;
-  color: var(--vz-color-text-secondary);
-}
-
-.panelAction {
-  flex: 0 0 auto;
-}
-
-.panelBody {
-  min-width: 0;
-  padding: var(--vz-space-5);
-}
-
-.metricGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--vz-space-3);
-}
-
-.metricCard {
-  --metric-signal: var(--vz-color-text-primary);
-
-  display: grid;
-  gap: var(--vz-space-1);
-  min-width: 0;
-  padding: var(--vz-space-4);
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 82%, transparent);
-}
-
-.metricCard[data-tone="green"] {
-  --metric-signal: var(--vz-retro-green);
-}
-
-.metricCard[data-tone="cyan"] {
-  --metric-signal: var(--vz-retro-cyan);
-}
-
-.metricCard[data-tone="gold"] {
-  --metric-signal: var(--vz-retro-gold);
-}
-
-.metricCard[data-tone="magenta"] {
-  --metric-signal: var(--vz-retro-pink);
-}
-
-.metricCard[data-tone="red"] {
-  --metric-signal: var(--vz-color-danger);
-}
-
-.metricCard span,
-.metricCard small {
-  color: var(--vz-color-text-secondary);
-}
-
-.metricCard span {
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-font-size-xs);
-  font-weight: var(--vz-font-weight-semibold);
-  letter-spacing: var(--vz-letter-spacing-wide);
-  text-transform: uppercase;
-}
-
-.metricCard strong {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  color: var(--metric-signal);
-  font-family: var(--vz-font-numeric);
-  font-size: clamp(1.45rem, 5vw, 2.25rem);
-  line-height: 1;
-}
-
-.metricCard small {
-  font-size: var(--vz-font-size-xs);
-}
-
-.signalList {
-  display: grid;
-  gap: var(--vz-space-3);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.signalItem {
-  --signal: var(--vz-color-border-default);
-
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: var(--vz-space-3);
-  align-items: center;
-  min-width: 0;
-  padding: var(--vz-space-4);
-  border: 1px solid var(--vz-color-border-subtle);
-  border-left-color: var(--signal);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 70%, transparent);
-}
-
-.signalItem[data-tone="green"] {
-  --signal: var(--vz-retro-green);
-}
-
-.signalItem[data-tone="cyan"] {
-  --signal: var(--vz-retro-cyan);
-}
-
-.signalItem[data-tone="gold"] {
-  --signal: var(--vz-retro-gold);
-}
-
-.signalItem[data-tone="magenta"] {
-  --signal: var(--vz-retro-pink);
-}
-
-.signalItem[data-tone="red"] {
-  --signal: var(--vz-color-danger);
-}
-
-.signalItem[data-tone="violet"] {
-  --signal: var(--vz-retro-purple, var(--vz-retro-cyan));
-}
-
-.signalLeading,
-.signalTrailing {
-  color: var(--signal);
-}
-
-.signalCopy {
-  display: grid;
-  gap: var(--vz-space-1);
-  min-width: 0;
-}
-
-.signalTitleRow {
-  align-items: baseline;
-}
-
-.signalTitleRow strong {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  color: var(--vz-color-text-primary);
-  font-family: var(--vz-font-interface);
-  letter-spacing: var(--vz-letter-spacing-wide);
-  text-transform: uppercase;
-}
-
-.signalTitleRow span {
-  flex: 0 0 auto;
-  color: var(--signal);
-  font-family: var(--vz-font-numeric);
-  font-size: var(--vz-font-size-xs);
-}
-
-.signalCopy p {
-  margin: 0;
-  color: var(--vz-color-text-secondary);
-  font-size: var(--vz-font-size-sm);
-}
-
-.progressMeter {
-  --progress-signal: var(--vz-retro-green);
-
-  display: grid;
-  gap: var(--vz-space-2);
-}
-
-.progressMeter[data-tone="cyan"] {
-  --progress-signal: var(--vz-retro-cyan);
-}
-
-.progressMeter[data-tone="gold"] {
-  --progress-signal: var(--vz-retro-gold);
-}
-
-.progressMeter[data-tone="magenta"] {
-  --progress-signal: var(--vz-retro-pink);
-}
-
-.progressLabelRow span {
-  color: var(--vz-color-text-secondary);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-font-size-xs);
-  letter-spacing: var(--vz-letter-spacing-wide);
-  text-transform: uppercase;
-}
-
-.progressLabelRow strong {
-  color: var(--progress-signal);
-  font-family: var(--vz-font-numeric);
-}
-
-.progressTrack {
-  height: 0.45rem;
-  overflow: hidden;
-  border: 1px solid var(--vz-color-border-subtle);
-  background: var(--vz-color-background-deep);
-}
-
-.progressTrack span {
-  display: block;
-  height: 100%;
-  background: var(--progress-signal);
-}
-
-.actionLink {
-  display: inline-flex;
-  min-height: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  padding: var(--vz-space-3) var(--vz-space-4);
-  border: 1px solid transparent;
-  color: var(--vz-retro-black);
-  font-family: var(--vz-font-interface);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-wide);
-  text-decoration: none;
-  text-transform: uppercase;
-  clip-path: var(--vz-retro-cut-sm);
-}
-
-.actionLink[data-variant="primary"] {
-  border-color: var(--vz-retro-green);
-  background: var(--vz-retro-green);
-}
-
-.actionLink[data-variant="secondary"] {
-  border-color: var(--vz-retro-cyan);
-  background: transparent;
-  color: var(--vz-retro-cyan);
-}
-
-.actionLink[data-variant="ghost"] {
-  border-color: var(--vz-color-border-default);
-  background: transparent;
-  color: var(--vz-color-text-primary);
-}
-
-.actionLink:focus-visible {
-  outline: 2px solid var(--vz-retro-cyan);
-  outline-offset: 3px;
-}
-
-@media (min-width: 48rem) {
-  .header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-  }
-
-  .headerActions {
-    justify-content: flex-end;
-  }
-
-  .grid[data-columns="2"] {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .grid[data-columns="3"] {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .metricGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 30rem) {
-  .headerSignalRow,
-  .panelHeader,
-  .signalTitleRow {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .signalItem {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
-  .signalTrailing {
-    grid-column: 2;
-  }
-}
-EOF
-
-  cat > "src/components/layout/operational-screen/index.ts" <<'EOF'
-export * from "./OperationalScreen";
-EOF
-}
-
-write_system_state() {
-  mkdir -p "src/components/layout/system-state"
-
-  cat > "src/components/layout/system-state/SystemStateScreen.tsx" <<'EOF'
 import type { ReactNode } from "react";
 
-import styles from "./SystemStateScreen.module.css";
+import { CompetitionFeatureGate } from "@/features/competitions/release";
 
-type SystemStateTone = "loading" | "error" | "not-found" | "maintenance";
+export default function CompeteLayout({ children }: { children: ReactNode }) {
+  return <CompetitionFeatureGate>{children}</CompetitionFeatureGate>;
+}
+`,
+  );
+}
 
-type SystemStateScreenProps = {
-  eyebrow: string;
-  title: string;
-  description: string;
-  tone: SystemStateTone;
-  action?: ReactNode;
-  reference?: string;
+const detailFile =
+  "src/features/competitions/details/ui/CompetitionDetailScreen.tsx";
+let detail = read(detailFile);
+if (detail.includes('data-m6-stage="6.6"')) {
+  detail = detail.replace('data-m6-stage="6.6"', 'data-m6-stage="6.7"');
+}
+if (!detail.includes('data-m6-stage="6.7"')) {
+  throw new Error("CompetitionDetailScreen is missing the expected M6 stage marker.");
+}
+write(detailFile, detail);
+
+const featureIndex = "src/features/competitions/index.ts";
+let featureSource = read(featureIndex);
+for (const line of ['export * from "./release";', 'export * from "./telemetry";']) {
+  if (!featureSource.includes(line)) featureSource += `\n${line}`;
+}
+write(featureIndex, featureSource);
+
+const envFile = ".env.example";
+let env = fs.existsSync(envFile) ? read(envFile) : "";
+if (!/^NEXT_PUBLIC_ENABLE_M6_COMPETITIONS=/m.test(env)) {
+  env += `${env.endsWith("\n") || env.length === 0 ? "" : "\n"}NEXT_PUBLIC_ENABLE_M6_COMPETITIONS=true\n`;
+}
+write(envFile, env);
+
+const approvalFile = "docs/milestones/M6/m6-reference-approval.json";
+if (!fs.existsSync(approvalFile)) {
+  write(
+    approvalFile,
+    `${JSON.stringify(
+      {
+        marker: "VERZUS M6.7 VISUAL APPROVAL",
+        status: "pending",
+        requiredViewports: [390, 768, 1440],
+        requiredScenarios: [
+          "discovery-normal",
+          "discovery-empty",
+          "detail-normal",
+          "entry-closed",
+          "waitlist",
+          "partial-failure",
+          "offline",
+          "maintenance",
+        ],
+        approvedAt: null,
+        approvedBy: null,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+}
+
+const packageFile = "package.json";
+const packageJson = JSON.parse(read(packageFile));
+packageJson.scripts ??= {};
+const scripts = {
+  "test:m6:6.7:unit":
+    "vitest run src/features/competitions/release/competition-release.config.test.ts src/features/competitions/telemetry/competition-telemetry.schema.test.ts tests/integration/m6-competition-release.integration.test.ts",
+  "test:m6:6.7:e2e":
+    "playwright test --config=playwright.m6.config.ts tests/e2e/m6",
+  "test:m6:6.7:visual":
+    "playwright test --config=playwright.m6.config.ts tests/visual/m6-competitions.visual.spec.ts",
+  "m6:visual:update":
+    "playwright test --config=playwright.m6.config.ts tests/visual/m6-competitions.visual.spec.ts --update-snapshots",
+  "m6:approve": "node scripts/approve-m6-visuals.mjs",
+  "verify:m6:6.7:technical":
+    "node scripts/verify-m6-6-7.mjs --technical-only && eslint src/features/competitions src/app/api/competitions src/app/api/telemetry/competitions src/app/api/health/competitions 'src/app/(platform)/compete' 'src/app/(preview)/m6-competition-review' tests/e2e/m6 tests/integration/m6-competition-release.integration.test.ts tests/visual/m6-competitions.visual.spec.ts playwright.m6.config.ts --max-warnings=0 && npm run test:m6:6.7:unit && npm run typecheck && npm run test:m6:6.7:e2e",
+  "verify:m6:6.7":
+    "node scripts/verify-m6-6-7.mjs && npm run lint && npm run typecheck && npm run test && npm run build && npm run test:m6:6.7:e2e && npm run test:m6:6.7:visual",
+  "m6:artifact": "node scripts/package-m6-release.mjs",
+  "m6:release": "npm run verify:m6:6.7 && npm run m6:artifact",
 };
-
-export function SystemStateScreen({
-  eyebrow,
-  title,
-  description,
-  tone,
-  action,
-  reference,
-}: SystemStateScreenProps) {
-  return (
-    <main className={styles.page} data-tone={tone}>
-      <section className={styles.card}>
-        <div aria-hidden="true" className={styles.signal} />
-        <p className={styles.eyebrow}>{eyebrow}</p>
-        <h1>{title}</h1>
-        <p className={styles.description}>{description}</p>
-        {reference ? <p className={styles.reference}>Reference: {reference}</p> : null}
-        {tone === "loading" ? (
-          <div aria-hidden="true" className={styles.loadingBars}>
-            <span />
-            <span />
-            <span />
-          </div>
-        ) : null}
-        {action ? <div className={styles.action}>{action}</div> : null}
-      </section>
-    </main>
-  );
+for (const [name, command] of Object.entries(scripts)) {
+  packageJson.scripts[name] = command;
 }
-EOF
-
-  cat > "src/components/layout/system-state/SystemStateScreen.module.css" <<'EOF'
-.page {
-  --state-signal: var(--vz-retro-cyan);
-
-  display: grid;
-  min-height: 100svh;
-  place-items: center;
-  padding: var(--vz-space-5);
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      color-mix(in srgb, var(--state-signal) 8%, transparent),
-      transparent 32rem
-    ),
-    var(--vz-color-background-deep);
-}
-
-.page[data-tone="error"] {
-  --state-signal: var(--vz-color-danger);
-}
-
-.page[data-tone="not-found"] {
-  --state-signal: var(--vz-retro-gold);
-}
-
-.page[data-tone="maintenance"] {
-  --state-signal: var(--vz-retro-pink);
-}
-
-.card {
-  position: relative;
-  display: grid;
-  width: min(100%, 38rem);
-  gap: var(--vz-space-4);
-  padding: clamp(var(--vz-space-6), 7vw, var(--vz-space-12));
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--state-signal) 46%, transparent);
-  border-radius: var(--vz-radius-lg);
-  background: var(--vz-color-surface-base);
-  box-shadow: var(--vz-shadow-panel);
-}
-
-.signal {
-  position: absolute;
-  inset-block: var(--vz-space-4);
-  left: 0;
-  width: 3px;
-  background: var(--state-signal);
-}
-
-.eyebrow,
-.reference {
-  margin: 0;
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-font-size-xs);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-widest);
-  text-transform: uppercase;
-}
-
-.eyebrow {
-  color: var(--state-signal);
-}
-
-.card h1 {
-  margin: 0;
-  font-size: clamp(2rem, 8vw, 4rem);
-}
-
-.description,
-.reference {
-  color: var(--vz-color-text-secondary);
-}
-
-.description {
-  max-width: 54ch;
-  margin: 0;
-}
-
-.action {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--vz-space-3);
-}
-
-.action :is(button, a) {
-  min-height: 2.75rem;
-  padding: var(--vz-space-3) var(--vz-space-5);
-  border: 1px solid var(--state-signal);
-  background: var(--state-signal);
-  color: var(--vz-retro-black);
-  font-family: var(--vz-font-interface);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-wide);
-  text-decoration: none;
-  text-transform: uppercase;
-  clip-path: var(--vz-retro-cut-sm);
-}
-
-.action :is(button, a):focus-visible {
-  outline: 2px solid var(--vz-retro-cyan);
-  outline-offset: 3px;
-}
-
-.loadingBars {
-  display: grid;
-  gap: var(--vz-space-2);
-}
-
-.loadingBars span {
-  height: 0.6rem;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, var(--state-signal) 48%, transparent),
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: system-state-scan 1.25s linear infinite;
-}
-
-.loadingBars span:nth-child(2) {
-  width: 78%;
-}
-
-.loadingBars span:nth-child(3) {
-  width: 56%;
-}
-
-@keyframes system-state-scan {
-  from {
-    background-position: 200% 0;
-  }
-
-  to {
-    background-position: -200% 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .loadingBars span {
-    animation: none;
-    background: color-mix(in srgb, var(--state-signal) 30%, transparent);
-  }
-}
-EOF
-
-  cat > "src/components/layout/system-state/index.ts" <<'EOF'
-export * from "./SystemStateScreen";
-EOF
-}
-
-write_profile_screen() {
-  mkdir -p "src/features/profiles/ui"
-
-  cat > "src/features/profiles/ui/ProfileScreen.tsx" <<'EOF'
-import { Badge } from "@/components/primitives/badge";
-import { Avatar } from "@/components/primitives/avatar";
-import {
-  MetricCard,
-  MetricGrid,
-  OperationalActionLink,
-  OperationalGrid,
-  OperationalHeader,
-  OperationalPage,
-  OperationalPanel,
-  ProgressMeter,
-  SignalItem,
-  SignalList,
-} from "@/components/layout/operational-screen";
-
-import styles from "./ProfileScreen.module.css";
-
-const games = [
-  ["EA FC", "Division 2", "18-5", "green"],
-  ["COD Mobile", "Master III", "12-8", "cyan"],
-  ["Clash Royale", "7,240 trophies", "21-11", "gold"],
-  ["League", "Gold I", "9-7", "violet"],
-] as const;
-
-export function ProfileScreen() {
-  return (
-    <OperationalPage>
-      <OperationalHeader
-        actions={
-          <>
-            <OperationalActionLink href="/settings">Edit profile</OperationalActionLink>
-            <OperationalActionLink href="/leaderboards/weekly" variant="secondary">
-              View rankings
-            </OperationalActionLink>
-          </>
-        }
-        description="Competitive identity, game form, Crew membership, trust, and account readiness."
-        eyebrow="08.1 // PLAYER IDENTITY"
-        status={<Badge tone="positive">Verified</Badge>}
-        title="JAYFLEX"
-      />
-
-      <section className={styles.identityCard}>
-        <Avatar name="Jay Flex" presence="online" size="xl" tone="cyan" verified />
-        <div className={styles.identityCopy}>
-          <div className={styles.badges}>
-            <Badge tone="positive">Elite</Badge>
-            <Badge tone="information" variant="outline">
-              Lagos
-            </Badge>
-            <Badge tone="special">Mainland Titans</Badge>
-          </div>
-          <h2>JAY FLEX</h2>
-          <p>@jayflex / Captain-ready flex player / War Day available</p>
-        </div>
-        <div className={styles.rankBlock}>
-          <span>Season rank</span>
-          <strong data-rank>#04</strong>
-          <small>Up 3 this week</small>
-        </div>
-      </section>
-
-      <MetricGrid>
-        <MetricCard detail="competitive score" label="VS Points" tone="green" value="2,310" />
-        <MetricCard detail="verified account" label="Trust" tone="cyan" value="96" />
-        <MetricCard detail="all games" label="Record" tone="gold" value="60-31" />
-        <MetricCard detail="current season" label="Win rate" tone="magenta" value="65.9%" />
-      </MetricGrid>
-
-      <OperationalGrid columns={2}>
-        <OperationalPanel
-          description="Current competitive form across the four supported lanes."
-          eyebrow="Primary games"
-          title="Game card"
-          tone="green"
-        >
-          <SignalList>
-            {games.map(([title, description, meta, tone]) => (
-              <SignalItem
-                description={description}
-                key={title}
-                meta={meta}
-                title={title}
-                tone={tone}
-              />
-            ))}
-          </SignalList>
-        </OperationalPanel>
-
-        <OperationalPanel
-          description="Account and competition eligibility signals."
-          eyebrow="Readiness"
-          title="Player license"
-          tone="cyan"
-        >
-          <div className={styles.progressStack}>
-            <ProgressMeter detail="96 / 100" label="Trust score" max={100} value={96} />
-            <ProgressMeter detail="4 / 4" label="Game lanes" max={4} tone="cyan" value={4} />
-            <ProgressMeter detail="5 / 6" label="Profile readiness" max={6} tone="gold" value={5} />
-          </div>
-          <SignalList>
-            <SignalItem
-              description="Email, phone, and player identity confirmed."
-              meta="READY"
-              title="Identity verification"
-              tone="green"
-            />
-            <SignalItem
-              description="Saturday 18:00-23:00 WAT is marked available."
-              meta="WAR DAY"
-              title="Availability"
-              tone="magenta"
-            />
-          </SignalList>
-        </OperationalPanel>
-      </OperationalGrid>
-
-      <OperationalGrid columns={2}>
-        <OperationalPanel
-          action={
-            <OperationalActionLink href="/crews" variant="secondary">
-              Crew HQ
-            </OperationalActionLink>
-          }
-          description="Current club identity and weekly contribution."
-          eyebrow="Crew"
-          title="Mainland Titans"
-          tone="magenta"
-        >
-          <SignalList>
-            <SignalItem
-              description="Crew championship position"
-              meta="#02"
-              title="Season standing"
-              tone="gold"
-            />
-            <SignalItem
-              description="Points contributed across three game lanes"
-              meta="420 PTS"
-              title="Weekly contribution"
-              tone="green"
-            />
-            <SignalItem
-              description="EA FC lane check-in opens Friday at 20:00 WAT"
-              meta="SCHEDULED"
-              title="Next Crew duty"
-              tone="cyan"
-            />
-          </SignalList>
-        </OperationalPanel>
-
-        <OperationalPanel
-          description="Latest verified results."
-          eyebrow="Recent form"
-          title="Match record"
-          tone="gold"
-        >
-          <div className={styles.formRow} aria-label="Recent form: win, win, loss, win, win">
-            <span data-result="win">W</span>
-            <span data-result="win">W</span>
-            <span data-result="loss">L</span>
-            <span data-result="win">W</span>
-            <span data-result="win">W</span>
-          </div>
-          <SignalList>
-            <SignalItem
-              description="EA FC / 3-1 / Verified"
-              meta="2H"
-              title="vs Island Elites"
-              tone="green"
-            />
-            <SignalItem
-              description="COD Mobile / 1-3 / Verified"
-              meta="1D"
-              title="vs Shadow Unit"
-              tone="red"
-            />
-          </SignalList>
-        </OperationalPanel>
-      </OperationalGrid>
-    </OperationalPage>
-  );
-}
-EOF
-
-  cat > "src/features/profiles/ui/ProfileScreen.module.css" <<'EOF'
-.identityCard {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--vz-space-4);
-  align-items: center;
-  padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-8));
-  border: 1px solid var(--vz-color-border-subtle);
-  border-left-color: var(--vz-retro-cyan);
-  border-radius: var(--vz-radius-panel);
-  background:
-    linear-gradient(120deg, color-mix(in srgb, var(--vz-retro-cyan) 8%, transparent), transparent 45%),
-    var(--vz-color-surface-base);
-}
-
-.identityCopy {
-  display: grid;
-  gap: var(--vz-space-2);
-  min-width: 0;
-}
-
-.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--vz-space-2);
-}
-
-.identityCopy h2,
-.identityCopy p,
-.rankBlock span,
-.rankBlock small {
-  margin: 0;
-}
-
-.identityCopy h2 {
-  font-size: clamp(1.75rem, 5vw, 3.25rem);
-}
-
-.identityCopy p,
-.rankBlock span,
-.rankBlock small {
-  color: var(--vz-color-text-secondary);
-}
-
-.rankBlock {
-  display: grid;
-  grid-column: 1 / -1;
-  gap: var(--vz-space-1);
-  padding: var(--vz-space-4);
-  border: 1px solid color-mix(in srgb, var(--vz-retro-gold) 38%, transparent);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-retro-gold) 5%, transparent);
-}
-
-.rankBlock strong {
-  color: var(--vz-retro-gold);
-  font-family: var(--vz-font-numeric);
-  font-size: clamp(2rem, 7vw, 3.5rem);
-  line-height: 1;
-}
-
-.progressStack {
-  display: grid;
-  gap: var(--vz-space-4);
-  margin-bottom: var(--vz-space-5);
-}
-
-.formRow {
-  display: flex;
-  gap: var(--vz-space-2);
-  margin-bottom: var(--vz-space-5);
-}
-
-.formRow span {
-  display: grid;
-  width: 2.4rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-sm);
-  font-family: var(--vz-font-numeric);
-  font-weight: var(--vz-font-weight-bold);
-}
-
-.formRow span[data-result="win"] {
-  color: var(--vz-retro-green);
-  border-color: color-mix(in srgb, var(--vz-retro-green) 48%, transparent);
-  background: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
-}
-
-.formRow span[data-result="loss"] {
-  color: var(--vz-color-danger);
-  border-color: color-mix(in srgb, var(--vz-color-danger) 48%, transparent);
-  background: color-mix(in srgb, var(--vz-color-danger) 7%, transparent);
-}
-
-@media (min-width: 48rem) {
-  .identityCard {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
-
-  .rankBlock {
-    grid-column: auto;
-    min-width: 11rem;
-  }
-}
-EOF
-
-  cat > "src/features/profiles/ui/ProfileScreen.test.tsx" <<'EOF'
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-
-import { ProfileScreen } from "./ProfileScreen";
-
-describe("ProfileScreen", () => {
-  it("renders player identity and competitive score", () => {
-    render(<ProfileScreen />);
-
-    expect(screen.getByRole("heading", { level: 1, name: "JAYFLEX" })).toBeInTheDocument();
-    expect(screen.getByText("2,310")).toBeInTheDocument();
-    expect(screen.getAllByText("Mainland Titans")).toHaveLength(2);
-  });
-});
-EOF
-
-  cat > "src/features/profiles/ui/index.ts" <<'EOF'
-export * from "./ProfileScreen";
-EOF
-}
-
-write_notifications_screen() {
-  mkdir -p "src/features/notifications/ui"
-
-  cat > "src/features/notifications/ui/NotificationsScreen.tsx" <<'EOF'
-import { Badge } from "@/components/primitives/badge";
-import {
-  MetricCard,
-  MetricGrid,
-  OperationalActionLink,
-  OperationalGrid,
-  OperationalHeader,
-  OperationalPage,
-  OperationalPanel,
-  SignalItem,
-  SignalList,
-} from "@/components/layout/operational-screen";
-
-import styles from "./NotificationsScreen.module.css";
-
-const notifications = [
-  {
-    title: "Check-in opens in 30 minutes",
-    description: "Mainland Titans vs Island Elites / EA FC / Round 3 of 5.",
-    meta: "2M",
-    tone: "red",
-  },
-  {
-    title: "Crew War roster confirmed",
-    description: "Your EA FC lane is locked for Saturday War Day.",
-    meta: "18M",
-    tone: "magenta",
-  },
-  {
-    title: "Reward pool funded",
-    description: "The Weekly VS Pool now contains 250,000 VS Credits.",
-    meta: "1H",
-    tone: "gold",
-  },
-  {
-    title: "Rank increased",
-    description: "You moved from #7 to #4 on the Lagos EA FC weekly table.",
-    meta: "4H",
-    tone: "green",
-  },
-  {
-    title: "Scouting report available",
-    description: "Island Elites updated their expected War Day lineup.",
-    meta: "1D",
-    tone: "cyan",
-  },
-] as const;
-
-export function NotificationsScreen() {
-  return (
-    <OperationalPage>
-      <OperationalHeader
-        actions={
-          <OperationalActionLink href="/settings" variant="secondary">
-            Notification settings
-          </OperationalActionLink>
-        }
-        description="Match, Crew, ranking, reward, and security signals in one operational feed."
-        eyebrow="09.2 // SIGNAL FEED"
-        status={<Badge tone="live">3 unread</Badge>}
-        title="NOTIFICATIONS"
-      />
-
-      <MetricGrid>
-        <MetricCard detail="action required" label="Unread" tone="red" value="3" />
-        <MetricCard detail="this week" label="Match alerts" tone="cyan" value="8" />
-        <MetricCard detail="Crew activity" label="War signals" tone="magenta" value="5" />
-        <MetricCard detail="credited" label="Rewards" tone="gold" value="2" />
-      </MetricGrid>
-
-      <OperationalGrid columns={3}>
-        <OperationalPanel title="All signals" tone="green">
-          <p className={styles.filterCopy}>Everything from matches, Crews, rewards, and security.</p>
-        </OperationalPanel>
-        <OperationalPanel title="Competition" tone="cyan">
-          <p className={styles.filterCopy}>Check-in, result, rank, and dispute notifications.</p>
-        </OperationalPanel>
-        <OperationalPanel title="Crew and rewards" tone="magenta">
-          <p className={styles.filterCopy}>War Week, roster, scouting, and funded-pool updates.</p>
-        </OperationalPanel>
-      </OperationalGrid>
-
-      <OperationalGrid columns={2}>
-        <OperationalPanel
-          description="Newest operational signals appear first."
-          eyebrow="Live feed"
-          title="Priority notifications"
-          tone="cyan"
-        >
-          <SignalList>
-            {notifications.map((item) => (
-              <SignalItem
-                description={item.description}
-                key={item.title}
-                meta={item.meta}
-                title={item.title}
-                tone={item.tone}
-              />
-            ))}
-          </SignalList>
-        </OperationalPanel>
-
-        <OperationalPanel
-          description="Only high-value signals interrupt active play."
-          eyebrow="Delivery"
-          title="Signal policy"
-          tone="gold"
-        >
-          <SignalList>
-            <SignalItem
-              description="Check-in and match-start alerts remain enabled."
-              meta="ON"
-              title="Competitive alerts"
-              tone="green"
-            />
-            <SignalItem
-              description="War Week roster and Crew challenge signals."
-              meta="ON"
-              title="Crew alerts"
-              tone="magenta"
-            />
-            <SignalItem
-              description="Cash and Bonus Credit movements require confirmation."
-              meta="SECURE"
-              title="Reward alerts"
-              tone="gold"
-            />
-            <SignalItem
-              description="New device and account-security events."
-              meta="ON"
-              title="Security alerts"
-              tone="cyan"
-            />
-          </SignalList>
-        </OperationalPanel>
-      </OperationalGrid>
-    </OperationalPage>
-  );
-}
-EOF
-
-  cat > "src/features/notifications/ui/NotificationsScreen.module.css" <<'EOF'
-.filterCopy {
-  margin: 0;
-  color: var(--vz-color-text-secondary);
-}
-EOF
-
-  cat > "src/features/notifications/ui/NotificationsScreen.test.tsx" <<'EOF'
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-
-import { NotificationsScreen } from "./NotificationsScreen";
-
-describe("NotificationsScreen", () => {
-  it("renders the competitive signal feed", () => {
-    render(<NotificationsScreen />);
-
-    expect(screen.getByRole("heading", { level: 1, name: "NOTIFICATIONS" })).toBeInTheDocument();
-    expect(screen.getByText("Check-in opens in 30 minutes")).toBeInTheDocument();
-    expect(screen.getByText("Reward pool funded")).toBeInTheDocument();
-  });
-});
-EOF
-
-  cat > "src/features/notifications/ui/index.ts" <<'EOF'
-export * from "./NotificationsScreen";
-EOF
-}
-
-write_search_screen() {
-  mkdir -p "src/features/search/ui"
-
-  cat > "src/features/search/ui/SearchScreen.tsx" <<'EOF'
-import { Badge } from "@/components/primitives/badge";
-import { Input } from "@/components/primitives/input";
-import {
-  OperationalActionLink,
-  OperationalGrid,
-  OperationalHeader,
-  OperationalPage,
-  OperationalPanel,
-  SignalItem,
-  SignalList,
-} from "@/components/layout/operational-screen";
-
-import styles from "./SearchScreen.module.css";
-
-export function SearchScreen() {
-  return (
-    <OperationalPage>
-      <OperationalHeader
-        description="Find players, Crews, competitions, matches, and public competitive records."
-        eyebrow="10.1 // NETWORK SEARCH"
-        status={<Badge tone="information">Global index online</Badge>}
-        title="SEARCH VERZUS"
-      />
-
-      <form action="/search" className={styles.searchForm} method="get" role="search">
-        <label htmlFor="verzus-search">Search the competitive network</label>
-        <div className={styles.searchRow}>
-          <Input
-            controlSize="lg"
-            id="verzus-search"
-            leadingIcon="search"
-            name="q"
-            placeholder="Player, Crew, competition, or match ID"
-            type="search"
-          />
-          <button type="submit">Search</button>
-        </div>
-        <p>Search results are public competitive records. Private Crew data remains permissioned.</p>
-      </form>
-
-      <OperationalGrid columns={3}>
-        <OperationalPanel title="Players" tone="cyan">
-          <p className={styles.categoryCopy}>Handles, game lanes, trust, and public form.</p>
-        </OperationalPanel>
-        <OperationalPanel title="Crews" tone="magenta">
-          <p className={styles.categoryCopy}>Club identity, standings, roster readiness, and War Week status.</p>
-        </OperationalPanel>
-        <OperationalPanel title="Competitions" tone="gold">
-          <p className={styles.categoryCopy}>Open registration, formats, eligibility, and funded rewards.</p>
-        </OperationalPanel>
-      </OperationalGrid>
-
-      <OperationalGrid columns={2}>
-        <OperationalPanel
-          action={
-            <OperationalActionLink href="/leaderboards/weekly" variant="secondary">
-              View rankings
-            </OperationalActionLink>
-          }
-          description="High-signal player and Crew records."
-          eyebrow="Suggested"
-          title="Competitive network"
-          tone="green"
-        >
-          <SignalList>
-            <SignalItem
-              description="Elite / Mainland Titans / EA FC and COD Mobile"
-              meta="#04"
-              title="JAYFLEX"
-              tone="green"
-            />
-            <SignalItem
-              description="Founding Crew / Lagos / Four game lanes"
-              meta="#02"
-              title="Mainland Titans"
-              tone="magenta"
-            />
-            <SignalItem
-              description="Verified Crew / War Week opponent"
-              meta="#05"
-              title="Island Elites"
-              tone="cyan"
-            />
-          </SignalList>
-        </OperationalPanel>
-
-        <OperationalPanel
-          action={
-            <OperationalActionLink href="/compete">Browse all</OperationalActionLink>
-          }
-          description="Open and scheduled competitive opportunities."
-          eyebrow="Discover"
-          title="Competitions"
-          tone="gold"
-        >
-          <SignalList>
-            <SignalItem
-              description="EA FC / Lagos / Saturday 18:00 WAT"
-              meta="OPEN"
-              title="Rookie Cup"
-              tone="green"
-            />
-            <SignalItem
-              description="League / 5v5 / Eligibility verified"
-              meta="12 SPOTS"
-              title="Ranked Open"
-              tone="cyan"
-            />
-            <SignalItem
-              description="COD Mobile / Crew squads / Weekly VS Pool"
-              meta="SAT"
-              title="Squad Battles"
-              tone="gold"
-            />
-          </SignalList>
-        </OperationalPanel>
-      </OperationalGrid>
-    </OperationalPage>
-  );
-}
-EOF
-
-  cat > "src/features/search/ui/SearchScreen.module.css" <<'EOF'
-.searchForm {
-  display: grid;
-  gap: var(--vz-space-3);
-  padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-8));
-  border: 1px solid var(--vz-color-border-subtle);
-  border-left-color: var(--vz-retro-cyan);
-  border-radius: var(--vz-radius-panel);
-  background: var(--vz-color-surface-base);
-}
-
-.searchForm label {
-  color: var(--vz-color-text-primary);
-  font-family: var(--vz-font-interface);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-wide);
-  text-transform: uppercase;
-}
-
-.searchForm p,
-.categoryCopy {
-  margin: 0;
-  color: var(--vz-color-text-secondary);
-}
-
-.searchRow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--vz-space-3);
-}
-
-.searchRow button {
-  min-height: 3rem;
-  padding: var(--vz-space-3) var(--vz-space-6);
-  border: 1px solid var(--vz-retro-green);
-  background: var(--vz-retro-green);
-  color: var(--vz-retro-black);
-  font-family: var(--vz-font-interface);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-wide);
-  text-transform: uppercase;
-  clip-path: var(--vz-retro-cut-sm);
-}
-
-.searchRow button:focus-visible {
-  outline: 2px solid var(--vz-retro-cyan);
-  outline-offset: 3px;
-}
-
-@media (min-width: 40rem) {
-  .searchRow {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-}
-EOF
-
-  cat > "src/features/search/ui/SearchScreen.test.tsx" <<'EOF'
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-
-import { SearchScreen } from "./SearchScreen";
-
-describe("SearchScreen", () => {
-  it("renders the global competitive search form", () => {
-    render(<SearchScreen />);
-
-    expect(screen.getByRole("heading", { level: 1, name: "SEARCH VERZUS" })).toBeInTheDocument();
-    expect(screen.getByRole("searchbox", { name: "Search the competitive network" })).toBeInTheDocument();
-    expect(screen.getByText("Island Elites")).toBeInTheDocument();
-  });
-});
-EOF
-
-  cat > "src/features/search/ui/index.ts" <<'EOF'
-export * from "./SearchScreen";
-EOF
-}
-
-write_settings_screen() {
-  mkdir -p "src/features/settings/ui"
-
-  cat > "src/features/settings/ui/SettingsScreen.tsx" <<'EOF'
-import { Badge } from "@/components/primitives/badge";
-import { Switch } from "@/components/primitives/switch";
-import {
-  OperationalActionLink,
-  OperationalGrid,
-  OperationalHeader,
-  OperationalPage,
-  OperationalPanel,
-  SignalItem,
-  SignalList,
-} from "@/components/layout/operational-screen";
-
-import styles from "./SettingsScreen.module.css";
-
-export function SettingsScreen() {
-  return (
-    <OperationalPage>
-      <OperationalHeader
-        actions={
-          <OperationalActionLink href="/profile" variant="secondary">
-            Back to profile
-          </OperationalActionLink>
-        }
-        description="Account security, communication, privacy, and competitive preferences."
-        eyebrow="10.4 // CONTROL PANEL"
-        status={<Badge tone="positive">Account secure</Badge>}
-        title="SETTINGS"
-      />
-
-      <OperationalGrid columns={2}>
-        <OperationalPanel
-          description="High-risk account actions remain server-authorized."
-          eyebrow="Account"
-          title="Security and identity"
-          tone="cyan"
-        >
-          <SignalList>
-            <SignalItem
-              description="Primary email and mobile number are verified."
-              meta="VERIFIED"
-              title="Player identity"
-              tone="green"
-            />
-            <SignalItem
-              description="Authenticator challenge required for reward withdrawals."
-              meta="ENABLED"
-              title="Two-factor authentication"
-              tone="cyan"
-            />
-            <SignalItem
-              description="Last active device: Windows desktop / Lagos."
-              meta="NOW"
-              title="Active session"
-              tone="gold"
-            />
-          </SignalList>
-          <div className={styles.actionRow}>
-            <OperationalActionLink href="/session-expired" variant="ghost">
-              Review sessions
-            </OperationalActionLink>
-          </div>
-        </OperationalPanel>
-
-        <OperationalPanel
-          description="Control which operational signals can interrupt active play."
-          eyebrow="Notifications"
-          title="Signal preferences"
-          tone="magenta"
-        >
-          <div className={styles.switchStack}>
-            <Switch
-              defaultChecked
-              description="Check-in, match-start, result, and dispute alerts."
-              label="Competitive alerts"
-            />
-            <Switch
-              defaultChecked
-              description="War Week, roster, challenge, and scouting signals."
-              label="Crew alerts"
-            />
-            <Switch
-              defaultChecked
-              description="Cash Credit, Bonus Credit, and funded-pool activity."
-              label="Reward alerts"
-            />
-            <Switch description="Optional product and event announcements." label="Platform updates" />
-          </div>
-        </OperationalPanel>
-      </OperationalGrid>
-
-      <OperationalGrid columns={2}>
-        <OperationalPanel
-          description="Public records support fair competition while private data remains restricted."
-          eyebrow="Privacy"
-          title="Competitive visibility"
-          tone="green"
-        >
-          <div className={styles.switchStack}>
-            <Switch
-              defaultChecked
-              description="Show verified game record, rank, and VS Points."
-              label="Public competitive card"
-            />
-            <Switch
-              defaultChecked
-              description="Allow verified Crews to view your primary game lanes."
-              label="Crew scouting visibility"
-            />
-            <Switch description="Allow direct challenge requests from players outside your Crew." label="Open challenges" />
-          </div>
-        </OperationalPanel>
-
-        <OperationalPanel
-          description="These settings affect matchmaking presentation, not competitive integrity."
-          eyebrow="Competition"
-          title="Play preferences"
-          tone="gold"
-        >
-          <div className={styles.switchStack}>
-            <Switch
-              defaultChecked
-              description="Prefer competition results with verified Crew affiliation."
-              label="Crew-first discovery"
-            />
-            <Switch
-              defaultChecked
-              description="Show local Lagos competitions before national events."
-              label="Local competition priority"
-            />
-            <Switch
-              defaultChecked
-              description="Warn when a match overlaps your saved War Day availability."
-              label="Schedule conflict warnings"
-            />
-          </div>
-        </OperationalPanel>
-      </OperationalGrid>
-
-      <OperationalPanel
-        description="VS Points are competitive score. VS Credits are rewards. They remain separate in all account views."
-        eyebrow="Data semantics"
-        title="Points and credits"
-        tone="cyan"
-      >
-        <div className={styles.creditGrid}>
-          <article>
-            <span>VS Points</span>
-            <strong>Ranking score</strong>
-            <p>Used for standings, seeding, and championship position.</p>
-          </article>
-          <article>
-            <span>Cash Credits</span>
-            <strong>Withdrawable reward</strong>
-            <p>Paid from funded reward pools after server-side verification.</p>
-          </article>
-          <article>
-            <span>Bonus Credits</span>
-            <strong>Platform reward</strong>
-            <p>Used inside VERZUS and never presented as withdrawable cash.</p>
-          </article>
-        </div>
-      </OperationalPanel>
-    </OperationalPage>
-  );
-}
-EOF
-
-  cat > "src/features/settings/ui/SettingsScreen.module.css" <<'EOF'
-.switchStack {
-  display: grid;
-  gap: var(--vz-space-4);
-}
-
-.actionRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--vz-space-3);
-  margin-top: var(--vz-space-5);
-}
-
-.creditGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--vz-space-3);
-}
-
-.creditGrid article {
-  display: grid;
-  gap: var(--vz-space-2);
-  padding: var(--vz-space-4);
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
-}
-
-.creditGrid span {
-  color: var(--vz-retro-cyan);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-font-size-xs);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-widest);
-  text-transform: uppercase;
-}
-
-.creditGrid strong {
-  color: var(--vz-color-text-primary);
-  font-family: var(--vz-font-interface);
-  text-transform: uppercase;
-}
-
-.creditGrid p {
-  margin: 0;
-  color: var(--vz-color-text-secondary);
-}
-
-@media (min-width: 48rem) {
-  .creditGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-EOF
-
-  cat > "src/features/settings/ui/SettingsScreen.test.tsx" <<'EOF'
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-
-import { SettingsScreen } from "./SettingsScreen";
-
-describe("SettingsScreen", () => {
-  it("renders account, signal, privacy, and competition settings", () => {
-    render(<SettingsScreen />);
-
-    expect(screen.getByRole("heading", { level: 1, name: "SETTINGS" })).toBeInTheDocument();
-    expect(screen.getByRole("switch", { name: "Competitive alerts" })).toBeChecked();
-    expect(screen.getByText("VS Points")).toBeInTheDocument();
-  });
-});
-EOF
-
-  cat > "src/features/settings/ui/index.ts" <<'EOF'
-export * from "./SettingsScreen";
-EOF
-}
-
-write_route_pages() {
-  cat > "src/app/(platform)/profile/page.tsx" <<'EOF'
-import type { Metadata } from "next";
-
-import { getPlatformRouteById } from "@/components/layout/app-shell";
-import { ProfileScreen } from "@/features/profiles/ui";
-
-const route = getPlatformRouteById("profile");
-
-export const metadata: Metadata = {
-  title: route.title,
-  description: route.description,
-};
-
-export default function ProfilePage() {
-  return <ProfileScreen />;
-}
-EOF
-
-  cat > "src/app/(platform)/notifications/page.tsx" <<'EOF'
-import type { Metadata } from "next";
-
-import { getPlatformRouteById } from "@/components/layout/app-shell";
-import { NotificationsScreen } from "@/features/notifications/ui";
-
-const route = getPlatformRouteById("notifications");
-
-export const metadata: Metadata = {
-  title: route.title,
-  description: route.description,
-};
-
-export default function NotificationsPage() {
-  return <NotificationsScreen />;
-}
-EOF
-
-  cat > "src/app/(platform)/search/page.tsx" <<'EOF'
-import type { Metadata } from "next";
-
-import { getPlatformRouteById } from "@/components/layout/app-shell";
-import { SearchScreen } from "@/features/search/ui";
-
-const route = getPlatformRouteById("search");
-
-export const metadata: Metadata = {
-  title: route.title,
-  description: route.description,
-};
-
-export default function SearchPage() {
-  return <SearchScreen />;
-}
-EOF
-
-  cat > "src/app/(platform)/settings/page.tsx" <<'EOF'
-import type { Metadata } from "next";
-
-import { getPlatformRouteById } from "@/components/layout/app-shell";
-import { SettingsScreen } from "@/features/settings/ui";
-
-const route = getPlatformRouteById("settings");
-
-export const metadata: Metadata = {
-  title: route.title,
-  description: route.description,
-};
-
-export default function SettingsPage() {
-  return <SettingsScreen />;
-}
-EOF
-}
-
-write_root_states() {
-  cat > "src/app/global-error.tsx" <<'EOF'
-"use client";
-
-import { SystemStateScreen } from "@/components/layout/system-state";
-
-type GlobalErrorProps = {
-  error: Error & { digest?: string };
-  reset: () => void;
-};
-
-export default function GlobalError({ error, reset }: GlobalErrorProps) {
-  return (
-    <html lang="en" data-theme="retro-competitive">
-      <body>
-        <SystemStateScreen
-          action={
-            <button onClick={reset} type="button">
-              Reload VERZUS
-            </button>
-          }
-          description="The application shell could not start. Your account and competition data were not changed."
-          eyebrow="SYSTEM STARTUP FAILURE"
-          reference={error.digest ?? "GLOBAL-UNAVAILABLE"}
-          title="VERZUS COULD NOT START"
-          tone="error"
-        />
-      </body>
-    </html>
-  );
-}
-EOF
-
-  cat > "src/app/error.tsx" <<'EOF'
-"use client";
-
-import { useEffect } from "react";
-
-import { SystemStateScreen } from "@/components/layout/system-state";
-
-type RootErrorProps = {
-  error: Error & { digest?: string };
-  reset: () => void;
-};
-
-export default function RootError({ error, reset }: RootErrorProps) {
-  useEffect(() => {
-    console.error("Route error", { digest: error.digest, message: error.message });
-  }, [error]);
-
-  return (
-    <SystemStateScreen
-      action={
-        <button onClick={reset} type="button">
-          Retry section
-        </button>
-      }
-      description="This route failed independently. Other VERZUS areas remain available."
-      eyebrow="ROUTE FAILURE"
-      reference={error.digest ?? "ROUTE-UNAVAILABLE"}
-      title="SECTION TEMPORARILY UNAVAILABLE"
-      tone="error"
-    />
-  );
-}
-EOF
-
-  cat > "src/app/not-found.tsx" <<'EOF'
-import Link from "next/link";
-
-import { SystemStateScreen } from "@/components/layout/system-state";
-
-export default function NotFound() {
-  return (
-    <SystemStateScreen
-      action={<Link href="/play">Return to Play</Link>}
-      description="The requested VERZUS route does not exist or is no longer available."
-      eyebrow="ROUTE NOT FOUND"
-      title="NO COMPETITIVE RECORD HERE"
-      tone="not-found"
-    />
-  );
-}
-EOF
-
-  cat > "src/app/loading.tsx" <<'EOF'
-import { SystemStateScreen } from "@/components/layout/system-state";
-
-export default function RootLoading() {
-  return (
-    <SystemStateScreen
-      description="Loading the application shell and your competitive context."
-      eyebrow="VERZUS NETWORK"
-      title="SYNCHRONIZING"
-      tone="loading"
-    />
-  );
-}
-EOF
-}
-
-write_auth_overrides() {
-  local temp
-  temp="$(mktemp)"
-
-  cat > "$temp" <<'EOF'
-/* VERZUS STAGE 5 AUTH:BEGIN */
-
-.shell {
-  --auth-accent: var(--vz-retro-green);
-  --auth-accent-soft: color-mix(in srgb, var(--auth-accent) 12%, transparent);
-  --auth-border: color-mix(in srgb, var(--auth-accent) 42%, transparent);
-  --auth-panel: var(--vz-color-surface-base);
-  --auth-muted: var(--vz-color-text-secondary);
-
-  background:
-    linear-gradient(color-mix(in srgb, var(--vz-color-background-deep) 84%, transparent), var(--vz-color-background-deep)),
-    linear-gradient(var(--vz-color-border-subtle) 1px, transparent 1px),
-    linear-gradient(90deg, var(--vz-color-border-subtle) 1px, transparent 1px),
-    radial-gradient(circle at 50% 0%, var(--auth-accent-soft), transparent 36rem),
-    var(--vz-color-background-deep);
-  background-size:
-    auto,
-    4rem 4rem,
-    4rem 4rem,
-    auto,
-    auto;
-  color: var(--vz-color-text-primary);
-}
-
-.shell[data-accent="info"] {
-  --auth-accent: var(--vz-retro-cyan);
-}
-
-.shell[data-accent="warning"] {
-  --auth-accent: var(--vz-retro-gold);
-}
-
-.shell[data-accent="danger"] {
-  --auth-accent: var(--vz-color-danger);
-}
-
-.brandName,
-.title,
-.cardTitle,
-.securityTitle,
-.noticeTitle,
-.stateItemTitle {
-  color: var(--vz-color-text-primary);
-}
-
-.description,
-.cardDescription,
-.helpText,
-.securityCopy,
-.noticeCopy,
-.stateItemCopy {
-  color: var(--vz-color-text-secondary);
-  font-family: var(--vz-font-body);
-}
-
-.card,
-.securityPanel,
-.statePanel,
-.loadingPanel {
-  border-color: var(--auth-border);
-  border-radius: var(--vz-radius-panel);
-  background:
-    linear-gradient(145deg, color-mix(in srgb, var(--auth-accent) 4%, transparent), transparent 45%),
-    var(--vz-color-surface-base);
-  box-shadow: var(--vz-shadow-panel);
-  clip-path: none;
-}
-
-.statusStrip,
-.primaryAction,
-.secondaryButton {
-  clip-path: var(--vz-retro-cut-sm);
-}
-
-.primaryAction {
-  border-color: var(--auth-accent);
-  background: var(--auth-accent);
-  color: var(--vz-retro-black);
-  box-shadow: none;
-}
-
-.secondaryButton {
-  border-color: var(--vz-retro-cyan);
-  color: var(--vz-retro-cyan);
-  background: transparent;
-}
-
-/* VERZUS STAGE 5 AUTH:END */
-EOF
-
-  append_or_replace_block \
-    "src/features/auth/ui/AuthScreens.module.css" \
-    "/* VERZUS STAGE 5 AUTH:BEGIN */" \
-    "/* VERZUS STAGE 5 AUTH:END */" \
-    "$temp"
-
-  rm -f "$temp"
-
-  temp="$(mktemp)"
-  cat > "$temp" <<'EOF'
-/* VERZUS STAGE 5 AUTH FORMS:BEGIN */
-
-.inputShell,
-.codeInput,
-.passwordRules,
-.errorSummary {
-  border-radius: var(--vz-radius-control);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
-  clip-path: none;
-}
-
-.input,
-.help,
-.errorMessage,
-.checkboxRow,
-.passwordRule {
-  font-family: var(--vz-font-body);
-}
-
-.input {
-  color: var(--vz-color-text-primary);
-}
-
-.submitButton {
-  border-color: var(--auth-accent);
-  background: var(--auth-accent);
-  color: var(--vz-retro-black);
-  box-shadow: none;
-  clip-path: var(--vz-retro-cut-sm);
-}
-
-.retryButton {
-  border-color: var(--vz-color-danger);
-  color: var(--vz-color-danger);
-}
-
-.input:focus-visible,
-.visibilityButton:focus-visible,
-.retryButton:focus-visible,
-.submitButton:focus-visible,
-.codeInput:focus-visible {
-  outline-color: var(--vz-retro-cyan);
-}
-
-/* VERZUS STAGE 5 AUTH FORMS:END */
-EOF
-
-  append_or_replace_block \
-    "src/features/auth/forms/AuthForms.module.css" \
-    "/* VERZUS STAGE 5 AUTH FORMS:BEGIN */" \
-    "/* VERZUS STAGE 5 AUTH FORMS:END */" \
-    "$temp"
-
-  rm -f "$temp"
-}
-
-write_onboarding_overrides() {
-  local temp
-  temp="$(mktemp)"
-
-  cat > "$temp" <<'EOF'
-/* VERZUS STAGE 5 ONBOARDING:BEGIN */
-
-.page,
-.loadingPage {
-  color: var(--vz-color-text-primary);
-  background:
-    radial-gradient(
-      circle at 88% 8%,
-      color-mix(in srgb, var(--vz-retro-cyan) 8%, transparent),
-      transparent 32rem
-    ),
-    radial-gradient(
-      circle at 8% 82%,
-      color-mix(in srgb, var(--vz-retro-green) 5%, transparent),
-      transparent 30rem
-    ),
-    var(--vz-color-background-deep);
-}
-
-.brandMark {
-  background: linear-gradient(
-    135deg,
-    var(--vz-retro-cyan),
-    var(--vz-retro-green)
-  );
-  color: var(--vz-retro-black);
-}
-
-.brandCopy small,
-.railStep,
-.saveNotice p,
-.desktopHeader > div:first-child span,
-.connectionStatus span,
-.contextPanel p,
-.contextPanel div p {
-  color: var(--vz-color-text-secondary);
-}
-
-.stepRail,
-.desktopHeader,
-.mobileHeader,
-.contextPanel {
-  border-color: var(--vz-color-border-subtle);
-  background: color-mix(in srgb, var(--vz-color-surface-base) 94%, transparent);
-}
-
-.railStep:hover {
-  color: var(--vz-color-text-primary);
-  border-color: var(--vz-color-border-default);
-}
-
-.railStepActive {
-  color: var(--vz-color-text-primary);
-  border-color: var(--vz-retro-green);
-  background: color-mix(in srgb, var(--vz-retro-green) 6%, transparent);
-}
-
-.railStepActive .railNumber {
-  color: var(--vz-retro-black);
-  border-color: var(--vz-retro-green);
-  background: var(--vz-retro-green);
-}
-
-.railStepComplete .railNumber {
-  color: var(--vz-retro-cyan);
-  border-color: var(--vz-retro-cyan);
-}
-
-.saveNotice {
-  border-left-color: var(--vz-retro-green);
-  background: color-mix(in srgb, var(--vz-retro-green) 5%, transparent);
-}
-
-.saveNotice span,
-.desktopHeader > div:first-child span,
-.contextPanel > span,
-.contextPanel div strong {
-  color: var(--vz-retro-cyan);
-}
-
-.connectionStatus[data-online="true"] b {
-  color: var(--vz-retro-green);
-}
-
-.connectionStatus b {
-  color: var(--vz-color-danger);
-}
-
-.contextPanel {
-  border-radius: var(--vz-radius-panel);
-  box-shadow: var(--vz-shadow-panel);
-}
-
-/* VERZUS STAGE 5 ONBOARDING:END */
-EOF
-
-  append_or_replace_block \
-    "src/features/onboarding/ui/onboarding-experience.module.css" \
-    "/* VERZUS STAGE 5 ONBOARDING:BEGIN */" \
-    "/* VERZUS STAGE 5 ONBOARDING:END */" \
-    "$temp"
-
-  rm -f "$temp"
-}
-
-write_boundary_overrides() {
-  local temp
-  temp="$(mktemp)"
-
-  cat > "$temp" <<'EOF'
-/* VERZUS STAGE 5 ROUTE BOUNDARY:BEGIN */
-
-.root,
-.page,
-.state,
-.panel,
-.card {
-  color: var(--vz-color-text-primary);
-  border-color: var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
-  background: var(--vz-color-surface-base);
-  box-shadow: var(--vz-shadow-panel);
-}
-
-:is(.root, .page, .state, .panel, .card) :is(p, small) {
-  color: var(--vz-color-text-secondary);
-}
-
-:is(.root, .page, .state, .panel, .card) :is(button, a):focus-visible {
-  outline: 2px solid var(--vz-retro-cyan);
-  outline-offset: 3px;
-}
-
-/* VERZUS STAGE 5 ROUTE BOUNDARY:END */
-EOF
-
-  append_or_replace_block \
-    "src/components/layout/route-boundary/RouteBoundary.module.css" \
-    "/* VERZUS STAGE 5 ROUTE BOUNDARY:BEGIN */" \
-    "/* VERZUS STAGE 5 ROUTE BOUNDARY:END */" \
-    "$temp"
-
-  rm -f "$temp"
-
-  temp="$(mktemp)"
-  cat > "$temp" <<'EOF'
-/* VERZUS STAGE 5 WIDGET BOUNDARY:BEGIN */
-
-.boundary,
-.root,
-.fallback,
-.card,
-.panel {
-  color: var(--vz-color-text-primary);
-  border-color: var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-panel);
-  background: var(--vz-color-surface-base);
-  box-shadow: var(--vz-shadow-panel);
-}
-
-:is(.boundary, .root, .fallback, .card, .panel) :is(p, small) {
-  color: var(--vz-color-text-secondary);
-}
-
-:is(.boundary, .root, .fallback, .card, .panel) :is(button, a):focus-visible {
-  outline: 2px solid var(--vz-retro-cyan);
-  outline-offset: 3px;
-}
-
-/* VERZUS STAGE 5 WIDGET BOUNDARY:END */
-EOF
-
-  append_or_replace_block \
-    "src/components/layout/widget-boundary/WidgetBoundary.module.css" \
-    "/* VERZUS STAGE 5 WIDGET BOUNDARY:BEGIN */" \
-    "/* VERZUS STAGE 5 WIDGET BOUNDARY:END */" \
-    "$temp"
-
-  rm -f "$temp"
-}
-
-write_design_system_updates() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "src/app/design-system/page.tsx";
-let source = fs.readFileSync(file, "utf8");
-
-source = source
-  .replace(
-    "VERZUS Design System / M2 / Step 17",
-    "11.0 // PLATFORM VISUAL CONTRACT",
-  )
-  .replace(
-    "Unified Design-System Gallery",
-    "VERZUS Competitive UI System",
-  )
-  .replace(
-    "One visual audit route for the approved foundation, reusable primitives, responsive presentations, competitive modules and failure states built in Steps 1-19.",
-    "The canonical production gallery for the five-stage VERZUS visual rebuild: tokens, shell, primitives, Play, competitive screens, operational states, and responsive behavior.",
-  );
-
-fs.writeFileSync(file, source, "utf8");
-NODE
-
-  local temp
-  temp="$(mktemp)"
-  cat > "$temp" <<'EOF'
-/* VERZUS STAGE 5 DESIGN GALLERY:BEGIN */
-
-.page {
-  color: var(--vz-color-text-primary);
-}
-
-.hero {
-  border-color: color-mix(in srgb, var(--vz-retro-green) 36%, transparent);
-  border-radius: var(--vz-radius-lg);
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--vz-retro-green) 7%, transparent),
-      transparent 36%
-    ),
-    var(--vz-color-surface-base);
-  box-shadow: var(--vz-shadow-panel);
-  clip-path: none;
-}
-
-.kicker,
-.sampleEyebrow {
-  color: var(--vz-retro-green);
-}
-
-.description,
-.summaryCard span,
-.swatchItem small,
-.bodySample,
-.controlCopy,
-.catalogCard p,
-.stateCard p,
-.approvalGrid p {
-  color: var(--vz-color-text-secondary);
-}
-
-.summaryCard,
-.sampleBlock,
-.sectionNav {
-  border-color: var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-md);
-  background: color-mix(in srgb, var(--vz-color-surface-elevated) 72%, transparent);
-  box-shadow: none;
-}
-
-.sectionNav a:focus-visible,
-.previewLink:focus-visible {
-  outline-color: var(--vz-retro-cyan);
-}
-
-/* VERZUS STAGE 5 DESIGN GALLERY:END */
-EOF
-
-  append_or_replace_block \
-    "src/app/design-system/page.module.css" \
-    "/* VERZUS STAGE 5 DESIGN GALLERY:BEGIN */" \
-    "/* VERZUS STAGE 5 DESIGN GALLERY:END */" \
-    "$temp"
-
-  rm -f "$temp"
-
-  cat > "src/app/token-preview/page.tsx" <<'EOF'
-import styles from "./page.module.css";
-
-const coreTokens = [
-  ["Void canvas", "--vz-color-background-deep", "#020305", "backgroundDeep"],
-  ["Surface base", "--vz-color-surface-base", "#06070B", "surfaceBase"],
-  ["Surface elevated", "--vz-color-surface-elevated", "#131620", "surfaceElevated"],
-  ["Primary green", "--vz-retro-green", "#00FF87", "green"],
-  ["Secondary cyan", "--vz-retro-cyan", "#00E5FF", "cyan"],
-  ["Live and danger", "--vz-color-danger", "#FF3B30", "red"],
-  ["War and rivalry", "--vz-retro-pink", "#FF2D87", "magenta"],
-  ["Rank and reward", "--vz-retro-gold", "#FFC400", "gold"],
-  ["Primary text", "--vz-color-text-primary", "#F7F8FB", "textPrimary"],
-  ["Secondary text", "--vz-color-text-secondary", "#8F91A5", "textSecondary"],
-] as const;
-
-export default function TokenPreviewPage() {
-  return (
-    <main className={styles.page}>
-      <section className={styles.shell}>
-        <header className={styles.header}>
-          <p className={styles.eyebrow}>11.1 // RETRO TOKEN SYSTEM</p>
-          <h1 className={styles.title}>VERZUS VISUAL FOUNDATION</h1>
-          <p className={styles.description}>
-            Neon colours are operational signals. Green owns positive action, cyan owns information
-            and focus, red owns live danger, magenta owns rivalry, and gold owns rank and rewards.
-          </p>
-        </header>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Production colour contract</h2>
-          <div className={styles.swatchGrid}>
-            {coreTokens.map(([name, token, value, className]) => (
-              <article className={styles.swatchCard} key={token}>
-                <div
-                  aria-hidden="true"
-                  className={`${styles.swatch} ${styles[className]}`}
-                />
-                <div>
-                  <h3 className={styles.swatchName}>{name}</h3>
-                  <p className={styles.tokenName}>{token}</p>
-                  <p className={styles.tokenValue}>{value}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Typography contract</h2>
-          <div className={styles.typeGrid}>
-            <article>
-              <span>Rajdhani / Display</span>
-              <strong>PLAY. RANK. RISE.</strong>
-              <p>Uppercase headings, navigation, labels, ranks, scores, and timers.</p>
-            </article>
-            <article>
-              <span>Inter / Body</span>
-              <strong>Readable operational copy</strong>
-              <p>Forms, rules, descriptions, help text, and long interface content.</p>
-            </article>
-          </div>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Signal semantics</h2>
-          <div className={styles.semanticGrid}>
-            <article className={styles.primaryAction}>
-              <span>Primary action</span>
-              <strong>CHECK IN NOW</strong>
-            </article>
-            <article className={styles.secondaryAction}>
-              <span>Information</span>
-              <strong>VIEW MATCH</strong>
-            </article>
-            <article className={styles.liveAction}>
-              <span>Live danger</span>
-              <strong>ROUND 3 / 5</strong>
-            </article>
-            <article className={styles.warAction}>
-              <span>Rivalry</span>
-              <strong>WAR WEEK ACTIVE</strong>
-            </article>
-            <article className={styles.rewardAction}>
-              <span>Rank and reward</span>
-              <strong>2,310 VS POINTS</strong>
-            </article>
-          </div>
-        </section>
-      </section>
-    </main>
-  );
-}
-EOF
-
-  cat > "src/app/token-preview/page.module.css" <<'EOF'
-.page {
-  min-height: 100svh;
-  padding: clamp(var(--vz-space-4), 4vw, var(--vz-space-10));
-  color: var(--vz-color-text-primary);
-  background: var(--vz-color-background-deep);
-}
-
-.shell {
-  width: min(100%, var(--vz-shell-content-max));
-  margin-inline: auto;
-  overflow: hidden;
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-lg);
-  background: var(--vz-color-surface-base);
-}
-
-.header,
-.section {
-  display: grid;
-  gap: var(--vz-space-4);
-  padding: clamp(var(--vz-space-5), 4vw, var(--vz-space-10));
-}
-
-.header {
-  border-bottom: 1px solid var(--vz-color-border-subtle);
-  background:
-    linear-gradient(
-      120deg,
-      color-mix(in srgb, var(--vz-retro-green) 7%, transparent),
-      transparent 34%
-    ),
-    var(--vz-color-background-deep);
-}
-
-.section + .section {
-  border-top: 1px solid var(--vz-color-border-subtle);
-}
-
-.eyebrow,
-.sectionTitle,
-.typeGrid span,
-.semanticGrid span {
-  margin: 0;
-  color: var(--vz-retro-cyan);
-  font-family: var(--vz-font-interface);
-  font-size: var(--vz-font-size-xs);
-  font-weight: var(--vz-font-weight-bold);
-  letter-spacing: var(--vz-letter-spacing-widest);
-  text-transform: uppercase;
-}
-
-.title,
-.description,
-.swatchName,
-.tokenName,
-.tokenValue,
-.typeGrid p {
-  margin: 0;
-}
-
-.title {
-  font-size: clamp(2.2rem, 8vw, 5rem);
-}
-
-.description,
-.typeGrid p {
-  max-width: 68ch;
-  color: var(--vz-color-text-secondary);
-}
-
-.sectionTitle {
-  font-size: var(--vz-font-size-lg);
-}
-
-.swatchGrid,
-.typeGrid,
-.semanticGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--vz-space-3);
-}
-
-.swatchCard,
-.typeGrid article,
-.semanticGrid article {
-  min-width: 0;
-  border: 1px solid var(--vz-color-border-subtle);
-  border-radius: var(--vz-radius-md);
-  background: var(--vz-color-surface-elevated);
-}
-
-.swatchCard {
-  display: grid;
-  grid-template-columns: 4rem minmax(0, 1fr);
-  gap: var(--vz-space-4);
-  align-items: center;
-  padding: var(--vz-space-3);
-}
-
-.swatch {
-  width: 4rem;
-  aspect-ratio: 1;
-  border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: var(--vz-radius-control);
-}
-
-.backgroundDeep {
-  background: var(--vz-color-background-deep);
-}
-
-.surfaceBase {
-  background: var(--vz-color-surface-base);
-}
-
-.surfaceElevated {
-  background: var(--vz-color-surface-elevated);
-}
-
-.green {
-  background: var(--vz-retro-green);
-}
-
-.cyan {
-  background: var(--vz-retro-cyan);
-}
-
-.red {
-  background: var(--vz-color-danger);
-}
-
-.magenta {
-  background: var(--vz-retro-pink);
-}
-
-.gold {
-  background: var(--vz-retro-gold);
-}
-
-.textPrimary {
-  background: var(--vz-color-text-primary);
-}
-
-.textSecondary {
-  background: var(--vz-color-text-secondary);
-}
-
-.swatchName {
-  color: var(--vz-color-text-primary);
-  font-family: var(--vz-font-interface);
-  text-transform: uppercase;
-}
-
-.tokenName,
-.tokenValue {
-  overflow-wrap: anywhere;
-  color: var(--vz-color-text-secondary);
-  font-family: var(--vz-font-numeric);
-  font-size: var(--vz-font-size-xs);
-}
-
-.typeGrid article,
-.semanticGrid article {
-  display: grid;
-  gap: var(--vz-space-3);
-  padding: var(--vz-space-5);
-}
-
-.typeGrid strong {
-  color: var(--vz-color-text-primary);
-  font-family: var(--vz-font-display);
-  font-size: clamp(1.35rem, 4vw, 2.5rem);
-  letter-spacing: var(--vz-letter-spacing-display);
-  text-transform: uppercase;
-}
-
-.semanticGrid article {
-  --semantic: var(--vz-retro-cyan);
-
-  border-left-color: var(--semantic);
-}
-
-.semanticGrid strong {
-  color: var(--semantic);
-  font-family: var(--vz-font-numeric);
-  font-size: clamp(1.15rem, 3vw, 1.8rem);
-}
-
-.primaryAction {
-  --semantic: var(--vz-retro-green) !important;
-}
-
-.secondaryAction {
-  --semantic: var(--vz-retro-cyan) !important;
-}
-
-.liveAction {
-  --semantic: var(--vz-color-danger) !important;
-}
-
-.warAction {
-  --semantic: var(--vz-retro-pink) !important;
-}
-
-.rewardAction {
-  --semantic: var(--vz-retro-gold) !important;
-}
-
-@media (min-width: 40rem) {
-  .swatchGrid,
-  .semanticGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 64rem) {
-  .swatchGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .typeGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .semanticGrid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-EOF
-}
-
-write_compatibility_verifiers() {
-  cat > "scripts/verify-retro-ui.mjs" <<'EOF'
-import fs from "node:fs";
-
-const checks = [
-  ["src/app/layout.tsx", 'data-theme="retro-competitive"'],
-  ["src/app/layout.tsx", 'import "@/styles/verzus-retro-system.css";'],
-  ["src/styles/verzus-retro-system.css", "--vz-retro-green: #00ff87"],
-  ["src/styles/verzus-retro-system.css", "--vz-retro-cyan: #00e5ff"],
-  ["src/components/layout/app-shell/AppShell.module.css", "VERZUS STAGE 2 RETRO SHARED UI:BEGIN"],
-  ["src/features/play/ui/PlayCommandCenter.tsx", "VERZUS STAGE 3 RETRO PLAY"],
-  ["scripts/verify-stage-4-competitive.mjs", "Stage 4"],
-  ["scripts/verify-stage-5-retro-platform.mjs", "Stage 5"],
-];
-
-const failures = [];
-for (const [file, fragment] of checks) {
-  if (!fs.existsSync(file)) {
-    failures.push(`${file}: missing`);
-    continue;
-  }
-
-  const source = fs.readFileSync(file, "utf8").toLowerCase();
-  if (!source.includes(fragment.toLowerCase())) {
-    failures.push(`${file}: missing ${fragment}`);
-  }
-}
-
-const layout = fs.readFileSync("src/app/layout.tsx", "utf8");
-for (const inactive of [
-  "verzus-reference-lock.css",
-  "verzus-esports-design-system.css",
-  "verzus-font-reference.css",
-  "verzus-visual-system.css",
-]) {
-  if (layout.includes(inactive)) {
-    failures.push(`Inactive theme import remains active: ${inactive}`);
-  }
-}
-
-if (failures.length > 0) {
-  console.error(
-    "Retro VERZUS UI verification failed:\n" +
-      failures.map((failure) => `- ${failure}`).join("\n"),
-  );
-  process.exit(1);
-}
-
-console.log("Retro VERZUS competitive UI markers: PASS");
-EOF
-
-  cat > "scripts/verify-reference-ui.mjs" <<'EOF'
-import fs from "node:fs";
-
-const failures = [];
-const checks = [
-  ["src/app/layout.tsx", 'data-theme="retro-competitive"'],
-  ["src/styles/verzus-retro-system.css", "--vz-retro-cut-sm:"],
-  ["src/styles/verzus-retro-system.css", "--vz-retro-cut-md:"],
-  ["src/styles/verzus-retro-system.css", "--vz-retro-cut-lg:"],
-  ["src/components/layout/app-shell/BrandMark.tsx", "brandVersion"],
-  ["src/components/primitives/button/Button.module.css", "VERZUS STAGE 2"],
-  ["src/features/onboarding/ui/onboarding-experience.module.css", "VERZUS STAGE 5 ONBOARDING:BEGIN"],
-  ["src/features/play/ui/PlayCommandCenter.tsx", "VERZUS STAGE 3 RETRO PLAY"],
-  ["docs/design-system/stage-5-retro-platform-contract.md", "# VERZUS Stage 5"],
-];
-
-for (const [file, expected] of checks) {
-  if (!fs.existsSync(file)) {
-    failures.push(`${file}: missing`);
-    continue;
-  }
-
-  const source = fs.readFileSync(file, "utf8");
-  if (!source.includes(expected)) {
-    failures.push(`${file}: missing ${expected}`);
-  }
-}
-
-const layout = fs.readFileSync("src/app/layout.tsx", "utf8");
-for (const inactive of [
-  "verzus-reference-lock.css",
-  "verzus-esports-design-system.css",
-  "verzus-font-reference.css",
-  "verzus-visual-system.css",
-]) {
-  if (layout.includes(inactive)) {
-    failures.push(`Inactive theme import remains active: ${inactive}`);
-  }
-}
-
-if (failures.length > 0) {
-  console.error(
-    "Reference-aligned retro VERZUS UI verification failed:\n" +
-      failures.map((item) => `- ${item}`).join("\n"),
-  );
-  process.exit(1);
-}
-
-console.log("Reference-aligned retro VERZUS UI markers: PASS");
-EOF
-}
-
-write_docs() {
-  mkdir -p "docs/design-system" "docs/runbooks" "reports/visual-review" "reports/accessibility" "reports/responsive"
-
-  cat > "docs/design-system/stage-5-retro-platform-contract.md" <<'EOF'
-# VERZUS Stage 5 Platform Contract
-
-Status: Platform visual completion
-
-## Completed scope
-
-- Profile
-- Notifications
-- Search
-- Settings
-- Authentication visual alignment
-- Onboarding visual alignment
-- Root loading, error, not-found, and global-error states
-- Design-system gallery alignment
-- Canonical token preview
-- Legacy visual verifier retirement
-
-## Preserved scope
-
-Stage 5 does not change feature APIs, schemas, adapters, mocks, query behavior, authentication logic, onboarding state transitions, check-in behavior, authorization, or telemetry.
-
-## Canonical visual rules
-
-- Canvas: `#020305`
-- Base surface: `#06070B`
-- Elevated surface: `#131620`
-- Primary positive action: `#00FF87`
-- Information and focus: `#00E5FF`
-- Live and danger: `#FF3B30`
-- War and rivalry: `#FF2D87`
-- Rank and reward: `#FFC400`
-- Primary text: `#F7F8FB`
-- Secondary text: `#8F91A5`
-
-Rajdhani owns display and operational data. Inter owns readable body copy and forms.
-
-## Responsive gate
-
-Review at 360, 390, 430, 768, 1024, and 1440 pixels.
-
-Reject the release for horizontal overflow, clipped labels, duplicate fixed navigation, unreadable neon body text, trapped modal scrolling, or desktop tables compressed into mobile.
-EOF
-
-  cat > "docs/design-system/legacy-theme-retirement.md" <<'EOF'
-# Legacy Theme Retirement
-
-The following files remain in the repository as historical references but are not imported by `src/app/layout.tsx`:
-
-- `src/styles/verzus-retro-system.css`
-- `src/styles/verzus-reference-lock.css`
-- `src/styles/verzus-esports-design-system.css`
-- `src/styles/verzus-font-reference.css`
-
-The active visual stack is:
-
-1. `src/styles/globals.css`
-2. `src/styles/verzus-retro-system.css`
-3. CSS Modules owned by shared components and feature domains
-
-Do not re-import a retired theme file. Move any still-useful rule into canonical tokens, the canonical visual system, a shared primitive, or the owning feature CSS Module.
-EOF
-
-  cat > "docs/runbooks/ui-rollback.md" <<'EOF'
-# VERZUS UI Rollback
-
-Each visual stage creates an independent backup:
-
-- `.verzus-backups/stage-1-foundation/`
-- `.verzus-backups/stage-2-primitives/`
-- `.verzus-backups/stage-3-play/`
-- `.verzus-backups/stage-4-competitive/`
-- `.verzus-backups/stage-5-retro-platform/`
-
-To roll back Stage 5, run:
-
-```bash
-bash ./VERZUS_Stage_5_Platform_Completion.sh rollback
-```
-
-After rollback, run:
-
-```bash
-npm run typecheck
-npm run dev
-```
-
-Review `/play`, `/profile`, `/notifications`, `/search`, `/settings`, `/login`, and `/onboarding` before continuing.
-EOF
-}
-
-write_stage5_verifier() {
-  cat > "scripts/verify-stage-5-retro-platform.mjs" <<'EOF'
-import fs from "node:fs";
-
-const requiredFiles = [
-  "src/components/layout/operational-screen/OperationalScreen.tsx",
-  "src/components/layout/system-state/SystemStateScreen.tsx",
-  "src/features/profiles/ui/ProfileScreen.tsx",
-  "src/features/notifications/ui/NotificationsScreen.tsx",
-  "src/features/search/ui/SearchScreen.tsx",
-  "src/features/settings/ui/SettingsScreen.tsx",
-  "docs/design-system/stage-5-retro-platform-contract.md",
-  "docs/design-system/stage-5-retro-audit.md",
-  "reports/stage-5-retro/style-audit.txt",
-  "docs/design-system/legacy-theme-retirement.md",
-  "docs/runbooks/ui-rollback.md",
-];
-
-const checks = [
-  ["src/app/(platform)/profile/page.tsx", "<ProfileScreen"],
-  ["src/app/(platform)/notifications/page.tsx", "<NotificationsScreen"],
-  ["src/app/(platform)/search/page.tsx", "<SearchScreen"],
-  ["src/app/(platform)/settings/page.tsx", "<SettingsScreen"],
-  ["src/features/auth/ui/AuthScreens.module.css", "VERZUS STAGE 5 AUTH:BEGIN"],
-  ["src/features/auth/forms/AuthForms.module.css", "VERZUS STAGE 5 AUTH FORMS:BEGIN"],
-  ["src/features/onboarding/ui/onboarding-experience.module.css", "VERZUS STAGE 5 ONBOARDING:BEGIN"],
-  ["src/components/layout/route-boundary/RouteBoundary.module.css", "VERZUS STAGE 5 ROUTE BOUNDARY:BEGIN"],
-  ["src/components/layout/widget-boundary/WidgetBoundary.module.css", "VERZUS STAGE 5 WIDGET BOUNDARY:BEGIN"],
-  ["src/app/global-error.tsx", "<SystemStateScreen"],
-  ["src/app/token-preview/page.tsx", "RETRO TOKEN SYSTEM"],
-  ["scripts/verify-retro-ui.mjs", "Retro VERZUS"],
-  ["scripts/verify-reference-ui.mjs", "Reference-aligned"],
-  ["reports/stage-5-retro/style-audit.txt", "Hardcoded hex values remaining: 0"],
-  ["reports/stage-5-retro/style-audit.txt", "Nonzero border-radius declarations remaining: 0"],
-];
-
-const failures = [];
-
-for (const file of requiredFiles) {
-  if (!fs.existsSync(file)) {
-    failures.push(`${file}: missing`);
-  }
-}
-
-for (const [file, marker] of checks) {
-  if (!fs.existsSync(file)) {
-    failures.push(`${file}: missing`);
-    continue;
-  }
-
-  const source = fs.readFileSync(file, "utf8");
-  if (!source.includes(marker)) {
-    failures.push(`${file}: missing ${marker}`);
-  }
-}
-
-const layout = fs.readFileSync("src/app/layout.tsx", "utf8");
-if (!layout.includes('data-theme="retro-competitive"')) {
-  failures.push("src/app/layout.tsx: retro theme attribute is missing");
-}
-if (!layout.includes("verzus-retro-system.css")) {
-  failures.push("src/app/layout.tsx: active retro theme import is missing");
-}
-for (const inactive of [
-  "verzus-reference-lock.css",
-  "verzus-esports-design-system.css",
-  "verzus-font-reference.css",
-  "verzus-visual-system.css",
-]) {
-  if (layout.includes(inactive)) {
-    failures.push(`src/app/layout.tsx: inactive theme import ${inactive}`);
-  }
-}
-
-for (const page of [
-  "src/app/(platform)/profile/page.tsx",
-  "src/app/(platform)/notifications/page.tsx",
-  "src/app/(platform)/search/page.tsx",
-  "src/app/(platform)/settings/page.tsx",
-]) {
-  if (fs.readFileSync(page, "utf8").includes("PlatformRoutePlaceholder")) {
-    failures.push(`${page}: still renders PlatformRoutePlaceholder`);
-  }
-}
-
-if (failures.length > 0) {
-  console.error("Stage 5 retro platform verification failed:");
-  for (const failure of failures) {
-    console.error(`- ${failure}`);
-  }
-  process.exit(1);
-}
-
-console.log("Stage 5 retro platform completion markers are installed.");
-EOF
-}
-
-patch_package_json() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "package.json";
-const pkg = JSON.parse(fs.readFileSync(file, "utf8"));
-pkg.scripts ??= {};
-pkg.scripts["verify:stage5:retro"] = "node scripts/verify-stage-5-retro-platform.mjs";
-pkg.scripts["stage5:retro:preview"] = "next dev --hostname 127.0.0.1 --port 3117";
-fs.writeFileSync(file, JSON.stringify(pkg, null, 2) + "\n", "utf8");
+write(packageFile, `${JSON.stringify(packageJson, null, 2)}\n`);
 NODE
 }
 
-normalize_stage5_retro_assets() {
-  echo
-  echo "Normalizing remaining Stage 5 styles to retro tokens..."
+format_changed_files() {
+  if [[ "${VERZUS_SKIP_FORMAT:-0}" == "1" ]]; then
+    echo "Skipping Prettier because VERZUS_SKIP_FORMAT=1."
+    return
+  fi
 
-  mkdir -p "docs/design-system" "reports/stage-5-retro"
-
-  node <<'NODE'
-import fs from "node:fs";
-import path from "node:path";
-
-const roots = [
-  "src/components/layout/operational-screen",
-  "src/components/layout/system-state",
-  "src/components/layout/route-boundary",
-  "src/components/layout/widget-boundary",
-  "src/features/profiles/ui",
-  "src/features/notifications/ui",
-  "src/features/search/ui",
-  "src/features/settings/ui",
-  "src/features/auth",
-  "src/features/onboarding/ui",
-  "src/app/design-system",
-  "src/app/token-preview",
-];
-
-const palette = [
-  ["--vz-retro-black", [2, 3, 5]],
-  ["--vz-retro-black-soft", [6, 7, 11]],
-  ["--vz-retro-surface", [10, 12, 18]],
-  ["--vz-retro-surface-2", [15, 17, 24]],
-  ["--vz-retro-surface-3", [19, 22, 32]],
-  ["--vz-retro-line", [43, 37, 64]],
-  ["--vz-retro-green", [0, 255, 135]],
-  ["--vz-retro-green-bright", [73, 255, 173]],
-  ["--vz-retro-cyan", [0, 229, 255]],
-  ["--vz-retro-purple", [155, 98, 255]],
-  ["--vz-retro-blue", [74, 158, 255]],
-  ["--vz-retro-orange", [255, 138, 31]],
-  ["--vz-retro-gold", [255, 194, 71]],
-  ["--vz-retro-red", [255, 59, 48]],
-  ["--vz-retro-pink", [255, 45, 135]],
-  ["--vz-retro-white", [247, 248, 251]],
-  ["--vz-retro-muted", [143, 145, 165]],
-];
-
-const aliasReplacements = new Map([
-  ["--vz-color-information", "--vz-color-info"],
-  ["--vz-color-primary", "--vz-color-action-primary"],
-  ["--vz-color-surface", "--vz-color-panel"],
-  ["--vz-color-text", "--vz-color-text-primary"],
-  ["--vz-surface-accent-green", "--vz-retro-green"],
-  ["--vz-surface-accent-cyan", "--vz-retro-cyan"],
-  ["--vz-surface-accent-violet", "--vz-retro-purple"],
-  ["--vz-surface-accent-magenta", "--vz-retro-pink"],
-  ["--vz-surface-accent-gold", "--vz-retro-gold"],
-  ["--vz-surface-accent-red", "--vz-retro-red"],
-  ["--vz-surface-accent-silver", "--vz-retro-muted"],
-]);
-
-const listFiles = (root) => {
-  if (!fs.existsSync(root)) return [];
-  const entries = fs.readdirSync(root, { withFileTypes: true });
-  return entries.flatMap((entry) => {
-    const full = path.join(root, entry.name);
-    if (entry.isDirectory()) return listFiles(full);
-    return full.endsWith(".css") ? [full] : [];
-  });
-};
-
-const cssFiles = [...new Set(roots.flatMap(listFiles))];
-
-const expandHex = (value) => {
-  const hex = value.slice(1);
-  if (hex.length === 3 || hex.length === 4) {
-    return hex.split("").map((char) => char + char).join("");
-  }
-  return hex;
-};
-
-const nearestToken = (hexValue) => {
-  const expanded = expandHex(hexValue);
-  const rgbHex = expanded.slice(0, 6);
-  const alphaHex = expanded.length === 8 ? expanded.slice(6, 8) : null;
-  const rgb = [0, 2, 4].map((offset) => Number.parseInt(rgbHex.slice(offset, offset + 2), 16));
-
-  let best = palette[0];
-  let bestDistance = Number.POSITIVE_INFINITY;
-  for (const candidate of palette) {
-    const distance = candidate[1].reduce(
-      (sum, channel, index) => sum + (channel - rgb[index]) ** 2,
-      0,
-    );
-    if (distance < bestDistance) {
-      best = candidate;
-      bestDistance = distance;
-    }
-  }
-
-  if (alphaHex) {
-    const alpha = Number.parseInt(alphaHex, 16) / 255;
-    const percentage = Math.max(1, Math.min(100, Math.round(alpha * 100)));
-    return `color-mix(in srgb, var(${best[0]}) ${percentage}%, transparent)`;
-  }
-
-  return `var(${best[0]})`;
-};
-
-const hexPattern = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{4}\b|#[0-9a-fA-F]{3}\b/g;
-
-for (const file of cssFiles) {
-  let source = fs.readFileSync(file, "utf8");
-
-  for (const [from, to] of aliasReplacements) {
-    source = source.replaceAll(from, to);
-  }
-
-  source = source.replace(hexPattern, (match) => nearestToken(match));
-  source = source.replace(/border-radius\s*:\s*[^;]+;/g, "border-radius: 0;");
-  source = source.replace(/border-(?:start|end)-(?:start|end)-radius\s*:\s*[^;]+;/g, (match) =>
-    match.replace(/:[^;]+;/, ": 0;"),
-  );
-
-  fs.writeFileSync(file, source, "utf8");
+  npx prettier --write \
+    package.json \
+    'src/app/(platform)/compete/layout.tsx' \
+    'src/app/(preview)/m6-competition-review' \
+    src/app/api/telemetry/competitions \
+    src/app/api/health/competitions \
+    src/features/competitions/release \
+    src/features/competitions/telemetry \
+    src/features/competitions/index.ts \
+    src/features/competitions/details/ui/CompetitionDetailScreen.tsx \
+    tests/e2e/m6 \
+    tests/integration/m6-competition-release.integration.test.ts \
+    tests/visual/m6-competitions.visual.spec.ts \
+    playwright.m6.config.ts \
+    docs/milestones/M6/m6-6-7-testing-observability-release.md \
+    docs/milestones/M6/m6-reference-approval.json \
+    docs/runbooks/m6-competition-rollback.md \
+    scripts/approve-m6-visuals.mjs \
+    scripts/package-m6-release.mjs \
+    scripts/verify-m6-6-7.mjs
 }
 
-const tokenPreview = "src/app/token-preview/page.tsx";
-if (fs.existsSync(tokenPreview)) {
-  let source = fs.readFileSync(tokenPreview, "utf8");
-  source = source.replace(
-    /const coreTokens = \[[\s\S]*?\] as const;/,
-    `const coreTokens = [
-  ["Void canvas", "--vz-color-background-deep", "backgroundDeep"],
-  ["Surface base", "--vz-color-surface-base", "surfaceBase"],
-  ["Surface elevated", "--vz-color-surface-elevated", "surfaceElevated"],
-  ["Primary green", "--vz-retro-green", "green"],
-  ["Secondary cyan", "--vz-retro-cyan", "cyan"],
-  ["Live and danger", "--vz-color-danger", "red"],
-  ["War and rivalry", "--vz-retro-pink", "magenta"],
-  ["Rank and reward", "--vz-retro-gold", "gold"],
-  ["Primary text", "--vz-color-text-primary", "textPrimary"],
-  ["Secondary text", "--vz-color-text-secondary", "textSecondary"],
-] as const;`,
-  );
-  source = source.replace(
-    /coreTokens\.map\(\(\[name, token, value, className\]\) =>/,
-    "coreTokens.map(([name, token, className]) =>",
-  );
-  source = source.replace(/\s*<p className=\{styles\.tokenValue\}>\{value\}<\/p>/, "");
-  fs.writeFileSync(tokenPreview, source, "utf8");
-}
-
-const generatedCss = cssFiles.map((file) => fs.readFileSync(file, "utf8")).join("\n");
-const remainingHex = generatedCss.match(hexPattern) ?? [];
-const radiusDeclarations = [...generatedCss.matchAll(/border-radius\s*:\s*([^;]+);/g)];
-const remainingRadius = radiusDeclarations.filter((match) => match[1].trim() !== "0");
-const atmosphereOwners = cssFiles.filter((file) => {
-  const source = fs.readFileSync(file, "utf8");
-  return /body::before|body::after/.test(source);
-});
-
-const report = [
-  "VERZUS Stage 5 retro style audit",
-  `Generated: ${new Date().toISOString()}`,
-  `CSS files scanned: ${cssFiles.length}`,
-  `Hardcoded hex values remaining: ${remainingHex.length}`,
-  `Nonzero border-radius declarations remaining: ${remainingRadius.length}`,
-  `Stage 5 files declaring body atmosphere layers: ${atmosphereOwners.length}`,
-  ...atmosphereOwners.map((file) => `  - ${file}`),
-  "",
-  "Stage 5 source boundary:",
-  ...roots.map((root) => `  - ${root}`),
-].join("\n");
-
-fs.writeFileSync("reports/stage-5-retro/style-audit.txt", report + "\n", "utf8");
-
-if (remainingHex.length > 0 || remainingRadius.length > 0 || atmosphereOwners.length > 0) {
-  console.error(report);
-  process.exit(1);
-}
-
-console.log(report);
-NODE
-
-  cat > "docs/design-system/stage-5-retro-audit.md" <<'EOF'
-# VERZUS Stage 5 Retro Audit
-
-Stage 5 normalizes the remaining platform presentation to the active `retro-competitive` system.
-
-## Audited areas
-
-- Authentication
-- Onboarding
-- Profile
-- Notifications
-- Search
-- Settings
-- Root system states
-- Route and widget boundaries
-- Design-system gallery
-- Token preview
-
-## Enforced rules
-
-- No hardcoded hexadecimal colours in the Stage 5 CSS boundary
-- No nonzero border radii in the Stage 5 CSS boundary
-- No Stage 5 component owns `body::before` or `body::after`
-- The global grid and scanlines remain owned by `verzus-retro-system.css`
-- Inactive legacy themes remain present but are not imported globally
-- Existing routes, APIs, hooks, schemas, mocks and domain behaviour remain unchanged
-
-The machine-readable result is stored in `reports/stage-5-retro/style-audit.txt`.
-EOF
-}
-
-format_files() {
-  echo
-  echo "Formatting Stage 5 files..."
-  npx prettier \
-    "package.json" \
-    "src/app/global-error.tsx" \
-    "src/app/error.tsx" \
-    "src/app/loading.tsx" \
-    "src/app/not-found.tsx" \
-    "src/app/(platform)/profile/page.tsx" \
-    "src/app/(platform)/notifications/page.tsx" \
-    "src/app/(platform)/search/page.tsx" \
-    "src/app/(platform)/settings/page.tsx" \
-    "src/app/design-system/page.tsx" \
-    "src/app/design-system/page.module.css" \
-    "src/app/token-preview/page.tsx" \
-    "src/app/token-preview/page.module.css" \
-    "src/features/auth/ui/AuthScreens.module.css" \
-    "src/features/auth/forms/AuthForms.module.css" \
-    "src/features/onboarding/ui/onboarding-experience.module.css" \
-    "src/components/layout/route-boundary/RouteBoundary.module.css" \
-    "src/components/layout/widget-boundary/WidgetBoundary.module.css" \
-    "src/components/layout/operational-screen" \
-    "src/components/layout/system-state" \
-    "src/features/profiles/ui" \
-    "src/features/notifications/ui" \
-    "src/features/search/ui" \
-    "src/features/settings/ui" \
-    "docs/design-system/stage-5-retro-platform-contract.md" \
-    "docs/design-system/stage-5-retro-audit.md" \
-    "reports/stage-5-retro/style-audit.txt" \
-    "docs/design-system/legacy-theme-retirement.md" \
-    "docs/runbooks/ui-rollback.md" \
-    "scripts/verify-stage-5-retro-platform.mjs" \
-    "scripts/verify-retro-ui.mjs" \
-    "scripts/verify-reference-ui.mjs" \
-    --write
-}
-
-install_stage5() {
+install_stage() {
   print_plan
   echo
   require_repo
-  create_backup
-
-  write_operational_screen
-  write_system_state
-  write_profile_screen
-  write_notifications_screen
-  write_search_screen
-  write_settings_screen
-  write_route_pages
-  write_root_states
-  write_auth_overrides
-  write_onboarding_overrides
-  write_boundary_overrides
-  write_design_system_updates
-  write_compatibility_verifiers
-  write_docs
-  write_stage5_verifier
-  normalize_stage5_retro_assets
-  patch_package_json
-  format_files
+  backup_current_state
+  extract_payload
+  patch_repository
+  format_changed_files
 
   echo
-  echo "Running narrow Stage 5 marker verification..."
-  node scripts/verify-stage-5-retro-platform.mjs
+  echo "Running lightweight M6.7 marker verification..."
+  node scripts/verify-m6-6-7.mjs --technical-only --markers-only
 
   echo
-  echo "Stage 5 retro platform completion installed."
-  echo "No API, schema, adapter, query, auth behavior, or Play contract was changed."
+  echo "M6.7 release-gate assets installed."
+  echo "Review hub: http://127.0.0.1:3118/m6-competition-review"
+  echo "Technical gate: npm run verify:m6:6.7:technical"
+  echo "Visual baseline: npm run m6:visual:update"
+  echo "Full gate: npm run verify:m6:6.7"
+  echo "Immutable release: npm run m6:release"
   echo "Rollback archive: $ARCHIVE"
+  echo
+  echo "Install mode does not run the full repository suite or approve visuals."
 }
 
-verify_stage5() {
+baseline_stage() {
   require_repo
-
-  echo "Running Stage 5 marker verification..."
-  node scripts/verify-stage-5-retro-platform.mjs
-
-  echo
-  echo "Running focused ESLint..."
-  npx eslint \
-    "src/app/global-error.tsx" \
-    "src/app/error.tsx" \
-    "src/app/loading.tsx" \
-    "src/app/not-found.tsx" \
-    "src/app/(platform)/profile/page.tsx" \
-    "src/app/(platform)/notifications/page.tsx" \
-    "src/app/(platform)/search/page.tsx" \
-    "src/app/(platform)/settings/page.tsx" \
-    "src/app/token-preview/page.tsx" \
-    "src/components/layout/operational-screen" \
-    "src/components/layout/system-state" \
-    "src/features/profiles/ui" \
-    "src/features/notifications/ui" \
-    "src/features/search/ui" \
-    "src/features/settings/ui" \
-    --max-warnings=0
-
-  echo
-  echo "Running focused Stage 5 component tests..."
-  npx vitest run \
-    src/features/profiles/ui/ProfileScreen.test.tsx \
-    src/features/notifications/ui/NotificationsScreen.test.tsx \
-    src/features/search/ui/SearchScreen.test.tsx \
-    src/features/settings/ui/SettingsScreen.test.tsx
-
-  echo
-  echo "Running TypeScript verification..."
-  npm run typecheck
-
-  echo
-  echo "Stage 5 focused verification passed."
+  npm run m6:visual:update
 }
 
-release_gate() {
+approve_stage() {
   require_repo
-  verify_stage5
-
-  echo
-  echo "Running final repository release gate..."
-  npm run format:check
-  npm run lint
-  npm run typecheck
-  npm run test
-  npm run check:boundaries
-  npm run build
-
-  echo
-  echo "Running retro visual marker checks..."
-  node scripts/verify-retro-ui.mjs
-  node scripts/verify-reference-ui.mjs
-  node scripts/m4-visual-review.mjs --scan-only
-
-  echo
-  echo "Stage 5 release gate passed."
+  npm run m6:approve
 }
 
-preview_stage5() {
+technical_stage() {
   require_repo
-  echo "Starting Stage 5 preview at http://127.0.0.1:$PORT"
-  exec npx next dev --hostname 127.0.0.1 --port "$PORT"
+  npm run verify:m6:6.7:technical
 }
 
-rollback_stage5() {
+verify_stage() {
   require_repo
+  npm run verify:m6:6.7
+}
 
-  local selected=""
+release_stage() {
+  require_repo
+  npm run m6:release
+}
 
-  if [[ -f "$BASELINE_POINTER" ]]; then
-    selected="$(cat "$BASELINE_POINTER")"
-  fi
+preview_stage() {
+  require_repo
+  echo "Starting M6 review at http://127.0.0.1:3118/m6-competition-review"
+  npm run m6:preview
+}
 
-  if [[ -z "$selected" || ! -d "$selected" ]]; then
-    selected="$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n 1)"
-  fi
+rollback_stage() {
+  require_repo_root
 
-  if [[ -z "$selected" ]]; then
-    echo "No Stage 5 backup found."
+  local latest
+  latest="$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n 1)"
+  [[ -n "$latest" ]] || {
+    echo "Error: no M6.7 backup found."
     exit 1
-  fi
+  }
 
-  local archive="$selected/verzus-stage-5-retro-before.tar.gz"
-  local created="$selected/created-files.txt"
-
-  if [[ ! -f "$archive" ]]; then
-    echo "Backup archive not found: $archive"
+  local archive="$latest/verzus-m6-6-7-before.tar.gz"
+  [[ -f "$archive" ]] || {
+    echo "Error: backup archive missing: $archive"
     exit 1
-  fi
+  }
 
-  echo "Restoring Stage 5 backup:"
-  echo "  $archive"
+  rm -rf \
+    src/features/competitions/release \
+    src/features/competitions/telemetry \
+    'src/app/api/telemetry/competitions' \
+    'src/app/api/health/competitions' \
+    'src/app/(preview)/m6-competition-review' \
+    tests/e2e/m6 \
+    tests/visual/m6-competitions.visual.spec.ts-snapshots
 
-  if [[ -f "$created" ]]; then
-    while IFS= read -r file; do
-      [[ -n "$file" ]] && rm -rf "$file"
-    done < "$created"
-  fi
+  rm -f \
+    'src/app/(platform)/compete/layout.tsx' \
+    tests/visual/m6-competitions.visual.spec.ts \
+    tests/integration/m6-competition-release.integration.test.ts \
+    playwright.m6.config.ts \
+    docs/milestones/M6/m6-6-7-testing-observability-release.md \
+    docs/milestones/M6/m6-reference-approval.json \
+    docs/runbooks/m6-competition-rollback.md \
+    scripts/approve-m6-visuals.mjs \
+    scripts/package-m6-release.mjs \
+    scripts/verify-m6-6-7.mjs \
+    reports/m6-verification.json
 
   tar -xzf "$archive"
-  rm -f "$BASELINE_POINTER"
-  echo "Stage 5 rollback completed."
+  echo "M6.7 rollback completed from: $archive"
+  echo "Retained release artifacts under artifacts/m6-competitions for auditability."
 }
 
 case "$MODE" in
   install)
-    install_stage5
+    install_stage
+    ;;
+  baseline)
+    baseline_stage
+    ;;
+  approve)
+    approve_stage
+    ;;
+  technical)
+    technical_stage
     ;;
   verify)
-    verify_stage5
+    verify_stage
     ;;
   release)
-    release_gate
+    release_stage
     ;;
   preview)
-    preview_stage5
+    preview_stage
     ;;
   all)
-    install_stage5
-    verify_stage5
+    install_stage
+    technical_stage
     ;;
   rollback)
-    rollback_stage5
+    rollback_stage
     ;;
   *)
     echo "Unknown mode: $MODE"
-    echo
-    echo "Valid modes:"
-    echo "  install   Apply Stage 5 and run marker verification"
-    echo "  verify    Run focused lint, tests, and TypeScript"
-    echo "  preview   Start Next.js on port $PORT"
-    echo "  release   Run the full final release gate"
-    echo "  all       Install and run focused verification"
-    echo "  rollback  Restore the latest Stage 5 backup"
+    echo "Valid modes: install, baseline, approve, technical, verify, release, preview, all, rollback"
     exit 1
     ;;
 esac
