@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import { AppProviders } from "./providers";
 
 import "@/styles/globals.css";
+import "@/styles/verzus-retro-system.css";
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +32,7 @@ type RootLayoutProps = Readonly<{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="retro-competitive">
       <body>
         <AppProviders>{children}</AppProviders>
       </body>

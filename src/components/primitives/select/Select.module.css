@@ -87,3 +87,21 @@
 .disabled .select {
   cursor: not-allowed;
 }
+
+/* VERZUS RETRO_SELECT START */
+.root {
+  border-color: var(--vz-retro-line);
+  background: rgb(4 5 9 / 94%);
+  clip-path: var(--vz-retro-cut-sm);
+}
+.root:hover:not(.disabled) {
+  border-color: rgb(0 229 255 / 46%);
+}
+.root:focus-within:not(.disabled) {
+  border-color: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-focus);
+}
+.select {
+  color: var(--vz-retro-white);
+}
+/* VERZUS RETRO_SELECT END */

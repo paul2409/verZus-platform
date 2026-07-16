@@ -1,4 +1,3 @@
-// VERZUS M5 STEPS 5.5-5.8
 "use client";
 
 import Link from "next/link";
@@ -12,10 +11,30 @@ import styles from "./play-command-center.module.css";
 function formatStart(value: string): string {
   return new Intl.DateTimeFormat("en-GB", {
     weekday: "short",
+    day: "2-digit",
+    month: "short",
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
   }).format(new Date(value));
+}
+
+function gameTone(game: string, index: number): "green" | "cyan" | "orange" | "purple" {
+  const normalized = game.toLowerCase();
+
+  if (normalized.includes("fc") || normalized.includes("football")) {
+    return "orange";
+  }
+
+  if (normalized.includes("clash") || normalized.includes("royale")) {
+    return "cyan";
+  }
+
+  if (normalized.includes("league")) {
+    return "purple";
+  }
+
+  return (["green", "cyan", "orange", "purple"] as const)[index % 4] ?? "green";
 }
 
 export function OpportunityRail({
@@ -29,8 +48,8 @@ export function OpportunityRail({
 
   return (
     <WidgetFrame
-      eyebrow="04 · OPPORTUNITIES"
-      title="Enter next"
+      eyebrow="FEATURED COMPETITIONS"
+      title="Enter the arena"
       status={featured ? "FEATURED" : `${view.data?.length ?? 0} OPEN`}
       className={featured ? styles.featuredWidget : undefined}
     >
@@ -45,22 +64,32 @@ export function OpportunityRail({
         />
       ) : (
         <div className={styles.opportunityList}>
-          {view.data.map((competition) => (
-            <article key={competition.competitionId} data-featured={competition.isFeatured}>
-              <div>
+          {view.data.map((competition, index) => (
+            <article
+              className={styles.opportunityCard}
+              data-featured={competition.isFeatured}
+              data-tone={gameTone(competition.game, index)}
+              key={competition.competitionId}
+            >
+              <div className={styles.opportunityArt} aria-hidden="true">
+                <span>{competition.game.slice(0, 2).toUpperCase()}</span>
+              </div>
+
+              <div className={styles.opportunityBody}>
                 <span>{competition.game}</span>
                 <strong>{competition.title}</strong>
-                <small>
-                  {competition.format} · {formatStart(competition.startsAt)}
-                </small>
+                <small>{competition.format}</small>
+
+                <div className={styles.opportunityMeta}>
+                  <b>{competition.rewardLabel}</b>
+                  <small>{competition.entryLabel}</small>
+                </div>
               </div>
 
-              <div className={styles.opportunityMeta}>
-                <b>{competition.rewardLabel}</b>
-                <small>{competition.entryLabel}</small>
-              </div>
-
-              <Link href={`/compete/${competition.competitionId}`}>VIEW</Link>
+              <footer className={styles.opportunityFooter}>
+                <span>{formatStart(competition.startsAt)}</span>
+                <Link href={`/compete/${competition.competitionId}`}>VIEW</Link>
+              </footer>
             </article>
           ))}
         </div>

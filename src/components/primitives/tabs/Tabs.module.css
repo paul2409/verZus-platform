@@ -293,3 +293,30 @@
     box-shadow: none;
   }
 }
+
+/* VERZUS RETRO_TABS START */
+.list {
+  border: 1px solid var(--vz-retro-line);
+  background: #050609;
+  clip-path: var(--vz-retro-cut-sm);
+}
+.tab {
+  color: #9693aa;
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.tab:hover:not(:disabled) {
+  color: var(--vz-retro-cyan);
+  background: rgb(0 229 255 / 5%);
+}
+.selected {
+  color: var(--vz-retro-green);
+  background: rgb(0 255 135 / 8%);
+}
+.selected::after {
+  background: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+/* VERZUS RETRO_TABS END */

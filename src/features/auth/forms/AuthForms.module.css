@@ -347,3 +347,31 @@
     color: HighlightText;
   }
 }
+
+/* VERZUS RETRO_AUTH_FORMS START */
+.inputShell,
+.errorSummary,
+.statusMessage,
+.rateLimitMessage,
+.successMessage {
+  border-color: var(--vz-retro-line);
+  background: #050609;
+  clip-path: var(--vz-retro-cut-sm);
+}
+.input:focus-visible,
+.codeInput:focus-visible {
+  border-color: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-focus);
+}
+.submitButton {
+  color: #020305;
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
+  clip-path: var(--vz-retro-cut-sm);
+}
+.retryButton {
+  color: var(--vz-retro-cyan);
+  border-color: rgb(0 229 255 / 52%);
+  clip-path: var(--vz-retro-cut-sm);
+}
+/* VERZUS RETRO_AUTH_FORMS END */

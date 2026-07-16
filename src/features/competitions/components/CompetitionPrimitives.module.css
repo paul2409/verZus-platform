@@ -77,3 +77,25 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* VERZUS RETRO_COMPETITIONS START */
+.card,
+.summary,
+.filterBar,
+.stateCard {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  clip-path: var(--vz-retro-cut-md);
+}
+.card:hover {
+  border-color: rgb(255 194 71 / 62%);
+  box-shadow: var(--vz-shadow-glow-gold);
+  transform: translateY(-2px);
+}
+.title,
+.label {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+/* VERZUS RETRO_COMPETITIONS END */

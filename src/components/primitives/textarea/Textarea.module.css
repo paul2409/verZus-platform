@@ -63,3 +63,18 @@
 .both {
   resize: both;
 }
+
+/* VERZUS RETRO_TEXTAREA START */
+.root {
+  border-color: var(--vz-retro-line);
+  background: rgb(4 5 9 / 94%);
+  clip-path: var(--vz-retro-cut-sm);
+}
+.root:focus-within:not(.disabled) {
+  border-color: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-focus);
+}
+.textarea {
+  color: var(--vz-retro-white);
+}
+/* VERZUS RETRO_TEXTAREA END */

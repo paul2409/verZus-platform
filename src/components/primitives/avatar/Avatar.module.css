@@ -372,3 +372,40 @@
     border: 0.25rem solid Mark;
   }
 }
+
+/* VERZUS RETRO_AVATARS START */
+.avatar {
+  filter: drop-shadow(0 0 8px rgb(0 229 255 / 14%));
+}
+.frame {
+  border-width: 1px;
+  background: linear-gradient(
+    135deg,
+    var(--vz-retro-green),
+    var(--vz-retro-cyan),
+    var(--vz-retro-purple)
+  );
+}
+.content {
+  background: #07080d;
+}
+.toneGreen .frame {
+  background: var(--vz-retro-green);
+}
+.toneCyan .frame {
+  background: var(--vz-retro-cyan);
+}
+.toneViolet .frame {
+  background: var(--vz-retro-purple);
+}
+.toneGold .frame {
+  background: var(--vz-retro-gold);
+}
+.toneRed .frame {
+  background: var(--vz-retro-red);
+}
+.presenceOnline .presenceIndicator {
+  background: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+/* VERZUS RETRO_AVATARS END */

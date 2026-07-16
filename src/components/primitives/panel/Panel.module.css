@@ -818,3 +818,55 @@
     color: LinkText;
   }
 }
+
+/* VERZUS RETRO_PANELS START */
+.panelSurface,
+.module {
+  border-color: var(--vz-retro-line);
+  background:
+    linear-gradient(135deg, rgb(0 255 135 / 2%), transparent 34%),
+    linear-gradient(180deg, rgb(11 13 19 / 98%), rgb(5 6 10 / 98%));
+  clip-path: var(--vz-retro-cut-md);
+}
+
+.outerFrame,
+.innerFrame {
+  clip-path: var(--vz-retro-cut-md);
+}
+
+.tonePrimary .outerFrame {
+  border-color: rgb(0 255 135 / 48%);
+}
+.toneSecondary .outerFrame {
+  border-color: rgb(0 229 255 / 48%);
+}
+.toneAccent .outerFrame {
+  border-color: rgb(155 98 255 / 48%);
+}
+.toneWarning .outerFrame {
+  border-color: rgb(255 194 71 / 48%);
+}
+.toneDanger .outerFrame {
+  border-color: rgb(255 59 48 / 48%);
+}
+
+.moduleInteractive:hover {
+  border-color: rgb(0 229 255 / 54%);
+  background: rgb(0 229 255 / 5%);
+  transform: translateY(-1px);
+}
+
+.moduleSelected {
+  border-color: var(--vz-retro-green);
+  background: rgb(0 255 135 / 7%);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+
+.title,
+.eyebrow,
+.moduleHeader {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* VERZUS RETRO_PANELS END */

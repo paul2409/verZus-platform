@@ -500,3 +500,50 @@
     box-shadow: none;
   }
 }
+
+/* VERZUS RETRO_BADGES START */
+.badge,
+.rankBadge,
+.movementBadge {
+  border-width: 1px;
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.tonePositive {
+  color: var(--vz-retro-green);
+  border-color: rgb(0 255 135 / 48%);
+  background: rgb(0 255 135 / 7%);
+}
+.toneInformation {
+  color: var(--vz-retro-cyan);
+  border-color: rgb(0 229 255 / 48%);
+  background: rgb(0 229 255 / 7%);
+}
+.toneSpecial {
+  color: var(--vz-retro-purple);
+  border-color: rgb(155 98 255 / 48%);
+  background: rgb(155 98 255 / 7%);
+}
+.toneWarning {
+  color: var(--vz-retro-gold);
+  border-color: rgb(255 194 71 / 48%);
+  background: rgb(255 194 71 / 7%);
+}
+.toneNegative,
+.toneLive {
+  color: var(--vz-retro-red);
+  border-color: rgb(255 59 48 / 48%);
+  background: rgb(255 59 48 / 7%);
+}
+.rankGold {
+  color: var(--vz-retro-gold);
+  box-shadow: var(--vz-shadow-glow-gold);
+}
+.rankElite {
+  color: var(--vz-retro-purple);
+  box-shadow: var(--vz-shadow-glow-purple);
+}
+/* VERZUS RETRO_BADGES END */

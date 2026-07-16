@@ -179,3 +179,27 @@
     background: Highlight;
   }
 }
+
+/* VERZUS RETRO_SEGMENTED START */
+.root {
+  border: 1px solid var(--vz-retro-line);
+  background: #050609;
+  clip-path: var(--vz-retro-cut-sm);
+}
+.item {
+  color: #9693aa;
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.item:hover:not(:disabled) {
+  color: var(--vz-retro-cyan);
+  background: rgb(0 229 255 / 5%);
+}
+.selected {
+  color: #020305;
+  background: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+/* VERZUS RETRO_SEGMENTED END */

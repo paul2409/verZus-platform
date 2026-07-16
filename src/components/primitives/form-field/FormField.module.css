@@ -68,3 +68,19 @@
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
 }
+
+/* VERZUS RETRO_FORM_FIELD START */
+.label,
+.legend {
+  color: #b5b2c6;
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.description {
+  color: var(--vz-retro-muted);
+}
+.error {
+  color: var(--vz-retro-red);
+}
+/* VERZUS RETRO_FORM_FIELD END */

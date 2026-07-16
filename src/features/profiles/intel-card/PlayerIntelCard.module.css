@@ -116,3 +116,12 @@
     height: 7rem;
   }
 }
+
+/* VERZUS RETRO_PLAYER_INTEL START */
+.root,
+.card {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  clip-path: var(--vz-retro-cut-md);
+}
+/* VERZUS RETRO_PLAYER_INTEL END */

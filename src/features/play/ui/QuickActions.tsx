@@ -1,5 +1,3 @@
-// VERZUS M5 STEPS 5.5-5.8
-
 import Link from "next/link";
 
 import { WidgetFrame } from "./WidgetFrame";
@@ -9,33 +7,46 @@ const actions = [
   {
     href: "/compete",
     label: "FIND MATCH",
-    detail: "Ranked queue",
+    detail: "Quick competitive queue",
+    glyph: "▶",
+    tone: "green",
   },
   {
     href: "/compete",
-    label: "COMPETE",
-    detail: "Open events",
-  },
-  {
-    href: "/leaderboards/weekly",
-    label: "RANKINGS",
-    detail: "Weekly table",
+    label: "CREATE MATCH",
+    detail: "Open a custom lobby",
+    glyph: "+",
+    tone: "cyan",
   },
   {
     href: "/crews",
-    label: "CREW HQ",
-    detail: "Team activity",
+    label: "JOIN CREW",
+    detail: "Find compatible players",
+    glyph: "◎",
+    tone: "orange",
+  },
+  {
+    href: "/leaderboards/weekly",
+    label: "VIEW RANKINGS",
+    detail: "Track weekly movement",
+    glyph: "▥",
+    tone: "purple",
   },
 ] as const;
 
 export function QuickActions() {
   return (
-    <WidgetFrame eyebrow="06 · QUICK ACTIONS" title="Jump back in" status="ALWAYS AVAILABLE">
+    <WidgetFrame eyebrow="QUICK ACTIONS" title="Choose your next move" status="READY">
       <div className={styles.quickActionGrid}>
         {actions.map((action) => (
-          <Link href={action.href} key={action.label}>
-            <strong>{action.label}</strong>
-            <span>{action.detail}</span>
+          <Link data-tone={action.tone} href={action.href} key={action.label}>
+            <span className={styles.quickActionGlyph} aria-hidden="true">
+              {action.glyph}
+            </span>
+            <span>
+              <strong>{action.label}</strong>
+              <small>{action.detail}</small>
+            </span>
           </Link>
         ))}
       </div>

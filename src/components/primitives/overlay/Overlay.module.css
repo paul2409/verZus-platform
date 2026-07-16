@@ -283,3 +283,30 @@
     forced-color-adjust: auto;
   }
 }
+
+/* VERZUS RETRO_OVERLAY START */
+.backdrop {
+  background: rgb(0 0 0 / 82%);
+  backdrop-filter: blur(10px);
+}
+.dialog,
+.drawer,
+.popoverContent,
+.tooltip {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(13 15 22 / 99%), rgb(4 5 8 / 99%));
+  clip-path: var(--vz-retro-cut-md);
+  box-shadow:
+    0 24px 80px rgb(0 0 0 / 62%),
+    var(--vz-shadow-glow-purple);
+}
+.dialogTitle {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dialogClose {
+  color: var(--vz-retro-cyan);
+  border-color: rgb(0 229 255 / 34%);
+}
+/* VERZUS RETRO_OVERLAY END */

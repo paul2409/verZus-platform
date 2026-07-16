@@ -1366,3 +1366,72 @@
     transition: none;
   }
 }
+
+/* VERZUS RETRO_ONBOARDING START */
+.page,
+.loadingPage {
+  background:
+    radial-gradient(circle at 15% 10%, rgb(0 229 255 / 9%), transparent 28rem),
+    radial-gradient(circle at 90% 24%, rgb(155 98 255 / 9%), transparent 28rem), #020305;
+}
+.brandMark {
+  color: #020305;
+  background: var(--vz-retro-green);
+  border-color: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-glow-green);
+  clip-path: var(--vz-retro-cut-sm);
+}
+.brandCopy strong {
+  color: transparent;
+  background: linear-gradient(90deg, var(--vz-retro-cyan), var(--vz-retro-purple));
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+.stepRail,
+.contextPanel,
+.statePanel,
+.optionCard,
+.crewCard,
+.benefitGrid article,
+.summaryGrid article {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  clip-path: var(--vz-retro-cut-md);
+}
+.railStepActive,
+.optionCardSelected,
+.crewCardSelected {
+  border-color: var(--vz-retro-green);
+  background: rgb(0 255 135 / 7%);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+.railNumber,
+.optionCheck {
+  border-color: rgb(155 98 255 / 48%);
+  background: #050609;
+}
+.railStepActive .railNumber,
+.optionCardSelected .optionCheck,
+.crewCardSelected .optionCheck {
+  color: #020305;
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
+}
+.primaryButton {
+  color: #020305;
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
+  clip-path: var(--vz-retro-cut-sm);
+}
+.gameGrid,
+.crewGrid {
+  gap: 0.85rem;
+}
+.optionIcon,
+.crewLogo {
+  color: var(--vz-retro-cyan);
+  border-color: rgb(0 229 255 / 44%);
+  background: rgb(0 229 255 / 6%);
+  box-shadow: var(--vz-shadow-glow-cyan);
+}
+/* VERZUS RETRO_ONBOARDING END */

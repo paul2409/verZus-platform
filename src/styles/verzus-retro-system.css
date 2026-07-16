@@ -1,0 +1,218 @@
+/* VERZUS approved retro-competitive visual system.
+   Reference: mobile Rankings, crew emblem selector and M2 language board. */
+
+:root,
+html[data-theme="retro-competitive"] {
+  color-scheme: dark;
+
+  --vz-retro-black: #020305;
+  --vz-retro-black-soft: #06070b;
+  --vz-retro-surface: #090a10;
+  --vz-retro-surface-2: #0e1018;
+  --vz-retro-surface-3: #131620;
+  --vz-retro-line: #2b2540;
+  --vz-retro-line-soft: rgb(137 105 255 / 22%);
+  --vz-retro-green: #00ff87;
+  --vz-retro-green-bright: #49ffad;
+  --vz-retro-cyan: #00e5ff;
+  --vz-retro-purple: #9b62ff;
+  --vz-retro-blue: #4a9eff;
+  --vz-retro-orange: #ff8a1f;
+  --vz-retro-gold: #ffc247;
+  --vz-retro-red: #ff3b30;
+  --vz-retro-pink: #ff2d87;
+  --vz-retro-white: #f7f8fb;
+  --vz-retro-muted: #8f91a5;
+
+  --vz-color-background-deep: var(--vz-retro-black);
+  --vz-color-background: var(--vz-retro-black);
+  --vz-color-background-elevated: var(--vz-retro-black-soft);
+  --vz-color-background-muted: var(--vz-retro-surface);
+  --vz-color-surface-base: var(--vz-retro-surface);
+  --vz-color-surface-elevated: var(--vz-retro-surface-2);
+  --vz-color-surface-interactive: var(--vz-retro-surface-3);
+  --vz-color-panel: rgb(7 8 13 / 96%);
+  --vz-color-panel-muted: rgb(12 13 20 / 92%);
+  --vz-color-panel-hover: rgb(17 20 29 / 98%);
+  --vz-color-panel-active: rgb(0 255 135 / 8%);
+
+  --vz-color-text-primary: var(--vz-retro-white);
+  --vz-color-text-secondary: #aaa8bd;
+  --vz-color-text-tertiary: var(--vz-retro-muted);
+  --vz-color-text-muted: #666879;
+  --vz-color-text-brand: var(--vz-retro-green);
+  --vz-color-text-link: var(--vz-retro-cyan);
+
+  --vz-color-action-primary: var(--vz-retro-green);
+  --vz-color-action-primary-hover: var(--vz-retro-green-bright);
+  --vz-color-action-primary-active: #00d970;
+  --vz-color-action-secondary: var(--vz-retro-cyan);
+  --vz-color-action-secondary-hover: #70f2ff;
+  --vz-color-success: var(--vz-retro-green);
+  --vz-color-info: var(--vz-retro-cyan);
+  --vz-color-warning: var(--vz-retro-gold);
+  --vz-color-danger: var(--vz-retro-red);
+  --vz-color-status-live: var(--vz-retro-red);
+
+  --vz-color-border-subtle: rgb(155 98 255 / 16%);
+  --vz-color-border-default: #29243c;
+  --vz-color-border-strong: #41365d;
+  --vz-color-border-active: var(--vz-retro-green);
+  --vz-color-border-information: var(--vz-retro-cyan);
+  --vz-color-border-warning: var(--vz-retro-gold);
+  --vz-color-border-danger: var(--vz-retro-red);
+  --vz-color-focus-ring: var(--vz-retro-green);
+  --vz-color-focus-ring-secondary: var(--vz-retro-cyan);
+
+  --vz-gradient-brand: linear-gradient(90deg, var(--vz-retro-cyan), var(--vz-retro-purple));
+  --vz-gradient-brand-horizontal: linear-gradient(
+    90deg,
+    var(--vz-retro-cyan),
+    var(--vz-retro-purple)
+  );
+  --vz-gradient-primary: linear-gradient(
+    180deg,
+    var(--vz-retro-green-bright),
+    var(--vz-retro-green)
+  );
+
+  --vz-radius-xs: 0;
+  --vz-radius-sm: 0;
+  --vz-radius-md: 0;
+  --vz-radius-lg: 0;
+  --vz-radius-xl: 0;
+
+  --vz-shadow-focus: 0 0 0 2px rgb(0 255 135 / 24%), 0 0 24px rgb(0 255 135 / 18%);
+  --vz-shadow-glow-green: 0 0 18px rgb(0 255 135 / 18%);
+  --vz-shadow-glow-cyan: 0 0 18px rgb(0 229 255 / 16%);
+  --vz-shadow-glow-purple: 0 0 18px rgb(155 98 255 / 16%);
+  --vz-shadow-glow-gold: 0 0 18px rgb(255 194 71 / 16%);
+
+  --vz-retro-cut-sm: polygon(
+    8px 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%,
+    0 8px
+  );
+  --vz-retro-cut-md: polygon(
+    14px 0,
+    100% 0,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    0 100%,
+    0 14px
+  );
+  --vz-retro-cut-lg: polygon(
+    22px 0,
+    100% 0,
+    100% calc(100% - 22px),
+    calc(100% - 22px) 100%,
+    0 100%,
+    0 22px
+  );
+}
+
+html[data-theme="retro-competitive"] {
+  min-width: 320px;
+  background: var(--vz-retro-black);
+}
+
+html[data-theme="retro-competitive"] body {
+  min-height: 100vh;
+  color: var(--vz-retro-white);
+  background:
+    linear-gradient(rgb(2 3 5 / 88%), rgb(2 3 5 / 96%)),
+    radial-gradient(circle at 15% 10%, rgb(0 229 255 / 10%), transparent 26rem),
+    radial-gradient(circle at 82% 18%, rgb(155 98 255 / 9%), transparent 28rem),
+    radial-gradient(circle at 50% 100%, rgb(0 255 135 / 6%), transparent 34rem), #020305;
+  background-attachment: fixed;
+}
+
+html[data-theme="retro-competitive"] body::before,
+html[data-theme="retro-competitive"] body::after {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+}
+
+html[data-theme="retro-competitive"] body::before {
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgb(0 229 255 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(155 98 255 / 4%) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+html[data-theme="retro-competitive"] body::after {
+  opacity: 0.12;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgb(255 255 255 / 7%) 4px
+  );
+  mix-blend-mode: soft-light;
+}
+
+html[data-theme="retro-competitive"] h1,
+html[data-theme="retro-competitive"] h2,
+html[data-theme="retro-competitive"] h3,
+html[data-theme="retro-competitive"] h4,
+html[data-theme="retro-competitive"] [data-font-role="display"] {
+  font-family: var(--vz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+html[data-theme="retro-competitive"] button,
+html[data-theme="retro-competitive"] input,
+html[data-theme="retro-competitive"] select,
+html[data-theme="retro-competitive"] textarea {
+  font-family: var(--vz-font-body);
+}
+
+html[data-theme="retro-competitive"] ::selection {
+  color: #020305;
+  background: var(--vz-retro-green);
+}
+
+html[data-theme="retro-competitive"] :focus-visible {
+  outline: 2px solid var(--vz-retro-green);
+  outline-offset: 3px;
+}
+
+html[data-theme="retro-competitive"] table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+html[data-theme="retro-competitive"] th {
+  color: #a7a3bd;
+  font-family: var(--vz-font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+html[data-theme="retro-competitive"] hr {
+  border: 0;
+  border-top: 1px solid var(--vz-retro-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="retro-competitive"] *,
+  html[data-theme="retro-competitive"] *::before,
+  html[data-theme="retro-competitive"] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

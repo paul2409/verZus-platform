@@ -1988,3 +1988,60 @@
   --vz-shell-audit-gap: clamp(0.75rem, 2vw, 1.25rem);
 }
 /* M3 STEP 3.7 END */
+
+/* VERZUS RETRO GAMING COLOUR OVERRIDES START */
+:root {
+  --vz-color-green-200: #c7ff9e;
+  --vz-color-green-300: #a4ff63;
+  --vz-color-green-400: #8dff4a;
+  --vz-color-green-500: #79ff3b;
+  --vz-color-green-600: #55d929;
+  --vz-color-green-700: #389e21;
+  --vz-color-green-800: #236b1b;
+  --vz-color-green-900: #174d21;
+
+  --vz-color-warning-300: #ffd36a;
+  --vz-color-warning-400: #ffc247;
+  --vz-color-warning-500: #ff9d24;
+  --vz-color-warning-600: #c97218;
+
+  --vz-color-bronze-500: #b96a2c;
+  --vz-color-pink-500: #ff8a1f;
+
+  --vz-color-background-deep: #010302;
+  --vz-color-background: #020605;
+  --vz-color-background-elevated: #06100b;
+  --vz-color-background-muted: #091510;
+  --vz-color-surface-base: #07100d;
+  --vz-color-surface-elevated: #0d1d16;
+  --vz-color-surface-interactive: #10251b;
+  --vz-color-panel: rgb(6 14 11 / 96%);
+  --vz-color-panel-muted: rgb(9 22 16 / 88%);
+  --vz-color-panel-hover: rgb(13 29 22 / 96%);
+  --vz-color-panel-active: rgb(121 255 59 / 8%);
+
+  --vz-color-border-default: #173326;
+  --vz-color-border-strong: #29563d;
+  --vz-color-border-brand: rgb(121 255 59 / 58%);
+  --vz-color-border-brand-strong: #79ff3b;
+  --vz-color-border-accent: rgb(255 194 71 / 60%);
+
+  --vz-gradient-brand: linear-gradient(135deg, #a4ff63 0%, #79ff3b 58%, #18d9ff 100%);
+  --vz-gradient-brand-horizontal: linear-gradient(90deg, #79ff3b 0%, #a4ff63 62%, #ffc247 100%);
+  --vz-gradient-primary: linear-gradient(180deg, #a4ff63 0%, #79ff3b 100%);
+  --vz-gradient-panel: linear-gradient(180deg, rgb(13 29 22 / 96%) 0%, rgb(6 14 11 / 98%) 100%);
+
+  --vz-shell-background:
+    radial-gradient(circle at 72% 16%, rgb(121 255 59 / 7%), transparent 32rem),
+    radial-gradient(circle at 16% 82%, rgb(255 138 31 / 5%), transparent 28rem),
+    linear-gradient(180deg, #010302 0%, #030805 54%, #010302 100%);
+  --vz-shell-surface: linear-gradient(180deg, rgb(7 16 11 / 99%), rgb(2 6 4 / 100%));
+  --vz-shell-surface-raised: linear-gradient(180deg, rgb(13 28 20 / 98%), rgb(4 10 7 / 100%));
+  --vz-shell-border: rgb(121 255 59 / 18%);
+  --vz-shell-border-active: rgb(121 255 59 / 58%);
+  --vz-shell-active: #79ff3b;
+  --vz-shell-partial: #ffc247;
+  --vz-shell-information: #18d9ff;
+  --vz-shell-nav-feature: #9d68ff;
+}
+/* VERZUS RETRO GAMING COLOUR OVERRIDES END */

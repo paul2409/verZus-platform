@@ -280,3 +280,28 @@
     color: HighlightText;
   }
 }
+
+/* VERZUS RETRO_ROUTE_BOUNDARY START */
+.root {
+  border: 1px solid var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  clip-path: var(--vz-retro-cut-lg);
+}
+.eyebrow {
+  color: var(--vz-retro-purple);
+}
+.marker {
+  color: var(--vz-retro-green);
+  border-color: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+.action {
+  color: #020305;
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
+}
+.secondaryAction {
+  color: var(--vz-retro-cyan);
+  border-color: rgb(0 229 255 / 54%);
+}
+/* VERZUS RETRO_ROUTE_BOUNDARY END */

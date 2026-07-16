@@ -195,3 +195,24 @@
     justify-self: center;
   }
 }
+
+/* VERZUS RETRO_MATCHES START */
+.card,
+.matchCard,
+.stateCard,
+.timeline {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  clip-path: var(--vz-retro-cut-md);
+}
+.versus {
+  color: var(--vz-retro-green);
+  text-shadow: 0 0 18px rgb(0 255 135 / 30%);
+}
+.title,
+.label {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+/* VERZUS RETRO_MATCHES END */

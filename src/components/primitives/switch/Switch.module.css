@@ -109,3 +109,22 @@
     transition: none;
   }
 }
+
+/* VERZUS RETRO_SWITCH START */
+.track {
+  border-color: var(--vz-retro-line);
+  background: #050609;
+  clip-path: var(--vz-retro-cut-sm);
+}
+.input:checked + .track {
+  border-color: var(--vz-retro-green);
+  background: rgb(0 255 135 / 18%);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+.thumb {
+  background: #a7a4b8;
+}
+.input:checked + .track .thumb {
+  background: var(--vz-retro-green);
+}
+/* VERZUS RETRO_SWITCH END */

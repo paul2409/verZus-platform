@@ -117,3 +117,20 @@
 .root[data-disabled="true"] .control {
   cursor: not-allowed;
 }
+
+/* VERZUS RETRO_CHECKBOX START */
+.box {
+  border-color: var(--vz-retro-line);
+  background: #050609;
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+}
+.input:checked + .box {
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+.label {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.04em;
+}
+/* VERZUS RETRO_CHECKBOX END */

@@ -254,3 +254,24 @@
     color: HighlightText;
   }
 }
+
+/* VERZUS RETRO_WIDGET_BOUNDARY START */
+.fallback {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  clip-path: var(--vz-retro-cut-md);
+}
+.marker {
+  color: var(--vz-retro-orange);
+  border-color: rgb(255 138 31 / 54%);
+}
+.action {
+  color: #020305;
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
+}
+.secondaryAction {
+  color: var(--vz-retro-cyan);
+  border-color: rgb(0 229 255 / 54%);
+}
+/* VERZUS RETRO_WIDGET_BOUNDARY END */

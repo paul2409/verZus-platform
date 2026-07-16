@@ -131,3 +131,20 @@
   cursor: not-allowed;
   opacity: var(--vz-opacity-disabled);
 }
+
+/* VERZUS RETRO_RADIO START */
+.indicator {
+  border-color: var(--vz-retro-line);
+  background: #050609;
+}
+.input:checked + .indicator {
+  border-color: var(--vz-retro-green);
+  box-shadow:
+    0 0 0 3px rgb(0 255 135 / 12%),
+    var(--vz-shadow-glow-green);
+}
+.label {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.04em;
+}
+/* VERZUS RETRO_RADIO END */

@@ -430,3 +430,29 @@
   outline-offset: 3px;
 }
 /* M3 STEP 3.7 END */
+
+/* VERZUS RETRO_SHELL_OVERLAYS START */
+.searchInput,
+.shortcut,
+.profileContent,
+.notificationItem {
+  border-color: var(--vz-retro-line);
+  background: #050609;
+  clip-path: var(--vz-retro-cut-sm);
+}
+.shortcut:hover {
+  border-color: rgb(0 229 255 / 52%);
+  background: rgb(0 229 255 / 5%);
+}
+.primaryAction {
+  color: #020305;
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
+  clip-path: var(--vz-retro-cut-sm);
+}
+.secondaryAction {
+  color: var(--vz-retro-cyan);
+  border-color: rgb(0 229 255 / 52%);
+  clip-path: var(--vz-retro-cut-sm);
+}
+/* VERZUS RETRO_SHELL_OVERLAYS END */

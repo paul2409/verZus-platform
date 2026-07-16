@@ -778,3 +778,226 @@
   min-width: 0;
 }
 /* M3 STEP 3.7 END */
+
+/* VERZUS RETRO GAMING SHELL OVERRIDES START */
+.shell {
+  background: var(--vz-shell-background);
+}
+
+.shell::before {
+  opacity: 0.34;
+  background-image:
+    linear-gradient(rgb(121 255 59 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(24 217 255 / 2%) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+}
+
+.shell::after {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.025;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, white 4px);
+  mix-blend-mode: screen;
+}
+
+.topBar {
+  border-bottom-color: rgb(121 255 59 / 24%);
+  background:
+    linear-gradient(
+      90deg,
+      rgb(121 255 59 / 4%),
+      transparent 24%,
+      transparent 76%,
+      rgb(255 138 31 / 3%)
+    ),
+    rgb(2 7 5 / 96%);
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 34%);
+}
+
+.brandGlyph {
+  color: #061006;
+  clip-path: polygon(10% 0, 100% 0, 70% 100%, 0 70%);
+  background: linear-gradient(145deg, #a4ff63, #79ff3b 58%, #ff8a1f);
+  box-shadow: 0 0 1.25rem rgb(121 255 59 / 30%);
+}
+
+.brandWord {
+  color: #f4f7f2;
+  text-shadow: 0 0 1rem rgb(121 255 59 / 12%);
+}
+
+.sidebar {
+  border-right-color: rgb(121 255 59 / 22%);
+  background:
+    linear-gradient(180deg, rgb(121 255 59 / 3%), transparent 26%), var(--vz-shell-surface);
+}
+
+.sidebarProfile,
+.sidebarMeta {
+  border-color: rgb(121 255 59 / 17%);
+}
+
+.navigationLink {
+  border-radius: 0;
+}
+
+.navigationLink:hover {
+  color: #f4f7f2;
+  border-color: rgb(24 217 255 / 25%);
+  background: linear-gradient(90deg, rgb(24 217 255 / 6%), transparent);
+  transform: translateX(2px);
+}
+
+.navigationLink[aria-current="page"],
+.navigationLink[data-navigation-current="true"] {
+  color: #071006;
+  border-color: #79ff3b;
+  background: linear-gradient(90deg, #79ff3b, #a4ff63 72%, #ffc247);
+  box-shadow:
+    inset 0.18rem 0 0 #ffc247,
+    0 0 1.35rem rgb(121 255 59 / 20%);
+}
+
+.navigationLink[aria-current="page"] .navigationLabel,
+.navigationLink[data-navigation-current="true"] .navigationLabel {
+  font-weight: 800;
+}
+
+.sidebarStatus {
+  border-color: rgb(121 255 59 / 25%);
+  background: linear-gradient(145deg, rgb(121 255 59 / 5%), transparent 64%), rgb(0 0 0 / 28%);
+}
+
+.routeProgress span {
+  background: linear-gradient(90deg, transparent, #79ff3b, #ffc247, #18d9ff);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navigationLink:hover {
+    transform: none;
+  }
+}
+/* VERZUS RETRO GAMING SHELL OVERRIDES END */
+
+/* VERZUS RETRO_SHELL START */
+.shell {
+  background: transparent;
+}
+
+.shell::before {
+  opacity: 0.34;
+  background:
+    linear-gradient(90deg, transparent 0 49%, rgb(0 229 255 / 4%) 50%, transparent 51%),
+    linear-gradient(rgb(155 98 255 / 3%) 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    24px 24px;
+}
+
+.topBar,
+.sidebar,
+.globalStatus,
+.globalStatusCompact,
+.pageHeader {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(10 11 17 / 98%), rgb(4 5 8 / 98%));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 3%);
+}
+
+.topBar {
+  border-bottom: 1px solid rgb(155 98 255 / 32%);
+}
+
+.sidebar {
+  border-right: 1px solid rgb(155 98 255 / 30%);
+}
+
+.brandGlyph {
+  color: var(--vz-retro-green);
+  border-color: var(--vz-retro-green);
+  background: rgb(0 255 135 / 8%);
+  box-shadow: var(--vz-shadow-glow-green);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.brandWord {
+  color: transparent;
+  background: linear-gradient(90deg, var(--vz-retro-cyan), #ffffff 46%, var(--vz-retro-purple));
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.navigationLink {
+  min-height: 2.85rem;
+  border: 1px solid transparent;
+  color: #9b98ad;
+  clip-path: var(--vz-retro-cut-sm);
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.navigationLink:hover {
+  color: var(--vz-retro-white);
+  border-color: rgb(0 229 255 / 34%);
+  background: rgb(0 229 255 / 6%);
+  transform: translateX(2px);
+}
+
+.navigationLink[aria-current="page"],
+.navigationLink[data-navigation-current="true"] {
+  color: var(--vz-retro-green);
+  border-color: rgb(0 255 135 / 66%);
+  background: linear-gradient(90deg, rgb(0 255 135 / 15%), rgb(0 255 135 / 3%));
+  box-shadow:
+    inset 3px 0 0 var(--vz-retro-green),
+    var(--vz-shadow-glow-green);
+}
+
+.navigationIcon {
+  color: currentColor;
+}
+
+.pageEyebrow {
+  color: var(--vz-retro-purple);
+  letter-spacing: 0.18em;
+}
+
+.pageHeader h1 {
+  letter-spacing: 0.08em;
+}
+
+.pageContainer,
+.main {
+  position: relative;
+}
+
+.globalStatus[data-shell-status="operational"],
+.sidebarStatus[data-shell-status="operational"] {
+  color: var(--vz-retro-green);
+}
+
+.routeProgress span {
+  background: linear-gradient(
+    90deg,
+    var(--vz-retro-green),
+    var(--vz-retro-cyan),
+    var(--vz-retro-purple)
+  );
+}
+
+@media (max-width: 767px) {
+  .topBar {
+    background: rgb(3 4 7 / 96%);
+    backdrop-filter: blur(16px);
+  }
+}
+/* VERZUS RETRO_SHELL END */

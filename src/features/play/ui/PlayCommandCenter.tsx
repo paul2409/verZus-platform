@@ -1,4 +1,4 @@
-// VERZUS M5 STEPS 5.9-5.13
+// VERZUS RETRO GAMING PLAY OVERHAUL
 
 "use client";
 
@@ -11,6 +11,7 @@ import { usePlayCommandCenterTelemetry } from "../telemetry/use-play-telemetry";
 import { CrewPulseWidget } from "./CrewPulseWidget";
 import { CurrentPositionWidget } from "./CurrentPositionWidget";
 import { OpportunityRail } from "./OpportunityRail";
+import { PlayHero } from "./PlayHero";
 import { PlayerStatusStrip } from "./PlayerStatusStrip";
 import { PrimaryActionPanel } from "./PrimaryActionPanel";
 import { QuickActions } from "./QuickActions";
@@ -59,55 +60,6 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
     >
       <ScenarioToolbar active={viewModel.variant} />
 
-      <header className={styles.pageHeader}>
-        <div>
-          <span>PLAYER COMMAND</span>
-          <h1>Your next battle is ready.</h1>
-          <p>
-            See the action that matters now, protect your check-in window, and keep your weekly
-            momentum moving.
-          </p>
-        </div>
-
-        <div className={styles.pageStatus}>
-          <span className={styles.statusDot} data-online={viewModel.online} />
-          <div>
-            <strong>{viewModel.online ? "PLAY ONLINE" : "OFFLINE MODE"}</strong>
-            <small>
-              {controller.refreshing
-                ? "Refreshing live modules"
-                : `${viewModel.partialFailureCount} degraded modules`}
-            </small>
-          </div>
-          {viewModel.partialFailureCount > 0 ? (
-            <button type="button" onClick={() => retryWidget("all", retry.all)}>
-              RETRY ALL
-            </button>
-          ) : null}
-        </div>
-      </header>
-
-      {!viewModel.online ? (
-        <div className={styles.globalBanner}>
-          <strong>OFFLINE MODE</strong>
-          <span>
-            Network actions are disabled. Static navigation and cached information remain available.
-          </span>
-          <button type="button" onClick={() => retryWidget("all", retry.all)}>
-            RETRY CONNECTION
-          </button>
-        </div>
-      ) : viewModel.partialFailureCount > 0 ? (
-        <div className={`${styles.globalBanner} ${styles.degradedBanner}`}>
-          <strong>PARTIAL SERVICE DEGRADATION</strong>
-          <span>
-            {viewModel.partialFailureCount} Play module
-            {viewModel.partialFailureCount === 1 ? "" : "s"} failed independently. Essential actions
-            remain available when their services are healthy.
-          </span>
-        </div>
-      ) : null}
-
       <WidgetBoundary
         name="play-player-status"
         resetKeys={[viewModel.playerStatus.state, viewModel.playerStatus.requestId]}
@@ -118,8 +70,50 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
         />
       </WidgetBoundary>
 
-      <main className={styles.dashboardGrid}>
-        <div className={styles.primaryColumn}>
+      <div className={styles.liveRibbon} data-online={viewModel.online}>
+        <span className={styles.statusDot} data-online={viewModel.online} />
+        <strong>{viewModel.online ? "PLAY NETWORK ONLINE" : "OFFLINE MODE"}</strong>
+        <span>
+          {controller.refreshing
+            ? "Synchronising live modules"
+            : viewModel.partialFailureCount > 0
+              ? `${viewModel.partialFailureCount} isolated module${viewModel.partialFailureCount === 1 ? "" : "s"} unavailable`
+              : "All essential actions available"}
+        </span>
+        {viewModel.partialFailureCount > 0 || !viewModel.online ? (
+          <button type="button" onClick={() => retryWidget("all", retry.all)}>
+            RETRY ALL
+          </button>
+        ) : null}
+      </div>
+
+      {!viewModel.online ? (
+        <div className={styles.globalBanner}>
+          <strong>OFFLINE MODE</strong>
+          <span>
+            Network actions are disabled. Navigation and cached information remain available.
+          </span>
+        </div>
+      ) : viewModel.partialFailureCount > 0 ? (
+        <div className={`${styles.globalBanner} ${styles.degradedBanner}`}>
+          <strong>PARTIAL SERVICE DEGRADATION</strong>
+          <span>
+            Failed modules remain isolated. Match, check-in, navigation, and other healthy widgets
+            continue working.
+          </span>
+        </div>
+      ) : null}
+
+      <main className={styles.lobbyGrid}>
+        <div className={styles.heroArea}>
+          <PlayHero
+            competitions={viewModel.recommendedCompetitions}
+            nextMatch={viewModel.nextMatch}
+            online={viewModel.online}
+          />
+        </div>
+
+        <div className={styles.matchArea}>
           <PrimaryActionPanel
             nextMatch={viewModel.nextMatch}
             currentCheckIn={viewModel.currentCheckIn}
@@ -127,7 +121,15 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
             retryNextMatch={() => retryWidget("next-match", retry.nextMatch)}
             retryCheckIn={() => retryWidget("current-check-in", retry.currentCheckIn)}
           />
+        </div>
 
+        <div className={styles.quickArea}>
+          <WidgetBoundary name="play-quick-actions">
+            <QuickActions />
+          </WidgetBoundary>
+        </div>
+
+        <div className={styles.positionArea}>
           <WidgetBoundary
             name="play-current-position"
             resetKeys={[viewModel.currentPosition.state, viewModel.currentPosition.requestId]}
@@ -137,7 +139,9 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
               onRetry={() => retryWidget("current-position", retry.currentPosition)}
             />
           </WidgetBoundary>
+        </div>
 
+        <div className={styles.competitionArea}>
           <WidgetBoundary
             name="play-opportunities"
             resetKeys={[
@@ -152,7 +156,7 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           </WidgetBoundary>
         </div>
 
-        <div className={styles.secondaryColumn}>
+        <div className={styles.crewArea}>
           <WidgetBoundary
             name="play-crew-pulse"
             resetKeys={[viewModel.crewSummary.state, viewModel.crewSummary.requestId]}
@@ -162,7 +166,9 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
               onRetry={() => retryWidget("crew-summary", retry.crewSummary)}
             />
           </WidgetBoundary>
+        </div>
 
+        <div className={styles.activityArea}>
           <WidgetBoundary
             name="play-recent-activity"
             resetKeys={[viewModel.recentActivity.state, viewModel.recentActivity.requestId]}
@@ -171,10 +177,6 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
               view={viewModel.recentActivity}
               onRetry={() => retryWidget("recent-activity", retry.recentActivity)}
             />
-          </WidgetBoundary>
-
-          <WidgetBoundary name="play-quick-actions">
-            <QuickActions />
           </WidgetBoundary>
         </div>
       </main>

@@ -511,3 +511,23 @@
     background-position: -180% 0;
   }
 }
+
+/* VERZUS RETRO_INTEL START */
+.card,
+.surface {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  clip-path: var(--vz-retro-cut-md);
+}
+.card:hover {
+  border-color: rgb(155 98 255 / 60%);
+  box-shadow: var(--vz-shadow-glow-purple);
+  transform: translateY(-2px);
+}
+.title,
+.eyebrow {
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+/* VERZUS RETRO_INTEL END */

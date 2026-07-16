@@ -175,3 +175,14 @@
     outline: 2px solid Highlight;
   }
 }
+
+/* VERZUS RETRO_PLATFORM_ROUTE START */
+.root,
+.section,
+.card,
+.notice {
+  border-color: var(--vz-retro-line);
+  background: linear-gradient(180deg, rgb(12 14 20 / 98%), rgb(5 6 9 / 98%));
+  clip-path: var(--vz-retro-cut-md);
+}
+/* VERZUS RETRO_PLATFORM_ROUTE END */

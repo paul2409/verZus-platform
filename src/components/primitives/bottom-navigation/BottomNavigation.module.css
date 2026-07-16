@@ -441,3 +441,33 @@
     box-shadow: none;
   }
 }
+
+/* VERZUS RETRO_BOTTOM_NAV START */
+.surface {
+  border-color: rgb(155 98 255 / 32%);
+  background: rgb(3 4 7 / 96%);
+  backdrop-filter: blur(18px);
+}
+.action {
+  color: #8f8ca2;
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.action:hover {
+  color: var(--vz-retro-cyan);
+}
+.current .action {
+  color: var(--vz-retro-green);
+  background: rgb(0 255 135 / 7%);
+}
+.current .activeRail {
+  background: var(--vz-retro-green);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+.prominent .iconWrap {
+  border-color: var(--vz-retro-green);
+  background: rgb(0 255 135 / 14%);
+  box-shadow: var(--vz-shadow-glow-green);
+}
+/* VERZUS RETRO_BOTTOM_NAV END */
