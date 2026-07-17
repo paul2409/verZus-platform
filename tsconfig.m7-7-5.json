@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/matches/**/*.ts",
+    "src/features/matches/**/*.tsx",
+    "src/app/(platform)/matches/[matchId]/**/*.ts",
+    "src/app/(platform)/matches/[matchId]/**/*.tsx",
+    "src/app/api/matches/[matchId]/lobby/**/*.ts",
+    "src/app/api/matches/[matchId]/clock/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

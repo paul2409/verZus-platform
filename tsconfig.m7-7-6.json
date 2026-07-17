@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/matches/operations/**/*.ts",
+    "src/features/matches/operations/**/*.tsx",
+    "src/app/(platform)/matches/[matchId]/**/*.ts",
+    "src/app/(platform)/matches/[matchId]/**/*.tsx",
+    "src/app/api/matches/[matchId]/result/**/*.ts",
+    "src/app/api/matches/[matchId]/evidence/**/*.ts",
+    "src/app/api/matches/[matchId]/dispute/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

@@ -9,3 +9,4 @@ export type {
   TimelineStepState,
 } from "./model/match.types";
 export { matchPreviewMock } from "./mocks/match.mock";
+export * from "./operations";

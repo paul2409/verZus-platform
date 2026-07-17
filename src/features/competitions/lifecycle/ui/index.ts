@@ -1,2 +1,2 @@
 export { CompetitionLifecycleController } from "./CompetitionLifecycleController";
-export { CompetitionLifecycleState } from "./CompetitionLifecycleState";
+export { CompetitionLifecycleState as CompetitionLifecycleStateView } from "./CompetitionLifecycleState";

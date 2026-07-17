@@ -1,0 +1,46 @@
+/* VERZUS M7.8 MATCH OPERATIONS RELEASE GATE */
+
+.disabled {
+  min-height: min(72vh, 760px);
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 4vw, 4rem);
+}
+
+.disabled section {
+  width: min(100%, 760px);
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border: 1px solid color-mix(in srgb, var(--color-accent-primary, #a855f7) 70%, transparent);
+  background:
+    linear-gradient(145deg, rgb(13 8 29 / 96%), rgb(8 9 22 / 96%)),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgb(255 255 255 / 2%) 3px 4px);
+  box-shadow: 0 0 48px rgb(168 85 247 / 18%);
+}
+
+.disabled span {
+  font: 700 0.75rem/1.2 var(--font-interface, sans-serif);
+  letter-spacing: 0.16em;
+  color: var(--color-accent-primary, #c084fc);
+}
+
+.disabled h1 {
+  margin: 0.75rem 0;
+  font: 800 clamp(1.8rem, 5vw, 3.5rem)/0.95 var(--font-display, sans-serif);
+}
+
+.disabled p {
+  max-width: 62ch;
+  color: var(--color-text-secondary, #b9b4ca);
+}
+
+.disabled a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0 1rem;
+  border: 1px solid currentColor;
+  color: var(--color-accent-primary, #c084fc);
+  font-weight: 800;
+  text-decoration: none;
+}

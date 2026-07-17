@@ -1,53 +1,53 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 
 MODE="${1:-install}"
-SCRIPT_NAME="VERZUS_M6_6_7_Competition_Testing_Observability_Release.sh"
-BACKUP_ROOT=".verzus-backups/m6-6-7-testing-observability-release"
+SCRIPT_NAME="VERZUS_M7_7_8_Testing_Observability_Release.sh"
+BACKUP_ROOT=".verzus-backups/m7-7-8-testing-observability-release"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP_DIR="${BACKUP_ROOT}/${STAMP}"
-ARCHIVE="${BACKUP_DIR}/verzus-m6-6-7-before.tar.gz"
-PAYLOAD_FILE="${TMPDIR:-/tmp}/verzus-m6-6-7-payload-${STAMP}.tar.gz"
+ARCHIVE="${BACKUP_DIR}/verzus-m7-7-8-before.tar.gz"
+BACKUP_CREATED="false"
+INSTALL_FINISHED="false"
 
 print_plan() {
   cat <<'PLAN'
-VERZUS M6.7 - Competition Testing, Observability and Release
+VERZUS M7.8 - Match Testing, Observability and Release
 
 KEEP
-  - Approved M6.1 discovery composition and original competition artwork
-  - M6.2 search, filters, sorting, pagination and URL state
-  - M6.3 Zod contracts, adapters, query resources and independent APIs
-  - M6.4 details, rules, participants and bracket resources
-  - M6.5 server-authoritative, idempotent and refresh-persistent entry
-  - M6.6 lifecycle policy, edge states and guarded entry mutation
-  - Existing App Shell, navigation, authentication and retro-competitive tokens
+  - Approved M7.1 Match Operations composition and all 15 match-state references
+  - M7.2 lifecycle graph, UTC server clock and stale mutation guards
+  - M7.3 schemas, adapters, independent APIs and query resources
+  - M7.4 idempotent check-in and readiness persistence
+  - M7.5 lobby, match start and independent issue reporting
+  - M7.6 result, evidence, confirmation and auditable disputes
+  - M7.7 terminal states, authorization, offline/stale and widget isolation
 
 REUSE
-  - Existing M6 unit and component tests through the repository test suite
-  - Existing M6 preview server on port 3118
-  - Existing request-ID, structured-error and failure-injection conventions
-  - Existing lint, typecheck, test, build and Playwright tooling
-  - Existing immutable release SHA and application environment variables
+  - Existing M7 preview server on port 3119
+  - Existing Vitest, Playwright, axe, ESLint, TypeScript and build tooling
+  - Existing request IDs, idempotency keys, structured errors and failure scenarios
+  - Existing release SHA and application-environment variables
+  - Existing App Shell and route-level match boundaries
 
 REPLACE
-  - Competition detail stage marker from M6.6 to M6.7
-  - Informal milestone completion with an executable technical and approval gate
-  - Untraceable preview output with release, health and checksum evidence
+  - M7.7 stage marker with the M7.8 release-gate marker
+  - Informal milestone completion with executable technical and approval gates
+  - Untraceable preview output with health, release and checksum evidence
 
 DELETE
-  - No approved screen composition
-  - No competition API, entry persistence or lifecycle policy
-  - No shared primitive, shell route, navigation or artwork
-  - No historical test or release evidence
+  - No M7.1-M7.7 feature behavior, route, API, test or approved composition
+  - No shared primitive, App Shell navigation, artwork or historical evidence
+  - No prerequisite visual approval requirement for installing this stage
 
 CREATE
-  - Competition feature flag and controlled degradation boundary
-  - Allowlisted client telemetry and structured server ingestion
-  - Competition health endpoint with stage, environment and release metadata
+  - Match Operations feature flag and controlled degradation boundary
+  - Allowlisted client telemetry and structured ingestion endpoint
+  - Match Operations health endpoint with environment and release metadata
   - Unit, integration, E2E, accessibility and failure-injection coverage
-  - Visual regression baselines at 390px, 768px and 1440px
-  - Explicit visual approval manifest and review hub
-  - Full M6 completion verifier and immutable artifact packager
+  - Visual regression coverage for all 15 states at 390px, 768px and 1440px
+  - M7 visual review hub and explicit final approval manifest
+  - Full technical/release verifiers and immutable artifact packager
   - Rollback runbook and timestamped pre-install archive
 PLAN
 }
@@ -59,114 +59,111 @@ require_repo_root() {
   }
 }
 
-require_repo() {
+require_m7_7_prerequisite() {
   require_repo_root
 
   local required=(
-    package.json
-    .env.example
-    src/app/layout.tsx
-    'src/app/(platform)/compete/page.tsx'
-    'src/app/(platform)/compete/[competitionId]/page.tsx'
-    src/features/competitions/index.ts
-    src/features/competitions/details/ui/CompetitionDetailScreen.tsx
-    src/features/competitions/lifecycle/model/competition-lifecycle.types.ts
-    src/features/competitions/lifecycle/server/competition-entry-lifecycle.guard.ts
-    'src/app/api/competitions/[competitionId]/lifecycle/route.ts'
-    'src/app/api/competitions/[competitionId]/entry/route.ts'
-    scripts/verify-m6-6-6.mjs
+    scripts/verify-m7-7-7.mjs
+    src/features/matches/operations/ui/MatchOperationsResourceScreen.tsx
+    src/features/matches/operations/ui/MatchWidgetBoundary.tsx
+    src/features/matches/operations/model/match-terminal-operations.types.ts
+    src/features/matches/operations/server/match-terminal.service.ts
+    'src/app/(platform)/matches/[matchId]/page.tsx'
+    'src/app/api/matches/[matchId]/terminal/route.ts'
+    docs/milestones/M7/m7-reference-approval.json
   )
 
   local file
   for file in "${required[@]}"; do
     [[ -f "$file" ]] || {
-      echo "Error: missing M6.6 prerequisite: $file"
-      echo "Apply and verify M6.6 before running M6.7."
+      echo "Error: missing M7.7 prerequisite: $file"
+      echo "Apply and verify M7.7 before running M7.8."
       exit 1
     }
   done
 
-  grep -q 'data-theme="retro-competitive"' src/app/layout.tsx || {
-    echo "Error: the approved retro-competitive theme is not active."
-    exit 1
-  }
+  echo "Running M7.7 prerequisite marker verification..."
+  node scripts/verify-m7-7-7.mjs
 
-  grep -Eq 'data-m6-stage="6\.(6|7)"' \
-    src/features/competitions/details/ui/CompetitionDetailScreen.tsx || {
-      echo "Error: M6.7 requires the M6.6 competition detail screen."
+  grep -q 'data-m7-stage="7.7"' \
+    src/features/matches/operations/ui/MatchOperationsResourceScreen.tsx || {
+      echo "Error: M7.7 Match Operations screen marker is missing."
       exit 1
     }
+}
 
-  if [[ -f 'src/app/(platform)/compete/layout.tsx' ]] && \
-    ! grep -q 'VERZUS M6.7 COMPETITION RELEASE GATE' \
-      'src/app/(platform)/compete/layout.tsx'; then
-    echo "Error: refusing to overwrite an unowned /compete layout."
-    echo "Wrap that layout manually with CompetitionFeatureGate, then rerun."
-    exit 1
-  fi
+owned_new_files=(
+  'src/app/(platform)/matches/[matchId]/layout.tsx'
+  'src/app/(preview)/m7-match-review/page.tsx'
+  'src/app/(preview)/m7-match-review/review.module.css'
+  'src/app/api/telemetry/matches/route.ts'
+  'src/app/api/health/matches/route.ts'
+  src/features/matches/operations/release/match-release.config.ts
+  src/features/matches/operations/release/match-release.config.test.ts
+  src/features/matches/operations/release/MatchOperationsFeatureGate.tsx
+  src/features/matches/operations/release/MatchOperationsFeatureGate.module.css
+  src/features/matches/operations/release/index.ts
+  src/features/matches/operations/telemetry/match-telemetry.schema.ts
+  src/features/matches/operations/telemetry/match-telemetry.schema.test.ts
+  src/features/matches/operations/telemetry/match-telemetry.client.ts
+  src/features/matches/operations/telemetry/MatchTelemetryBridge.tsx
+  src/features/matches/operations/telemetry/index.ts
+  tests/integration/m7-match-release.integration.test.ts
+  tests/e2e/m7/m7-match-flow.spec.ts
+  tests/e2e/m7/m7-match-accessibility.spec.ts
+  tests/e2e/m7/m7-match-failure-injection.spec.ts
+  tests/visual/m7-match-operations.visual.spec.ts
+  playwright.m7.config.ts
+  vitest.m7.config.ts
+  docs/milestones/M7/m7-7-8-testing-observability-release.md
+  docs/runbooks/m7-match-rollback.md
+  scripts/approve-m7-visuals.mjs
+  scripts/package-m7-release.mjs
+  scripts/verify-m7-7-8.mjs
+)
 
-  if [[ -d src/features/competitions/release ]] && \
-    ! grep -q 'VERZUS M6.7 COMPETITION RELEASE GATE' \
-      src/features/competitions/release/competition-release.config.ts 2>/dev/null; then
-    echo "Error: refusing to overwrite an unowned competitions/release domain."
-    exit 1
-  fi
+modified_files=(
+  package.json
+  .env.example
+  src/features/matches/operations/index.ts
+  src/features/matches/operations/ui/MatchOperationsResourceScreen.tsx
+  docs/milestones/M7/m7-reference-approval.json
+  playwright.m6.config.ts
+  src/features/competitions/lifecycle/api/competition-lifecycle-api.client.ts
+  src/features/competitions/lifecycle/ui/index.ts
+)
 
-  if [[ -d src/features/competitions/telemetry ]] && \
-    ! grep -q 'VERZUS M6.7 COMPETITION TELEMETRY' \
-      src/features/competitions/telemetry/competition-telemetry.schema.ts 2>/dev/null; then
-    echo "Error: refusing to overwrite an unowned competitions/telemetry domain."
-    exit 1
-  fi
-
-  if [[ "${VERZUS_SKIP_M6_PREREQ_VERIFY:-0}" != "1" ]] && \
-    grep -q 'data-m6-stage="6.6"' \
-      src/features/competitions/details/ui/CompetitionDetailScreen.tsx; then
-    echo "Running M6.6 prerequisite marker verification..."
-    node scripts/verify-m6-6-6.mjs
-  fi
+check_owned_files() {
+  local file
+  for file in "${owned_new_files[@]}"; do
+    [[ -f "$file" ]] || continue
+    if ! grep -q 'VERZUS M7.8' "$file"; then
+      echo "Error: refusing to overwrite unowned file: $file"
+      exit 1
+    fi
+  done
 }
 
 backup_current_state() {
   mkdir -p "$BACKUP_DIR"
+  local paths=()
+  local file
 
-  local paths=(
-    package.json
-    .env.example
-    src/features/competitions/index.ts
-    src/features/competitions/details/ui/CompetitionDetailScreen.tsx
-    docs/milestones/M6
-    scripts/verify-m6-6-6.mjs
-  )
-
-  local optional=(
-    'src/app/(platform)/compete/layout.tsx'
-    'src/app/(preview)/m6-competition-review'
-    'src/app/api/telemetry/competitions'
-    'src/app/api/health/competitions'
-    src/features/competitions/release
-    src/features/competitions/telemetry
-    tests/e2e/m6
-    tests/visual/m6-competitions.visual.spec.ts
-    tests/visual/m6-competitions.visual.spec.ts-snapshots
-    tests/integration/m6-competition-release.integration.test.ts
-    playwright.m6.config.ts
-    docs/runbooks/m6-competition-rollback.md
-    scripts/approve-m6-visuals.mjs
-    scripts/package-m6-release.mjs
-    scripts/verify-m6-6-7.mjs
-    reports/m6-verification.json
-  )
-
-  local candidate
-  for candidate in "${optional[@]}"; do
-    [[ -e "$candidate" ]] && paths+=("$candidate")
+  for file in "${modified_files[@]}"; do
+    [[ -e "$file" ]] && paths+=("$file")
   done
+  for file in "${owned_new_files[@]}"; do
+    [[ -e "$file" ]] && paths+=("$file")
+  done
+  [[ -d tests/visual/m7-match-operations.visual.spec.ts-snapshots ]] && \
+    paths+=(tests/visual/m7-match-operations.visual.spec.ts-snapshots)
+  [[ -e reports/m7-verification.json ]] && paths+=(reports/m7-verification.json)
 
   tar -czf "$ARCHIVE" "${paths[@]}"
+  BACKUP_CREATED="true"
 
   cat > "$BACKUP_DIR/manifest.txt" <<MANIFEST
-VERZUS M6.7 backup
+VERZUS M7.8 backup
 Created: $(date -Iseconds)
 Branch: $(git branch --show-current 2>/dev/null || echo unavailable)
 Commit: $(git rev-parse HEAD 2>/dev/null || echo unavailable)
@@ -177,290 +174,1235 @@ MANIFEST
   echo "Rollback archive created: $ARCHIVE"
 }
 
-extract_payload() {
-  cat > "${PAYLOAD_FILE}.b64" <<'PAYLOAD'
-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
-RSpSkYpUpCIVqUhFKlKRivQbT/8DkUu38wAYAQA=
-PAYLOAD
+restore_archive() {
+  local archive="$1"
+  local file
 
-  base64 --decode "${PAYLOAD_FILE}.b64" > "$PAYLOAD_FILE"
-  tar -xzf "$PAYLOAD_FILE"
-  rm -f "$PAYLOAD_FILE" "${PAYLOAD_FILE}.b64"
+  for file in "${owned_new_files[@]}"; do
+    rm -rf "$file"
+  done
+  rm -rf tests/visual/m7-match-operations.visual.spec.ts-snapshots
+  rm -f reports/m7-verification.json
+  tar -xzf "$archive"
+
+  rmdir 'src/app/(preview)/m7-match-review' 2>/dev/null || true
+  rmdir 'src/app/api/telemetry/matches' 2>/dev/null || true
+  rmdir 'src/app/api/health/matches' 2>/dev/null || true
+  rmdir src/features/matches/operations/release 2>/dev/null || true
+  rmdir src/features/matches/operations/telemetry 2>/dev/null || true
+  rmdir tests/e2e/m7 2>/dev/null || true
 }
 
-patch_repository() {
-  node <<'NODE'
-const fs = require("node:fs");
-const path = require("node:path");
+on_install_error() {
+  local status=$?
+  if [[ "$MODE" == "install" && "$BACKUP_CREATED" == "true" && "$INSTALL_FINISHED" != "true" ]]; then
+    echo
+    echo "M7.8 installation failed. Restoring the pre-install archive..."
+    restore_archive "$ARCHIVE"
+    echo "Restored: $ARCHIVE"
+  fi
+  exit "$status"
+}
 
-const read = (file) => fs.readFileSync(file, "utf8");
-const write = (file, value) => {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, value.endsWith("\n") ? value : `${value}\n`, "utf8");
+trap on_install_error ERR
+
+write_release_domain() {
+  mkdir -p src/features/matches/operations/release
+
+  cat > src/features/matches/operations/release/match-release.config.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS RELEASE GATE
+
+export type MatchOperationsReleaseMetadata = {
+  stage: "7.8";
+  environment: string;
+  release: string;
+  enabled: boolean;
 };
 
-const layoutFile = "src/app/(platform)/compete/layout.tsx";
-if (!fs.existsSync(layoutFile)) {
-  write(
-    layoutFile,
-    `// VERZUS M6.7 COMPETITION RELEASE GATE
+export function isMatchOperationsFeatureEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS !== "false";
+}
+
+export function getMatchOperationsReleaseMetadata(): MatchOperationsReleaseMetadata {
+  return {
+    stage: "7.8",
+    environment: process.env.NEXT_PUBLIC_APP_ENV ?? "local",
+    release: process.env.NEXT_PUBLIC_RELEASE_SHA ?? "local",
+    enabled: isMatchOperationsFeatureEnabled(),
+  };
+}
+EOF
+
+  cat > src/features/matches/operations/release/match-release.config.test.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS RELEASE CONFIG TESTS
+
+import { afterEach, describe, expect, it } from "vitest";
+
+import {
+  getMatchOperationsReleaseMetadata,
+  isMatchOperationsFeatureEnabled,
+} from "./match-release.config";
+
+const originalFlag = process.env.NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS;
+const originalEnvironment = process.env.NEXT_PUBLIC_APP_ENV;
+const originalRelease = process.env.NEXT_PUBLIC_RELEASE_SHA;
+
+afterEach(() => {
+  process.env.NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS = originalFlag;
+  process.env.NEXT_PUBLIC_APP_ENV = originalEnvironment;
+  process.env.NEXT_PUBLIC_RELEASE_SHA = originalRelease;
+});
+
+describe("M7.8 match release configuration", () => {
+  it("is enabled unless explicitly disabled", () => {
+    delete process.env.NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS;
+    expect(isMatchOperationsFeatureEnabled()).toBe(true);
+
+    process.env.NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS = "false";
+    expect(isMatchOperationsFeatureEnabled()).toBe(false);
+  });
+
+  it("exposes traceable release metadata", () => {
+    process.env.NEXT_PUBLIC_APP_ENV = "preview";
+    process.env.NEXT_PUBLIC_RELEASE_SHA = "release-abc123";
+
+    expect(getMatchOperationsReleaseMetadata()).toEqual({
+      stage: "7.8",
+      environment: "preview",
+      release: "release-abc123",
+      enabled: true,
+    });
+  });
+});
+EOF
+
+  cat > src/features/matches/operations/release/MatchOperationsFeatureGate.tsx <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS RELEASE GATE
+
+import { Suspense, type ReactNode } from "react";
+
+import { MatchTelemetryBridge } from "../telemetry";
+import { getMatchOperationsReleaseMetadata } from "./match-release.config";
+import styles from "./MatchOperationsFeatureGate.module.css";
+
+export type MatchOperationsFeatureGateProps = {
+  children: ReactNode;
+};
+
+export function MatchOperationsFeatureGate({ children }: MatchOperationsFeatureGateProps) {
+  const release = getMatchOperationsReleaseMetadata();
+
+  if (!release.enabled) {
+    return (
+      <main
+        className={styles.disabled}
+        data-m7-release="7.8"
+        data-release={release.release}
+        role="main"
+      >
+        <section aria-labelledby="match-operations-disabled-title" role="status">
+          <span>MATCH OPERATIONS · CONTROLLED DEGRADATION</span>
+          <h1 id="match-operations-disabled-title">MATCH OPERATIONS TEMPORARILY PAUSED</h1>
+          <p>
+            Check-in and match operations are disabled for this release. The application shell,
+            competition discovery and primary navigation remain available.
+          </p>
+          <a href="/play">RETURN TO PLAY</a>
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <div
+      data-app-environment={release.environment}
+      data-m7-release="7.8"
+      data-release={release.release}
+    >
+      <Suspense fallback={null}>
+        <MatchTelemetryBridge environment={release.environment} release={release.release} />
+      </Suspense>
+      {children}
+    </div>
+  );
+}
+EOF
+
+  cat > src/features/matches/operations/release/MatchOperationsFeatureGate.module.css <<'EOF'
+/* VERZUS M7.8 MATCH OPERATIONS RELEASE GATE */
+
+.disabled {
+  min-height: min(72vh, 760px);
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 4vw, 4rem);
+}
+
+.disabled section {
+  width: min(100%, 760px);
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border: 1px solid color-mix(in srgb, var(--color-accent-primary, #a855f7) 70%, transparent);
+  background:
+    linear-gradient(145deg, rgb(13 8 29 / 96%), rgb(8 9 22 / 96%)),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgb(255 255 255 / 2%) 3px 4px);
+  box-shadow: 0 0 48px rgb(168 85 247 / 18%);
+}
+
+.disabled span {
+  font: 700 0.75rem/1.2 var(--font-interface, sans-serif);
+  letter-spacing: 0.16em;
+  color: var(--color-accent-primary, #c084fc);
+}
+
+.disabled h1 {
+  margin: 0.75rem 0;
+  font: 800 clamp(1.8rem, 5vw, 3.5rem)/0.95 var(--font-display, sans-serif);
+}
+
+.disabled p {
+  max-width: 62ch;
+  color: var(--color-text-secondary, #b9b4ca);
+}
+
+.disabled a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0 1rem;
+  border: 1px solid currentColor;
+  color: var(--color-accent-primary, #c084fc);
+  font-weight: 800;
+  text-decoration: none;
+}
+EOF
+
+  cat > src/features/matches/operations/release/index.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS RELEASE EXPORTS
+
+export * from "./match-release.config";
+export { MatchOperationsFeatureGate } from "./MatchOperationsFeatureGate";
+EOF
+}
+
+write_telemetry_domain() {
+  mkdir -p src/features/matches/operations/telemetry
+
+  cat > src/features/matches/operations/telemetry/match-telemetry.schema.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS TELEMETRY
+
+import { z } from "zod";
+
+export const matchTelemetryEventNames = [
+  "match.route_viewed",
+  "match.state_viewed",
+  "match.check_in_started",
+  "match.lobby_action_started",
+  "match.result_action_started",
+  "match.dispute_started",
+  "match.terminal_action_started",
+  "match.retry_requested",
+  "match.resource_failed",
+  "match.widget_recovered",
+  "match.feature_disabled",
+] as const;
+
+export const matchTelemetryEventSchema = z
+  .object({
+    name: z.enum(matchTelemetryEventNames),
+    occurredAt: z.string().datetime({ offset: true }),
+    route: z.string().min(1).max(240),
+    matchId: z.string().min(1).max(160).optional(),
+    state: z.string().min(1).max(80).optional(),
+    resource: z.string().min(1).max(80).optional(),
+    scenario: z.string().min(1).max(80).optional(),
+    code: z.string().min(1).max(120).optional(),
+    requestId: z.string().min(1).max(180).optional(),
+    status: z.number().int().min(100).max(599).optional(),
+    durationMs: z.number().finite().min(0).max(120_000).optional(),
+    environment: z.string().min(1).max(40),
+    release: z.string().min(1).max(120),
+  })
+  .strict();
+
+export type MatchTelemetryEvent = z.infer<typeof matchTelemetryEventSchema>;
+EOF
+
+  cat > src/features/matches/operations/telemetry/match-telemetry.schema.test.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS TELEMETRY TESTS
+
+import { describe, expect, it } from "vitest";
+
+import { matchTelemetryEventSchema } from "./match-telemetry.schema";
+
+describe("match telemetry schema", () => {
+  it("accepts allowlisted, release-scoped events", () => {
+    expect(
+      matchTelemetryEventSchema.parse({
+        name: "match.state_viewed",
+        occurredAt: "2026-07-17T00:00:00.000Z",
+        route: "/matches/m7-preview",
+        matchId: "m7-preview",
+        state: "check-in-open",
+        environment: "preview",
+        release: "abc123",
+      }),
+    ).toMatchObject({ name: "match.state_viewed", matchId: "m7-preview" });
+  });
+
+  it("rejects unknown event names and unexpected fields", () => {
+    expect(() =>
+      matchTelemetryEventSchema.parse({
+        name: "match.secret_dump",
+        occurredAt: "2026-07-17T00:00:00.000Z",
+        route: "/matches/m7-preview",
+        environment: "preview",
+        release: "abc123",
+        token: "not-allowed",
+      }),
+    ).toThrow();
+  });
+});
+EOF
+
+  cat > src/features/matches/operations/telemetry/match-telemetry.client.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS TELEMETRY CLIENT
+
+import type { MatchTelemetryEvent } from "./match-telemetry.schema";
+
+type MatchTelemetryInput = Omit<MatchTelemetryEvent, "occurredAt">;
+
+export function trackMatchEvent(event: MatchTelemetryInput): void {
+  if (typeof window === "undefined") return;
+
+  const payload = JSON.stringify({ ...event, occurredAt: new Date().toISOString() });
+  const endpoint = "/api/telemetry/matches";
+
+  if (navigator.sendBeacon) {
+    const accepted = navigator.sendBeacon(endpoint, new Blob([payload], { type: "application/json" }));
+    if (accepted) return;
+  }
+
+  void fetch(endpoint, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: payload,
+    keepalive: true,
+    credentials: "same-origin",
+  }).catch(() => undefined);
+}
+EOF
+
+  cat > src/features/matches/operations/telemetry/MatchTelemetryBridge.tsx <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS TELEMETRY BRIDGE
+
+"use client";
+
+import { useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+
+import { trackMatchEvent } from "./match-telemetry.client";
+
+export type MatchTelemetryBridgeProps = {
+  environment: string;
+  release: string;
+};
+
+function getMatchId(pathname: string): string | undefined {
+  const segments = pathname.split("/").filter(Boolean);
+  return segments[0] === "matches" && segments.length > 1 ? segments[1] : undefined;
+}
+
+export function MatchTelemetryBridge({ environment, release }: MatchTelemetryBridgeProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const state = searchParams.get("state") ?? undefined;
+  const resource = searchParams.get("resource") ?? undefined;
+  const scenario = searchParams.get("scenario") ?? undefined;
+
+  useEffect(() => {
+    const base = {
+      route: pathname,
+      matchId: getMatchId(pathname),
+      state,
+      resource,
+      scenario,
+      environment,
+      release,
+    };
+
+    trackMatchEvent({ name: "match.route_viewed", ...base });
+
+    const root = document.querySelector<HTMLElement>("[data-match-operation-state]");
+    if (root?.dataset.matchOperationState) {
+      trackMatchEvent({
+        name: "match.state_viewed",
+        ...base,
+        state: root.dataset.matchOperationState,
+      });
+    }
+
+    const handleClick = (event: MouseEvent) => {
+      const target = (event.target as Element | null)?.closest<HTMLElement>(
+        "button, a, [role='button']",
+      );
+      if (!target) return;
+      const label = (target.getAttribute("aria-label") ?? target.textContent ?? "")
+        .trim()
+        .toLowerCase();
+
+      if (label.includes("retry")) {
+        trackMatchEvent({ name: "match.retry_requested", ...base });
+      } else if (label.includes("check in")) {
+        trackMatchEvent({ name: "match.check_in_started", ...base });
+      } else if (label.includes("lobby") || label.includes("start match")) {
+        trackMatchEvent({ name: "match.lobby_action_started", ...base });
+      } else if (label.includes("result") || label.includes("confirm score")) {
+        trackMatchEvent({ name: "match.result_action_started", ...base });
+      } else if (label.includes("dispute")) {
+        trackMatchEvent({ name: "match.dispute_started", ...base });
+      } else if (
+        label.includes("forfeit") ||
+        label.includes("cancel match") ||
+        label.includes("complete match")
+      ) {
+        trackMatchEvent({ name: "match.terminal_action_started", ...base });
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [environment, pathname, release, resource, scenario, state]);
+
+  return null;
+}
+EOF
+
+  cat > src/features/matches/operations/telemetry/index.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS TELEMETRY EXPORTS
+
+export * from "./match-telemetry.schema";
+export { trackMatchEvent } from "./match-telemetry.client";
+export { MatchTelemetryBridge } from "./MatchTelemetryBridge";
+EOF
+}
+
+write_layout_and_endpoints() {
+  mkdir -p \
+    'src/app/(platform)/matches/[matchId]' \
+    'src/app/api/telemetry/matches' \
+    'src/app/api/health/matches'
+
+  cat > 'src/app/(platform)/matches/[matchId]/layout.tsx' <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS RELEASE GATE LAYOUT
 
 import type { ReactNode } from "react";
 
-import { CompetitionFeatureGate } from "@/features/competitions/release";
+import { MatchOperationsFeatureGate } from "@/features/matches/operations/release";
 
-export default function CompeteLayout({ children }: { children: ReactNode }) {
-  return <CompetitionFeatureGate>{children}</CompetitionFeatureGate>;
+export default function MatchOperationsLayout({ children }: { children: ReactNode }) {
+  return <MatchOperationsFeatureGate>{children}</MatchOperationsFeatureGate>;
 }
-`,
+EOF
+
+  cat > 'src/app/api/telemetry/matches/route.ts' <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS TELEMETRY ENDPOINT
+
+import { randomUUID } from "node:crypto";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+
+import { matchTelemetryEventSchema } from "@/features/matches/operations/telemetry";
+
+const MAX_BODY_BYTES = 16_384;
+
+function getRequestId(request: NextRequest): string {
+  return request.headers.get("x-request-id") ?? `m7-${randomUUID()}`;
+}
+
+export async function POST(request: NextRequest) {
+  const requestId = getRequestId(request);
+  const contentLength = Number(request.headers.get("content-length") ?? "0");
+
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return NextResponse.json(
+      { ok: false, error: { code: "payload_too_large", requestId } },
+      { status: 413, headers: { "cache-control": "no-store", "x-request-id": requestId } },
+    );
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { ok: false, error: { code: "invalid_json", requestId } },
+      { status: 400, headers: { "cache-control": "no-store", "x-request-id": requestId } },
+    );
+  }
+
+  const parsed = matchTelemetryEventSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { ok: false, error: { code: "invalid_event", requestId } },
+      { status: 400, headers: { "cache-control": "no-store", "x-request-id": requestId } },
+    );
+  }
+
+  console.warn(
+    JSON.stringify({
+      level: "info",
+      domain: "match-operations",
+      requestId,
+      ...parsed.data,
+    }),
+  );
+
+  return NextResponse.json(
+    { ok: true, requestId },
+    { status: 202, headers: { "cache-control": "no-store", "x-request-id": requestId } },
   );
 }
+EOF
 
-const detailFile =
-  "src/features/competitions/details/ui/CompetitionDetailScreen.tsx";
-let detail = read(detailFile);
-if (detail.includes('data-m6-stage="6.6"')) {
-  detail = detail.replace('data-m6-stage="6.6"', 'data-m6-stage="6.7"');
-}
-if (!detail.includes('data-m6-stage="6.7"')) {
-  throw new Error("CompetitionDetailScreen is missing the expected M6 stage marker.");
-}
-write(detailFile, detail);
+  cat > 'src/app/api/health/matches/route.ts' <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS HEALTH ENDPOINT
 
-const featureIndex = "src/features/competitions/index.ts";
-let featureSource = read(featureIndex);
-for (const line of ['export * from "./release";', 'export * from "./telemetry";']) {
-  if (!featureSource.includes(line)) featureSource += `\n${line}`;
-}
-write(featureIndex, featureSource);
+import { NextResponse } from "next/server";
 
-const envFile = ".env.example";
-let env = fs.existsSync(envFile) ? read(envFile) : "";
-if (!/^NEXT_PUBLIC_ENABLE_M6_COMPETITIONS=/m.test(env)) {
-  env += `${env.endsWith("\n") || env.length === 0 ? "" : "\n"}NEXT_PUBLIC_ENABLE_M6_COMPETITIONS=true\n`;
-}
-write(envFile, env);
+import { getMatchOperationsReleaseMetadata } from "@/features/matches/operations/release";
 
-const approvalFile = "docs/milestones/M6/m6-reference-approval.json";
-if (!fs.existsSync(approvalFile)) {
-  write(
-    approvalFile,
+export function GET() {
+  const release = getMatchOperationsReleaseMetadata();
+
+  return NextResponse.json(
+    {
+      ok: true,
+      feature: "match-operations",
+      stage: release.stage,
+      enabled: release.enabled,
+      environment: release.environment,
+      release: release.release,
+      controls: {
+        idempotentCheckIn: true,
+        serverTime: true,
+        versionCheckedResults: true,
+        independentEvidence: true,
+        auditableDisputes: true,
+        widgetIsolation: true,
+      },
+      checkedAt: new Date().toISOString(),
+    },
+    { headers: { "cache-control": "no-store" } },
+  );
+}
+EOF
+}
+
+write_review_hub() {
+  mkdir -p 'src/app/(preview)/m7-match-review'
+
+  cat > 'src/app/(preview)/m7-match-review/page.tsx' <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS VISUAL REVIEW HUB
+
+import Link from "next/link";
+
+import { matchOperationStateLabels, matchOperationStates } from "@/features/matches";
+import { getMatchOperationsReleaseMetadata } from "@/features/matches/operations/release";
+
+import styles from "./review.module.css";
+
+const edgeReferences = [
+  ["Unauthorized", "/matches/m7-preview?access=unauthorized"],
+  ["Forbidden", "/matches/m7-preview?access=forbidden"],
+  ["Not found", "/matches/m7-preview?access=not_found"],
+  ["Maintenance", "/matches/m7-preview?access=maintenance"],
+  ["Offline cached snapshot", "/matches/m7-preview?state=in-progress&availability=offline"],
+  ["Stale cached snapshot", "/matches/m7-preview?state=in-progress&availability=stale"],
+  [
+    "Timeline partial failure",
+    "/matches/m7-preview?state=in-progress&resource=timeline&scenario=partial_failure",
+  ],
+  ["Timeline widget crash", "/matches/m7-preview?state=in-progress&crash=timeline"],
+] as const;
+
+export default function M7MatchReviewPage() {
+  const release = getMatchOperationsReleaseMetadata();
+
+  return (
+    <main className={styles.page} data-m7-review="7.8">
+      <header className={styles.hero}>
+        <span>M7.8 · RELEASE REVIEW</span>
+        <h1>MATCH OPERATIONS</h1>
+        <p>
+          Review every lifecycle state at 390px, 768px and 1440px before recording final approval.
+        </p>
+        <dl>
+          <div>
+            <dt>Environment</dt>
+            <dd>{release.environment}</dd>
+          </div>
+          <div>
+            <dt>Release</dt>
+            <dd>{release.release}</dd>
+          </div>
+          <div>
+            <dt>Feature</dt>
+            <dd>{release.enabled ? "enabled" : "disabled"}</dd>
+          </div>
+        </dl>
+      </header>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <span>01</span>
+          <h2>Lifecycle references</h2>
+          <strong>15 states × 3 widths</strong>
+        </div>
+        <div className={styles.grid}>
+          {matchOperationStates.map((state, index) => (
+            <Link href={`/matches/m7-preview?state=${state}`} key={state}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{matchOperationStateLabels[state]}</strong>
+              <small>{state}</small>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <span>02</span>
+          <h2>Failure and access references</h2>
+          <strong>Isolation review</strong>
+        </div>
+        <div className={styles.grid}>
+          {edgeReferences.map(([label, href], index) => (
+            <Link href={href} key={label}>
+              <span>E{String(index + 1).padStart(2, "0")}</span>
+              <strong>{label}</strong>
+              <small>Open reference</small>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.commands}>
+        <h2>Release commands</h2>
+        <code>npm run m7:visual:update</code>
+        <code>
+          VERZUS_M7_VISUAL_APPROVAL=APPROVED VERZUS_M7_APPROVED_BY=&quot;Prismo&quot; npm run
+          m7:approve
+        </code>
+        <code>npm run verify:m7:7.8</code>
+        <code>npm run m7:release</code>
+      </section>
+    </main>
+  );
+}
+EOF
+
+  cat > 'src/app/(preview)/m7-match-review/review.module.css' <<'EOF'
+/* VERZUS M7.8 MATCH OPERATIONS VISUAL REVIEW HUB */
+
+.page {
+  min-height: 100vh;
+  padding: clamp(1rem, 3vw, 3rem);
+  color: #f8f6ff;
+  background:
+    radial-gradient(circle at 20% 0%, rgb(124 58 237 / 22%), transparent 36rem),
+    #080611;
+}
+
+.hero,
+.section,
+.commands {
+  width: min(100%, 1180px);
+  margin-inline: auto;
+}
+
+.hero {
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid rgb(168 85 247 / 52%);
+  background: rgb(13 9 28 / 90%);
+  box-shadow: 0 0 60px rgb(124 58 237 / 14%);
+}
+
+.hero > span,
+.sectionHeading > span {
+  color: #c084fc;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.hero h1 {
+  margin: 0.65rem 0;
+  font-size: clamp(2.4rem, 8vw, 6rem);
+  line-height: 0.9;
+}
+
+.hero p {
+  max-width: 70ch;
+  color: #c8c1d8;
+}
+
+.hero dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0 0;
+}
+
+.hero dl div {
+  min-width: 10rem;
+  padding: 0.75rem 1rem;
+  border-left: 2px solid #a855f7;
+  background: rgb(255 255 255 / 4%);
+}
+
+.hero dt,
+.hero dd {
+  margin: 0;
+}
+
+.hero dt {
+  color: #8f879f;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.section {
+  margin-top: 2rem;
+}
+
+.sectionHeading {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+}
+
+.sectionHeading strong {
+  color: #958ca8;
+  font-size: 0.75rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 0.75rem;
+}
+
+.grid a {
+  min-height: 110px;
+  display: grid;
+  align-content: center;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  background: linear-gradient(145deg, rgb(23 16 45 / 96%), rgb(10 9 20 / 96%));
+  color: inherit;
+  text-decoration: none;
+}
+
+.grid a:hover,
+.grid a:focus-visible {
+  border-color: #a855f7;
+  outline: none;
+  box-shadow: 0 0 24px rgb(168 85 247 / 22%);
+}
+
+.grid a span,
+.grid a small {
+  color: #958ca8;
+}
+
+.commands {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid rgb(168 85 247 / 30%);
+  background: #0d091c;
+}
+
+.commands h2 {
+  margin: 0 0 0.5rem;
+}
+
+.commands code {
+  overflow-wrap: anywhere;
+  padding: 0.75rem;
+  background: #05040b;
+  color: #d8b4fe;
+}
+
+@media (max-width: 620px) {
+  .sectionHeading {
+    grid-template-columns: auto 1fr;
+  }
+
+  .sectionHeading strong {
+    grid-column: 2;
+  }
+}
+EOF
+}
+
+write_tests() {
+  mkdir -p tests/integration tests/e2e/m7 tests/visual
+
+  cat > tests/integration/m7-match-release.integration.test.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS RELEASE INTEGRATION
+
+import { describe, expect, it } from "vitest";
+
+import { getMatchOperationsReleaseMetadata } from "../../src/features/matches/operations/release/match-release.config";
+import { matchTelemetryEventSchema } from "../../src/features/matches/operations/telemetry/match-telemetry.schema";
+
+describe("M7.8 release integration", () => {
+  it("binds stage, release and telemetry to one contract", () => {
+    const release = getMatchOperationsReleaseMetadata();
+    const event = matchTelemetryEventSchema.parse({
+      name: "match.route_viewed",
+      occurredAt: new Date().toISOString(),
+      route: "/matches/m7-preview",
+      matchId: "m7-preview",
+      environment: release.environment,
+      release: release.release,
+    });
+
+    expect(release.stage).toBe("7.8");
+    expect(event.environment).toBe(release.environment);
+    expect(event.release).toBe(release.release);
+  });
+});
+EOF
+
+  cat > tests/e2e/m7/m7-match-flow.spec.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS E2E
+
+import { expect, test } from "@playwright/test";
+
+test("match lifecycle references remain reachable through the release gate", async ({ page }) => {
+  for (const state of ["scheduled", "check-in-open", "lobby-open", "in-progress", "completed"]) {
+    await page.goto(`/matches/m7-preview?state=${state}`);
+    await expect(page.locator('[data-m7-release="7.8"]')).toBeVisible();
+    await expect(page.locator('[data-m7-stage="7.8"]')).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("Unhandled Runtime Error");
+  }
+});
+
+test("health and telemetry endpoints expose controlled contracts", async ({ request }) => {
+  const health = await request.get("/api/health/matches");
+  expect(health.ok()).toBe(true);
+  await expect(health.json()).resolves.toMatchObject({
+    ok: true,
+    feature: "match-operations",
+    stage: "7.8",
+  });
+
+  const telemetry = await request.post("/api/telemetry/matches", {
+    data: {
+      name: "match.route_viewed",
+      occurredAt: new Date().toISOString(),
+      route: "/matches/m7-preview",
+      matchId: "m7-preview",
+      environment: "test",
+      release: "e2e",
+    },
+  });
+  expect(telemetry.status()).toBe(202);
+  expect(telemetry.headers()["x-request-id"]).toBeTruthy();
+});
+EOF
+
+  cat > tests/e2e/m7/m7-match-accessibility.spec.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS ACCESSIBILITY
+
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
+
+for (const route of [
+  "/matches/m7-preview?state=check-in-open",
+  "/matches/m7-preview?state=submit-result",
+  "/matches/m7-preview?state=disputed",
+  "/matches/m7-preview?access=maintenance",
+]) {
+  test(`${route} has no serious or critical accessibility violations`, async ({ page }) => {
+    await page.goto(route);
+    await expect(page.locator('[data-m7-release="7.8"]')).toBeVisible();
+    const results = await new AxeBuilder({ page }).analyze();
+    const severe = results.violations.filter(({ impact }) =>
+      impact === "serious" || impact === "critical",
+    );
+    expect(severe).toEqual([]);
+  });
+}
+
+test("keyboard focus leaves the document body", async ({ page }) => {
+  await page.goto("/matches/m7-preview?state=check-in-open");
+  await page.keyboard.press("Tab");
+  const focused = await page.evaluate(() => document.activeElement?.tagName);
+  expect(focused).not.toBe("BODY");
+});
+EOF
+
+  cat > tests/e2e/m7/m7-match-failure-injection.spec.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS FAILURE INJECTION
+
+import { expect, test } from "@playwright/test";
+
+const references = [
+  "/matches/m7-preview?access=unauthorized",
+  "/matches/m7-preview?access=forbidden",
+  "/matches/m7-preview?access=not_found",
+  "/matches/m7-preview?access=maintenance",
+  "/matches/m7-preview?state=in-progress&availability=offline",
+  "/matches/m7-preview?state=in-progress&availability=stale",
+  "/matches/m7-preview?state=in-progress&resource=timeline&scenario=partial_failure",
+  "/matches/m7-preview?state=in-progress&crash=timeline",
+] as const;
+
+for (const route of references) {
+  test(`${route} remains controlled`, async ({ page }) => {
+    await page.goto(route);
+    await expect(page.locator('[data-m7-release="7.8"]')).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("Application error");
+    await expect(page.locator("body")).not.toContainText("Unhandled Runtime Error");
+  });
+}
+EOF
+
+  cat > tests/visual/m7-match-operations.visual.spec.ts <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS VISUAL REGRESSION
+
+import { expect, test } from "@playwright/test";
+
+const states = [
+  "scheduled",
+  "check-in-unavailable",
+  "check-in-open",
+  "checked-in",
+  "opponent-not-checked-in",
+  "both-ready",
+  "lobby-open",
+  "in-progress",
+  "submit-result",
+  "awaiting-opponent-confirmation",
+  "result-confirmed",
+  "disputed",
+  "forfeit",
+  "cancelled",
+  "completed",
+] as const;
+
+for (const state of states) {
+  test(`${state} visual baseline`, async ({ page }) => {
+    await page.goto(`/matches/m7-preview?state=${state}`);
+    await expect(page.locator('[data-m7-release="7.8"]')).toBeVisible();
+    await page.addStyleTag({
+      content:
+        "*,*::before,*::after{animation-duration:0s!important;transition:none!important;caret-color:transparent!important}",
+    });
+    await expect(page).toHaveScreenshot(`${state}.png`, {
+      fullPage: true,
+      animations: "disabled",
+      caret: "hide",
+      maxDiffPixelRatio: 0.01,
+    });
+  });
+}
+EOF
+}
+
+write_test_configs() {
+  cat > playwright.m7.config.ts <<'EOF'
+// VERZUS M7.8 PLAYWRIGHT CONFIGURATION
+
+import { defineConfig, devices } from "@playwright/test";
+
+export default defineConfig({
+  testDir: ".",
+  timeout: 45_000,
+  expect: { timeout: 10_000 },
+  fullyParallel: true,
+  forbidOnly: Boolean(process.env.CI),
+  retries: process.env.CI ? 2 : 0,
+  reporter: process.env.CI ? [["line"], ["html", { open: "never" }]] : "line",
+  use: {
+    baseURL: "http://127.0.0.1:3119",
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
+  },
+  projects: [
+    {
+      name: "mobile-390",
+      use: { ...devices["Desktop Chrome"], viewport: { width: 390, height: 844 } },
+    },
+    {
+      name: "tablet-768",
+      use: { ...devices["Desktop Chrome"], viewport: { width: 768, height: 1024 } },
+    },
+    {
+      name: "desktop-1440",
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
+    },
+  ],
+  webServer: {
+    command: "npm run m7:preview",
+    url: "http://127.0.0.1:3119/api/health/matches",
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  },
+});
+EOF
+
+  cat > vitest.m7.config.ts <<'EOF'
+// VERZUS M7.8 VITEST CONFIGURATION
+
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    tsconfigPaths: true,
+  },
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./vitest.setup.ts"],
+    include: [
+      "src/features/matches/operations/**/*.test.{ts,tsx}",
+      "tests/integration/m7-*.test.{ts,tsx}",
+    ],
+    exclude: ["tests/e2e/**", ".next/**", "node_modules/**"],
+  },
+});
+EOF
+}
+
+write_approval_and_release_scripts() {
+  cat > scripts/approve-m7-visuals.mjs <<'EOF'
+// VERZUS M7.8 VISUAL APPROVAL
+
+import fs from "node:fs";
+
+const file = "docs/milestones/M7/m7-reference-approval.json";
+const token = process.env.VERZUS_M7_VISUAL_APPROVAL;
+const approvedBy = process.env.VERZUS_M7_APPROVED_BY?.trim();
+
+if (token !== "APPROVED" || !approvedBy) {
+  console.error(
+    'Approval requires VERZUS_M7_VISUAL_APPROVAL=APPROVED and VERZUS_M7_APPROVED_BY="name".',
+  );
+  process.exit(1);
+}
+
+const manifest = JSON.parse(fs.readFileSync(file, "utf8"));
+manifest.releaseGate = {
+  status: "approved",
+  stage: "7.8",
+  approvedAt: new Date().toISOString(),
+  approvedBy,
+  requiredViewports: [390, 768, 1440],
+  requiredSnapshotCount: 45,
+};
+fs.writeFileSync(file, `${JSON.stringify(manifest, null, 2)}\n`);
+console.log(`M7 visual approval recorded for ${approvedBy}.`);
+EOF
+
+  cat > scripts/package-m7-release.mjs <<'EOF'
+// VERZUS M7.8 IMMUTABLE ARTIFACT PACKAGER
+
+import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
+
+const root = process.cwd();
+const buildIdFile = path.join(root, ".next/BUILD_ID");
+if (!fs.existsSync(buildIdFile)) {
+  console.error("Missing .next/BUILD_ID. Run npm run build before packaging.");
+  process.exit(1);
+}
+
+const buildId = fs.readFileSync(buildIdFile, "utf8").trim();
+const git = spawnSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" });
+const commit = git.status === 0 ? git.stdout.trim() : "unknown";
+const rawRelease = process.env.NEXT_PUBLIC_RELEASE_SHA || commit || buildId;
+const release = rawRelease.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 120);
+const outputDir = path.join(root, "artifacts/m7-match-operations", release);
+fs.mkdirSync(outputDir, { recursive: true });
+
+const archive = path.join(outputDir, `verzus-m7-match-operations-${release}.tar.gz`);
+const inputs = [".next", "public", "package.json"];
+for (const optional of [
+  "package-lock.json",
+  "next.config.ts",
+  "next.config.mjs",
+  "next.config.js",
+]) {
+  if (fs.existsSync(path.join(root, optional))) inputs.push(optional);
+}
+
+const tar = spawnSync("tar", ["-czf", archive, ...inputs], {
+  cwd: root,
+  stdio: "inherit",
+});
+if (tar.status !== 0) process.exit(tar.status ?? 1);
+
+const digest = crypto.createHash("sha256").update(fs.readFileSync(archive)).digest("hex");
+const manifest = {
+  marker: "VERZUS M7.8 IMMUTABLE RELEASE",
+  stage: "7.8",
+  release,
+  sourceCommit: commit,
+  buildId,
+  artifact: path.basename(archive),
+  sha256: digest,
+  node: process.version,
+  createdAt: new Date().toISOString(),
+  promotionRule: "Promote this exact archive through preview, staging and production.",
+};
+fs.writeFileSync(path.join(outputDir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+console.log(`M7 immutable artifact: ${archive}`);
+console.log(`SHA-256: ${digest}`);
+EOF
+}
+
+write_verifier() {
+  cat > scripts/verify-m7-7-8.mjs <<'EOF'
+// VERZUS M7.8 MATCH OPERATIONS RELEASE GATE
+
+import fs from "node:fs";
+import path from "node:path";
+
+const root = process.cwd();
+const technicalOnly = process.argv.includes("--technical-only");
+const markersOnly = process.argv.includes("--markers-only");
+const failures = [];
+
+const requiredFiles = [
+  "src/app/(platform)/matches/[matchId]/layout.tsx",
+  "src/features/matches/operations/release/MatchOperationsFeatureGate.tsx",
+  "src/features/matches/operations/release/match-release.config.ts",
+  "src/features/matches/operations/telemetry/MatchTelemetryBridge.tsx",
+  "src/features/matches/operations/telemetry/match-telemetry.schema.ts",
+  "src/app/api/telemetry/matches/route.ts",
+  "src/app/api/health/matches/route.ts",
+  "src/app/(preview)/m7-match-review/page.tsx",
+  "tests/integration/m7-match-release.integration.test.ts",
+  "tests/e2e/m7/m7-match-flow.spec.ts",
+  "tests/e2e/m7/m7-match-failure-injection.spec.ts",
+  "tests/e2e/m7/m7-match-accessibility.spec.ts",
+  "tests/visual/m7-match-operations.visual.spec.ts",
+  "playwright.m7.config.ts",
+  "vitest.m7.config.ts",
+  "docs/milestones/M7/m7-7-8-testing-observability-release.md",
+  "docs/milestones/M7/m7-reference-approval.json",
+  "docs/runbooks/m7-match-rollback.md",
+  "scripts/approve-m7-visuals.mjs",
+  "scripts/package-m7-release.mjs",
+];
+
+for (const file of requiredFiles) {
+  if (!fs.existsSync(path.join(root, file))) failures.push(`Missing required file: ${file}`);
+}
+
+function expectContains(file, marker) {
+  const location = path.join(root, file);
+  if (!fs.existsSync(location)) return;
+  const source = fs.readFileSync(location, "utf8");
+  if (!source.includes(marker)) failures.push(`${file} is missing marker: ${marker}`);
+}
+
+expectContains("src/app/(platform)/matches/[matchId]/layout.tsx", "VERZUS M7.8");
+expectContains(
+  "src/features/matches/operations/ui/MatchOperationsResourceScreen.tsx",
+  'data-m7-stage="7.8"',
+);
+expectContains(".env.example", "NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS");
+expectContains("src/app/api/telemetry/matches/route.ts", "MAX_BODY_BYTES");
+expectContains("scripts/package-m7-release.mjs", "SHA-256");
+
+const packageFile = path.join(root, "package.json");
+if (fs.existsSync(packageFile)) {
+  const packageJson = JSON.parse(fs.readFileSync(packageFile, "utf8"));
+  for (const script of [
+    "test:m7:7.8:unit",
+    "test:m7:7.8:e2e",
+    "test:m7:7.8:visual",
+    "m7:visual:update",
+    "m7:approve",
+    "verify:m7:7.8:technical",
+    "verify:m7:7.8",
+    "m7:artifact",
+    "m7:release",
+  ]) {
+    if (!packageJson.scripts?.[script]) failures.push(`Missing package script: ${script}`);
+  }
+}
+
+let approvalPassed = true;
+if (!technicalOnly) {
+  const approvalFile = path.join(root, "docs/milestones/M7/m7-reference-approval.json");
+  if (!fs.existsSync(approvalFile)) {
+    approvalPassed = false;
+    failures.push("Missing M7 visual approval manifest.");
+  } else {
+    const approval = JSON.parse(fs.readFileSync(approvalFile, "utf8"));
+    if (
+      approval.releaseGate?.status !== "approved" ||
+      !approval.releaseGate?.approvedAt ||
+      !approval.releaseGate?.approvedBy
+    ) {
+      approvalPassed = false;
+      failures.push("M7 final visual references are not approved.");
+    }
+  }
+
+  const snapshotRoot = path.join(root, "tests/visual/m7-match-operations.visual.spec.ts-snapshots");
+  const snapshots = fs.existsSync(snapshotRoot)
+    ? fs.readdirSync(snapshotRoot).filter((file) => file.endsWith(".png"))
+    : [];
+  if (snapshots.length < 45) {
+    failures.push(
+      `Visual baseline incomplete: expected at least 45 PNG snapshots, found ${snapshots.length}.`,
+    );
+  }
+}
+
+const technicalFailures = failures.filter(
+  (failure) =>
+    !failure.startsWith("M7 final visual references") &&
+    !failure.startsWith("Visual baseline incomplete"),
+);
+const technicalPassed = technicalFailures.length === 0;
+
+console.log(`Technical gate: ${technicalPassed ? "PASS" : "FAIL"}`);
+console.log(`Approval gate: ${technicalOnly ? "SKIPPED" : approvalPassed ? "PASS" : "FAIL"}`);
+
+if (!markersOnly) {
+  fs.mkdirSync(path.join(root, "reports"), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, "reports/m7-verification.json"),
     `${JSON.stringify(
       {
-        marker: "VERZUS M6.7 VISUAL APPROVAL",
-        status: "pending",
-        requiredViewports: [390, 768, 1440],
-        requiredScenarios: [
-          "discovery-normal",
-          "discovery-empty",
-          "detail-normal",
-          "entry-closed",
-          "waitlist",
-          "partial-failure",
-          "offline",
-          "maintenance",
-        ],
-        approvedAt: null,
-        approvedBy: null,
+        marker: "VERZUS M7.8 MATCH OPERATIONS RELEASE GATE",
+        generatedAt: new Date().toISOString(),
+        technicalOnly,
+        technicalGate: technicalPassed ? "PASS" : "FAIL",
+        approvalGate: technicalOnly ? "SKIPPED" : approvalPassed ? "PASS" : "FAIL",
+        failures,
       },
       null,
       2,
@@ -468,195 +1410,323 @@ if (!fs.existsSync(approvalFile)) {
   );
 }
 
-const packageFile = "package.json";
-const packageJson = JSON.parse(read(packageFile));
-packageJson.scripts ??= {};
-const scripts = {
-  "test:m6:6.7:unit":
-    "vitest run src/features/competitions/release/competition-release.config.test.ts src/features/competitions/telemetry/competition-telemetry.schema.test.ts tests/integration/m6-competition-release.integration.test.ts",
-  "test:m6:6.7:e2e":
-    "playwright test --config=playwright.m6.config.ts tests/e2e/m6",
-  "test:m6:6.7:visual":
-    "playwright test --config=playwright.m6.config.ts tests/visual/m6-competitions.visual.spec.ts",
-  "m6:visual:update":
-    "playwright test --config=playwright.m6.config.ts tests/visual/m6-competitions.visual.spec.ts --update-snapshots",
-  "m6:approve": "node scripts/approve-m6-visuals.mjs",
-  "verify:m6:6.7:technical":
-    "node scripts/verify-m6-6-7.mjs --technical-only && eslint src/features/competitions src/app/api/competitions src/app/api/telemetry/competitions src/app/api/health/competitions 'src/app/(platform)/compete' 'src/app/(preview)/m6-competition-review' tests/e2e/m6 tests/integration/m6-competition-release.integration.test.ts tests/visual/m6-competitions.visual.spec.ts playwright.m6.config.ts --max-warnings=0 && npm run test:m6:6.7:unit && npm run typecheck && npm run test:m6:6.7:e2e",
-  "verify:m6:6.7":
-    "node scripts/verify-m6-6-7.mjs && npm run lint && npm run typecheck && npm run test && npm run build && npm run test:m6:6.7:e2e && npm run test:m6:6.7:visual",
-  "m6:artifact": "node scripts/package-m6-release.mjs",
-  "m6:release": "npm run verify:m6:6.7 && npm run m6:artifact",
-};
-for (const [name, command] of Object.entries(scripts)) {
-  packageJson.scripts[name] = command;
+if (failures.length > 0) {
+  console.error("\nM7.8 verification failures:");
+  for (const failure of failures) console.error(`- ${failure}`);
+  process.exit(1);
 }
-write(packageFile, `${JSON.stringify(packageJson, null, 2)}\n`);
+
+console.log("M7.8 match operations release gate: PASS");
+EOF
+}
+
+write_docs() {
+  mkdir -p docs/milestones/M7 docs/runbooks
+
+  cat > docs/milestones/M7/m7-7-8-testing-observability-release.md <<'EOF'
+<!-- VERZUS M7.8 TESTING, OBSERVABILITY AND RELEASE -->
+# M7.8 — Testing, Observability and Release
+
+## Intent
+
+Close Milestone 7 only after lifecycle, mutations, failure isolation, visual references and rollback are executable and reviewable.
+
+## Technical gate
+
+```bash
+npm run verify:m7:7.8:technical
+```
+
+This runs structural verification, focused linting, M7.8 unit/integration tests, repository typecheck, production build and M7 E2E/accessibility/failure-injection tests.
+
+## Visual gate
+
+Generate or update all 45 baselines:
+
+```bash
+npm run m7:visual:update
+```
+
+Review every state at 390px, 768px and 1440px through `/m7-match-review`, then record approval:
+
+```bash
+VERZUS_M7_VISUAL_APPROVAL=APPROVED \
+VERZUS_M7_APPROVED_BY="Prismo" \
+npm run m7:approve
+```
+
+## Full release gate
+
+```bash
+npm run verify:m7:7.8
+```
+
+## Immutable artifact
+
+```bash
+npm run m7:release
+```
+
+The artifact is written under `artifacts/m7-match-operations/<release>/` with a SHA-256 manifest. Promote the same archive through preview, staging and production.
+
+## Feature disable
+
+Set `NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS=false` and deploy the same application version. Match routes display a controlled degradation screen while the App Shell remains available.
+
+## Rollback
+
+See `docs/runbooks/m7-match-rollback.md`.
+EOF
+
+  cat > docs/runbooks/m7-match-rollback.md <<'EOF'
+<!-- VERZUS M7.8 MATCH OPERATIONS ROLLBACK RUNBOOK -->
+# M7 Match Operations Rollback
+
+## Fast containment
+
+1. Set `NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS=false`.
+2. Confirm `/api/health/matches` reports `enabled: false`.
+3. Confirm `/play`, `/compete` and global navigation remain reachable.
+
+## Application rollback
+
+Promote the previously verified immutable archive. Do not rebuild the previous commit during an incident.
+
+Verify:
+
+- release identifier is visible in `/api/health/matches`;
+- check-in and result mutations are disabled or served by the intended version;
+- no mixed application artifacts remain across instances.
+
+## Installer rollback
+
+```bash
+bash ./VERZUS_M7_7_8_Testing_Observability_Release.sh rollback
+```
+
+This restores the most recent timestamped pre-M7.8 archive under `.verzus-backups/m7-7-8-testing-observability-release/`.
+
+## Data safety
+
+M7 mock stores are process-local. Production rollback must preserve server-side check-in, result, evidence, dispute and audit records. Never roll back data by deleting audit events.
+EOF
+}
+
+repair_existing_full_gate_blockers() {
+  node <<'NODE'
+const fs = require("node:fs");
+
+const m6Playwright = "playwright.m6.config.ts";
+if (fs.existsSync(m6Playwright)) {
+  let source = fs.readFileSync(m6Playwright, "utf8");
+  source = source.replace(/^\s*reducedMotion:\s*"reduce",\s*$/m, "");
+  fs.writeFileSync(m6Playwright, source);
+}
+
+const lifecycleClient =
+  "src/features/competitions/lifecycle/api/competition-lifecycle-api.client.ts";
+if (fs.existsSync(lifecycleClient)) {
+  let source = fs.readFileSync(lifecycleClient, "utf8");
+  source = source.replace(
+    /\n\s*signal,\n/,
+    "\n      ...(signal ? { signal } : {}),\n",
+  );
+  fs.writeFileSync(lifecycleClient, source);
+}
+
+const lifecycleUiIndex = "src/features/competitions/lifecycle/ui/index.ts";
+if (fs.existsSync(lifecycleUiIndex)) {
+  let source = fs.readFileSync(lifecycleUiIndex, "utf8");
+  source = source.replace(
+    'export { CompetitionLifecycleState } from "./CompetitionLifecycleState";',
+    'export { CompetitionLifecycleState as CompetitionLifecycleStateView } from "./CompetitionLifecycleState";',
+  );
+  fs.writeFileSync(lifecycleUiIndex, source);
+}
+NODE
+}
+
+patch_repository() {
+  node <<'NODE'
+const fs = require("node:fs");
+
+const packageFile = "package.json";
+const packageJson = JSON.parse(fs.readFileSync(packageFile, "utf8"));
+packageJson.scripts ??= {};
+Object.assign(packageJson.scripts, {
+  "test:m7:7.8:unit":
+    "vitest run --config vitest.m7.config.ts src/features/matches/operations/release/match-release.config.test.ts src/features/matches/operations/telemetry/match-telemetry.schema.test.ts tests/integration/m7-match-release.integration.test.ts",
+  "test:m7:7.8:e2e": "playwright test --config=playwright.m7.config.ts tests/e2e/m7",
+  "test:m7:7.8:visual":
+    "playwright test --config=playwright.m7.config.ts tests/visual/m7-match-operations.visual.spec.ts",
+  "m7:visual:update":
+    "playwright test --config=playwright.m7.config.ts tests/visual/m7-match-operations.visual.spec.ts --update-snapshots",
+  "m7:approve": "node scripts/approve-m7-visuals.mjs",
+  "verify:m7:7.8:technical":
+    "node scripts/verify-m7-7-8.mjs --technical-only && eslint src/features/matches/operations src/app/api/matches src/app/api/telemetry/matches src/app/api/health/matches 'src/app/(platform)/matches/[matchId]' 'src/app/(preview)/m7-match-review' tests/e2e/m7 tests/integration/m7-match-release.integration.test.ts tests/visual/m7-match-operations.visual.spec.ts playwright.m7.config.ts --max-warnings=0 && npm run test:m7:7.8:unit && npm run typecheck && npm run build && npm run test:m7:7.8:e2e",
+  "verify:m7:7.8":
+    "node scripts/verify-m7-7-8.mjs && npm run lint && npm run typecheck && npm run test && npm run build && npm run test:m7:7.8:e2e && npm run test:m7:7.8:visual",
+  "m7:artifact": "node scripts/package-m7-release.mjs",
+  "m7:release": "npm run verify:m7:7.8 && npm run m7:artifact",
+});
+fs.writeFileSync(packageFile, `${JSON.stringify(packageJson, null, 2)}\n`);
+
+const envFile = ".env.example";
+let env = fs.readFileSync(envFile, "utf8");
+if (!env.includes("NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS=")) {
+  if (!env.endsWith("\n")) env += "\n";
+  env += "NEXT_PUBLIC_ENABLE_M7_MATCH_OPERATIONS=true\n";
+}
+fs.writeFileSync(envFile, env);
+
+const screenFile = "src/features/matches/operations/ui/MatchOperationsResourceScreen.tsx";
+let screen = fs.readFileSync(screenFile, "utf8");
+screen = screen.replace(
+  "// VERZUS M7.7 TERMINAL, AUTHORIZATION AND FAILURE ISOLATION",
+  "// VERZUS M7.7 TERMINAL, AUTHORIZATION AND FAILURE ISOLATION\n// VERZUS M7.8 TESTING, OBSERVABILITY AND RELEASE",
+);
+screen = screen.replace('data-m7-stage="7.7"', 'data-m7-stage="7.8"');
+if (!screen.includes('data-m7-stage="7.8"')) {
+  throw new Error("M7.8 screen stage patch failed");
+}
+fs.writeFileSync(screenFile, screen);
+
+const indexFile = "src/features/matches/operations/index.ts";
+let index = fs.readFileSync(indexFile, "utf8");
+for (const line of ['export * from "./release";\n', 'export * from "./telemetry";\n']) {
+  if (!index.includes(line)) index += line;
+}
+fs.writeFileSync(indexFile, index);
+
+const approvalFile = "docs/milestones/M7/m7-reference-approval.json";
+const approval = JSON.parse(fs.readFileSync(approvalFile, "utf8"));
+approval.releaseGate = {
+  status: "pending",
+  stage: "7.8",
+  requiredViewports: [390, 768, 1440],
+  requiredSnapshotCount: 45,
+  approvedAt: null,
+  approvedBy: null,
+};
+fs.writeFileSync(approvalFile, `${JSON.stringify(approval, null, 2)}\n`);
 NODE
 }
 
 format_changed_files() {
-  if [[ "${VERZUS_SKIP_FORMAT:-0}" == "1" ]]; then
-    echo "Skipping Prettier because VERZUS_SKIP_FORMAT=1."
-    return
-  fi
-
-  npx prettier --write \
+  npx --no-install prettier --write \
     package.json \
-    'src/app/(platform)/compete/layout.tsx' \
-    'src/app/(preview)/m6-competition-review' \
-    src/app/api/telemetry/competitions \
-    src/app/api/health/competitions \
-    src/features/competitions/release \
-    src/features/competitions/telemetry \
-    src/features/competitions/index.ts \
-    src/features/competitions/details/ui/CompetitionDetailScreen.tsx \
-    tests/e2e/m6 \
-    tests/integration/m6-competition-release.integration.test.ts \
-    tests/visual/m6-competitions.visual.spec.ts \
     playwright.m6.config.ts \
-    docs/milestones/M6/m6-6-7-testing-observability-release.md \
-    docs/milestones/M6/m6-reference-approval.json \
-    docs/runbooks/m6-competition-rollback.md \
-    scripts/approve-m6-visuals.mjs \
-    scripts/package-m6-release.mjs \
-    scripts/verify-m6-6-7.mjs
+    src/features/competitions/lifecycle/api/competition-lifecycle-api.client.ts \
+    src/features/competitions/lifecycle/ui/index.ts \
+    src/features/matches/operations/index.ts \
+    src/features/matches/operations/ui/MatchOperationsResourceScreen.tsx \
+    src/features/matches/operations/release/match-release.config.ts \
+    src/features/matches/operations/release/match-release.config.test.ts \
+    src/features/matches/operations/release/MatchOperationsFeatureGate.tsx \
+    src/features/matches/operations/release/MatchOperationsFeatureGate.module.css \
+    src/features/matches/operations/release/index.ts \
+    src/features/matches/operations/telemetry/match-telemetry.schema.ts \
+    src/features/matches/operations/telemetry/match-telemetry.schema.test.ts \
+    src/features/matches/operations/telemetry/match-telemetry.client.ts \
+    src/features/matches/operations/telemetry/MatchTelemetryBridge.tsx \
+    src/features/matches/operations/telemetry/index.ts \
+    'src/app/(platform)/matches/[matchId]/layout.tsx' \
+    'src/app/(preview)/m7-match-review/page.tsx' \
+    'src/app/(preview)/m7-match-review/review.module.css' \
+    'src/app/api/telemetry/matches/route.ts' \
+    'src/app/api/health/matches/route.ts' \
+    tests/integration/m7-match-release.integration.test.ts \
+    tests/e2e/m7/m7-match-flow.spec.ts \
+    tests/e2e/m7/m7-match-accessibility.spec.ts \
+    tests/e2e/m7/m7-match-failure-injection.spec.ts \
+    tests/visual/m7-match-operations.visual.spec.ts \
+    playwright.m7.config.ts \
+    vitest.m7.config.ts \
+    docs/milestones/M7/m7-7-8-testing-observability-release.md \
+    docs/milestones/M7/m7-reference-approval.json \
+    docs/runbooks/m7-match-rollback.md \
+    scripts/approve-m7-visuals.mjs \
+    scripts/package-m7-release.mjs \
+    scripts/verify-m7-7-8.mjs
 }
 
-install_stage() {
+install() {
   print_plan
   echo
-  require_repo
+  require_m7_7_prerequisite
+  check_owned_files
   backup_current_state
-  extract_payload
+
+  write_release_domain
+  write_telemetry_domain
+  write_layout_and_endpoints
+  write_review_hub
+  write_tests
+  write_test_configs
+  write_approval_and_release_scripts
+  write_verifier
+  write_docs
+  repair_existing_full_gate_blockers
   patch_repository
   format_changed_files
 
-  echo
-  echo "Running lightweight M6.7 marker verification..."
-  node scripts/verify-m6-6-7.mjs --technical-only --markers-only
+  echo "Running lightweight M7.8 marker verification..."
+  node scripts/verify-m7-7-8.mjs --technical-only --markers-only
 
-  echo
-  echo "M6.7 release-gate assets installed."
-  echo "Review hub: http://127.0.0.1:3118/m6-competition-review"
-  echo "Technical gate: npm run verify:m6:6.7:technical"
-  echo "Visual baseline: npm run m6:visual:update"
-  echo "Full gate: npm run verify:m6:6.7"
-  echo "Immutable release: npm run m6:release"
-  echo "Rollback archive: $ARCHIVE"
-  echo
-  echo "Install mode does not run the full repository suite or approve visuals."
+  INSTALL_FINISHED="true"
+  cat <<'DONE'
+
+M7.8 installation complete.
+
+Technical gate:
+  npm run verify:m7:7.8:technical
+
+Preview and review hub:
+  npm run m7:preview
+  http://127.0.0.1:3119/m7-match-review
+
+Generate visual baselines:
+  npm run m7:visual:update
+
+Record final visual approval:
+  VERZUS_M7_VISUAL_APPROVAL=APPROVED \
+  VERZUS_M7_APPROVED_BY="Prismo" \
+  npm run m7:approve
+
+Full release gate:
+  npm run verify:m7:7.8
+
+Immutable artifact:
+  npm run m7:release
+
+Rollback:
+  bash ./VERZUS_M7_7_8_Testing_Observability_Release.sh rollback
+DONE
 }
 
-baseline_stage() {
-  require_repo
-  npm run m6:visual:update
-}
-
-approve_stage() {
-  require_repo
-  npm run m6:approve
-}
-
-technical_stage() {
-  require_repo
-  npm run verify:m6:6.7:technical
-}
-
-verify_stage() {
-  require_repo
-  npm run verify:m6:6.7
-}
-
-release_stage() {
-  require_repo
-  npm run m6:release
-}
-
-preview_stage() {
-  require_repo
-  echo "Starting M6 review at http://127.0.0.1:3118/m6-competition-review"
-  npm run m6:preview
-}
-
-rollback_stage() {
+rollback() {
   require_repo_root
 
   local latest
-  latest="$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n 1)"
-  [[ -n "$latest" ]] || {
-    echo "Error: no M6.7 backup found."
+  latest="$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n 1 || true)"
+  [[ -n "$latest" && -f "$latest/verzus-m7-7-8-before.tar.gz" ]] || {
+    echo "Error: no M7.8 rollback archive found under $BACKUP_ROOT."
     exit 1
   }
 
-  local archive="$latest/verzus-m6-6-7-before.tar.gz"
-  [[ -f "$archive" ]] || {
-    echo "Error: backup archive missing: $archive"
-    exit 1
-  }
-
-  rm -rf \
-    src/features/competitions/release \
-    src/features/competitions/telemetry \
-    'src/app/api/telemetry/competitions' \
-    'src/app/api/health/competitions' \
-    'src/app/(preview)/m6-competition-review' \
-    tests/e2e/m6 \
-    tests/visual/m6-competitions.visual.spec.ts-snapshots
-
-  rm -f \
-    'src/app/(platform)/compete/layout.tsx' \
-    tests/visual/m6-competitions.visual.spec.ts \
-    tests/integration/m6-competition-release.integration.test.ts \
-    playwright.m6.config.ts \
-    docs/milestones/M6/m6-6-7-testing-observability-release.md \
-    docs/milestones/M6/m6-reference-approval.json \
-    docs/runbooks/m6-competition-rollback.md \
-    scripts/approve-m6-visuals.mjs \
-    scripts/package-m6-release.mjs \
-    scripts/verify-m6-6-7.mjs \
-    reports/m6-verification.json
-
-  tar -xzf "$archive"
-  echo "M6.7 rollback completed from: $archive"
-  echo "Retained release artifacts under artifacts/m6-competitions for auditability."
+  restore_archive "$latest/verzus-m7-7-8-before.tar.gz"
+  echo "M7.8 rollback restored: $latest/verzus-m7-7-8-before.tar.gz"
 }
 
 case "$MODE" in
   install)
-    install_stage
-    ;;
-  baseline)
-    baseline_stage
-    ;;
-  approve)
-    approve_stage
-    ;;
-  technical)
-    technical_stage
-    ;;
-  verify)
-    verify_stage
-    ;;
-  release)
-    release_stage
-    ;;
-  preview)
-    preview_stage
-    ;;
-  all)
-    install_stage
-    technical_stage
+    install
     ;;
   rollback)
-    rollback_stage
+    rollback
     ;;
   *)
-    echo "Unknown mode: $MODE"
-    echo "Valid modes: install, baseline, approve, technical, verify, release, preview, all, rollback"
+    echo "Usage: bash ./$SCRIPT_NAME [install|rollback]"
     exit 1
     ;;
 esac
-
-echo
-echo "Completed mode: $MODE"

@@ -24,7 +24,7 @@ export async function getCompetitionLifecycle(
       method: "GET",
       credentials: "same-origin",
       cache: "no-store",
-      signal,
+      ...(signal ? { signal } : {}),
     },
   );
 

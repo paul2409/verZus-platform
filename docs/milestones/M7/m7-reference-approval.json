@@ -1,0 +1,31 @@
+{
+  "marker": "VERZUS M7 MATCH OPERATIONS REFERENCE",
+  "status": "approved-for-m7.1-foundation",
+  "source": "Explicit project-owner instruction to proceed from the generated M7 Match Operations reference board",
+  "requiredViewports": [390, 768, 1440],
+  "requiredStates": [
+    "scheduled",
+    "check-in-unavailable",
+    "check-in-open",
+    "checked-in",
+    "opponent-not-checked-in",
+    "both-ready",
+    "lobby-open",
+    "in-progress",
+    "submit-result",
+    "awaiting-opponent-confirmation",
+    "result-confirmed",
+    "disputed",
+    "forfeit",
+    "cancelled",
+    "completed"
+  ],
+  "releaseGate": {
+    "status": "pending",
+    "stage": "7.8",
+    "requiredViewports": [390, 768, 1440],
+    "requiredSnapshotCount": 45,
+    "approvedAt": null,
+    "approvedBy": null
+  }
+}
