@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "include": [
+    "next-env.d.ts",
+    "src/features/leaderboards/**/*.ts",
+    "src/features/leaderboards/**/*.tsx",
+    "src/features/profiles/intel-card/**/*.ts",
+    "src/features/profiles/intel-card/**/*.tsx",
+    "src/features/crews/intel-card/**/*.ts",
+    "src/features/crews/intel-card/**/*.tsx",
+    "src/features/matches/intel-card/**/*.ts",
+    "src/features/matches/intel-card/**/*.tsx",
+    "src/app/(platform)/leaderboards/**/*.ts",
+    "src/app/(platform)/leaderboards/**/*.tsx",
+    "src/app/(preview)/m8-leaderboard-review/**/*.ts",
+    "src/app/(preview)/m8-leaderboard-review/**/*.tsx",
+    "src/app/api/leaderboards/**/*.ts",
+    "src/app/api/players/[playerId]/intel/**/*.ts",
+    "src/app/api/crews/[crewId]/intel/**/*.ts",
+    "src/app/api/matches/[matchId]/intel/**/*.ts",
+    "src/app/api/telemetry/leaderboards/**/*.ts",
+    "src/app/api/health/leaderboards/**/*.ts",
+    "tests/integration/m8-*.test.ts"
+  ],
+  "exclude": ["node_modules"]
+}

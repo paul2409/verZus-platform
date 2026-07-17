@@ -9,3 +9,4 @@ export type {
   WarLaneResult,
   WarMatchIntelViewModel,
 } from "./match-intel.types";
+export * from "./resource";

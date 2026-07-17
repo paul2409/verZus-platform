@@ -1,0 +1,15 @@
+{
+  "marker": "VERZUS M8 LEADERBOARD REFERENCE",
+  "status": "approved-for-m8.1-foundation",
+  "source": "Explicit project-owner instruction to start M8 after generating the M8 leaderboard reference",
+  "requiredViewports": [360, 390, 430, 768, 1024, 1440],
+  "requiredModes": ["weekly", "pools", "game", "crew", "combine"],
+  "mobilePresentation": "compact-ranking-list",
+  "desktopPresentation": "full-semantic-table",
+  "releaseGate": {
+    "status": "pending",
+    "stage": "8.10",
+    "approvedAt": null,
+    "approvedBy": null
+  }
+}

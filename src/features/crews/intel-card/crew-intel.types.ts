@@ -12,6 +12,10 @@ export type CrewIntelViewModel = {
   membersLabel: string;
   winRateLabel: string;
   warRecordLabel: string;
+  ownerName?: string;
+  captainNames?: readonly string[];
+  activeRosterCount?: number;
+  recentResults?: readonly ("W" | "D" | "L")[];
   crewHref: string;
   joinWarHref: string | null;
 };

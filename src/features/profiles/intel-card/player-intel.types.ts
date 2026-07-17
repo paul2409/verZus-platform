@@ -1,5 +1,13 @@
 export type PlayerFormResult = "W" | "D" | "L";
 
+export type PlayerRecentMatchIntel = {
+  id: string;
+  opponentLabel: string;
+  result: PlayerFormResult;
+  scoreLabel: string;
+  href: string;
+};
+
 export type PlayerIntelViewModel = {
   id: string;
   displayName: string;
@@ -17,6 +25,8 @@ export type PlayerIntelViewModel = {
   pointsLabel: string;
   streakLabel: string;
   recentForm: readonly PlayerFormResult[];
+  recentMatches?: readonly PlayerRecentMatchIntel[];
+  achievementPreview?: readonly string[];
   profileHref: string;
   challengeHref: string | null;
 };

@@ -1,0 +1,484 @@
+/* VERZUS M8.8 COLORFUL INTERACTIVE RANKING ANATOMY */
+
+.entityLink {
+  width: fit-content;
+  color: var(--vz-retro-white);
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.entityLink:hover {
+  color: var(--vz-retro-gold);
+  text-decoration: underline;
+}
+
+.entityLink:focus-visible {
+  color: var(--vz-retro-white);
+  outline: 2px solid var(--vz-retro-gold);
+  outline-offset: 3px;
+}
+
+.entityLink[data-variant="affiliation"] {
+  color: var(--vz-retro-cyan, var(--vz-retro-violet));
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.entityLink[data-variant="match"] {
+  display: inline-flex;
+  min-height: 2rem;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-violet) 16%, var(--vz-retro-surface-2));
+  border: 1px solid color-mix(in srgb, var(--vz-retro-violet) 72%, var(--vz-retro-line));
+  font-family: var(--vz-font-numeric);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.15rem;
+}
+
+.badges > span {
+  padding: 0.12rem 0.35rem;
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line-soft);
+  font-size: 0.58rem;
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badges > span[data-tier="champion"] {
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-gold);
+  border-color: var(--vz-retro-gold);
+}
+.badges > span[data-tier="diamond"] {
+  color: var(--vz-retro-white);
+  border-color: var(--vz-retro-cyan, #5cecff);
+}
+.badges > span[data-tier="platinum"] {
+  color: var(--vz-retro-white);
+  border-color: var(--vz-retro-violet);
+}
+.badges > span[data-tier="gold"] {
+  color: var(--vz-retro-gold);
+  border-color: var(--vz-retro-gold);
+}
+.badges > span[data-tier="silver"] {
+  color: var(--vz-retro-white);
+  border-color: var(--vz-retro-muted);
+}
+.badges > span[data-tier="bronze"] {
+  color: #ffad66;
+  border-color: #ffad66;
+}
+
+.intelLayer {
+  position: fixed;
+  z-index: 1200;
+  inset: 0;
+  display: grid;
+  align-items: end;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--vz-retro-black) 78%, transparent);
+  border: 0;
+  backdrop-filter: blur(0.25rem);
+}
+
+.intelPanel {
+  position: relative;
+  display: grid;
+  width: min(100%, 36rem);
+  max-height: min(88dvh, 52rem);
+  gap: 1rem;
+  overflow: auto;
+  padding: 1.1rem;
+  color: var(--vz-retro-white);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--vz-retro-violet) 14%, transparent),
+      transparent 42%
+    ),
+    var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-violet);
+  border-bottom: 0;
+  box-shadow: 0 -1.5rem 4rem color-mix(in srgb, var(--vz-retro-black) 72%, transparent);
+}
+
+.intelHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.intelHeader > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.intelHeader span,
+.intelContext span {
+  color: var(--vz-retro-gold);
+  font-size: 0.68rem;
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.intelHeader h2,
+.colorLegend h2 {
+  margin: 0;
+  font-family: var(--vz-font-display);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.intelHeader button {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  cursor: pointer;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line);
+  font-size: 1.5rem;
+}
+
+.intelHeader button:focus-visible,
+.intelActions a:focus-visible,
+.intelActions button:focus-visible {
+  outline: 2px solid var(--vz-retro-gold);
+  outline-offset: 3px;
+}
+
+.intelDescription {
+  margin: 0;
+  color: var(--vz-retro-muted);
+  line-height: 1.55;
+}
+
+.intelIdentity {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.85rem;
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line-soft);
+}
+
+.intelIdentity > span {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-violet) 24%, var(--vz-retro-surface));
+  border: 1px solid var(--vz-retro-violet);
+  border-radius: 50%;
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.intelIdentity > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.intelIdentity small {
+  color: var(--vz-retro-muted);
+}
+
+.intelStats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0;
+}
+
+.intelStats > div {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+  padding: 0.7rem;
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line-soft);
+}
+
+.intelStats dt {
+  color: var(--vz-retro-muted);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.intelStats dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+}
+
+.intelContext {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.intelContext span {
+  padding: 0.3rem 0.45rem;
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line-soft);
+}
+
+.intelActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.intelActions a,
+.intelActions button {
+  min-height: 2.8rem;
+  padding: 0.65rem 0.9rem;
+  cursor: pointer;
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-violet) 22%, var(--vz-retro-surface-2));
+  border: 1px solid var(--vz-retro-violet);
+  font: inherit;
+  font-weight: var(--vz-font-weight-bold);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.colorLegend {
+  display: grid;
+  gap: 0.65rem;
+  padding: 1rem;
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line);
+}
+
+.colorLegend p {
+  display: grid;
+  grid-template-columns: 1rem 1fr;
+  gap: 0.55rem;
+  align-items: center;
+  margin: 0;
+  color: var(--vz-retro-muted);
+  font-size: 0.76rem;
+}
+
+.colorLegend p > span {
+  width: 0.85rem;
+  height: 0.85rem;
+  background: var(--vz-retro-violet);
+  border: 1px solid var(--vz-retro-white);
+}
+
+.colorLegend [data-zone="champion"] {
+  background: var(--vz-retro-gold);
+}
+.colorLegend [data-zone="podium"] {
+  background: var(--vz-retro-cyan, var(--vz-retro-white));
+}
+.colorLegend [data-zone="promotion"] {
+  background: var(--vz-retro-green);
+}
+.colorLegend [data-zone="current"] {
+  background: var(--vz-retro-violet);
+}
+
+@media (min-width: 768px) {
+  .intelLayer {
+    justify-items: end;
+    align-items: stretch;
+  }
+  .intelPanel {
+    width: min(31rem, 92vw);
+    max-height: 100dvh;
+    border-block: 0;
+    border-inline-end: 0;
+    box-shadow: -1.5rem 0 4rem color-mix(in srgb, var(--vz-retro-black) 72%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intelPanel {
+    scroll-behavior: auto;
+  }
+}
+
+@media (forced-colors: active) {
+  .entityLink,
+  .intelPanel,
+  .intelActions a,
+  .intelActions button,
+  .colorLegend p > span {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* VERZUS M8.9 API-BACKED INTEL RESOURCE STATES */
+.intelResourceState {
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.intelResourceMeta {
+  margin: 0;
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.65rem;
+  overflow-wrap: anywhere;
+}
+
+.intelRecovery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: color-mix(in srgb, var(--vz-retro-danger) 8%, var(--vz-retro-surface-2));
+  border: 1px solid color-mix(in srgb, var(--vz-retro-danger) 58%, var(--vz-retro-line));
+}
+
+.intelRecovery p {
+  margin: 0;
+  color: var(--vz-retro-muted);
+  font-size: 0.72rem;
+}
+
+.intelRecovery button {
+  min-height: 2.75rem;
+  padding: 0.55rem 0.85rem;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-violet);
+  font: inherit;
+  font-weight: var(--vz-font-weight-bold);
+  cursor: pointer;
+}
+
+/* VERZUS M8.10.1 COMPACT INTERACTION TARGETS START */
+.compactMeta {
+  display: contents;
+}
+
+.metaDot {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .compactMeta {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.25rem;
+    overflow: hidden;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .compactMeta small {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .metaDot {
+    display: inline;
+    flex: 0 0 auto;
+    color: var(--vz-retro-muted);
+    font-size: 0.58rem;
+  }
+
+  .badges {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
+    margin-top: 0;
+  }
+
+  .badges > span {
+    display: inline-flex;
+    min-height: 1.125rem;
+    align-items: center;
+    padding: 0.0625rem 0.3125rem;
+    font-size: 0.55rem;
+    line-height: 1;
+  }
+
+  .entityLink[data-variant="match"] {
+    min-height: 1.75rem;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.66rem;
+    line-height: 1;
+  }
+}
+/* VERZUS M8.10.1 COMPACT INTERACTION TARGETS END */
+
+/* VERZUS M8.10.2 COMPACT TABLE INTERACTIONS START */
+@media (min-width: 1024px) {
+  .entityLink[data-variant="affiliation"] {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--vz-retro-cyan, var(--vz-retro-violet));
+    font-size: 0.72rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .entityLink[data-variant="match"] {
+    min-height: 1.55rem;
+    max-width: 100%;
+    padding: 0.1rem 0.32rem;
+    overflow: hidden;
+    font-size: 0.59rem;
+    text-overflow: ellipsis;
+  }
+
+  .compactMeta {
+    gap: 0.2rem;
+  }
+
+  .compactMeta small {
+    color: var(--vz-retro-muted);
+    font-family: var(--vz-font-numeric);
+  }
+
+  .badges {
+    gap: 0.15rem;
+  }
+
+  .badges > span {
+    min-height: 1rem;
+    padding: 0.04rem 0.25rem;
+    font-size: 0.48rem;
+  }
+}
+/* VERZUS M8.10.2 COMPACT TABLE INTERACTIONS END */

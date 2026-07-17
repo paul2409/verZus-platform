@@ -18,6 +18,11 @@ export type MatchIntelViewModel = {
   prizePoolLabel: string;
   stakesLabel: string;
   checkInClosesLabel: string;
+  scoreLabel?: string;
+  competitionLabel?: string;
+  roundLabel?: string;
+  resultConfirmationLabel?: string;
+  disputeLabel?: string;
   matchHref: string;
   checkInHref: string | null;
 };

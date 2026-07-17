@@ -1,21 +1,26 @@
+// VERZUS M8.3 LEADERBOARD SCREEN ROUTE WRAPPER TEST
+// VERZUS M8.4 MODE COMPOSITION ROUTE TEST
+// VERZUS M8.5 UPDATE-STABILITY ROUTE TEST
+// VERZUS M8.6 RELIABILITY ROUTE TEST
+
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
-import { IntelCardProvider } from "@/components/primitives/intel-card";
 
 import { LeaderboardScreen } from "./LeaderboardScreen";
 
 describe("LeaderboardScreen", () => {
-  it("renders game lanes, rankings and the current-player position", () => {
-    render(
-      <IntelCardProvider>
-        <LeaderboardScreen />
-      </IntelCardProvider>,
+  it("retains URL exploration while rendering the M8.6 combine composition", () => {
+    const { container } = render(
+      <LeaderboardScreen
+        enableRemoteResources={false}
+        initialSearchParams={{ mode: "combine", page: "1" }}
+      />,
     );
 
-    expect(screen.getByRole("heading", { name: "Rankings" })).toBeVisible();
-    expect(screen.getByRole("button", { name: /EA FC/i })).toHaveAttribute("aria-current", "page");
-    expect(screen.getByText("Your position")).toBeVisible();
-    expect(screen.getByRole("link", { name: /View full game rankings/i })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Leaderboards" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Combine Leaderboard" })).toBeVisible();
+    expect(container.querySelector('[data-m8-stage="8.6"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-leaderboard-mode="combine"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-resource-source="local"]')).toBeInTheDocument();
   });
 });

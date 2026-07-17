@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "include": [
+    "next-env.d.ts",
+    "src/features/leaderboards/**/*.ts",
+    "src/features/leaderboards/**/*.tsx",
+    "src/app/(platform)/leaderboards/**/*.ts",
+    "src/app/(platform)/leaderboards/**/*.tsx",
+    "src/app/api/leaderboards/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

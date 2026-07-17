@@ -14,6 +14,8 @@ import {
 import styles from "./CrewIntelCard.module.css";
 import type { CrewIntelViewModel } from "./crew-intel.types";
 
+const crewResultTone = { W: "positive", D: "warning", L: "danger" } as const;
+
 export type CrewIntelCardProps = {
   model: CrewIntelViewModel;
   state?: IntelCardState;
@@ -69,6 +71,35 @@ export function CrewIntelCard({ model, state = "default" }: CrewIntelCardProps) 
           <IntelMetric label="War record" tone="warning" value={model.warRecordLabel} />
         </IntelMetricGrid>
       </IntelCardSection>
+
+      {model.ownerName || model.captainNames?.length || model.recentResults?.length ? (
+        <IntelCardSection code="C.2" title="Leadership and recent form">
+          <IntelMetricGrid>
+            <IntelMetric label="Owner" value={model.ownerName ?? "Unavailable"} />
+            <IntelMetric label="Captains" value={model.captainNames?.join(", ") || "Unavailable"} />
+            <IntelMetric
+              label="Active roster"
+              value={model.activeRosterCount ?? model.membersLabel}
+            />
+            <IntelMetric
+              label="Recent form"
+              value={
+                model.recentResults?.length ? (
+                  <span>
+                    {model.recentResults.map((result, index) => (
+                      <IntelStatusPill key={`${result}-${index}`} tone={crewResultTone[result]}>
+                        {result}
+                      </IntelStatusPill>
+                    ))}
+                  </span>
+                ) : (
+                  "Unavailable"
+                )
+              }
+            />
+          </IntelMetricGrid>
+        </IntelCardSection>
+      ) : null}
 
       <IntelCardActions>
         <IntelCardAction href={model.crewHref} tone="primary">

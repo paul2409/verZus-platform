@@ -90,6 +90,34 @@ export function PlayerIntelCard({ model, state = "default" }: PlayerIntelCardPro
         </div>
       </IntelCardSection>
 
+      {model.recentMatches?.length ? (
+        <IntelCardSection code="P.3" title="Recent verified matches">
+          <IntelMetricGrid>
+            {model.recentMatches.slice(0, 3).map((match) => (
+              <IntelMetric
+                detail={match.scoreLabel}
+                key={match.id}
+                label={match.result}
+                tone={formTone[match.result]}
+                value={<a href={match.href}>{match.opponentLabel}</a>}
+              />
+            ))}
+          </IntelMetricGrid>
+        </IntelCardSection>
+      ) : null}
+
+      {model.achievementPreview?.length ? (
+        <IntelCardSection code="P.4" title="Achievement preview">
+          <div className={styles.form!}>
+            {model.achievementPreview.map((achievement) => (
+              <IntelTag key={achievement} tone="special">
+                {achievement}
+              </IntelTag>
+            ))}
+          </div>
+        </IntelCardSection>
+      ) : null}
+
       <IntelCardActions>
         <IntelCardAction href={model.profileHref} tone="primary">
           View full profile

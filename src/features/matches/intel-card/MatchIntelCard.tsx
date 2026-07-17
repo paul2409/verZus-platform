@@ -80,6 +80,26 @@ export function MatchIntelCard({ model, state = "default" }: MatchIntelCardProps
         </IntelMetricGrid>
       </IntelCardSection>
 
+      {model.scoreLabel || model.resultConfirmationLabel || model.disputeLabel ? (
+        <IntelCardSection code="M.2" title="Result integrity">
+          <IntelMetricGrid>
+            <IntelMetric label="Score" tone="positive" value={model.scoreLabel ?? "Pending"} />
+            <IntelMetric label="Competition" value={model.competitionLabel ?? "Unassigned"} />
+            <IntelMetric label="Round" value={model.roundLabel ?? "Unassigned"} />
+            <IntelMetric
+              label="Confirmation"
+              tone="information"
+              value={model.resultConfirmationLabel ?? "Pending"}
+            />
+            <IntelMetric
+              label="Dispute"
+              tone={model.disputeLabel === "No dispute" ? "positive" : "warning"}
+              value={model.disputeLabel ?? "Unknown"}
+            />
+          </IntelMetricGrid>
+        </IntelCardSection>
+      ) : null}
+
       <IntelCardActions>
         <IntelCardAction href={model.matchHref}>View details</IntelCardAction>
         {model.checkInHref ? (

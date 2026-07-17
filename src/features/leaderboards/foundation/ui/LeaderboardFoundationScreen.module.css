@@ -1,0 +1,1645 @@
+/* VERZUS M8.1 LEADERBOARD RESPONSIVE FOUNDATION STYLES */
+
+.page {
+  display: grid;
+  width: min(100%, 92rem);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  overflow-x: clip;
+}
+
+.hero {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.1rem, 3vw, 2rem);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--vz-retro-violet) 12%, transparent),
+      transparent 48%
+    ),
+    var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line);
+  clip-path: var(--vz-retro-cut-sm);
+}
+
+.hero h1,
+.hero p,
+.boardHeading h2,
+.boardHeading span,
+.boardHeading small,
+.sideRail h2,
+.sideRail p,
+.foundationNote span,
+.foundationNote strong {
+  margin: 0;
+}
+
+.hero h1 {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-display);
+  font-size: clamp(2.5rem, 13vw, 5.5rem);
+  line-height: 0.9;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.eyebrow,
+.tagline,
+.boardHeading span,
+.boardHeading small,
+.sideRail > section > p,
+.foundationNote strong {
+  color: var(--vz-retro-gold);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.tagline {
+  margin-top: 0.65rem !important;
+  color: var(--vz-retro-violet);
+  font-size: clamp(1rem, 4vw, 1.35rem);
+}
+
+.description {
+  max-width: 50rem;
+  margin-top: 0.7rem !important;
+  color: var(--vz-retro-muted);
+  line-height: 1.6;
+}
+
+.heroStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.heroStats > div {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 0.85rem;
+  background: color-mix(in srgb, var(--vz-retro-black) 72%, transparent);
+  border: 1px solid var(--vz-retro-line-soft);
+}
+
+.heroStats span {
+  overflow: hidden;
+  color: var(--vz-retro-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.heroStats strong {
+  overflow: hidden;
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+  font-size: clamp(1rem, 4vw, 1.4rem);
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modeTabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(5.2rem, 1fr));
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: thin;
+}
+
+.modeTab {
+  min-height: 2.9rem;
+  padding: 0.65rem 0.85rem;
+  cursor: pointer;
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line-soft);
+  font-family: var(--vz-font-interface);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.modeTab:hover,
+.modeTab:focus-visible {
+  color: var(--vz-retro-white);
+  border-color: var(--vz-retro-violet);
+}
+
+.modeTab[data-active="true"] {
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-violet) 18%, var(--vz-retro-surface));
+  border-color: var(--vz-retro-violet);
+  box-shadow: inset 0 -2px 0 var(--vz-retro-violet);
+}
+
+.controlBar {
+  display: grid;
+  gap: 1rem;
+  align-items: end;
+  padding: 1rem;
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line-soft);
+}
+
+.boardHeading {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.boardHeading h2 {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.boardHeading small {
+  color: var(--vz-retro-green);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+
+.controls label {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.controls label > span {
+  color: var(--vz-retro-muted);
+  font-size: 0.68rem;
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.controls select {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 2rem 0.65rem 0.75rem;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line);
+  border-radius: 0;
+  font: inherit;
+}
+
+.controls select:focus-visible {
+  outline: 2px solid var(--vz-retro-violet);
+  outline-offset: 2px;
+}
+
+.layout {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.rankingPanel {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line);
+}
+
+.freshness {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface-2);
+  border-bottom: 1px solid var(--vz-retro-line-soft);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.freshness span:first-child {
+  color: var(--vz-retro-green);
+}
+
+.desktopPresentation {
+  display: none;
+}
+
+.mobilePresentation {
+  display: grid;
+}
+
+.mobileList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mobileRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 4.7rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--vz-retro-line-soft);
+}
+
+.mobileRow[data-current="true"] {
+  background: color-mix(in srgb, var(--vz-retro-violet) 15%, var(--vz-retro-surface));
+  border: 1px solid var(--vz-retro-violet);
+  box-shadow: inset 0 0 1rem color-mix(in srgb, var(--vz-retro-violet) 8%, transparent);
+}
+
+.rankCell {
+  display: grid;
+  min-width: 2.6rem;
+  justify-items: center;
+  gap: 0.15rem;
+}
+
+.rankCell > strong {
+  display: grid;
+  width: 2.1rem;
+  height: 2.1rem;
+  place-items: center;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line);
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums;
+}
+
+.rankCell[data-podium="1"] > strong {
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-gold);
+  border-color: var(--vz-retro-gold);
+}
+
+.rankCell[data-podium="2"] > strong {
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-white);
+  border-color: var(--vz-retro-white);
+}
+
+.rankCell[data-podium="3"] > strong {
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-red) 68%, var(--vz-retro-surface));
+  border-color: var(--vz-retro-red);
+}
+
+.movement {
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.68rem;
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.movement[data-direction="up"],
+.legendCard [data-direction="up"] {
+  color: var(--vz-retro-green);
+}
+
+.movement[data-direction="down"],
+.legendCard [data-direction="down"] {
+  color: var(--vz-retro-red);
+}
+
+.movement[data-direction="new"],
+.legendCard [data-direction="new"] {
+  color: var(--vz-retro-gold);
+}
+
+.identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.avatar {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-violet) 22%, var(--vz-retro-surface-2));
+  border: 1px solid var(--vz-retro-violet);
+  border-radius: 50%;
+  font-family: var(--vz-font-interface);
+  font-size: 0.7rem;
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.avatar[data-tier="champion"] {
+  color: var(--vz-retro-black);
+  background: var(--vz-retro-gold);
+  border-color: var(--vz-retro-gold);
+}
+
+.identityCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.identityCopy strong,
+.identityCopy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.identityCopy strong {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-interface);
+  font-size: 0.9rem;
+}
+
+.identityCopy small {
+  color: var(--vz-retro-muted);
+  font-size: 0.72rem;
+}
+
+.mobilePoints {
+  display: grid;
+  justify-items: end;
+  gap: 0.15rem;
+}
+
+.mobilePoints strong,
+.points {
+  color: var(--vz-retro-gold);
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums;
+}
+
+.mobilePoints span {
+  color: var(--vz-retro-muted);
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.mobilePinned {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  background: var(--vz-retro-surface-2);
+  border-top: 1px solid var(--vz-retro-violet);
+}
+
+.mobilePinned > p {
+  margin: 0;
+  color: var(--vz-retro-violet);
+  font-size: 0.72rem;
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sideRail {
+  display: grid;
+  gap: 1rem;
+}
+
+.sideRail > section {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line);
+}
+
+.currentCard {
+  border-color: var(--vz-retro-violet) !important;
+}
+
+.currentCard > h2 {
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+  font-size: 2.4rem;
+}
+
+.currentCard dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.currentCard dl > div {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.55rem;
+  background: var(--vz-retro-surface-2);
+}
+
+.currentCard dt {
+  color: var(--vz-retro-muted);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.currentCard dd {
+  margin: 0;
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.85rem;
+}
+
+.rewardsCard ol {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rewardsCard li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line-soft);
+  font-size: 0.78rem;
+}
+
+.rewardsCard li strong,
+.rewardsCard li small {
+  color: var(--vz-retro-gold);
+}
+
+.legendCard p {
+  display: grid;
+  grid-template-columns: 2.8rem 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--vz-retro-muted);
+  font-size: 0.78rem;
+}
+
+.legendCard span {
+  font-family: var(--vz-font-numeric);
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.emptyState {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+  min-height: 20rem;
+  align-content: center;
+  padding: 2rem;
+  color: var(--vz-retro-muted);
+}
+
+.emptyState strong {
+  color: var(--vz-retro-white);
+  font-size: 1.15rem;
+}
+
+.emptyState button {
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-violet);
+  border: 1px solid var(--vz-retro-violet);
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.foundationNote {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  color: var(--vz-retro-muted);
+  background: var(--vz-retro-surface);
+  border: 1px solid var(--vz-retro-line-soft);
+  font-size: 0.78rem;
+}
+
+.foundationNote strong {
+  color: var(--vz-retro-violet);
+}
+
+@media (min-width: 430px) {
+  .controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.8fr);
+    align-items: end;
+  }
+
+  .controlBar {
+    grid-template-columns: minmax(16rem, 1fr) minmax(24rem, 1.2fr);
+  }
+
+  .mobileRow {
+    padding-inline: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    align-items: start;
+  }
+
+  .desktopPresentation {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .mobilePresentation {
+    display: none;
+  }
+
+  .desktopPresentation table {
+    width: 100%;
+    min-width: 52rem;
+    border-collapse: collapse;
+  }
+
+  .desktopPresentation caption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .desktopPresentation th,
+  .desktopPresentation td {
+    padding: 0.8rem 0.75rem;
+    border-bottom: 1px solid var(--vz-retro-line-soft);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .desktopPresentation th {
+    color: var(--vz-retro-muted);
+    background: var(--vz-retro-surface-2);
+    font-size: 0.67rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .desktopPresentation td {
+    color: var(--vz-retro-muted);
+    font-size: 0.8rem;
+  }
+
+  .desktopPresentation tr[data-current="true"] td {
+    color: var(--vz-retro-white);
+    background: color-mix(in srgb, var(--vz-retro-violet) 15%, var(--vz-retro-surface));
+    border-top: 1px solid var(--vz-retro-violet);
+    border-bottom: 1px solid var(--vz-retro-violet);
+  }
+
+  .pinnedBody::before {
+    display: block;
+    height: 0.7rem;
+    content: "";
+  }
+
+  .sideRail {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .page {
+    gap: 1.5rem;
+    padding-inline: 2.5rem;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 21rem;
+  }
+
+  .desktopPresentation th,
+  .desktopPresentation td {
+    padding: 0.95rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modeTab,
+  .emptyState button {
+    transition: none;
+  }
+}
+
+/* VERZUS M8.2 SEARCH FILTER PAGINATION STYLES */
+.searchControl {
+  position: relative;
+}
+
+.searchControl small {
+  color: var(--vz-retro-muted);
+  font-size: 0.66rem;
+}
+
+.searchInput {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line);
+  border-radius: 0;
+  font: inherit;
+}
+
+.searchInput::placeholder {
+  color: color-mix(in srgb, var(--vz-retro-muted) 75%, transparent);
+}
+
+.searchInput:focus-visible {
+  outline: 2px solid var(--vz-retro-violet);
+  outline-offset: 2px;
+}
+
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  color: var(--vz-retro-muted);
+  background: color-mix(in srgb, var(--vz-retro-violet) 9%, var(--vz-retro-surface));
+  border: 1px solid var(--vz-retro-violet);
+}
+
+.activeFilters > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.activeFilters strong {
+  color: var(--vz-retro-white);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.activeFilters span {
+  font-size: 0.75rem;
+}
+
+.activeFilters button,
+.pagination button {
+  min-height: 2.5rem;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-line);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: var(--vz-font-weight-bold);
+  text-transform: uppercase;
+}
+
+.activeFilters button:hover,
+.activeFilters button:focus-visible,
+.pagination button:hover:not(:disabled),
+.pagination button:focus-visible:not(:disabled) {
+  border-color: var(--vz-retro-violet);
+  outline: none;
+}
+
+.pagination {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem;
+  background: var(--vz-retro-surface-2);
+  border-top: 1px solid var(--vz-retro-line-soft);
+}
+
+.pagination button:last-child {
+  justify-self: end;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.pagination span {
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+@media (min-width: 430px) {
+  .controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .searchControl {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 768px) {
+  .controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .searchControl {
+    grid-column: span 3;
+  }
+}
+
+@media (min-width: 1200px) {
+  .controlBar {
+    grid-template-columns: minmax(15rem, 0.72fr) minmax(42rem, 1.8fr);
+  }
+}
+
+/* VERZUS M8.4 MODE COMPOSITION */
+.rankingBasis {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.desktopPresentation th[data-align="end"],
+.desktopPresentation td[data-align="end"] {
+  text-align: right;
+}
+
+/* VERZUS M8.5 CURRENT POSITION, MOVEMENT AND UPDATE STABILITY */
+.liveStatus {
+  color: var(--vz-retro-cyan, var(--vz-retro-violet));
+  font-family: var(--vz-font-numeric);
+}
+
+.liveStatus[data-changed="true"] {
+  color: var(--vz-retro-gold);
+}
+
+.mobileRow[data-live-changed="true"] {
+  box-shadow: inset 0.22rem 0 0 var(--vz-retro-gold);
+}
+
+.currentCard dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 1024px) {
+  .desktopPresentation tr[data-live-changed="true"] td {
+    background: color-mix(in srgb, var(--vz-retro-gold) 8%, var(--vz-retro-surface));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--vz-retro-gold) 35%, transparent);
+  }
+}
+
+/* VERZUS M8.6 LEADERBOARD RELIABILITY AND EDGE STATES */
+.reliabilityBanner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-surface-2) 92%, transparent);
+  border: 1px solid var(--vz-retro-line);
+  border-left: 3px solid var(--vz-retro-violet);
+}
+
+.reliabilityBanner[data-reliability-state="stale"] {
+  border-left-color: var(--vz-retro-gold);
+}
+
+.reliabilityBanner[data-reliability-state="degraded"] {
+  border-left-color: var(--vz-retro-gold);
+}
+
+.reliabilityBanner[data-reliability-state="partial-failure"],
+.reliabilityBanner[data-reliability-state="error"] {
+  border-left-color: var(--vz-retro-red);
+}
+
+.reliabilityBanner[data-reliability-state="offline"] {
+  border-left-color: var(--vz-retro-muted);
+}
+
+.reliabilityBanner[data-reliability-state="unauthorized"] {
+  border-left-color: var(--vz-retro-red);
+  background: color-mix(in srgb, var(--vz-retro-red) 8%, var(--vz-retro-surface-2));
+}
+
+.reliabilityBanner > div {
+  display: grid;
+  gap: 0.2rem;
+  min-width: min(100%, 22rem);
+}
+
+.reliabilityBanner strong {
+  font-family: var(--vz-font-interface);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.reliabilityBanner span,
+.reliabilityBanner small {
+  color: var(--vz-retro-muted);
+  line-height: 1.45;
+}
+
+.reliabilityBanner small {
+  color: var(--vz-retro-gold);
+  font-family: var(--vz-font-numeric);
+}
+
+.reliabilityBanner button,
+.resourceStateCard button,
+.resourceStateCompact button {
+  min-height: 2.6rem;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-violet) 18%, var(--vz-retro-surface));
+  border: 1px solid var(--vz-retro-violet);
+  font: inherit;
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.reliabilityBanner button:focus-visible,
+.resourceStateCard button:focus-visible,
+.resourceStateCompact button:focus-visible {
+  outline: 2px solid var(--vz-retro-white);
+  outline-offset: 2px;
+}
+
+.resourceStateCard,
+.resourceStateCompact {
+  display: grid;
+  gap: 0.65rem;
+  align-content: center;
+  min-height: 12rem;
+  padding: clamp(1rem, 4vw, 1.5rem);
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-surface-2) 94%, transparent);
+  border: 1px dashed var(--vz-retro-line);
+}
+
+.resourceStateCompact {
+  min-height: 10rem;
+  border-style: solid;
+}
+
+.resourceStateCard[data-resource-state="error"],
+.resourceStateCompact[data-resource-state="error"],
+.resourceStateCard[data-resource-state="unauthorized"],
+.resourceStateCompact[data-resource-state="unauthorized"] {
+  border-color: var(--vz-retro-red);
+}
+
+.resourceStateCard[data-resource-state="offline"],
+.resourceStateCompact[data-resource-state="offline"] {
+  border-color: var(--vz-retro-muted);
+}
+
+.resourceStateCard strong,
+.resourceStateCompact strong {
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.resourceStateCard span,
+.resourceStateCompact span,
+.resourceStateCard small,
+.resourceStateCompact small {
+  color: var(--vz-retro-muted);
+  line-height: 1.5;
+}
+
+.resourceStateCard small,
+.resourceStateCompact small {
+  font-family: var(--vz-font-numeric);
+  overflow-wrap: anywhere;
+}
+
+.resourceSkeleton {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.resourceSkeleton span {
+  display: block;
+  height: 1rem;
+  background: linear-gradient(
+    90deg,
+    var(--vz-retro-surface) 0%,
+    color-mix(in srgb, var(--vz-retro-violet) 20%, var(--vz-retro-surface-2)) 50%,
+    var(--vz-retro-surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: leaderboardReliabilityPulse 1.4s linear infinite;
+}
+
+.resourceSkeleton span:nth-child(1) {
+  width: 55%;
+}
+
+.resourceSkeleton span:nth-child(2) {
+  width: 100%;
+}
+
+.resourceSkeleton span:nth-child(3) {
+  width: 78%;
+}
+
+@keyframes leaderboardReliabilityPulse {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resourceSkeleton span {
+    animation: none;
+  }
+}
+
+/* VERZUS M8.7 PERFORMANCE, ACCESSIBILITY AND FAILURE ISOLATION */
+.skipLink {
+  position: fixed;
+  z-index: 1000;
+  inset-block-start: 0.75rem;
+  inset-inline-start: 0.75rem;
+  translate: 0 -180%;
+  padding: 0.7rem 0.9rem;
+  color: var(--vz-retro-black-soft);
+  background: var(--vz-retro-white);
+  border: 2px solid var(--vz-retro-violet);
+  font-weight: var(--vz-font-weight-bold);
+  text-transform: uppercase;
+  transition: translate 120ms ease;
+}
+
+.skipLink:focus-visible {
+  translate: 0;
+  outline: 3px solid var(--vz-retro-gold);
+  outline-offset: 3px;
+}
+
+.rankingPanel,
+.currentCard,
+.rewardsCard,
+.legendCard {
+  contain: layout paint style;
+}
+
+.desktopPresentation,
+.mobilePresentation {
+  content-visibility: auto;
+  contain-intrinsic-size: 48rem;
+}
+
+.modeTab[role="tab"]:focus-visible,
+.rankingPanel:focus-visible {
+  outline: 2px solid var(--vz-retro-white);
+  outline-offset: 4px;
+}
+
+.widgetFailure {
+  display: grid;
+  min-height: 10rem;
+  align-content: center;
+  gap: 0.55rem;
+  padding: clamp(1rem, 4vw, 1.5rem);
+  color: var(--vz-retro-white);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--vz-retro-red) 10%, transparent), transparent),
+    var(--vz-retro-surface-2);
+  border: 1px solid var(--vz-retro-red);
+}
+
+.widgetFailure strong {
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.15rem, 3vw, 1.6rem);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.widgetFailure span,
+.widgetFailure small {
+  color: var(--vz-retro-muted);
+  line-height: 1.5;
+}
+
+.widgetFailure small {
+  overflow-wrap: anywhere;
+  font-family: var(--vz-font-numeric);
+}
+
+.widgetFailure button {
+  width: fit-content;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.9rem;
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-violet) 20%, var(--vz-retro-surface));
+  border: 1px solid var(--vz-retro-violet);
+  cursor: pointer;
+  font: inherit;
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.widgetFailure button:focus-visible {
+  outline: 2px solid var(--vz-retro-white);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skipLink {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .skipLink,
+  .widgetFailure,
+  .widgetFailure button {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* VERZUS M8.8 TOKEN-DRIVEN COLOR BANDS */
+.mobileRow,
+.desktopPresentation tbody tr {
+  --vz-row-accent: var(--vz-retro-violet);
+  --vz-row-fill: transparent;
+}
+
+.mobileRow[data-tier="champion"],
+.desktopPresentation tr[data-tier="champion"] {
+  --vz-row-accent: var(--vz-retro-gold);
+}
+.mobileRow[data-tier="diamond"],
+.desktopPresentation tr[data-tier="diamond"] {
+  --vz-row-accent: var(--vz-retro-cyan, #5cecff);
+}
+.mobileRow[data-tier="platinum"],
+.desktopPresentation tr[data-tier="platinum"] {
+  --vz-row-accent: var(--vz-retro-violet);
+}
+.mobileRow[data-tier="gold"],
+.desktopPresentation tr[data-tier="gold"] {
+  --vz-row-accent: #f6bf4f;
+}
+.mobileRow[data-tier="silver"],
+.desktopPresentation tr[data-tier="silver"] {
+  --vz-row-accent: #b9c7da;
+}
+.mobileRow[data-tier="bronze"],
+.desktopPresentation tr[data-tier="bronze"] {
+  --vz-row-accent: #ff9f5b;
+}
+
+.mobileRow[data-rank-zone="champion"],
+.desktopPresentation tr[data-rank-zone="champion"] {
+  --vz-row-fill: color-mix(in srgb, var(--vz-retro-gold) 12%, transparent);
+}
+
+.mobileRow[data-rank-zone="podium"],
+.desktopPresentation tr[data-rank-zone="podium"] {
+  --vz-row-fill: color-mix(in srgb, var(--vz-retro-cyan, var(--vz-retro-white)) 8%, transparent);
+}
+
+.mobileRow[data-rank-zone="promotion"],
+.desktopPresentation tr[data-rank-zone="promotion"] {
+  --vz-row-fill: color-mix(in srgb, var(--vz-retro-green) 7%, transparent);
+}
+
+.mobileRow[data-rank-zone="contender"],
+.desktopPresentation tr[data-rank-zone="contender"] {
+  --vz-row-fill: color-mix(in srgb, var(--vz-retro-violet) 5%, transparent);
+}
+
+.mobileRow[data-rank-zone="current"],
+.desktopPresentation tr[data-rank-zone="current"] {
+  --vz-row-fill: color-mix(in srgb, var(--vz-retro-violet) 17%, transparent);
+  --vz-row-accent: var(--vz-retro-violet);
+}
+
+.mobileRow {
+  position: relative;
+  background: linear-gradient(90deg, var(--vz-row-fill), transparent 72%), var(--vz-retro-surface);
+  box-shadow: inset 0.22rem 0 0 var(--vz-row-accent);
+}
+
+.mobileRow:hover,
+.mobileRow:focus-within {
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--vz-row-accent) 12%, transparent),
+      transparent 75%
+    ),
+    var(--vz-retro-surface-2);
+}
+
+@media (min-width: 1024px) {
+  .desktopPresentation tbody tr td {
+    background:
+      linear-gradient(90deg, var(--vz-row-fill), transparent 58%), var(--vz-retro-surface);
+    transition:
+      background-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+
+  .desktopPresentation tbody tr td:first-child {
+    box-shadow: inset 0.22rem 0 0 var(--vz-row-accent);
+  }
+
+  .desktopPresentation tbody tr:hover td,
+  .desktopPresentation tbody tr:focus-within td {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--vz-row-accent) 13%, transparent),
+        transparent 70%
+      ),
+      var(--vz-retro-surface-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktopPresentation tbody tr td {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .mobileRow,
+  .desktopPresentation tbody tr td:first-child {
+    box-shadow: inset 0.22rem 0 0 CanvasText;
+  }
+}
+
+/* VERZUS M8.10.1 COMPACT DESKTOP LEADERBOARD DENSITY START */
+@media (min-width: 1024px) {
+  .desktopPresentation table {
+    table-layout: auto;
+  }
+
+  .desktopPresentation thead tr,
+  .desktopPresentation th {
+    height: 2.75rem;
+  }
+
+  .desktopPresentation th {
+    padding: 0.5rem 0.75rem;
+    line-height: 1.1;
+  }
+
+  .desktopPresentation tbody tr,
+  .desktopPresentation tbody td {
+    height: 4.25rem;
+  }
+
+  .desktopPresentation tbody td {
+    padding: 0.5rem 0.75rem;
+    line-height: 1.15;
+    background: color-mix(in srgb, var(--vz-row-accent) 3%, var(--vz-retro-surface));
+  }
+
+  .desktopPresentation tbody tr[data-rank-zone="champion"] td,
+  .desktopPresentation tbody tr[data-rank-zone="podium"] td {
+    height: 4.5rem;
+  }
+
+  .desktopPresentation tbody tr[data-rank-zone="champion"] td {
+    background: color-mix(in srgb, var(--vz-row-accent) 6%, var(--vz-retro-surface));
+  }
+
+  .desktopPresentation tbody tr[data-rank-zone="podium"] td,
+  .desktopPresentation tbody tr[data-rank-zone="promotion"] td {
+    background: color-mix(in srgb, var(--vz-row-accent) 4%, var(--vz-retro-surface));
+  }
+
+  .desktopPresentation tbody tr[data-current="true"],
+  .desktopPresentation tbody tr[data-rank-zone="current"],
+  .desktopPresentation tbody tr[data-current="true"] td,
+  .desktopPresentation tbody tr[data-rank-zone="current"] td {
+    height: 4.75rem;
+  }
+
+  .desktopPresentation tbody tr[data-current="true"] td,
+  .desktopPresentation tbody tr[data-rank-zone="current"] td {
+    color: var(--vz-retro-white);
+    background: color-mix(in srgb, var(--vz-row-accent) 10%, var(--vz-retro-surface));
+    border-top: 1px solid var(--vz-row-accent);
+    border-bottom: 1px solid var(--vz-row-accent);
+  }
+
+  .desktopPresentation tbody tr[data-current="true"] td:first-child,
+  .desktopPresentation tbody tr[data-rank-zone="current"] td:first-child {
+    border-left: 1px solid var(--vz-row-accent);
+  }
+
+  .desktopPresentation tbody tr[data-current="true"] td:last-child,
+  .desktopPresentation tbody tr[data-rank-zone="current"] td:last-child {
+    border-right: 1px solid var(--vz-row-accent);
+  }
+
+  .desktopPresentation tbody tr td:first-child {
+    box-shadow: inset 0.1875rem 0 0 var(--vz-row-accent);
+  }
+
+  .desktopPresentation tbody tr:hover td,
+  .desktopPresentation tbody tr:focus-within td {
+    background: color-mix(in srgb, var(--vz-row-accent) 7%, var(--vz-retro-surface-2));
+  }
+
+  .desktopPresentation .identity {
+    gap: 0.5rem;
+  }
+
+  .desktopPresentation .avatar {
+    width: 2.125rem;
+    height: 2.125rem;
+    font-size: 0.64rem;
+  }
+
+  .desktopPresentation .identityCopy {
+    gap: 0.05rem;
+    overflow: hidden;
+  }
+
+  .desktopPresentation .identityCopy > a,
+  .desktopPresentation .identityCopy > strong {
+    display: block;
+    overflow: hidden;
+    font-size: 0.82rem;
+    line-height: 1.1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .desktopPresentation .identityCopy small {
+    overflow: hidden;
+    font-size: 0.65rem;
+    line-height: 1.1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .desktopPresentation .rankCell {
+    gap: 0.08rem;
+  }
+
+  .desktopPresentation .rankCell > strong {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .desktopPresentation .movement {
+    font-size: 0.62rem;
+  }
+
+  .desktopPresentation .points {
+    font-size: 0.85rem;
+  }
+
+  .desktopPresentation td[data-align="right"],
+  .desktopPresentation td[data-align="center"] {
+    white-space: nowrap;
+  }
+
+  .pinnedBody::before {
+    height: 0.35rem;
+  }
+}
+
+@media (forced-colors: active) and (min-width: 1024px) {
+  .desktopPresentation tbody td {
+    background: Canvas;
+  }
+}
+/* VERZUS M8.10.1 COMPACT DESKTOP LEADERBOARD DENSITY END */
+
+/* VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH START */
+@media (min-width: 1024px) {
+  .page {
+    width: min(100%, 100rem);
+    gap: 0.875rem;
+    padding: 1rem 1.25rem 1.5rem;
+  }
+
+  .controlBar {
+    grid-template-columns: minmax(12rem, 0.42fr) minmax(0, 1.58fr);
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .boardHeading {
+    align-content: center;
+    gap: 0.1rem;
+  }
+
+  .boardHeading h2 {
+    font-size: 1.35rem;
+    line-height: 1.05;
+  }
+
+  .boardHeading small,
+  .rankingBasis {
+    font-size: 0.64rem;
+  }
+
+  .controls label {
+    gap: 0.2rem;
+  }
+
+  .controls label > span {
+    font-size: 0.59rem;
+  }
+
+  .controls select,
+  .searchInput {
+    min-height: 2.25rem;
+    padding-block: 0.4rem;
+    font-size: 0.78rem;
+  }
+
+  .searchControl small {
+    display: none;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 17rem;
+    gap: 0.75rem;
+  }
+
+  .rankingPanel {
+    overflow: clip;
+  }
+
+  .freshness {
+    min-height: 2.5rem;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.65rem;
+  }
+
+  .desktopPresentation {
+    overflow-x: clip;
+  }
+
+  .desktopPresentation table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .desktopPresentation thead tr,
+  .desktopPresentation th {
+    height: 2.625rem;
+  }
+
+  .desktopPresentation th {
+    padding: 0.42rem 0.5rem;
+    overflow: hidden;
+    font-size: 0.58rem;
+    line-height: 1.05;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+
+  .desktopPresentation tbody tr,
+  .desktopPresentation tbody td,
+  .desktopPresentation tbody tr[data-rank-zone="champion"] td,
+  .desktopPresentation tbody tr[data-rank-zone="podium"] td {
+    height: 3.625rem;
+  }
+
+  .desktopPresentation tbody td {
+    min-width: 0;
+    padding: 0.38rem 0.5rem;
+    overflow: hidden;
+    font-size: 0.72rem;
+    line-height: 1.08;
+    text-overflow: ellipsis;
+  }
+
+  .desktopPresentation td[data-column="record"],
+  .desktopPresentation td[data-column="win-rate"],
+  .desktopPresentation td[data-column="streak"],
+  .desktopPresentation td[data-column="trust"],
+  .desktopPresentation td[data-column="points"],
+  .desktopPresentation td[data-column="members"],
+  .desktopPresentation td[data-column="game"],
+  .desktopPresentation td[data-column="recent-match"] {
+    white-space: nowrap;
+  }
+
+  .desktopPresentation [data-column="rank"] {
+    width: 7%;
+  }
+
+  .desktopPresentation [data-column="identity"] {
+    width: 23%;
+  }
+
+  .desktopPresentation [data-column="affiliation"],
+  .desktopPresentation [data-column="members"] {
+    width: 11%;
+  }
+
+  .desktopPresentation [data-column="game"] {
+    width: 11%;
+  }
+
+  .desktopPresentation [data-column="record"] {
+    width: 9%;
+  }
+
+  .desktopPresentation [data-column="win-rate"] {
+    width: 8%;
+  }
+
+  .desktopPresentation [data-column="streak"],
+  .desktopPresentation [data-column="trust"] {
+    width: 7%;
+  }
+
+  .desktopPresentation [data-column="recent-match"] {
+    width: 13%;
+  }
+
+  .desktopPresentation [data-column="points"] {
+    width: 14%;
+  }
+
+  .desktopPresentation .identity {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.45rem;
+  }
+
+  .desktopPresentation .avatar {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.58rem;
+  }
+
+  .desktopPresentation .identityCopy > a,
+  .desktopPresentation .identityCopy > strong {
+    font-size: 0.76rem;
+  }
+
+  .desktopPresentation .identityCopy small {
+    font-size: 0.58rem;
+  }
+
+  .desktopPresentation .rankCell > strong {
+    width: 1.85rem;
+    height: 1.85rem;
+    font-size: 0.68rem;
+  }
+
+  .desktopPresentation .movement {
+    font-size: 0.54rem;
+  }
+
+  .desktopPresentation .points {
+    color: var(--vz-retro-white);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pinnedBody[data-desktop-pinned="true"] {
+    display: none;
+  }
+
+  .sideRail {
+    position: sticky;
+    top: 5.5rem;
+    gap: 0.75rem;
+  }
+
+  .sideRail > section {
+    gap: 0.65rem;
+    padding: 0.8rem;
+  }
+
+  .currentCard > h2 {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .currentCard dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+
+  .currentCard dl > div {
+    padding: 0.45rem;
+  }
+
+  .currentCard dt {
+    font-size: 0.57rem;
+  }
+
+  .currentCard dd {
+    font-size: 0.75rem;
+  }
+
+  .rewardsCard li {
+    padding: 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .controls {
+    grid-template-columns: minmax(12rem, 1.55fr) repeat(5, minmax(5.7rem, 1fr));
+    gap: 0.45rem;
+  }
+
+  .searchControl {
+    grid-column: auto;
+  }
+}
+
+@media (min-width: 1440px) {
+  .page {
+    padding-inline: 1.5rem;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 18rem;
+  }
+
+  .desktopPresentation th,
+  .desktopPresentation td {
+    padding-inline: 0.55rem;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .desktopPresentation [data-column="streak"],
+  .desktopPresentation [data-column="trust"] {
+    display: none;
+  }
+
+  .desktopPresentation [data-column="identity"] {
+    width: 27%;
+  }
+
+  .desktopPresentation [data-column="recent-match"] {
+    width: 15%;
+  }
+}
+
+@media (forced-colors: active) and (min-width: 1024px) {
+  .desktopPresentation tbody td {
+    background: Canvas;
+  }
+}
+/* VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH END */
