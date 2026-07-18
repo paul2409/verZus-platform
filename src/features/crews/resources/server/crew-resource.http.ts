@@ -39,6 +39,16 @@ export async function handleCrewResourceGet(
   const scenario = normalizeCrewResourceScenario(request.nextUrl.searchParams.get("scenario"));
 
   if (scenario === "slow") await new Promise((resolve) => setTimeout(resolve, 1_000));
+  if (scenario === "offline") {
+    return errorResponse(
+      requestId,
+      resource,
+      503,
+      "CREW_RESOURCE_OFFLINE",
+      `${resource} is unavailable while offline.`,
+      true,
+    );
+  }
   if (scenario === "error") {
     return errorResponse(
       requestId,

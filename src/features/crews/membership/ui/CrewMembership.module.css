@@ -189,3 +189,9 @@
     flex: 1;
   }
 }
+
+/* VERZUS M9.6 GOVERNANCE COMPOSITION */
+.settingsStack {
+  display: grid;
+  gap: var(--vz-space-4);
+}

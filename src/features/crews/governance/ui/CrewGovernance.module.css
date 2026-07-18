@@ -1,0 +1,249 @@
+/* VERZUS M9.6 CREW GOVERNANCE UI */
+
+.panel {
+  display: grid;
+  gap: var(--vz-space-5);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--vz-retro-cyan) 5%, transparent),
+      transparent 42%
+    ),
+    color-mix(in srgb, var(--vz-retro-black-soft) 96%, transparent);
+  border: 1px solid var(--vz-ref-line-strong);
+  clip-path: var(--vz-ref-cut-sm);
+}
+
+.panelHeader,
+.managementCard > header,
+.identity,
+.actions,
+.permissionStrip {
+  display: flex;
+  align-items: center;
+}
+
+.panelHeader {
+  justify-content: space-between;
+  gap: var(--vz-space-4);
+}
+
+.panelHeader h2,
+.panelHeader p,
+.managementCard strong,
+.managementCard span,
+.blockReason,
+.error,
+.success,
+.empty {
+  margin: 0;
+}
+
+.panelHeader h2 {
+  font-family: var(--vz-font-display);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.panelHeader p,
+.managementCard span,
+.blockReason,
+.memberMeta dt,
+.empty {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-font-size-body-sm);
+}
+
+.permissionStrip {
+  flex-wrap: wrap;
+  gap: var(--vz-space-2);
+}
+
+.permissionStrip span {
+  padding: 0.35rem 0.55rem;
+  color: var(--vz-color-text-secondary);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-cyan) 22%, transparent);
+  background: color-mix(in srgb, var(--vz-retro-cyan) 6%, transparent);
+  font-size: 0.72rem;
+}
+
+.rosterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--vz-space-4);
+}
+
+.managementCard {
+  display: grid;
+  gap: var(--vz-space-4);
+  min-width: 0;
+  padding: var(--vz-space-4);
+  border: 1px solid var(--vz-ref-line);
+  background: color-mix(in srgb, var(--vz-retro-black) 78%, transparent);
+}
+
+.managementCard[data-member-role="owner"] {
+  border-color: color-mix(in srgb, var(--vz-retro-gold) 55%, transparent);
+  box-shadow: inset 3px 0 0 var(--vz-retro-gold);
+}
+
+.managementCard > header {
+  justify-content: space-between;
+  gap: var(--vz-space-3);
+}
+
+.identity {
+  min-width: 0;
+  gap: var(--vz-space-3);
+}
+
+.identity > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.identity strong,
+.identity span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar {
+  position: relative;
+  display: grid;
+  width: 2.55rem;
+  height: 2.55rem;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--vz-retro-white);
+  background: color-mix(in srgb, var(--vz-retro-purple) 32%, var(--vz-retro-black));
+  border: 1px solid color-mix(in srgb, var(--vz-retro-purple) 58%, transparent);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.avatar::after {
+  position: absolute;
+  right: -0.12rem;
+  bottom: -0.12rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  content: "";
+  border: 2px solid var(--vz-retro-black);
+  background: var(--vz-color-text-tertiary);
+}
+
+.avatar[data-status="online"]::after {
+  background: var(--vz-retro-green);
+}
+
+.avatar[data-status="away"]::after {
+  background: var(--vz-retro-gold);
+}
+
+.memberMeta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--vz-space-2);
+  margin: 0;
+}
+
+.memberMeta > div {
+  min-width: 0;
+  padding: var(--vz-space-2);
+  background: color-mix(in srgb, var(--vz-retro-white) 3%, transparent);
+}
+
+.memberMeta dt,
+.memberMeta dd {
+  margin: 0;
+}
+
+.memberMeta dd {
+  margin-top: 0.15rem;
+  overflow: hidden;
+  color: var(--vz-retro-white);
+  font-family: var(--vz-font-numeric);
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.controls,
+.controls label,
+.transferGrid,
+.transferGrid label {
+  display: grid;
+  gap: var(--vz-space-2);
+}
+
+.controls label > span,
+.transferGrid label > span {
+  color: var(--vz-color-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.actions {
+  flex-wrap: wrap;
+  gap: var(--vz-space-2);
+}
+
+.transferGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+}
+
+.error,
+.success,
+.blockReason,
+.empty {
+  padding: var(--vz-space-3);
+  border: 1px solid var(--vz-ref-line);
+}
+
+.error {
+  color: var(--vz-color-red-300);
+  border-color: color-mix(in srgb, var(--vz-color-red-500) 50%, transparent);
+}
+
+.success {
+  color: var(--vz-retro-green);
+  border-color: color-mix(in srgb, var(--vz-retro-green) 45%, transparent);
+}
+
+.blockReason,
+.empty {
+  background: color-mix(in srgb, var(--vz-retro-white) 3%, transparent);
+}
+
+@media (max-width: 900px) {
+  .rosterGrid,
+  .transferGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .panelHeader,
+  .managementCard > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .memberMeta {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .actions > * {
+    width: 100%;
+  }
+}

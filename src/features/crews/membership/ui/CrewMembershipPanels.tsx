@@ -40,7 +40,15 @@ function MutationMessage({ error, success }: { error: Error | null; success: boo
   ) : null;
 }
 
-export function CrewMembershipRequestsPanel({ snapshot }: { snapshot: CrewMembershipSnapshot }) {
+export function CrewMembershipRequestsPanel({
+  snapshot,
+  operationsAllowed = true,
+  blockedReason,
+}: {
+  snapshot: CrewMembershipSnapshot;
+  operationsAllowed?: boolean;
+  blockedReason?: string | null;
+}) {
   const queryClient = useQueryClient();
   const [handle, setHandle] = useState("@orbit");
   const [role, setRole] = useState<"captain" | "manager" | "member" | "trial">("trial");
@@ -75,7 +83,7 @@ export function CrewMembershipRequestsPanel({ snapshot }: { snapshot: CrewMember
   const pendingInvites = snapshot.invites.filter((item) => item.status === "pending");
 
   return (
-    <section className={styles.operationsPanel} data-crew-panel="requests" data-m9-stage="9.5">
+    <section className={styles.operationsPanel} data-crew-panel="requests" data-m9-stage="9.7">
       <header className={styles.panelHeader}>
         <div>
           <h2>Applications and invites</h2>
@@ -85,6 +93,12 @@ export function CrewMembershipRequestsPanel({ snapshot }: { snapshot: CrewMember
           {pendingApplications.length + pendingInvites.length} pending
         </Badge>
       </header>
+
+      {!operationsAllowed ? (
+        <p className={styles.empty} role="status">
+          {blockedReason ?? "Membership operations are frozen by the Crew lifecycle state."}
+        </p>
+      ) : null}
 
       <div className={styles.membershipGrid}>
         <article>
@@ -104,7 +118,7 @@ export function CrewMembershipRequestsPanel({ snapshot }: { snapshot: CrewMember
                   </div>
                   <div className={styles.rowActions}>
                     <Button
-                      disabled={decision.isPending}
+                      disabled={!operationsAllowed || decision.isPending}
                       onClick={() =>
                         decision.mutate({ applicationId: application.id, decision: "decline" })
                       }
@@ -114,7 +128,7 @@ export function CrewMembershipRequestsPanel({ snapshot }: { snapshot: CrewMember
                       Decline
                     </Button>
                     <Button
-                      disabled={decision.isPending}
+                      disabled={!operationsAllowed || decision.isPending}
                       onClick={() =>
                         decision.mutate({ applicationId: application.id, decision: "accept" })
                       }
@@ -149,7 +163,11 @@ export function CrewMembershipRequestsPanel({ snapshot }: { snapshot: CrewMember
               <option value="member">Member</option>
               <option value="trial">Trial</option>
             </Select>
-            <Button disabled={invite.isPending} onClick={() => invite.mutate()} variant="secondary">
+            <Button
+              disabled={!operationsAllowed || invite.isPending}
+              onClick={() => invite.mutate()}
+              variant="secondary"
+            >
               Send invite
             </Button>
           </div>
@@ -167,7 +185,7 @@ export function CrewMembershipRequestsPanel({ snapshot }: { snapshot: CrewMember
             </ol>
           ) : null}
           <Button
-            disabled={expire.isPending}
+            disabled={!operationsAllowed || expire.isPending}
             onClick={() => expire.mutate()}
             size="sm"
             variant="ghost"
@@ -185,7 +203,15 @@ export function CrewMembershipRequestsPanel({ snapshot }: { snapshot: CrewMember
   );
 }
 
-export function CrewMembershipSettingsPanel({ snapshot }: { snapshot: CrewMembershipSnapshot }) {
+export function CrewMembershipSettingsPanel({
+  snapshot,
+  leaveAllowed = true,
+  lifecycleLabel,
+}: {
+  snapshot: CrewMembershipSnapshot;
+  leaveAllowed?: boolean;
+  lifecycleLabel?: string | undefined;
+}) {
   const queryClient = useQueryClient();
   const leave = useMutation({
     mutationFn: () => crewMembershipCommands.leave(snapshot.crewId, snapshot.version),
@@ -194,16 +220,24 @@ export function CrewMembershipSettingsPanel({ snapshot }: { snapshot: CrewMember
     },
   });
   const ownerBlocked = snapshot.viewer.role === "owner";
+  const lifecycleBlocked = !leaveAllowed;
 
   return (
-    <section className={styles.operationsPanel} data-crew-panel="settings" data-m9-stage="9.5">
+    <section className={styles.operationsPanel} data-crew-panel="settings" data-m9-stage="9.7">
       <header className={styles.panelHeader}>
         <div>
           <h2>Membership controls</h2>
           <p>Current role: {snapshot.viewer.role ?? "not a member"}</p>
         </div>
-        <Badge tone={ownerBlocked ? "warning" : "information"} variant="outline">
-          {ownerBlocked ? "Transfer required" : "Leave available"}
+        <Badge
+          tone={ownerBlocked || lifecycleBlocked ? "warning" : "information"}
+          variant="outline"
+        >
+          {ownerBlocked
+            ? "Transfer required"
+            : lifecycleBlocked
+              ? "Leave closed"
+              : "Leave available"}
         </Badge>
       </header>
       <div className={styles.leaveCard}>
@@ -211,12 +245,14 @@ export function CrewMembershipSettingsPanel({ snapshot }: { snapshot: CrewMember
           <strong>Leave Crew</strong>
           <span>
             {ownerBlocked
-              ? "Owners must transfer ownership in M9.6 before leaving."
-              : "Leaving removes your membership but preserves the Crew and its history."}
+              ? "Owners must transfer ownership before leaving."
+              : lifecycleBlocked
+                ? `Leaving is unavailable while the Crew is ${lifecycleLabel ?? "in this state"}.`
+                : "Leaving removes your membership but preserves the Crew and its history."}
           </span>
         </div>
         <Button
-          disabled={ownerBlocked || !snapshot.viewer.role || leave.isPending}
+          disabled={ownerBlocked || lifecycleBlocked || !snapshot.viewer.role || leave.isPending}
           onClick={() => leave.mutate()}
           variant="danger"
         >

@@ -1,9 +1,12 @@
 {
-  "marker": "VERZUS M9.1 APPROVED REFERENCE",
-  "milestone": "M9.1",
-  "status": "approved-for-m9.1-foundation",
-  "approvedBy": "Prismo",
-  "reference": "Generated M9 Crew System board in project conversation",
-  "viewports": [390, 768, 1024, 1440],
-  "notes": "Explicit instruction to start M9 is treated as approval of the generated Crew System reference."
+  "milestone": "M9",
+  "feature": "Crew system",
+  "reference": "M9 Crew System generated reference",
+  "releaseGate": {
+    "status": "pending",
+    "stage": "9.8",
+    "approvedAt": null,
+    "approvedBy": null,
+    "snapshots": []
+  }
 }

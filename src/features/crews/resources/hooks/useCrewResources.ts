@@ -44,9 +44,10 @@ function healthFromQuery(
 
   if (query.isError) {
     const error = query.error;
+    const offline = error instanceof CrewResourceError && error.code === "CREW_RESOURCE_OFFLINE";
     return {
       name,
-      state: "error",
+      state: offline ? "offline" : "error",
       requestId: error instanceof CrewResourceError ? error.requestId : null,
       message: error?.message ?? `${name} is unavailable.`,
       retryable: error instanceof CrewResourceError ? error.retryable : true,

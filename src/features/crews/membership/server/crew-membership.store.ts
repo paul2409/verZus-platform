@@ -146,6 +146,19 @@ export function addCrewInvite(snapshot: CrewMembershipSnapshot, invite: CrewInvi
   snapshot.invites = [invite, ...snapshot.invites];
 }
 
+// VERZUS M9.6 GOVERNANCE SYNCHRONIZATION
+export function synchronizeCrewMembershipGovernance(
+  crewId: string,
+  input: { memberCount: number; viewerRole: CrewMembershipSnapshot["viewer"]["role"]; now: Date },
+): void {
+  const record = getCrewMembershipRecord(crewId, input.now);
+  record.snapshot.memberCount = input.memberCount;
+  if (record.snapshot.viewer.crewId === crewId) {
+    record.snapshot.viewer.role = input.viewerRole;
+  }
+  record.snapshot.serverNow = input.now.toISOString();
+}
+
 export function resetCrewMembershipStore(): void {
   store.clear();
 }

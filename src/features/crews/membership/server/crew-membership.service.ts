@@ -1,8 +1,10 @@
 // VERZUS M9.5 SERVER-AUTHORITATIVE CREW MEMBERSHIP SERVICE
+// VERZUS M9.7 LIFECYCLE-ENFORCED MEMBERSHIP MUTATIONS
 
 import { randomUUID } from "node:crypto";
 
 import type { CrewRole } from "../../foundation";
+import { getCrewLifecycleForRead } from "../../lifecycle/server";
 import type {
   CrewApplication,
   CrewInvite,
@@ -74,6 +76,29 @@ function assertCapacity(snapshot: CrewMembershipSnapshot): void {
   }
 }
 
+function assertLifecycleOperationAllowed(
+  crewId: string,
+  operation: "join" | "manage" | "leave",
+  now: Date,
+): void {
+  const lifecycle = getCrewLifecycleForRead(crewId, "normal", now);
+  const allowed =
+    operation === "leave"
+      ? lifecycle.operations.leaveAllowed
+      : lifecycle.operations.membershipMutationsAllowed;
+  if (!allowed) {
+    throw new CrewMembershipServiceError({
+      code: operation === "leave" ? "CREW_LEAVE_UNAVAILABLE" : "CREW_MEMBERSHIP_FROZEN",
+      message:
+        operation === "leave"
+          ? "Membership has already been closed because this Crew is disbanded."
+          : `Membership operations are frozen while the Crew is ${lifecycle.state}.`,
+      status: 409,
+      retryable: lifecycle.state === "suspended",
+    });
+  }
+}
+
 function replayOrSnapshot(
   crewId: string,
   idempotencyKey: string,
@@ -98,6 +123,7 @@ export function submitCrewApplication(
   const { replay, snapshot } = replayOrSnapshot(input.crewId, input.idempotencyKey, now);
   if (replay) return replay;
   assertVersion(snapshot, input.expectedVersion);
+  assertLifecycleOperationAllowed(input.crewId, "join", now);
 
   if (snapshot.viewer.crewId === input.crewId) {
     throw new CrewMembershipServiceError({
@@ -165,6 +191,7 @@ export function decideCrewApplication(
   const { replay, snapshot } = replayOrSnapshot(input.crewId, input.idempotencyKey, now);
   if (replay) return replay;
   assertVersion(snapshot, input.expectedVersion);
+  assertLifecycleOperationAllowed(input.crewId, "manage", now);
   assertManager(snapshot);
 
   const application = snapshot.applications.find((item) => item.id === input.applicationId);
@@ -228,6 +255,7 @@ export function createCrewInvite(
   const { replay, snapshot } = replayOrSnapshot(input.crewId, input.idempotencyKey, now);
   if (replay) return replay;
   assertVersion(snapshot, input.expectedVersion);
+  assertLifecycleOperationAllowed(input.crewId, "manage", now);
   assertManager(snapshot);
   assertCapacity(snapshot);
 
@@ -314,7 +342,10 @@ export function decideCrewInvite(
       retryable: false,
     });
   }
-  if (input.decision === "accept") assertCapacity(snapshot);
+  if (input.decision === "accept") {
+    assertLifecycleOperationAllowed(input.crewId, "join", now);
+    assertCapacity(snapshot);
+  }
 
   return persistCrewMembershipMutation(input.crewId, input.idempotencyKey, {
     outcome: input.decision === "accept" ? "invite_accepted" : "invite_declined",
@@ -354,6 +385,7 @@ export function leaveCrewMembership(
   const { replay, snapshot } = replayOrSnapshot(input.crewId, input.idempotencyKey, now);
   if (replay) return replay;
   assertVersion(snapshot, input.expectedVersion);
+  assertLifecycleOperationAllowed(input.crewId, "leave", now);
 
   if (snapshot.viewer.crewId !== input.crewId || !snapshot.viewer.role) {
     throw new CrewMembershipServiceError({
@@ -398,6 +430,7 @@ export function expireCrewMembershipItems(
   const { replay, snapshot } = replayOrSnapshot(input.crewId, input.idempotencyKey, now);
   if (replay) return replay;
   assertVersion(snapshot, input.expectedVersion);
+  assertLifecycleOperationAllowed(input.crewId, "manage", now);
   assertManager(snapshot);
 
   return persistCrewMembershipMutation(input.crewId, input.idempotencyKey, {

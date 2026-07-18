@@ -27,12 +27,13 @@ export const crewResourceScenarios = [
   "error",
   "malformed",
   "slow",
+  "offline",
 ] as const;
 
 export type CrewResourceName = (typeof crewResourceNames)[number];
 export type CrewResourceScenario = (typeof crewResourceScenarios)[number];
 export type CrewResourceFreshness = "fresh" | "stale";
-export type CrewResourceHealthState = "loading" | "success" | "stale" | "error";
+export type CrewResourceHealthState = "loading" | "success" | "stale" | "offline" | "error";
 
 export type CrewResourceMeta = {
   requestId: string;

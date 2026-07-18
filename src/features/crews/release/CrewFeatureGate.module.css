@@ -1,0 +1,46 @@
+/* VERZUS M9.8 CREW FEATURE GATE */
+
+.disabled {
+  display: grid;
+  gap: 1rem;
+  align-content: center;
+  min-height: 65vh;
+  width: min(48rem, 100%);
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  color: var(--vz-retro-white);
+  background:
+    radial-gradient(
+      circle at 15% 0%,
+      color-mix(in srgb, var(--vz-retro-violet) 18%, transparent),
+      transparent 24rem
+    ),
+    color-mix(in srgb, var(--vz-retro-surface) 94%, transparent);
+  border: 1px solid var(--vz-retro-line);
+  box-shadow: var(--vz-retro-shadow-panel);
+}
+
+.disabled span,
+.disabled small {
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-numeric);
+  letter-spacing: 0.08em;
+}
+
+.disabled h1,
+.disabled p {
+  margin: 0;
+}
+
+.disabled a {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-violet);
+  border: 1px solid var(--vz-retro-violet-bright);
+  font-weight: var(--vz-font-weight-bold);
+  text-decoration: none;
+}

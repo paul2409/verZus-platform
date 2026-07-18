@@ -1,6 +1,8 @@
 // VERZUS M9.1 CREWS ROUTE WRAPPER
 // VERZUS M9.2 MEMBERSHIP-AWARE CREW ROUTING
 // VERZUS M9.4 INDEPENDENT CREW RESOURCE ROUTING
+// VERZUS M9.7 LIFECYCLE SCENARIO ROUTING
+// VERZUS M9.8 RELEASE TELEMETRY ROUTING
 
 import {
   CrewDiscoveryScreen,
@@ -9,6 +11,8 @@ import {
   type CrewMembershipState,
   type CrewRootView,
 } from "../discovery";
+import type { CrewLifecycleScenario } from "../lifecycle";
+import { CrewSurfaceTelemetry } from "../telemetry";
 import { CrewResourceScreen, type CrewResourceName, type CrewResourceScenario } from "../resources";
 
 export type CrewsScreenProps = {
@@ -18,6 +22,7 @@ export type CrewsScreenProps = {
   discoveryQuery?: CrewDiscoveryQuery;
   resource?: CrewResourceName | undefined;
   scenario?: CrewResourceScenario;
+  lifecycleScenario?: CrewLifecycleScenario;
 };
 
 export function CrewsScreen({
@@ -27,6 +32,7 @@ export function CrewsScreen({
   discoveryQuery,
   resource,
   scenario = "normal",
+  lifecycleScenario = "normal",
 }: CrewsScreenProps) {
   if (view === "discover" || membership === "none") {
     if (!discoveryQuery) {
@@ -34,15 +40,27 @@ export function CrewsScreen({
     }
 
     return (
-      <CrewDiscoveryScreen
-        crews={crewDiscoveryMock}
-        initialQuery={discoveryQuery}
-        key={JSON.stringify(discoveryQuery)}
-        membership={membership}
-        showNoCrewLanding={membership === "none" && view !== "discover"}
-      />
+      <>
+        <CrewSurfaceTelemetry
+          surface={membership === "none" && view !== "discover" ? "no_crew" : "discovery"}
+        />
+        <CrewDiscoveryScreen
+          crews={crewDiscoveryMock}
+          initialQuery={discoveryQuery}
+          key={JSON.stringify(discoveryQuery)}
+          membership={membership}
+          showNoCrewLanding={membership === "none" && view !== "discover"}
+        />
+      </>
     );
   }
 
-  return <CrewResourceScreen crewId={crewId} scenario={scenario} targetResource={resource} />;
+  return (
+    <CrewResourceScreen
+      crewId={crewId}
+      lifecycleScenario={lifecycleScenario}
+      scenario={scenario}
+      targetResource={resource}
+    />
+  );
 }

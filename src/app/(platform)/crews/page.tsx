@@ -1,6 +1,7 @@
 // VERZUS M9.1 CREW FOUNDATION ROOT ROUTE
 // VERZUS M9.2 DISCOVERY URL STATE ROUTE
 // VERZUS M9.4 CREW RESOURCE SCENARIO ROUTE
+// VERZUS M9.7 CREW LIFECYCLE SCENARIO ROUTE
 
 import type { Metadata } from "next";
 
@@ -8,6 +9,7 @@ import { getPlatformRouteById } from "@/components/layout/app-shell";
 import {
   CrewsScreen,
   parseCrewDiscoveryQuery,
+  parseCrewLifecycleScenario,
   parseCrewResourceName,
   parseCrewResourceScenario,
   type CrewMembershipState,
@@ -33,6 +35,7 @@ export default async function CrewsPage({
   return (
     <CrewsScreen
       discoveryQuery={parseCrewDiscoveryQuery(query)}
+      lifecycleScenario={parseCrewLifecycleScenario(query.lifecycleScenario)}
       membership={membership}
       resource={parseCrewResourceName(query.resource)}
       scenario={parseCrewResourceScenario(query.scenario)}

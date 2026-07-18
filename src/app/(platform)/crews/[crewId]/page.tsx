@@ -1,9 +1,15 @@
 // VERZUS M9.1 CREW PROFILE DYNAMIC ROUTE
 // VERZUS M9.4 INDEPENDENT CREW RESOURCE ROUTE
+// VERZUS M9.7 CREW LIFECYCLE SCENARIO ROUTE
 
 import type { Metadata } from "next";
 
-import { CrewsScreen, parseCrewResourceName, parseCrewResourceScenario } from "@/features/crews";
+import {
+  CrewsScreen,
+  parseCrewLifecycleScenario,
+  parseCrewResourceName,
+  parseCrewResourceScenario,
+} from "@/features/crews";
 
 export const metadata: Metadata = {
   title: "Crew Profile — VERZUS",
@@ -21,6 +27,7 @@ export default async function CrewProfilePage({
   return (
     <CrewsScreen
       crewId={crewId}
+      lifecycleScenario={parseCrewLifecycleScenario(query.lifecycleScenario)}
       resource={parseCrewResourceName(query.resource)}
       scenario={parseCrewResourceScenario(query.scenario)}
     />

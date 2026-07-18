@@ -10,6 +10,7 @@ export function normalizeCrewResourceScenario(value: string | null): CrewResourc
     case "error":
     case "malformed":
     case "slow":
+    case "offline":
       return value;
     default:
       return "normal";

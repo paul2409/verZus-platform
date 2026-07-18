@@ -349,27 +349,35 @@ function SettingsPanel({ model }: { model: CrewFoundationViewModel }) {
 export type CrewFoundationScreenProps = {
   model: CrewFoundationViewModel;
   initialTab?: CrewFoundationTab;
+  rosterPanel?: ReactNode;
   requestsPanel?: ReactNode;
+  activityPanel?: ReactNode;
   settingsPanel?: ReactNode;
+  managementEnabled?: boolean;
 };
 
 // VERZUS M9.5 MEMBERSHIP PANEL SLOTS
+// VERZUS M9.6 GOVERNANCE PANEL SLOT
+// VERZUS M9.7 ACTIVITY RELIABILITY PANEL SLOT
 
 export function CrewFoundationScreen({
   model,
   initialTab = "overview",
+  rosterPanel,
   requestsPanel,
+  activityPanel,
   settingsPanel,
+  managementEnabled = false,
 }: CrewFoundationScreenProps) {
   const [activeTab, setActiveTab] = useState<CrewFoundationTab>(initialTab);
   const activePanel = useMemo(() => {
     switch (activeTab) {
       case "roster":
-        return <RosterPanel model={model} />;
+        return rosterPanel ?? <RosterPanel model={model} />;
       case "requests":
         return requestsPanel ?? <RequestsPanel model={model} />;
       case "activity":
-        return <ActivityPanel model={model} />;
+        return activityPanel ?? <ActivityPanel model={model} />;
       case "rankings":
         return <RankingsPanel model={model} />;
       case "achievements":
@@ -379,13 +387,13 @@ export function CrewFoundationScreen({
       case "overview":
         return <OverviewPanel model={model} />;
     }
-  }, [activeTab, model, requestsPanel, settingsPanel]);
+  }, [activeTab, activityPanel, model, requestsPanel, rosterPanel, settingsPanel]);
 
   return (
     <main
       className={styles.page}
       data-crew-lifecycle={model.identity.lifecycle}
-      data-m9-stage="9.1"
+      data-m9-stage="9.7"
     >
       <section
         className={styles.hero}
@@ -431,9 +439,14 @@ export function CrewFoundationScreen({
         </div>
         <div className={styles.heroActions}>
           <Button
-            disabled
+            disabled={!managementEnabled}
             leadingIcon="settings"
-            title="Crew management is enabled in M9.6"
+            onClick={() => setActiveTab("roster")}
+            title={
+              managementEnabled
+                ? "Open server-enforced member management"
+                : "Crew management unavailable"
+            }
             variant="primary"
           >
             Manage crew
@@ -513,10 +526,9 @@ export function CrewFoundationScreen({
       </section>
 
       <footer className={styles.foundationNote}>
-        <strong>M9.1 READ-ONLY FOUNDATION</strong>
+        <strong>M9.6 GOVERNANCE ACTIVE</strong>
         <span>
-          Discovery, creation, membership mutations, roles and lifecycle commands are implemented in
-          later M9 stages.
+          Roles, permissions, member removal and ownership transfer are server-enforced and audited.
         </span>
       </footer>
     </main>

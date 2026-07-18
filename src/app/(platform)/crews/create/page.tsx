@@ -2,7 +2,7 @@
 
 import type { Metadata } from "next";
 
-import { CrewCreationScreen, parseCrewCreationStep } from "@/features/crews";
+import { CrewCreationScreen, CrewSurfaceTelemetry, parseCrewCreationStep } from "@/features/crews";
 
 export const metadata: Metadata = {
   title: "Create Crew — VERZUS",
@@ -18,6 +18,9 @@ export default async function CrewCreationPage({
   const membership = query.membership === "current" ? "current" : "none";
 
   return (
-    <CrewCreationScreen initialStep={parseCrewCreationStep(query.step)} membership={membership} />
+    <>
+      <CrewSurfaceTelemetry surface="creation" />
+      <CrewCreationScreen initialStep={parseCrewCreationStep(query.step)} membership={membership} />
+    </>
   );
 }

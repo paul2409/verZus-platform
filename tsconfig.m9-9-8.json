@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/crews/**/*.ts",
+    "src/features/crews/**/*.tsx",
+    "src/app/(platform)/crews/**/*.ts",
+    "src/app/(platform)/crews/**/*.tsx",
+    "src/app/(preview)/m9-crew-review/**/*.ts",
+    "src/app/(preview)/m9-crew-review/**/*.tsx",
+    "src/app/api/crews/**/*.ts",
+    "src/app/api/health/crews/**/*.ts",
+    "src/app/api/telemetry/crews/**/*.ts",
+    "tests/e2e/m9/**/*.ts",
+    "tests/visual/m9-crews.visual.spec.ts",
+    "playwright.m9.config.ts"
+  ],
+  "exclude": ["node_modules"]
+}

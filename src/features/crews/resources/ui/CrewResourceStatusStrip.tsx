@@ -42,7 +42,7 @@ export function CrewResourceStatusStrip({
               <span aria-hidden="true" className={styles.statusDot} />
               <span>{labels[resource]}</span>
               <small>{item.state}</small>
-              {item.state === "error" && item.retryable ? (
+              {(item.state === "error" || item.state === "offline") && item.retryable ? (
                 <Button onClick={() => onRetry(resource)} size="sm" variant="ghost">
                   Retry
                 </Button>

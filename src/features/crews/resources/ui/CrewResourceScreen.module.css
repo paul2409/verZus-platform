@@ -116,3 +116,13 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* VERZUS M9.7 OFFLINE RESOURCE STATE */
+.statusStrip li[data-state="offline"] {
+  border-color: color-mix(in srgb, var(--vz-retro-gold) 58%, transparent);
+}
+
+.statusStrip li[data-state="offline"] .statusDot {
+  background: var(--vz-retro-gold);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--vz-retro-gold) 58%, transparent);
+}
