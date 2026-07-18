@@ -2,115 +2,107 @@
 set -Eeuo pipefail
 
 MODE="${1:-install}"
-SCRIPT_NAME="VERZUS_M8_10_2_Desktop_Leaderboard_Polish.sh"
-BACKUP_ROOT=".verzus-backups/m8-10-2-desktop-leaderboard-polish"
+SCRIPT_NAME="VERZUS_M9_9_6_Roles_Permissions_Member_Management.sh"
+BACKUP_ROOT=".verzus-backups/m9-9-6-roles-permissions-member-management"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP_DIR="${BACKUP_ROOT}/${STAMP}"
-ARCHIVE="${BACKUP_DIR}/verzus-m8-10-2-before.tar.gz"
-INSTALL_ACTIVE=0
+ARCHIVE="${BACKUP_DIR}/verzus-m9-9-6-before.tar.gz"
+PAYLOAD_SHA256="23aa4d337a33d233e18c435e5fc2c6e1aff3a1bf8c9ee765528ef3ae131296e4"
+BACKUP_CREATED="false"
+INSTALL_COMPLETE="false"
 
 print_plan() {
   cat <<'PLAN'
-VERZUS M8.10.2 - Desktop Leaderboard Rebalance and Premium Polish
+VERZUS M9.6 - Roles, Permissions and Member Management
 
 KEEP
-  - M8 data contracts, query resources, live-update stability and reliability states
-  - Separate mobile ranking-list presentation
-  - Player, Crew and Match intel-card interactions
-  - Rank-zone colors, movement indicators and placement rewards
-  - Semantic desktop table and accessible sorting metadata
+  - M9.1 approved Crew profile, responsive composition and visual identity
+  - M9.2 discovery, no-Crew state, search, filters and URL state
+  - M9.3 Crew creation and identity assets
+  - M9.4 independent Crew resources and partial-failure behavior
+  - M9.5 applications, invites, membership versioning and leave protection
+  - Existing shell, query provider, schemas, request IDs and rollback conventions
 
 REUSE
-  - M8.10.1 compact density foundation
-  - Existing mode-owned columns and responsive App Shell
-  - Existing URL search, filter, sort and pagination state
-  - Existing current-position side resource and widget boundaries
+  - CrewFoundationScreen roster and settings tabs
+  - CrewFoundationMember and CrewRole vocabulary
+  - M9.5 membership snapshot and query cache
+  - Existing mock Crew roster as governance seed data
+  - TanStack Query, Zod, Vitest and server route patterns
 
 REPLACE
-  - Horizontally scrolling desktop table with a width-balanced fixed table
-  - Duplicate Crew metadata inside Player cells with compact handle and country metadata
-  - Plain Crew affiliation text with an explicit Crew intel trigger
-  - Five-row default pagination with a ten-row desktop-friendly default
-  - Detached duplicate current-player table row with the existing side-rail position card
-  - Oversized desktop filter controls with a compact command strip
+  - Read-only roster with permission-aware member management
+  - Disabled Manage Crew action with a functional roster-tab control
+  - Owner leave dead-end with transactional ownership transfer
+  - Client-implied role authority with server-computed per-member capabilities
 
 DELETE
-  - Desktop horizontal scrollbar
-  - Wrapped records, points and recent-match values
-  - Redundant desktop pinned row when the current-position rail is present
-  - Unnecessary pagination controls when every filtered row fits on one page
-  - Excess control-bar and side-rail whitespace
+  - No M9.1-M9.5 route, screen, asset, contract or membership flow
+  - No browser authority over role changes, removals or ownership
+  - No generic role mutation capable of creating or deleting an owner
+  - No unversioned or unaudited governance mutation
 
 CREATE
-  - Mode-aware desktop column width contract
-  - Table-specific two-line identity anatomy
-  - Clickable Crew affiliation cells
-  - Compact 58px ranking rows and 42px headers
-  - Default ten-row result window
-  - No-overflow and interaction regression tests
-  - Documentation, verifier and timestamped rollback archive
+  - Independent Crew governance read resource
+  - Owner, captain, manager, member and trial permission matrix
+  - Idempotent role-change, member-removal and ownership-transfer commands
+  - Exactly-one-owner invariant and atomic transfer operation
+  - Audit reasons and governance audit events
+  - Membership-role and member-count synchronization
+  - Failure-isolated governance status and retry surface
+  - Responsive roster management and ownership-transfer panels
+  - Focused service/component tests, verifier, docs and rollback archive
 PLAN
 }
 
 require_repo_root() {
-  [[ -f package.json && -d src/features/leaderboards && -d src/app ]] || {
+  [[ -f package.json && -d src/app && -d src/features ]] || {
     echo "Error: run $SCRIPT_NAME from the VERZUS repository root."
     exit 1
   }
 }
 
-require_prerequisites() {
+require_local_tools() {
+  [[ -x node_modules/.bin/eslint && -x node_modules/.bin/vitest && -x node_modules/.bin/tsc ]] || {
+    echo "Error: local dependencies are unavailable. Run npm install, then rerun the installer."
+    exit 1
+  }
+}
+
+require_m9_5_prerequisite() {
   require_repo_root
 
   local required=(
     package.json
-    src/features/leaderboards/explorer/model/leaderboard-query-state.ts
-    src/features/leaderboards/modes/model/leaderboard-mode.registry.ts
-    src/features/leaderboards/modes/ui/LeaderboardModePresentation.tsx
-    src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.tsx
-    src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.module.css
-    src/features/leaderboards/interactions/ui/LeaderboardInteractiveIdentity.tsx
-    src/features/leaderboards/interactions/ui/LeaderboardEntityLink.tsx
-    src/features/leaderboards/interactions/ui/LeaderboardInteractions.module.css
+    scripts/verify-m9-9-5.mjs
+    src/features/crews/foundation/ui/CrewFoundationScreen.tsx
+    src/features/crews/membership/server/crew-membership.store.ts
+    src/features/crews/membership/ui/CrewMembershipScreen.tsx
+    src/features/crews/resources/ui/CrewResourceScreen.tsx
+    src/features/crews/index.ts
   )
 
   local file
   for file in "${required[@]}"; do
     [[ -f "$file" ]] || {
-      echo "Error: missing leaderboard prerequisite: $file"
+      echo "Error: missing M9.5 prerequisite: $file"
       exit 1
     }
   done
 
-  grep -q 'VERZUS M8.10.1 COMPACT TWO-LINE IDENTITY' \
-    src/features/leaderboards/interactions/ui/LeaderboardInteractiveIdentity.tsx || {
-      echo "Error: M8.10.1 compact desktop density is not installed."
-      echo "Install VERZUS_M8_10_1_Compact_Desktop_Leaderboard_Density.sh first."
-      exit 1
-    }
-
-  if [[ -f scripts/verify-m8-10-1-density.mjs ]]; then
-    echo "Running M8.10.1 prerequisite marker verification..."
-    node scripts/verify-m8-10-1-density.mjs
-  else
-    echo "Error: scripts/verify-m8-10-1-density.mjs is missing."
+  if [[ -f scripts/verify-m9-9-6.mjs ]]; then
+    echo "Error: M9.6 appears to be installed already. Use rollback first before reinstalling."
     exit 1
   fi
 
-  local owned_new_files=(
-    docs/milestones/M8/m8-10-2-desktop-leaderboard-polish.md
-    scripts/verify-m8-10-2-polish.mjs
-    src/features/leaderboards/foundation/ui/LeaderboardDesktopPolish.test.tsx
-    tests/e2e/m8/m8-leaderboard-desktop-polish.spec.ts
-    playwright.m8-polish.config.ts
-  )
+  echo "Running M9.5 prerequisite marker verification..."
+  node scripts/verify-m9-9-5.mjs
 
-  for file in "${owned_new_files[@]}"; do
-    if [[ -f "$file" ]] && ! grep -q 'VERZUS M8.10.2' "$file"; then
-      echo "Error: refusing to overwrite unowned file: $file"
+  grep -q 'VERZUS M9.5 MEMBERSHIP-AWARE CREW PROFILE' \
+    src/features/crews/membership/ui/CrewMembershipScreen.tsx || {
+      echo "Error: M9.5 membership screen marker is missing."
       exit 1
-    fi
-  done
+    }
 }
 
 backup_current_state() {
@@ -118,33 +110,18 @@ backup_current_state() {
 
   local paths=(
     package.json
-    src/features/leaderboards/explorer/model/leaderboard-query-state.ts
-    src/features/leaderboards/modes/model/leaderboard-mode.registry.ts
-    src/features/leaderboards/modes/ui/LeaderboardModePresentation.tsx
-    src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.tsx
-    src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.module.css
-    src/features/leaderboards/interactions/ui/LeaderboardInteractiveIdentity.tsx
-    src/features/leaderboards/interactions/ui/LeaderboardEntityLink.tsx
-    src/features/leaderboards/interactions/ui/LeaderboardInteractions.module.css
+    src/features/crews/foundation/ui/CrewFoundationScreen.tsx
+    src/features/crews/index.ts
+    src/features/crews/membership/server/crew-membership.store.ts
+    src/features/crews/membership/ui/CrewMembership.module.css
+    src/features/crews/membership/ui/CrewMembershipScreen.tsx
+    src/features/crews/resources/ui/CrewResourceScreen.tsx
   )
-
-  local optional=(
-    docs/milestones/M8/m8-10-2-desktop-leaderboard-polish.md
-    scripts/verify-m8-10-2-polish.mjs
-    src/features/leaderboards/foundation/ui/LeaderboardDesktopPolish.test.tsx
-    tests/e2e/m8/m8-leaderboard-desktop-polish.spec.ts
-    playwright.m8-polish.config.ts
-  )
-
-  local file
-  for file in "${optional[@]}"; do
-    [[ -f "$file" ]] && paths+=("$file")
-  done
 
   tar -czf "$ARCHIVE" "${paths[@]}"
 
   cat > "$BACKUP_DIR/manifest.txt" <<MANIFEST
-VERZUS M8.10.2 desktop leaderboard polish backup
+VERZUS M9.6 backup
 Created: $(date -Iseconds)
 Branch: $(git branch --show-current 2>/dev/null || echo unavailable)
 Commit: $(git rev-parse HEAD 2>/dev/null || echo unavailable)
@@ -152,960 +129,581 @@ Archive: $ARCHIVE
 Rollback: bash ./$SCRIPT_NAME rollback
 MANIFEST
 
+  BACKUP_CREATED="true"
   echo "Rollback archive created: $ARCHIVE"
+}
+
+remove_m9_6_files() {
+  rm -rf src/features/crews/governance
+  rm -rf \
+    'src/app/api/crews/[crewId]/governance' \
+    'src/app/api/crews/[crewId]/members' \
+    'src/app/api/crews/[crewId]/ownership'
+  rm -f \
+    docs/milestones/M9/m9-9-6-roles-permissions-member-management.md \
+    scripts/verify-m9-9-6.mjs \
+    tsconfig.m9-9-6.json \
+    tsconfig.m9-9-6.tsbuildinfo
 }
 
 restore_archive() {
   local archive="$1"
-
-  rm -f \
-    docs/milestones/M8/m8-10-2-desktop-leaderboard-polish.md \
-    scripts/verify-m8-10-2-polish.mjs \
-    src/features/leaderboards/foundation/ui/LeaderboardDesktopPolish.test.tsx \
-    tests/e2e/m8/m8-leaderboard-desktop-polish.spec.ts \
-    playwright.m8-polish.config.ts
-
+  remove_m9_6_files
   tar -xzf "$archive"
 }
 
-restore_after_failure() {
-  local status=$?
-  if [[ "$INSTALL_ACTIVE" -eq 1 && -f "$ARCHIVE" ]]; then
+on_error() {
+  local code=$?
+  if [[ "$MODE" == "install" && "$BACKUP_CREATED" == "true" && "$INSTALL_COMPLETE" != "true" ]]; then
     echo
-    echo "M8.10.2 installation failed. Restoring the pre-install archive..."
+    echo "M9.6 installation failed. Restoring the pre-install archive..."
     restore_archive "$ARCHIVE"
     echo "Restored: $ARCHIVE"
   fi
-  exit "$status"
+  exit "$code"
+}
+trap on_error ERR
+
+extract_payload() {
+  local temp_dir
+  temp_dir="$(mktemp -d)"
+  local payload="$temp_dir/m9-9-6-payload.tar.gz"
+
+  sed -n '/^__VERZUS_M9_6_PAYLOAD_BEGIN__$/,/^__VERZUS_M9_6_PAYLOAD_END__$/p' "$0" \
+    | sed '1d;$d' \
+    | base64 -d > "$payload"
+
+  local actual_sha
+  actual_sha="$(sha256sum "$payload" | awk '{print $1}')"
+  if [[ "$actual_sha" != "$PAYLOAD_SHA256" ]]; then
+    echo "Error: M9.6 payload integrity check failed."
+    rm -rf "$temp_dir"
+    exit 1
+  fi
+
+  tar -xzf "$payload" -C .
+  rm -rf "$temp_dir"
 }
 
-patch_query_defaults() {
-  node <<'NODE'
-const fs = require("node:fs");
-
-const queryFile = "src/features/leaderboards/explorer/model/leaderboard-query-state.ts";
-let querySource = fs.readFileSync(queryFile, "utf8");
-
-if (!querySource.includes("VERZUS M8.10.2 TEN-ROW DEFAULT")) {
-  querySource = querySource.replace(
-    "// VERZUS M8.2 LEADERBOARD QUERY-STRING STATE",
-    "// VERZUS M8.2 LEADERBOARD QUERY-STRING STATE\n// VERZUS M8.10.2 TEN-ROW DEFAULT",
-  );
-}
-querySource = querySource.replace(/pageSize: 5,/, "pageSize: 10,");
-querySource = querySource.replace(/state\.pageSize !== 5/g, "state.pageSize !== 10");
-
-if (!querySource.includes("pageSize: 10,")) {
-  throw new Error("Could not set the default leaderboard page size to 10.");
-}
-fs.writeFileSync(queryFile, querySource);
-
-const registryFile = "src/features/leaderboards/modes/model/leaderboard-mode.registry.ts";
-let registrySource = fs.readFileSync(registryFile, "utf8");
-if (!registrySource.includes("VERZUS M8.10.2 TEN-ROW DEFAULT")) {
-  registrySource = registrySource.replace(
-    "// VERZUS M8.4 MODE REGISTRY AND QUERY POLICY",
-    "// VERZUS M8.4 MODE REGISTRY AND QUERY POLICY\n// VERZUS M8.10.2 TEN-ROW DEFAULT",
-  );
-}
-registrySource = registrySource.replace(/state\.pageSize !== 5/g, "state.pageSize !== 10");
-fs.writeFileSync(registryFile, registrySource);
-NODE
-}
-
-patch_interactive_identity() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "src/features/leaderboards/interactions/ui/LeaderboardInteractiveIdentity.tsx";
-let source = fs.readFileSync(file, "utf8");
-
-if (!source.includes("VERZUS M8.10.2 TABLE IDENTITY AND AFFILIATION LINKS")) {
-  source = source.replace(
-    "// VERZUS M8.10.1 COMPACT TWO-LINE IDENTITY",
-    "// VERZUS M8.10.1 COMPACT TWO-LINE IDENTITY\n// VERZUS M8.10.2 TABLE IDENTITY AND AFFILIATION LINKS",
-  );
-}
-
-source = source.replace(
-  /export function LeaderboardInteractiveIdentity\(\{ row \}: \{ row: LeaderboardFoundationRow \}\) \{/,
-  `export function LeaderboardInteractiveIdentity({\n  row,\n  variant = "default",\n}: {\n  row: LeaderboardFoundationRow;\n  variant?: "default" | "table";\n}) {`,
-);
-
-const oldSecondary = `  const secondary =\n    row.entityType === "crew" && row.memberCount\n      ? \`\${row.memberCount} members\`\n      : (row.crewName ?? row.handle);`;
-const newSecondary = `  const secondary =\n    variant === "table"\n      ? row.entityType === "crew" && row.memberCount\n        ? \`\${row.memberCount} members · \${row.handle}\`\n        : row.entityType === "pool" && row.memberCount\n          ? \`\${row.memberCount} players · \${row.handle}\`\n          : \`\${row.handle} · \${row.countryCode}\`\n      : row.entityType === "crew" && row.memberCount\n        ? \`\${row.memberCount} members\`\n        : (row.crewName ?? row.handle);`;
-if (!source.includes(newSecondary)) {
-  if (!source.includes(oldSecondary)) {
-    throw new Error("Could not locate the interactive identity secondary metadata block.");
-  }
-  source = source.replace(oldSecondary, newSecondary);
-}
-
-const oldAffiliation = `            {interactions.affiliation ? (\n              <>\n                Crew:{" "}\n                <LeaderboardEntityLink descriptor={interactions.affiliation} variant="affiliation">\n                  {interactions.affiliation.label}\n                </LeaderboardEntityLink>\n              </>\n            ) : (\n              secondary\n            )}`;
-const newAffiliation = `            {variant === "table" ? (\n              secondary\n            ) : interactions.affiliation ? (\n              <>\n                Crew:{" "}\n                <LeaderboardEntityLink descriptor={interactions.affiliation} variant="affiliation">\n                  {interactions.affiliation.label}\n                </LeaderboardEntityLink>\n              </>\n            ) : (\n              secondary\n            )}`;
-if (!source.includes(newAffiliation)) {
-  if (!source.includes(oldAffiliation)) {
-    throw new Error("Could not locate the interactive identity affiliation block.");
-  }
-  source = source.replace(oldAffiliation, newAffiliation);
-}
-
-if (!source.includes("export function LeaderboardAffiliationLink")) {
-  source += `\nexport function LeaderboardAffiliationLink({ row }: { row: LeaderboardFoundationRow }) {\n  const descriptor = getLeaderboardRowInteractions(row).affiliation;\n\n  if (descriptor) {\n    return (\n      <LeaderboardEntityLink descriptor={descriptor} variant="affiliation">\n        {descriptor.label}\n      </LeaderboardEntityLink>\n    );\n  }\n\n  if (row.entityType === "crew" && row.memberCount) {\n    return <span>{row.memberCount.toLocaleString()}</span>;\n  }\n\n  return <span>{row.crewName ?? "—"}</span>;\n}\n`;
-}
-
-for (const marker of [
-  'variant?: "default" | "table"',
-  'variant === "table"',
-  "LeaderboardAffiliationLink",
-]) {
-  if (!source.includes(marker)) throw new Error(`Identity patch missing marker: ${marker}`);
-}
-
-fs.writeFileSync(file, source);
-NODE
-}
-
-patch_entity_link_compatibility() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "src/features/leaderboards/interactions/ui/LeaderboardEntityLink.tsx";
-let source = fs.readFileSync(file, "utf8");
-
-if (!source.includes("VERZUS M8.10.2 NULL-SAFE ROUTER COMPATIBILITY")) {
-  source = source.replace(
-    "// VERZUS M8.8 LEADERBOARD ENTITY INTEL LINK",
-    "// VERZUS M8.8 LEADERBOARD ENTITY INTEL LINK\n// VERZUS M8.10.2 NULL-SAFE ROUTER COMPATIBILITY",
-  );
-}
-
-source = source.replace(
-  `  const href = buildLeaderboardIntelHref(pathname, searchParams, {`,
-  `  const href = buildLeaderboardIntelHref(pathname ?? "/leaderboards/weekly", searchParams?.toString() ?? "", {`,
-);
-
-if (!source.includes('searchParams?.toString() ?? ""')) {
-  throw new Error("Could not install null-safe leaderboard entity URL construction.");
-}
-
-fs.writeFileSync(file, source);
-NODE
-}
-
-patch_mode_presentation() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "src/features/leaderboards/modes/ui/LeaderboardModePresentation.tsx";
-let source = fs.readFileSync(file, "utf8");
-
-if (!source.includes("VERZUS M8.10.2 WIDTH-BALANCED DESKTOP TABLE")) {
-  source = source.replace(
-    "// VERZUS M8.8 COLOR BANDS AND ENTITY INTEL TRIGGERS",
-    "// VERZUS M8.8 COLOR BANDS AND ENTITY INTEL TRIGGERS\n// VERZUS M8.10.2 WIDTH-BALANCED DESKTOP TABLE",
-  );
-}
-
-source = source.replace(
-  `  getLeaderboardRowVisualState,\n  LeaderboardInteractiveIdentity,\n  LeaderboardRecentMatchLink,`,
-  `  getLeaderboardRowVisualState,\n  LeaderboardAffiliationLink,\n  LeaderboardInteractiveIdentity,\n  LeaderboardRecentMatchLink,`,
-);
-
-source = source.replace(
-  `<td key={column.key}>\n              <RankCell row={row} />\n            </td>`,
-  `<td data-column={column.key} key={column.key}>\n              <RankCell row={row} />\n            </td>`,
-);
-source = source.replace(
-  `<td key={column.key}>\n              <LeaderboardInteractiveIdentity row={row} />\n            </td>`,
-  `<td data-column={column.key} key={column.key}>\n              <LeaderboardInteractiveIdentity row={row} variant="table" />\n            </td>`,
-);
-source = source.replace(
-  `        if (column.key === "recent-match") {`,
-  `        if (column.key === "affiliation") {\n          return (\n            <td data-column={column.key} key={column.key}>\n              <LeaderboardAffiliationLink row={row} />\n            </td>\n          );\n        }\n        if (column.key === "recent-match") {`,
-);
-source = source.replace(
-  `<td key={column.key}>\n              <LeaderboardRecentMatchLink row={row} />\n            </td>`,
-  `<td data-column={column.key} key={column.key}>\n              <LeaderboardRecentMatchLink row={row} />\n            </td>`,
-);
-source = source.replace(
-  `            data-align={column.alignment}\n            key={column.key}`,
-  `            data-align={column.alignment}\n            data-column={column.key}\n            key={column.key}`,
-);
-source = source.replace(
-  `                data-align={column.alignment}\n                key={column.key}`,
-  `                data-align={column.alignment}\n                data-column={column.key}\n                key={column.key}`,
-);
-source = source.replace(
-  `<tbody className={styles.pinnedBody} aria-label={composition.currentPositionLabel}>`,
-  `<tbody\n            className={styles.pinnedBody}\n            aria-label={composition.currentPositionLabel}\n            data-desktop-pinned="true"\n          >`,
-);
-
-for (const marker of [
-  "LeaderboardAffiliationLink",
-  'variant="table"',
-  "data-column={column.key}",
-  'data-desktop-pinned="true"',
-]) {
-  if (!source.includes(marker)) throw new Error(`Mode presentation patch missing: ${marker}`);
-}
-
-fs.writeFileSync(file, source);
-NODE
-}
-
-patch_screen_pagination() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.tsx";
-let source = fs.readFileSync(file, "utf8");
-
-if (!source.includes("VERZUS M8.10.2 SINGLE-PAGE PAGINATION SUPPRESSION")) {
-  source = source.replace(
-    "// VERZUS M8.9 API-BACKED ENTITY INTEL CARD SYSTEM",
-    "// VERZUS M8.9 API-BACKED ENTITY INTEL CARD SYSTEM\n// VERZUS M8.10.2 SINGLE-PAGE PAGINATION SUPPRESSION",
-  );
-}
-
-const navStart = source.indexOf('                <nav aria-label="Leaderboard pagination" className={styles.pagination}>');
-if (navStart < 0) throw new Error("Could not locate leaderboard pagination navigation.");
-const navEndMarker = "                </nav>";
-const navEnd = source.indexOf(navEndMarker, navStart);
-if (navEnd < 0) throw new Error("Could not locate leaderboard pagination end.");
-const navBlock = source.slice(navStart, navEnd + navEndMarker.length);
-
-if (!source.includes("page.totalPages > 1 ?")) {
-  const wrapped = `                {page.totalPages > 1 ? (\n${navBlock.replace(/^/gm, "  ")}\n                ) : null}`;
-  source = source.slice(0, navStart) + wrapped + source.slice(navEnd + navEndMarker.length);
-}
-
-fs.writeFileSync(file, source);
-NODE
-}
-
-patch_foundation_styles() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.module.css";
-let source = fs.readFileSync(file, "utf8");
-
-source = source.replace(
-  /\n?\/\* VERZUS M8\.10\.2 DESKTOP LEADERBOARD POLISH START \*\/[\s\S]*?\/\* VERZUS M8\.10\.2 DESKTOP LEADERBOARD POLISH END \*\/\n?/g,
-  "\n",
-);
-
-source = `${source.trimEnd()}\n\n/* VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH START */
-@media (min-width: 1024px) {
-  .page {
-    width: min(100%, 100rem);
-    gap: 0.875rem;
-    padding: 1rem 1.25rem 1.5rem;
-  }
-
-  .controlBar {
-    grid-template-columns: minmax(12rem, 0.42fr) minmax(0, 1.58fr);
-    gap: 0.75rem;
-    padding: 0.75rem;
-  }
-
-  .boardHeading {
-    align-content: center;
-    gap: 0.1rem;
-  }
-
-  .boardHeading h2 {
-    font-size: 1.35rem;
-    line-height: 1.05;
-  }
-
-  .boardHeading small,
-  .rankingBasis {
-    font-size: 0.64rem;
-  }
-
-  .controls label {
-    gap: 0.2rem;
-  }
-
-  .controls label > span {
-    font-size: 0.59rem;
-  }
-
-  .controls select,
-  .searchInput {
-    min-height: 2.25rem;
-    padding-block: 0.4rem;
-    font-size: 0.78rem;
-  }
-
-  .searchControl small {
-    display: none;
-  }
-
-  .layout {
-    grid-template-columns: minmax(0, 1fr) 17rem;
-    gap: 0.75rem;
-  }
-
-  .rankingPanel {
-    overflow: clip;
-  }
-
-  .freshness {
-    min-height: 2.5rem;
-    align-items: center;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.65rem;
-  }
-
-  .desktopPresentation {
-    overflow-x: clip;
-  }
-
-  .desktopPresentation table {
-    width: 100%;
-    min-width: 0;
-    table-layout: fixed;
-  }
-
-  .desktopPresentation thead tr,
-  .desktopPresentation th {
-    height: 2.625rem;
-  }
-
-  .desktopPresentation th {
-    padding: 0.42rem 0.5rem;
-    overflow: hidden;
-    font-size: 0.58rem;
-    line-height: 1.05;
-    text-overflow: ellipsis;
-    white-space: normal;
-  }
-
-  .desktopPresentation tbody tr,
-  .desktopPresentation tbody td,
-  .desktopPresentation tbody tr[data-rank-zone="champion"] td,
-  .desktopPresentation tbody tr[data-rank-zone="podium"] td {
-    height: 3.625rem;
-  }
-
-  .desktopPresentation tbody td {
-    min-width: 0;
-    padding: 0.38rem 0.5rem;
-    overflow: hidden;
-    font-size: 0.72rem;
-    line-height: 1.08;
-    text-overflow: ellipsis;
-  }
-
-  .desktopPresentation td[data-column="record"],
-  .desktopPresentation td[data-column="win-rate"],
-  .desktopPresentation td[data-column="streak"],
-  .desktopPresentation td[data-column="trust"],
-  .desktopPresentation td[data-column="points"],
-  .desktopPresentation td[data-column="members"],
-  .desktopPresentation td[data-column="game"],
-  .desktopPresentation td[data-column="recent-match"] {
-    white-space: nowrap;
-  }
-
-  .desktopPresentation [data-column="rank"] {
-    width: 7%;
-  }
-
-  .desktopPresentation [data-column="identity"] {
-    width: 23%;
-  }
-
-  .desktopPresentation [data-column="affiliation"],
-  .desktopPresentation [data-column="members"] {
-    width: 11%;
-  }
-
-  .desktopPresentation [data-column="game"] {
-    width: 11%;
-  }
-
-  .desktopPresentation [data-column="record"] {
-    width: 9%;
-  }
-
-  .desktopPresentation [data-column="win-rate"] {
-    width: 8%;
-  }
-
-  .desktopPresentation [data-column="streak"],
-  .desktopPresentation [data-column="trust"] {
-    width: 7%;
-  }
-
-  .desktopPresentation [data-column="recent-match"] {
-    width: 13%;
-  }
-
-  .desktopPresentation [data-column="points"] {
-    width: 14%;
-  }
-
-  .desktopPresentation .identity {
-    grid-template-columns: 2rem minmax(0, 1fr);
-    gap: 0.45rem;
-  }
-
-  .desktopPresentation .avatar {
-    width: 2rem;
-    height: 2rem;
-    font-size: 0.58rem;
-  }
-
-  .desktopPresentation .identityCopy > a,
-  .desktopPresentation .identityCopy > strong {
-    font-size: 0.76rem;
-  }
-
-  .desktopPresentation .identityCopy small {
-    font-size: 0.58rem;
-  }
-
-  .desktopPresentation .rankCell > strong {
-    width: 1.85rem;
-    height: 1.85rem;
-    font-size: 0.68rem;
-  }
-
-  .desktopPresentation .movement {
-    font-size: 0.54rem;
-  }
-
-  .desktopPresentation .points {
-    color: var(--vz-retro-white);
-    font-size: 0.78rem;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .pinnedBody[data-desktop-pinned="true"] {
-    display: none;
-  }
-
-  .sideRail {
-    position: sticky;
-    top: 5.5rem;
-    gap: 0.75rem;
-  }
-
-  .sideRail > section {
-    gap: 0.65rem;
-    padding: 0.8rem;
-  }
-
-  .currentCard > h2 {
-    font-size: 2rem;
-    line-height: 1;
-  }
-
-  .currentCard dl {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.4rem;
-  }
-
-  .currentCard dl > div {
-    padding: 0.45rem;
-  }
-
-  .currentCard dt {
-    font-size: 0.57rem;
-  }
-
-  .currentCard dd {
-    font-size: 0.75rem;
-  }
-
-  .rewardsCard li {
-    padding: 0.5rem;
-    font-size: 0.7rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .controls {
-    grid-template-columns: minmax(12rem, 1.55fr) repeat(5, minmax(5.7rem, 1fr));
-    gap: 0.45rem;
-  }
-
-  .searchControl {
-    grid-column: auto;
-  }
-}
-
-@media (min-width: 1440px) {
-  .page {
-    padding-inline: 1.5rem;
-  }
-
-  .layout {
-    grid-template-columns: minmax(0, 1fr) 18rem;
-  }
-
-  .desktopPresentation th,
-  .desktopPresentation td {
-    padding-inline: 0.55rem;
-  }
-}
-
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .desktopPresentation [data-column="streak"],
-  .desktopPresentation [data-column="trust"] {
-    display: none;
-  }
-
-  .desktopPresentation [data-column="identity"] {
-    width: 27%;
-  }
-
-  .desktopPresentation [data-column="recent-match"] {
-    width: 15%;
-  }
-}
-
-@media (forced-colors: active) and (min-width: 1024px) {
-  .desktopPresentation tbody td {
-    background: Canvas;
-  }
-}
-/* VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH END */
-`;
-
-fs.writeFileSync(file, source);
-NODE
-}
-
-patch_interaction_styles() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "src/features/leaderboards/interactions/ui/LeaderboardInteractions.module.css";
-let source = fs.readFileSync(file, "utf8");
-
-source = source.replace(
-  /\n?\/\* VERZUS M8\.10\.2 COMPACT TABLE INTERACTIONS START \*\/[\s\S]*?\/\* VERZUS M8\.10\.2 COMPACT TABLE INTERACTIONS END \*\/\n?/g,
-  "\n",
-);
-
-source = `${source.trimEnd()}\n\n/* VERZUS M8.10.2 COMPACT TABLE INTERACTIONS START */
-@media (min-width: 1024px) {
-  .entityLink[data-variant="affiliation"] {
-    display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    color: var(--vz-retro-cyan, var(--vz-retro-violet));
-    font-size: 0.72rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .entityLink[data-variant="match"] {
-    min-height: 1.55rem;
-    max-width: 100%;
-    padding: 0.1rem 0.32rem;
-    overflow: hidden;
-    font-size: 0.59rem;
-    text-overflow: ellipsis;
-  }
-
-  .compactMeta {
-    gap: 0.2rem;
-  }
-
-  .compactMeta small {
-    color: var(--vz-retro-muted);
-    font-family: var(--vz-font-numeric);
-  }
-
-  .badges {
-    gap: 0.15rem;
-  }
-
-  .badges > span {
-    min-height: 1rem;
-    padding: 0.04rem 0.25rem;
-    font-size: 0.48rem;
-  }
-}
-/* VERZUS M8.10.2 COMPACT TABLE INTERACTIONS END */
-`;
-
-fs.writeFileSync(file, source);
-NODE
-}
-
-write_unit_test() {
-  cat > src/features/leaderboards/foundation/ui/LeaderboardDesktopPolish.test.tsx <<'EOF'
-// VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH TESTS
-
-import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-
-import { LeaderboardFoundationScreen } from "./LeaderboardFoundationScreen";
-
-vi.mock("next/navigation", () => ({
-  usePathname: () => "/leaderboards/weekly",
-  useRouter: () => ({ replace: vi.fn() }),
-  useSearchParams: () => new URLSearchParams(),
-}));
-
-describe("M8.10.2 desktop leaderboard polish", () => {
-  it("defaults to ten rows and exposes explicit Player, Crew and Match intel links", () => {
-    render(<LeaderboardFoundationScreen initialSearchParams={{ mode: "weekly" }} />);
-
-    expect(screen.getByLabelText("Rows per page")).toHaveValue("10");
-
-    const table = screen.getByRole("table");
-    expect(within(table).getByRole("link", { name: /Open Prismo player intel card/i })).toBeVisible();
-    expect(within(table).getAllByRole("link", { name: /Open Xenon crew intel card/i }).length).toBeGreaterThan(0);
-    expect(within(table).getAllByRole("link", { name: /Open .* match intel card/i }).length).toBeGreaterThan(0);
-  });
-
-  it("marks mode-owned columns for deterministic width composition", () => {
-    const { container } = render(
-      <LeaderboardFoundationScreen initialSearchParams={{ mode: "crew" }} />,
-    );
-
-    expect(container.querySelector('th[data-column="identity"]')).toBeInTheDocument();
-    expect(container.querySelector('td[data-column="members"]')).toBeInTheDocument();
-    expect(container.querySelector('td[data-column="recent-match"]')).toBeInTheDocument();
-    expect(container.querySelector('tbody[data-desktop-pinned="true"]')).toBeInTheDocument();
-  });
-});
-EOF
-}
-
-write_e2e_test() {
-  mkdir -p tests/e2e/m8
-
-  cat > tests/e2e/m8/m8-leaderboard-desktop-polish.spec.ts <<'EOF'
-// VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH E2E
-
-import { expect, test } from "@playwright/test";
-
-test.describe("M8.10.2 desktop leaderboard polish", () => {
-  test.use({ viewport: { width: 1440, height: 900 } });
-
-  test("fits the table without horizontal scrolling and keeps rows compact", async ({ page }) => {
-    await page.goto("/leaderboards/weekly?mode=weekly");
-
-    const presentation = page.locator('[data-leaderboard-presentation="table"]');
-    await expect(presentation).toBeVisible();
-    await expect(page.getByLabel("Rows per page")).toHaveValue("10");
-
-    const overflow = await presentation.evaluate((element) => ({
-      clientWidth: element.clientWidth,
-      scrollWidth: element.scrollWidth,
-    }));
-    expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth + 1);
-
-    const rowHeights = await presentation.locator("tbody:not([data-desktop-pinned]) tr").evaluateAll(
-      (rows) => rows.map((row) => Math.round(row.getBoundingClientRect().height)),
-    );
-    expect(rowHeights.length).toBeGreaterThanOrEqual(6);
-    expect(Math.max(...rowHeights)).toBeLessThanOrEqual(64);
-
-    await expect(presentation.locator('tbody[data-desktop-pinned="true"]')).toBeHidden();
-    await expect(page.getByRole("link", { name: /Open Xenon crew intel card/i }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /match intel card/i }).first()).toBeVisible();
-  });
-});
-EOF
-}
-
-write_playwright_config() {
-  cat > playwright.m8-polish.config.ts <<'EOF'
-// VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH PLAYWRIGHT CONFIG
-
-import { defineConfig, devices } from "@playwright/test";
-
-const port = 3120;
-const baseURL = `http://127.0.0.1:${port}`;
-
-export default defineConfig({
-  testDir: "./tests/e2e/m8",
-  testMatch: "m8-leaderboard-desktop-polish.spec.ts",
-  fullyParallel: false,
-  retries: 0,
-  workers: 1,
-  reporter: [["list"]],
-  use: {
-    ...devices["Desktop Chrome"],
-    baseURL,
-    viewport: { width: 1440, height: 900 },
-    trace: "on-first-retry",
-    screenshot: "only-on-failure",
-  },
-  webServer: {
-    command: "npm run m8:preview",
-    url: baseURL,
-    reuseExistingServer: true,
-    timeout: 120_000,
-    env: {
-      NEXT_PUBLIC_APP_ENV: "test",
-      NEXT_PUBLIC_API_BASE_URL: `${baseURL}/api`,
-      NEXT_PUBLIC_ENABLE_MOCKS: "true",
-      NEXT_PUBLIC_RELEASE_SHA: "m8-10-2-polish",
-    },
-  },
-});
-EOF
-}
-
-write_docs() {
-  mkdir -p docs/milestones/M8
-
-  cat > docs/milestones/M8/m8-10-2-desktop-leaderboard-polish.md <<'EOF'
-<!-- VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH -->
-# M8.10.2 — Desktop Leaderboard Rebalance and Premium Polish
-
-## Intent
-
-Make the desktop leaderboard readable, colorful and information-dense without horizontal scrolling or duplicate current-player content.
-
-## Desktop contract
-
-- Default result window: 10 rows.
-- Header target: 42px.
-- Ranking row target: 58px; hard browser-test ceiling: 64px.
-- No horizontal table scrollbar at 1440px.
-- Player identity: name plus handle/country metadata.
-- Crew affiliation: explicit Crew intel link in its own column.
-- Match reference: explicit Match intel link.
-- Current position: side-rail card on desktop and pinned mobile card on mobile.
-- Single-page results do not render inactive pagination controls.
-- At 1024–1279px, lower-priority Streak and Trust columns are hidden while their values remain available in intel cards.
-
-## Verification
-
-```bash
-npm run verify:m8:10.2
-npm run test:m8:10.2:e2e
-```
-
-## Rollback
-
-```bash
-bash ./VERZUS_M8_10_2_Desktop_Leaderboard_Polish.sh rollback
-```
-EOF
-}
-
-write_verifier() {
-  cat > scripts/verify-m8-10-2-polish.mjs <<'EOF'
-// VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH VERIFIER
-
-import fs from "node:fs";
-import path from "node:path";
-
-const root = process.cwd();
-const failures = [];
-
-const requiredFiles = [
-  "src/features/leaderboards/explorer/model/leaderboard-query-state.ts",
-  "src/features/leaderboards/modes/model/leaderboard-mode.registry.ts",
-  "src/features/leaderboards/modes/ui/LeaderboardModePresentation.tsx",
-  "src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.tsx",
-  "src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.module.css",
-  "src/features/leaderboards/interactions/ui/LeaderboardInteractiveIdentity.tsx",
-  "src/features/leaderboards/interactions/ui/LeaderboardEntityLink.tsx",
-  "src/features/leaderboards/interactions/ui/LeaderboardInteractions.module.css",
-  "src/features/leaderboards/foundation/ui/LeaderboardDesktopPolish.test.tsx",
-  "tests/e2e/m8/m8-leaderboard-desktop-polish.spec.ts",
-  "playwright.m8-polish.config.ts",
-  "docs/milestones/M8/m8-10-2-desktop-leaderboard-polish.md",
-];
-
-for (const file of requiredFiles) {
-  if (!fs.existsSync(path.join(root, file))) failures.push(`Missing required file: ${file}`);
-}
-
-function expectContains(file, marker) {
-  const location = path.join(root, file);
-  if (!fs.existsSync(location)) return;
-  const source = fs.readFileSync(location, "utf8");
-  if (!source.includes(marker)) failures.push(`${file} is missing marker: ${marker}`);
-}
-
-expectContains(
-  "src/features/leaderboards/explorer/model/leaderboard-query-state.ts",
-  "pageSize: 10,",
-);
-expectContains(
-  "src/features/leaderboards/modes/ui/LeaderboardModePresentation.tsx",
-  'data-column={column.key}',
-);
-expectContains(
-  "src/features/leaderboards/modes/ui/LeaderboardModePresentation.tsx",
-  "LeaderboardAffiliationLink",
-);
-expectContains(
-  "src/features/leaderboards/interactions/ui/LeaderboardInteractiveIdentity.tsx",
-  'variant?: "default" | "table"',
-);
-expectContains(
-  "src/features/leaderboards/interactions/ui/LeaderboardInteractiveIdentity.tsx",
-  "export function LeaderboardAffiliationLink",
-);
-expectContains(
-  "src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.tsx",
-  "page.totalPages > 1 ?",
-);
-expectContains(
-  "src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.module.css",
-  "VERZUS M8.10.2 DESKTOP LEADERBOARD POLISH START",
-);
-expectContains(
-  "src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.module.css",
-  "table-layout: fixed;",
-);
-expectContains(
-  "src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.module.css",
-  '.pinnedBody[data-desktop-pinned="true"]',
-);
-expectContains(
-  "src/features/leaderboards/interactions/ui/LeaderboardEntityLink.tsx",
-  "VERZUS M8.10.2 NULL-SAFE ROUTER COMPATIBILITY",
-);
-expectContains(
-  "src/features/leaderboards/interactions/ui/LeaderboardInteractions.module.css",
-  "VERZUS M8.10.2 COMPACT TABLE INTERACTIONS START",
-);
-
-const packageFile = path.join(root, "package.json");
-if (fs.existsSync(packageFile)) {
-  const packageJson = JSON.parse(fs.readFileSync(packageFile, "utf8"));
-  for (const script of ["test:m8:10.2", "typecheck:m8:10.2", "verify:m8:10.2"]) {
-    if (!packageJson.scripts?.[script]) failures.push(`Missing package script: ${script}`);
-  }
-}
-
-if (failures.length > 0) {
-  console.error("M8.10.2 desktop leaderboard polish verification failures:");
-  for (const failure of failures) console.error(`- ${failure}`);
-  process.exit(1);
-}
-
-console.log(
-  "M8.10.2 ten-row default, no-overflow width contract, clickable Crew cells, compact rows and desktop current-position deduplication are installed.",
-);
-EOF
-}
-
-patch_package_scripts() {
-  node <<'NODE'
-const fs = require("node:fs");
-const file = "package.json";
-const packageJson = JSON.parse(fs.readFileSync(file, "utf8"));
-packageJson.scripts ??= {};
-packageJson.scripts["test:m8:10.2"] =
-  "vitest run src/features/leaderboards/foundation/ui/LeaderboardDesktopPolish.test.tsx src/features/leaderboards/explorer/model/leaderboard-query-state.test.ts src/features/leaderboards/modes/ui/LeaderboardModePresentation.test.tsx";
-packageJson.scripts["typecheck:m8:10.2"] = "tsc --noEmit -p tsconfig.m8-8-9.json";
-packageJson.scripts["test:m8:10.2:e2e"] =
-  "playwright test --config=playwright.m8-polish.config.ts";
-packageJson.scripts["verify:m8:10.2"] =
-  "node scripts/verify-m8-10-2-polish.mjs && eslint src/features/leaderboards 'src/app/(platform)/leaderboards' --max-warnings=0 && npm run test:m8:10.2 && npm run typecheck:m8:10.2";
-packageJson.scripts["verify:m8:10.2:full"] =
-  "npm run verify:m8:10.2 && npm run test:m8:10.2:e2e";
-fs.writeFileSync(file, `${JSON.stringify(packageJson, null, 2)}\n`);
-NODE
-}
-
-format_changed_files() {
-  npx prettier --write \
-    package.json \
-    src/features/leaderboards/explorer/model/leaderboard-query-state.ts \
-    src/features/leaderboards/modes/model/leaderboard-mode.registry.ts \
-    src/features/leaderboards/modes/ui/LeaderboardModePresentation.tsx \
-    src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.tsx \
-    src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.module.css \
-    src/features/leaderboards/interactions/ui/LeaderboardInteractiveIdentity.tsx \
-    src/features/leaderboards/interactions/ui/LeaderboardEntityLink.tsx \
-    src/features/leaderboards/interactions/ui/LeaderboardInteractions.module.css \
-    src/features/leaderboards/foundation/ui/LeaderboardDesktopPolish.test.tsx \
-    tests/e2e/m8/m8-leaderboard-desktop-polish.spec.ts \
-    playwright.m8-polish.config.ts \
-    docs/milestones/M8/m8-10-2-desktop-leaderboard-polish.md \
-    scripts/verify-m8-10-2-polish.mjs
-}
-
-install() {
+install_stage() {
   print_plan
-  echo
-  require_prerequisites
+  require_m9_5_prerequisite
+  require_local_tools
   backup_current_state
-  INSTALL_ACTIVE=1
-  trap restore_after_failure ERR
+  extract_payload
 
-  patch_query_defaults
-  patch_interactive_identity
-  patch_entity_link_compatibility
-  patch_mode_presentation
-  patch_screen_pagination
-  patch_foundation_styles
-  patch_interaction_styles
-  write_unit_test
-  write_e2e_test
-  write_playwright_config
-  write_docs
-  write_verifier
-  patch_package_scripts
-  format_changed_files
+  echo "Running focused M9.6 verification..."
+  npm run verify:m9:9.6
 
-  echo "Running lightweight M8.10.2 marker verification..."
-  node scripts/verify-m8-10-2-polish.mjs
-
-  INSTALL_ACTIVE=0
-  trap - ERR
-
+  INSTALL_COMPLETE="true"
   cat <<'DONE'
 
-M8.10.2 installation complete.
-
-Focused verification:
-  npm run verify:m8:10.2
-
-Browser layout regression:
-  npm run test:m8:10.2:e2e
-
-Full focused gate:
-  npm run verify:m8:10.2:full
+M9.6 installation complete.
 
 Preview:
-  npm run m8:preview
+  npm run m9:preview
 
 Open:
-  http://127.0.0.1:3120/leaderboards/weekly
-  http://127.0.0.1:3120/leaderboards/weekly?mode=crew
+  http://127.0.0.1:3121/crews/crew-xenon-esports
+
+Review:
+  - Manage Crew opens the Roster tab.
+  - Owner, captain and manager capabilities differ by target role.
+  - Role changes and removals require an audit reason.
+  - Ownership transfer requires explicit confirmation.
+  - A governance API failure does not break the Crew profile.
+
+Verify again:
+  npm run verify:m9:9.6
 
 Rollback:
-  bash ./VERZUS_M8_10_2_Desktop_Leaderboard_Polish.sh rollback
+  bash ./VERZUS_M9_9_6_Roles_Permissions_Member_Management.sh rollback
 DONE
 }
 
-rollback() {
+rollback_stage() {
   require_repo_root
-
   local latest
-  latest="$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -n 1 || true)"
-  [[ -n "$latest" && -f "$latest/verzus-m8-10-2-before.tar.gz" ]] || {
-    echo "Error: no M8.10.2 rollback archive found under $BACKUP_ROOT."
+  latest="$(find "$BACKUP_ROOT" -mindepth 2 -maxdepth 2 -type f -name 'verzus-m9-9-6-before.tar.gz' 2>/dev/null | sort | tail -n 1)"
+  if [[ -z "$latest" ]]; then
+    echo "Error: no M9.6 rollback archive found under $BACKUP_ROOT."
     exit 1
-  }
+  fi
 
-  restore_archive "$latest/verzus-m8-10-2-before.tar.gz"
-  echo "M8.10.2 rollback restored: $latest/verzus-m8-10-2-before.tar.gz"
+  restore_archive "$latest"
+  echo "Running restored M9.5 marker verification..."
+  node scripts/verify-m9-9-5.mjs
+  echo "M9.6 rollback restored: $latest"
 }
 
 case "$MODE" in
   install)
-    install
+    install_stage
     ;;
   rollback)
-    rollback
+    rollback_stage
     ;;
   *)
     echo "Usage: bash ./$SCRIPT_NAME [install|rollback]"
     exit 1
     ;;
 esac
+
+exit 0
+
+__VERZUS_M9_6_PAYLOAD_BEGIN__
+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
+9/A9fA/fw/cb/v5/z5Zm3wBYAgA=
+__VERZUS_M9_6_PAYLOAD_END__

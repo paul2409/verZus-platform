@@ -1,0 +1,7 @@
+<!-- VERZUS M9.3 ORIGINAL CREW CREST ASSET -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" role="img" aria-labelledby="title">
+  <title id="title">Neon V crest</title>
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#22f5cf"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs>
+  <path d="M80 4 150 30v58c0 43-28 73-70 88C38 161 10 131 10 88V30Z" fill="#090d16" stroke="url(#g)" stroke-width="7"/>
+  <path d="m38 48 25 70 17-26 17 26 25-70-22 9-20 36-20-36Z" fill="url(#g)"/>
+</svg>

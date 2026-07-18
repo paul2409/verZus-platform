@@ -1,0 +1,5 @@
+<!-- VERZUS M9.3 ORIGINAL CREW BANNER ASSET -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title">
+  <title id="title">Neon grid banner</title>
+  <defs><linearGradient id="bg" x1="0" x2="1"><stop stop-color="#05070d"/><stop offset=".5" stop-color="#11103a"/><stop offset="1" stop-color="#06191d"/></linearGradient><pattern id="p" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0v60" fill="none" stroke="#22f5cf" stroke-opacity=".2"/></pattern></defs>
+  <rect width="1200" height="360" fill="url(#bg)"/><rect width="1200" height="360" fill="url(#p)"/><path d="M0 290 430 95l260 120 510-170v315H0Z" fill="#7c3aed" fill-opacity=".18"/></svg>

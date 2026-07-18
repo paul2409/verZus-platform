@@ -1,0 +1,191 @@
+/* VERZUS M9.5 CREW MEMBERSHIP UI */
+
+.membershipScreen {
+  min-width: 0;
+}
+
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 auto 0.75rem;
+  max-width: 1440px;
+  padding: 0.6rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-info, #36c5f0) 35%, transparent);
+  background: color-mix(in srgb, var(--color-surface-raised, #151126) 92%, transparent);
+  color: var(--color-text-secondary, #c7bddb);
+  font-size: 0.8rem;
+}
+
+.statusBar[data-state="error"] {
+  border-color: color-mix(in srgb, var(--color-danger, #ff5d73) 55%, transparent);
+}
+
+.statusBar small {
+  margin-left: auto;
+}
+
+.operationsPanel {
+  border: 1px solid color-mix(in srgb, var(--color-border-strong, #6f4aa0) 58%, transparent);
+  background: linear-gradient(145deg, rgba(24, 17, 42, 0.98), rgba(12, 9, 24, 0.98));
+  box-shadow: 0 18px 48px rgba(4, 2, 12, 0.3);
+  padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+.panelHeader,
+.membershipList > li,
+.inviteList > li,
+.leaveCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.panelHeader {
+  margin-bottom: 1rem;
+}
+
+.panelHeader h2,
+.membershipGrid h3 {
+  margin: 0;
+}
+
+.panelHeader p,
+.membershipGrid h3 + p {
+  margin: 0.25rem 0 0;
+  color: var(--color-text-secondary, #b9afcb);
+}
+
+.membershipGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.85fr);
+  gap: 1rem;
+}
+
+.membershipGrid > article,
+.leaveCard {
+  border: 1px solid rgba(132, 96, 184, 0.32);
+  background: rgba(10, 7, 21, 0.62);
+  padding: 1rem;
+}
+
+.membershipList,
+.inviteList {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.membershipList > li,
+.inviteList > li {
+  padding: 0.75rem;
+  border: 1px solid rgba(123, 88, 172, 0.28);
+  background: rgba(28, 19, 49, 0.72);
+}
+
+.membershipList strong,
+.membershipList span,
+.membershipList small {
+  display: block;
+}
+
+.membershipList span,
+.membershipList small,
+.inviteList small,
+.leaveCard span {
+  color: var(--color-text-secondary, #b9afcb);
+}
+
+.rowActions,
+.inviteForm {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inviteForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(7rem, 0.7fr) auto;
+  margin-top: 0.85rem;
+}
+
+.applicationAction {
+  display: grid;
+  gap: 0.65rem;
+  width: min(100%, 30rem);
+}
+
+.applicationAction label,
+.applicationAction label span {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.applicationAction textarea {
+  min-height: 5.25rem;
+  resize: vertical;
+  border: 1px solid rgba(132, 96, 184, 0.55);
+  background: rgba(9, 6, 19, 0.95);
+  color: inherit;
+  padding: 0.65rem;
+  font: inherit;
+}
+
+.applicationAction p,
+.error,
+.success {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+}
+
+.error {
+  color: var(--color-danger, #ff7f91);
+}
+
+.success {
+  color: var(--color-success, #69e6a6);
+}
+
+.empty {
+  color: var(--color-text-secondary, #b9afcb);
+}
+
+.leaveCard {
+  margin-top: 1rem;
+}
+
+.leaveCard strong,
+.leaveCard span {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .membershipGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .inviteForm {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .panelHeader,
+  .membershipList > li,
+  .inviteList > li,
+  .leaveCard {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .rowActions {
+    width: 100%;
+  }
+
+  .rowActions > * {
+    flex: 1;
+  }
+}

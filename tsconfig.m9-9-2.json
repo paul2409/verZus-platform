@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/crews/**/*.ts",
+    "src/features/crews/**/*.tsx",
+    "src/app/(platform)/crews/**/*.ts",
+    "src/app/(platform)/crews/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}

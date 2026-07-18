@@ -1,0 +1,5 @@
+<!-- VERZUS M9.3 ORIGINAL CREW BANNER ASSET -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title">
+  <title id="title">Cosmic banner</title>
+  <defs><radialGradient id="r" cx="55%" cy="45%"><stop stop-color="#a855f7" stop-opacity=".65"/><stop offset=".45" stop-color="#312e81" stop-opacity=".42"/><stop offset="1" stop-color="#030712"/></radialGradient></defs>
+  <rect width="1200" height="360" fill="url(#r)"/><g fill="#fff"><circle cx="90" cy="64" r="2"/><circle cx="280" cy="150" r="3"/><circle cx="530" cy="56" r="2"/><circle cx="780" cy="210" r="3"/><circle cx="1090" cy="92" r="2"/></g><path d="M0 275c250-130 430 35 650-70s360-40 550-130v285H0Z" fill="#22d3ee" fill-opacity=".1"/></svg>

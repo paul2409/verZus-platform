@@ -168,7 +168,23 @@
     "typecheck:m8:10.2": "tsc --noEmit -p tsconfig.m8-8-9.json",
     "test:m8:10.2:e2e": "playwright test --config=playwright.m8-polish.config.ts",
     "verify:m8:10.2": "node scripts/verify-m8-10-2-polish.mjs && eslint src/features/leaderboards 'src/app/(platform)/leaderboards' --max-warnings=0 && npm run test:m8:10.2 && npm run typecheck:m8:10.2",
-    "verify:m8:10.2:full": "npm run verify:m8:10.2 && npm run test:m8:10.2:e2e"
+    "verify:m8:10.2:full": "npm run verify:m8:10.2 && npm run test:m8:10.2:e2e",
+    "m9:preview": "next dev --hostname 127.0.0.1 --port 3121",
+    "test:m9:9.1": "vitest run src/features/crews/foundation/ui/CrewFoundationScreen.test.tsx src/features/crews/ui/CrewsScreen.test.tsx",
+    "typecheck:m9:9.1": "tsc --noEmit -p tsconfig.m9-9-1.json",
+    "verify:m9:9.1": "node scripts/verify-m9-9-1.mjs && npx eslint \"src/features/crews\" \"src/app/(platform)/crews\" --max-warnings=0 && npm run test:m9:9.1 && npm run typecheck:m9:9.1",
+    "test:m9:9.2": "vitest run src/features/crews/discovery/model/crew-discovery.query.test.ts src/features/crews/discovery/ui/CrewDiscoveryScreen.test.tsx src/features/crews/ui/CrewsScreen.test.tsx src/features/crews/foundation/ui/CrewFoundationScreen.test.tsx",
+    "typecheck:m9:9.2": "tsc --noEmit -p tsconfig.m9-9-2.json",
+    "verify:m9:9.2": "node scripts/verify-m9-9-2.mjs && npx eslint \"src/features/crews\" \"src/app/(platform)/crews\" --max-warnings=0 && npm run test:m9:9.2 && npm run typecheck:m9:9.2",
+    "test:m9:9.3": "vitest run src/features/crews/creation/model/crew-creation.validation.test.ts src/features/crews/creation/model/crew-creation.repository.test.ts src/features/crews/creation/ui/CrewCreationScreen.test.tsx src/features/crews/discovery/ui/CrewDiscoveryScreen.test.tsx",
+    "typecheck:m9:9.3": "tsc --noEmit -p tsconfig.m9-9-3.json",
+    "verify:m9:9.3": "node scripts/verify-m9-9-3.mjs && npx eslint \"src/features/crews\" \"src/app/(platform)/crews\" --max-warnings=0 && npm run test:m9:9.3 && npm run typecheck:m9:9.3",
+    "test:m9:9.4": "vitest run src/features/crews/resources/model/crew-resource.merge.test.ts src/features/crews/resources/adapter/crew-resource.adapter.test.ts src/features/crews/resources/ui/CrewResourceStatusStrip.test.tsx",
+    "typecheck:m9:9.4": "tsc --noEmit -p tsconfig.m9-9-4.json",
+    "verify:m9:9.4": "node scripts/verify-m9-9-4.mjs && npx eslint \"src/features/crews\" \"src/app/(platform)/crews\" \"src/app/api/crews/[crewId]\" --max-warnings=0 && npm run test:m9:9.4 && npm run typecheck:m9:9.4",
+    "test:m9:9.5": "vitest run src/features/crews/membership/server/crew-membership.service.test.ts src/features/crews/membership/ui/CrewMembershipPanels.test.tsx",
+    "typecheck:m9:9.5": "tsc --noEmit -p tsconfig.m9-9-5.json",
+    "verify:m9:9.5": "node scripts/verify-m9-9-5.mjs && eslint src/features/crews/membership src/features/crews/foundation/ui/CrewFoundationScreen.tsx src/features/crews/discovery/ui/CrewDiscoveryScreen.tsx src/features/crews/resources/ui/CrewResourceScreen.tsx 'src/app/api/crews/[crewId]' --max-warnings=0 && npm run test:m9:9.5 && npm run typecheck:m9:9.5"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [

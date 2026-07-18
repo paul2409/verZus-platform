@@ -1,0 +1,5 @@
+<!-- VERZUS M9.3 ORIGINAL CREW BANNER ASSET -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title">
+  <title id="title">Arena stadium banner</title>
+  <defs><linearGradient id="bg" y1="0" y2="1"><stop stop-color="#15101f"/><stop offset="1" stop-color="#030712"/></linearGradient></defs>
+  <rect width="1200" height="360" fill="url(#bg)"/><path d="M0 80c300 80 900 80 1200 0v85c-330 70-870 70-1200 0Z" fill="#fbbf24" fill-opacity=".14"/><path d="M0 245c310-70 890-70 1200 0v115H0Z" fill="#7c3aed" fill-opacity=".22"/><g stroke="#22f5cf" stroke-opacity=".35"><path d="M200 0v360M400 0v360M600 0v360M800 0v360M1000 0v360"/></g></svg>
