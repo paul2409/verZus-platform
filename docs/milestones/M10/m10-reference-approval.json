@@ -1,0 +1,24 @@
+{
+  "milestone": "M10",
+  "stage": "10.8",
+  "reference": {
+    "mobile390": {
+      "status": "approved",
+      "source": "Generated M10 Rewards overview reference",
+      "scope": "Rewards overview hierarchy, progression card, claimable card, season track and recent history"
+    },
+    "tablet768": {
+      "status": "containment-review-required",
+      "scope": "Safe centered mobile-first containment; no dedicated tablet composition approved"
+    },
+    "desktop1440": {
+      "status": "containment-review-required",
+      "scope": "Safe centered mobile-first containment; no dedicated desktop composition approved"
+    }
+  },
+  "releaseGate": {
+    "status": "pending",
+    "stage": "10.8",
+    "reason": "Run the review hub at 390px, 768px and 1440px, then record explicit approval."
+  }
+}

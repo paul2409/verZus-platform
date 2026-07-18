@@ -1,16 +1,18 @@
+// VERZUS M10.1 OPTIONAL REWARDS FOUNDATION TEST
+
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { RewardsScreen } from "./RewardsScreen";
 
 describe("RewardsScreen", () => {
-  it("distinguishes Cash Credits, Bonus Credits and VS Points", () => {
+  it("renders the M10 progression hierarchy", () => {
     render(<RewardsScreen />);
 
     expect(screen.getByRole("heading", { name: "Rewards" })).toBeVisible();
-    expect(screen.getByText("Cash credits")).toBeVisible();
-    expect(screen.getByText("Bonus credits")).toBeVisible();
-    expect(screen.getByText("VS Points")).toBeVisible();
-    expect(screen.getByRole("button", { name: "Withdraw cash credits" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Your progress" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Claimable rewards" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Reward track" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Recently claimed" })).toBeVisible();
   });
 });

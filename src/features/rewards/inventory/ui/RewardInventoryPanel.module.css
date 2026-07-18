@@ -1,0 +1,404 @@
+/* VERZUS M10.2 REWARD INVENTORY AND COMPLETE STATE PRESENTATIONS */
+
+.panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 90% 4%, rgb(166 107 255 / 10%), transparent 34%),
+    linear-gradient(145deg, rgb(26 32 38 / 98%), rgb(13 17 21 / 98%));
+  border: 1px solid rgb(177 132 255 / 16%);
+  border-radius: 1.4rem;
+  box-shadow: 0 1rem 2.6rem rgb(0 0 0 / 24%);
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.heading > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.heading h2,
+.heading p,
+.rewardCard h3,
+.rewardCard p,
+.emptyState p,
+.inventoryNote {
+  margin: 0;
+}
+
+.heading h2 {
+  font-family: var(--vz-font-display);
+  font-size: 1rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--vz-color-purple-400);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.filters {
+  display: flex;
+  gap: 0.45rem;
+  margin-inline: -0.1rem;
+  padding: 0.1rem 0.1rem 0.4rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.filterButton {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 2.75rem;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.75rem;
+  color: var(--vz-color-text-secondary);
+  font: inherit;
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+  cursor: pointer;
+  background: rgb(8 12 15 / 64%);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 999px;
+}
+
+.filterButton strong {
+  min-width: 1.35rem;
+  padding: 0.1rem 0.35rem;
+  color: var(--vz-color-text-primary);
+  font-family: var(--vz-font-numeric);
+  background: rgb(166 107 255 / 14%);
+  border-radius: 999px;
+}
+
+.filterButton:hover,
+.filterButton:focus-visible,
+.filterButton[data-active="true"] {
+  color: var(--vz-color-text-primary);
+  background: rgb(166 107 255 / 14%);
+  border-color: var(--vz-color-purple-400);
+}
+
+.filterButton:focus-visible {
+  outline: 2px solid var(--vz-color-neutral-0);
+  outline-offset: 2px;
+}
+
+.resultSummary {
+  color: var(--vz-color-text-tertiary);
+  font-size: var(--vz-text-xs);
+}
+
+.rewardList {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rewardCard {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem;
+  overflow: hidden;
+  background: rgb(8 12 15 / 56%);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 1rem;
+}
+
+.rewardCard::before {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 3px;
+  content: "";
+  background: var(--vz-color-border-strong);
+}
+
+.rewardCard[data-reward-state="claimable"]::before,
+.rewardCard[data-reward-state="claimed"]::before {
+  background: var(--vz-color-green-500);
+}
+
+.rewardCard[data-reward-state="eligible"]::before {
+  background: var(--vz-color-cyan-400, #14dfff);
+}
+
+.rewardCard[data-reward-state="claiming"]::before {
+  background: var(--vz-color-purple-400);
+}
+
+.rewardCard[data-reward-state="expired"]::before {
+  background: var(--vz-color-yellow-400, #f7c948);
+}
+
+.rewardCard[data-reward-state="revoked"]::before {
+  background: var(--vz-color-red-400, #ff5d6c);
+}
+
+.rewardCard[data-reward-state="claimable"] {
+  background:
+    radial-gradient(circle at 8% 38%, rgb(0 255 135 / 10%), transparent 30%), rgb(8 12 15 / 64%);
+  border-color: color-mix(in srgb, var(--vz-color-green-500) 52%, transparent);
+}
+
+.rewardCard[data-reward-state="claiming"] {
+  background:
+    linear-gradient(100deg, transparent 20%, rgb(166 107 255 / 8%) 48%, transparent 76%),
+    rgb(8 12 15 / 64%);
+  background-size: 220% 100%;
+  animation: claiming-sweep 2.4s linear infinite;
+}
+
+.rewardCard[data-reward-state="locked"],
+.rewardCard[data-reward-state="expired"],
+.rewardCard[data-reward-state="revoked"] {
+  color: var(--vz-color-text-secondary);
+}
+
+.artwork {
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0.4rem 0.8rem rgb(0 0 0 / 28%));
+}
+
+.rewardCard[data-reward-state="locked"] .artwork,
+.rewardCard[data-reward-state="expired"] .artwork,
+.rewardCard[data-reward-state="revoked"] .artwork {
+  filter: grayscale(0.35) saturate(0.65) opacity(0.78);
+}
+
+.cardCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.cardTitleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+
+.cardTitleRow h3 {
+  min-width: 0;
+  font-family: var(--vz-font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.cardCopy > p {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-xs);
+  line-height: 1.4;
+}
+
+.summaryList,
+.detailBody dl {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.summaryList {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.summaryList > div,
+.detailBody dl > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.summaryList dt,
+.detailBody dt {
+  color: var(--vz-color-text-tertiary);
+  font-size: 0.65rem;
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+}
+
+.summaryList dd,
+.detailBody dd {
+  margin: 0;
+  color: var(--vz-color-text-primary);
+  font-size: var(--vz-text-xs);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.details {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--vz-color-border-default);
+}
+
+.details summary {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--vz-color-purple-300, #c6a7ff);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+}
+
+.details summary::after {
+  content: "+";
+  font-family: var(--vz-font-numeric);
+  font-size: 1.15rem;
+}
+
+.details[open] summary::after {
+  content: "−";
+}
+
+.details summary::-webkit-details-marker {
+  display: none;
+}
+
+.details summary:focus-visible {
+  outline: 2px solid var(--vz-color-neutral-0);
+  outline-offset: 2px;
+}
+
+.detailBody {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.1rem 0 0.75rem;
+}
+
+.detailBody > p {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-xs);
+  line-height: 1.5;
+}
+
+.detailBody dl {
+  padding: 0.75rem;
+  background: rgb(255 255 255 / 2%);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 0.65rem;
+}
+
+.claimNotice {
+  padding: 0.7rem;
+  color: var(--vz-color-text-secondary);
+  background: rgb(0 255 135 / 5%);
+  border-left: 3px solid var(--vz-color-green-500);
+}
+
+.emptyState {
+  display: grid;
+  min-height: 9rem;
+  gap: 0.4rem;
+  place-content: center;
+  padding: 1rem;
+  text-align: center;
+  background: rgb(8 12 15 / 48%);
+  border: 1px dashed var(--vz-color-border-strong);
+  border-radius: 1rem;
+}
+
+.emptyState strong {
+  font-family: var(--vz-font-interface);
+}
+
+.emptyState p,
+.inventoryNote {
+  color: var(--vz-color-text-tertiary);
+  font-size: var(--vz-text-xs);
+  line-height: 1.5;
+}
+
+.inventoryNote {
+  text-align: center;
+}
+
+@keyframes claiming-sweep {
+  from {
+    background-position: 120% 0;
+  }
+
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@media (min-width: 34rem) {
+  .rewardCard {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    padding: 0.9rem;
+  }
+
+  .artwork {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  .detailBody dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rewardCard[data-reward-state="claiming"] {
+    animation: none;
+  }
+}
+
+/* VERZUS M10.4 CLAIM ACTION SLOT */
+.claimAction {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.15rem;
+}
+
+@media (min-width: 34rem) {
+  .claimAction {
+    grid-column: auto;
+    grid-row: 1;
+    align-self: center;
+  }
+
+  .rewardCard:has(.claimAction) {
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  }
+
+  .rewardCard:has(.claimAction) .details {
+    grid-column: 1 / -1;
+  }
+}

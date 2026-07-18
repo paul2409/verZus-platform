@@ -1,0 +1,55 @@
+/* VERZUS M10.7 ISOLATED REWARD WIDGET FALLBACK */
+
+.fallback {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  color: var(--vz-retro-white);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--vz-retro-danger) 10%, transparent),
+      transparent
+    ),
+    color-mix(in srgb, var(--vz-retro-surface) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vz-retro-danger) 50%, var(--vz-retro-line));
+  box-shadow: var(--vz-retro-shadow-panel);
+}
+
+.fallback h2,
+.fallback p,
+.fallback small {
+  margin: 0;
+}
+
+.fallback p,
+.fallback small {
+  color: var(--vz-retro-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.actions button {
+  min-height: 2.75rem;
+  padding: 0.65rem 0.9rem;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-violet);
+  border: 1px solid var(--vz-retro-violet-bright);
+  font: inherit;
+  font-weight: var(--vz-font-weight-bold);
+  cursor: pointer;
+}
+
+.actions button:last-child {
+  background: transparent;
+  border-color: var(--vz-retro-line);
+}
+
+.actions button:focus-visible {
+  outline: 3px solid var(--vz-retro-focus);
+  outline-offset: 3px;
+}

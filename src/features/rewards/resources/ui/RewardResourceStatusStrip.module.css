@@ -1,0 +1,62 @@
+/* VERZUS M10.3 REWARD RESOURCE STATUS */
+
+.statusStrip {
+  display: grid;
+  gap: var(--space-3);
+  margin-block-end: var(--space-4);
+}
+
+.statusStrip article {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--color-border-strong) 72%, transparent);
+  background: color-mix(in srgb, var(--color-surface-raised) 92%, transparent);
+}
+
+.statusStrip article[data-state="error"],
+.statusStrip article[data-state="offline"] {
+  border-color: color-mix(in srgb, var(--color-status-negative) 70%, transparent);
+}
+
+.statusStrip article[data-state="stale"] {
+  border-color: color-mix(in srgb, var(--color-status-warning) 70%, transparent);
+}
+
+.statusStrip article > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.statusStrip strong,
+.statusStrip span {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.statusStrip span,
+.statusStrip small,
+.statusStrip p {
+  color: var(--color-text-muted);
+}
+
+.statusStrip p {
+  margin: 0;
+}
+
+.statusStrip button {
+  min-height: 44px;
+  justify-self: start;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-accent-primary);
+  color: var(--color-text-primary);
+  background: transparent;
+  cursor: pointer;
+}
+
+.statusStrip button:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}

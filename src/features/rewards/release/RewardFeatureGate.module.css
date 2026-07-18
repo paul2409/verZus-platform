@@ -1,0 +1,56 @@
+/* VERZUS M10.8 REWARD FEATURE ISOLATION */
+
+.disabled {
+  display: grid;
+  width: min(48rem, 100%);
+  min-height: 65vh;
+  align-content: center;
+  gap: 1rem;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  color: var(--vz-retro-white);
+  background:
+    radial-gradient(
+      circle at 12% 0%,
+      color-mix(in srgb, var(--vz-retro-purple) 20%, transparent),
+      transparent 24rem
+    ),
+    radial-gradient(
+      circle at 92% 100%,
+      color-mix(in srgb, var(--vz-retro-green) 10%, transparent),
+      transparent 22rem
+    ),
+    color-mix(in srgb, var(--vz-retro-surface) 96%, transparent);
+  border: 1px solid var(--vz-retro-line);
+  box-shadow: var(--vz-shadow-panel);
+}
+
+.disabled span,
+.disabled small {
+  color: var(--vz-retro-muted);
+  font-family: var(--vz-font-numeric);
+  letter-spacing: 0.08em;
+}
+
+.disabled h1,
+.disabled p {
+  margin: 0;
+}
+
+.disabled a {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  color: var(--vz-retro-white);
+  background: var(--vz-retro-purple);
+  border: 1px solid var(--vz-retro-purple);
+  font-weight: var(--vz-font-weight-bold);
+  text-decoration: none;
+}
+
+.disabled a:focus-visible {
+  outline: 3px solid var(--vz-color-focus-ring);
+  outline-offset: 3px;
+}

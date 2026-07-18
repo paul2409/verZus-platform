@@ -1,0 +1,409 @@
+/* VERZUS M10.5 PROGRESSION TRACK AND SEASON PROGRESS */
+
+.panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  color: var(--vz-color-text-primary);
+  background:
+    radial-gradient(circle at 88% 0%, rgb(0 255 135 / 8%), transparent 34%),
+    radial-gradient(circle at 22% 5%, rgb(166 107 255 / 13%), transparent 42%),
+    linear-gradient(145deg, rgb(26 32 38 / 98%), rgb(13 17 21 / 98%));
+  border: 1px solid rgb(177 132 255 / 18%);
+  border-radius: 1.4rem;
+  box-shadow: 0 1rem 2.6rem rgb(0 0 0 / 24%);
+}
+
+.heading,
+.sectionHeading,
+.seasonMeter > div,
+.weeklyCap > div,
+.objectiveCopy > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.heading > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.heading h2,
+.heading p,
+.sectionHeading h3,
+.weeklyCap p,
+.objectiveList p,
+.milestoneList p,
+.emptyState h2,
+.emptyState p {
+  margin: 0;
+}
+
+.heading p {
+  color: var(--vz-color-purple-400);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.heading h2,
+.emptyState h2 {
+  font-family: var(--vz-font-display);
+  font-size: 1rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.seasonSummary {
+  display: grid;
+  grid-template-columns: 5.8rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem;
+  background: rgb(7 11 14 / 54%);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 1rem;
+}
+
+.tierBadge {
+  display: grid;
+  width: 5.3rem;
+  height: 5.3rem;
+  place-content: center;
+  justify-items: center;
+  background: linear-gradient(145deg, rgb(131 72 255 / 32%), rgb(41 21 82 / 72%));
+  border: 1px solid var(--vz-color-purple-400);
+  border-radius: 1rem;
+  box-shadow: 0 0 1.4rem rgb(131 72 255 / 22%);
+}
+
+.tierBadge span,
+.tierBadge small,
+.seasonMeter span,
+.seasonMeter p span,
+.weeklyCap span,
+.weeklyCap p,
+.sectionHeading span,
+.objectiveCopy p,
+.objectiveCopy small,
+.milestoneList p,
+.trackList > li > span {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-xs);
+}
+
+.tierBadge span {
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.tierBadge strong {
+  font-family: var(--vz-font-numeric);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.seasonMeter {
+  display: grid;
+  min-width: 0;
+  gap: 0.55rem;
+}
+
+.seasonMeter > div > span,
+.weeklyCap strong,
+.sectionHeading h3 {
+  font-family: var(--vz-font-interface);
+  font-weight: var(--vz-font-weight-bold);
+}
+
+.seasonMeter > div > strong {
+  color: var(--vz-color-green-400);
+  font-family: var(--vz-font-numeric);
+}
+
+.seasonMeter progress,
+.weeklyCap progress,
+.objectiveCopy progress {
+  width: 100%;
+  overflow: hidden;
+  appearance: none;
+  background: rgb(110 121 132 / 22%);
+  border: 0;
+  border-radius: 999px;
+}
+
+.seasonMeter progress,
+.weeklyCap progress {
+  height: 0.55rem;
+}
+
+.objectiveCopy progress {
+  height: 0.38rem;
+}
+
+.seasonMeter progress::-webkit-progress-bar,
+.weeklyCap progress::-webkit-progress-bar,
+.objectiveCopy progress::-webkit-progress-bar {
+  background: rgb(110 121 132 / 22%);
+}
+
+.seasonMeter progress::-webkit-progress-value,
+.weeklyCap progress::-webkit-progress-value,
+.objectiveCopy progress::-webkit-progress-value {
+  background: linear-gradient(90deg, var(--vz-color-purple-600), var(--vz-color-green-500));
+}
+
+.seasonMeter progress::-moz-progress-bar,
+.weeklyCap progress::-moz-progress-bar,
+.objectiveCopy progress::-moz-progress-bar {
+  background: linear-gradient(90deg, var(--vz-color-purple-600), var(--vz-color-green-500));
+}
+
+.seasonMeter p {
+  font-family: var(--vz-font-numeric);
+  font-size: var(--vz-text-sm);
+}
+
+.seasonStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0;
+}
+
+.seasonStats > div {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+  padding: 0.7rem;
+  background: rgb(8 12 15 / 55%);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 0.75rem;
+}
+
+.seasonStats dt {
+  color: var(--vz-color-text-secondary);
+  font-size: 0.65rem;
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.seasonStats dd {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--vz-font-numeric);
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.weeklyCap {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.8rem;
+  background: rgb(0 255 135 / 4%);
+  border: 1px solid rgb(0 255 135 / 16%);
+  border-radius: 0.8rem;
+}
+
+.sectionHeading {
+  align-items: flex-end;
+  padding-top: 0.15rem;
+}
+
+.sectionHeading h3 {
+  font-size: var(--vz-text-sm);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.objectiveList,
+.milestoneList,
+.trackList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.objectiveList {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.objectiveList li {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: start;
+  padding: 0.75rem;
+  background: rgb(8 12 15 / 48%);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 0.8rem;
+}
+
+.objectiveList li[data-complete="true"] {
+  border-color: rgb(0 255 135 / 28%);
+}
+
+.objectiveIcon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  color: var(--vz-color-purple-300, #c6a7ff);
+  background: rgb(131 72 255 / 12%);
+  border: 1px solid rgb(177 132 255 / 22%);
+  border-radius: 0.7rem;
+}
+
+.objectiveList li[data-complete="true"] .objectiveIcon {
+  color: var(--vz-color-green-400);
+  background: rgb(0 255 135 / 8%);
+  border-color: rgb(0 255 135 / 24%);
+}
+
+.objectiveCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.objectiveCopy > div > strong {
+  font-size: var(--vz-text-sm);
+}
+
+.objectiveCopy > div > span {
+  color: var(--vz-color-green-400);
+  font-family: var(--vz-font-numeric);
+  font-size: var(--vz-text-xs);
+}
+
+.objectiveCopy p {
+  line-height: 1.4;
+}
+
+.milestoneList,
+.trackList {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.65rem;
+  padding-bottom: 0.35rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: inline mandatory;
+}
+
+.milestoneList {
+  grid-auto-columns: minmax(9rem, 46%);
+}
+
+.trackList {
+  grid-auto-columns: minmax(8.5rem, 42%);
+}
+
+.milestoneList li,
+.trackList li {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 0.5rem;
+  min-height: 10.5rem;
+  padding: 0.75rem;
+  text-align: center;
+  background: rgb(8 12 15 / 58%);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 0.85rem;
+  scroll-snap-align: start;
+}
+
+.milestoneList li[data-state="completed"] {
+  border-color: rgb(0 255 135 / 32%);
+}
+
+.milestoneList li[data-state="current"] {
+  background: radial-gradient(circle at 50% 35%, rgb(166 107 255 / 14%), transparent 52%);
+  border-color: var(--vz-color-purple-400);
+  box-shadow: 0 0 1rem rgb(166 107 255 / 10%);
+}
+
+.milestoneList li > span,
+.trackList li > span {
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.milestoneList li > strong,
+.trackList li > strong {
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-sm);
+}
+
+.trackList li {
+  min-height: 13rem;
+}
+
+.trackList li[data-reward-state="claimable"] {
+  border-color: var(--vz-color-green-500);
+  box-shadow: 0 0 1rem rgb(0 255 135 / 9%);
+}
+
+.trackList li[data-reward-state="locked"] {
+  color: var(--vz-color-text-tertiary);
+  filter: saturate(0.72);
+}
+
+.trackList img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: contain;
+}
+
+.emptyState {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: center;
+  min-height: 7rem;
+  color: var(--vz-color-purple-300, #c6a7ff);
+}
+
+.emptyState > div {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.emptyState p {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+  line-height: 1.45;
+}
+
+@media (min-width: 48rem) {
+  .panel {
+    border-radius: 1.5rem;
+  }
+
+  .objectiveList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .milestoneList {
+    grid-auto-columns: minmax(10rem, 30%);
+  }
+
+  .trackList {
+    grid-auto-columns: minmax(9rem, 28%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milestoneList,
+  .trackList {
+    scroll-behavior: auto;
+  }
+}

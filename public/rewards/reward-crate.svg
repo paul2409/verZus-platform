@@ -1,0 +1,12 @@
+<!-- VERZUS M10.1 ORIGINAL REWARD CRATE -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Rare reward crate</title>
+  <desc id="desc">Purple and blue futuristic reward crate</desc>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a66bff"/><stop offset="1" stop-color="#287bd9"/></linearGradient></defs>
+  <path d="m19 39 45-22 45 22-45 22Z" fill="url(#g)" stroke="#c9b0ff" stroke-width="3"/>
+  <path d="M19 39v55l45 20V61Z" fill="#38246f" stroke="#8b6de1" stroke-width="3"/>
+  <path d="M109 39v55l-45 20V61Z" fill="#213d85" stroke="#5b83e8" stroke-width="3"/>
+  <path d="M57 58h14v55H57z" fill="#0f1524"/>
+  <rect x="49" y="69" width="30" height="22" rx="5" fill="#0a0f18" stroke="#12e5ff" stroke-width="3"/>
+  <path d="m58 75 6 11 6-11" fill="none" stroke="#a66bff" stroke-width="4"/>
+</svg>

@@ -1,0 +1,232 @@
+/* VERZUS M10.6 PAGINATED AUDITABLE REWARD HISTORY */
+
+.panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 0%, rgb(0 255 135 / 7%), transparent 32%),
+    linear-gradient(145deg, rgb(26 32 38 / 98%), rgb(13 17 21 / 98%));
+  border: 1px solid rgb(177 132 255 / 16%);
+  border-radius: 1.4rem;
+  box-shadow: 0 1rem 2.6rem rgb(0 0 0 / 24%);
+  scroll-margin-top: 6rem;
+}
+
+.heading,
+.eventTopline,
+.eventMeta,
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.heading > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.heading p,
+.heading h2,
+.error p,
+.list p,
+.list dl,
+.list dd {
+  margin: 0;
+}
+
+.heading p {
+  color: var(--vz-color-purple-400);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.heading h2 {
+  font-family: var(--vz-font-display);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.heading > span,
+.requestId {
+  color: var(--vz-color-text-tertiary);
+  font-size: var(--vz-text-xs);
+}
+
+.list {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list > li {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.8rem;
+  background: rgb(8 12 15 / 55%);
+  border: 1px solid var(--vz-color-border-default);
+  border-left-width: 3px;
+  border-radius: 0.9rem;
+}
+
+.list > li[data-action="reward_claimed"] {
+  border-left-color: var(--vz-color-green-500);
+}
+
+.list > li[data-action="reward_expired"] {
+  border-left-color: var(--vz-color-orange-400, #ffad42);
+}
+
+.list > li[data-action="reward_revoked"] {
+  border-left-color: var(--vz-color-red-400, #ff4f6f);
+}
+
+.eventTopline > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.eventTopline strong {
+  overflow: hidden;
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eventTopline span,
+.eventMeta,
+.list details p {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-xs);
+}
+
+.eventMeta time {
+  text-align: right;
+}
+
+.list details {
+  border-top: 1px solid var(--vz-color-border-default);
+}
+
+.list summary {
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  color: var(--vz-color-purple-300, #c6a7ff);
+  font-size: var(--vz-text-sm);
+  font-weight: var(--vz-font-weight-bold);
+  cursor: pointer;
+}
+
+.list details[open] summary {
+  margin-bottom: 0.55rem;
+}
+
+.list dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.list dl > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+  padding: 0.5rem;
+  background: rgb(255 255 255 / 3%);
+  border-radius: 0.55rem;
+}
+
+.list dt {
+  color: var(--vz-color-text-tertiary);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.list dd {
+  overflow-wrap: anywhere;
+  color: var(--vz-color-text-primary);
+  font-size: var(--vz-text-xs);
+}
+
+.list details p {
+  margin-top: 0.55rem;
+  padding-left: 0.55rem;
+  border-left: 2px solid var(--vz-color-border-strong);
+}
+
+.pagination {
+  min-height: 2.75rem;
+}
+
+.pagination a,
+.pagination span {
+  min-width: 4.5rem;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vz-color-purple-300, #c6a7ff);
+  font-size: var(--vz-text-sm);
+  font-weight: var(--vz-font-weight-bold);
+  text-decoration: none;
+  border: 1px solid rgb(166 107 255 / 28%);
+  border-radius: 0.65rem;
+}
+
+.pagination span[aria-disabled="true"] {
+  color: var(--vz-color-text-tertiary);
+  opacity: 0.55;
+}
+
+.pagination strong {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-xs);
+}
+
+.pagination a:hover,
+.pagination a:focus-visible {
+  background: rgb(166 107 255 / 10%);
+  outline: 2px solid var(--vz-color-purple-400);
+  outline-offset: 2px;
+}
+
+.loading,
+.error {
+  padding: 0.85rem;
+  color: var(--vz-color-text-secondary);
+  border: 1px solid var(--vz-color-border-default);
+  border-radius: 0.8rem;
+}
+
+.error {
+  display: grid;
+  gap: 0.45rem;
+  background: rgb(255 79 111 / 7%);
+  border-color: rgb(255 79 111 / 30%);
+}
+
+.error button {
+  min-height: 2.75rem;
+  color: var(--vz-color-text-primary);
+  background: transparent;
+  border: 1px solid var(--vz-color-border-strong);
+  border-radius: 0.65rem;
+  cursor: pointer;
+}
+
+@media (min-width: 40rem) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

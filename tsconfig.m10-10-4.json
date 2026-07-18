@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/rewards/**/*.ts",
+    "src/features/rewards/**/*.tsx",
+    "src/app/(platform)/rewards/**/*.ts",
+    "src/app/(platform)/rewards/**/*.tsx",
+    "src/app/api/rewards/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

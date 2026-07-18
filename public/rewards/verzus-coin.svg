@@ -1,0 +1,13 @@
+<!-- VERZUS M10.1 ORIGINAL VERZUS COIN -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">VERZUS coin</title>
+  <desc id="desc">Gold VERZUS reward coin with green energy</desc>
+  <defs>
+    <radialGradient id="energy"><stop stop-color="#7fff45" stop-opacity=".75"/><stop offset="1" stop-color="#00ff87" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff08a"/><stop offset=".5" stop-color="#ffc400"/><stop offset="1" stop-color="#8a5300"/></linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="58" fill="url(#energy)"/>
+  <path d="M64 12 105 36v56L64 116 23 92V36Z" fill="#0c1115" stroke="url(#gold)" stroke-width="7"/>
+  <path d="M64 23 94 41v46l-30 18-30-18V41Z" fill="#171b21" stroke="#6f4c00" stroke-width="2"/>
+  <path d="m43 41 12 47h18l13-47H73l-9 33-9-33Z" fill="url(#gold)"/>
+</svg>
