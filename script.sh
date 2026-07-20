@@ -2,61 +2,56 @@
 set -Eeuo pipefail
 
 MODE="${1:-install}"
-SCRIPT_NAME="VERZUS_M10_10_8_Release_Readiness_Feature_Isolation_Packaging_NO_TESTS.sh"
-BACKUP_ROOT=".verzus-backups/m10-10-8-release-readiness-feature-isolation-packaging"
+SCRIPT_NAME="VERZUS_M11_11_2_Public_Profile_Permission_Boundaries_NO_TESTS.sh"
+BACKUP_ROOT=".verzus-backups/m11-11-2-public-profile-permissions"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP_DIR="${BACKUP_ROOT}/${STAMP}"
-ARCHIVE="${BACKUP_DIR}/verzus-m10-10-8-before.tar.gz"
-PAYLOAD_SHA256="922d24df023255fe949bb3d8ccfccecef35612eeb3c08f72e4cf5c6328d21523"
+ARCHIVE="${BACKUP_DIR}/verzus-m11-11-2-before.tar.gz"
 BACKUP_CREATED="false"
 INSTALL_COMPLETE="false"
-TEMP_PAYLOAD=""
 
 print_plan() {
   cat <<'PLAN'
-VERZUS M10.8 - Release Readiness, Feature Isolation and Immutable Packaging
+VERZUS M11.2 - Public Player Profile and Permission Boundaries
 
 KEEP
-  - M10.1 approved 390px Rewards hierarchy and original artwork
-  - M10.2 complete reward inventory and all reward lifecycle presentations
-  - M10.3 independent Zod-validated APIs, adapters and query caches
-  - M10.4 server-authoritative idempotent reward claiming
-  - M10.5 season progression, objectives, milestones and reward path
-  - M10.6 achievement detail and auditable reward history
-  - M10.7 widget isolation, controlled edge states, health and telemetry
-  - Existing shell, navigation, request IDs, backup and rollback conventions
+  - M11.1 own-profile composition, approved mobile hierarchy and local artwork
+  - Completed M10 Rewards and Progression domain
+  - Existing Player intel-card resources and shared profile primitives
+  - Current application shell, navigation, design tokens and route boundaries
+  - Read-only profile foundation and no-tests installation policy
 
 REUSE
-  - Existing Rewards routes, resources, claim ledger and audit references
-  - Existing application environment and release SHA values
-  - Existing Next.js standalone build configuration
-  - Existing M10 preview port 3122 and failure-injection routes
-  - Existing Zod, TanStack Query, CSS Module and telemetry patterns
+  - M11.1 identity, Crew, statistics, game identity, match and achievement types
+  - M11.1 responsive profile visual language
+  - Existing Badge, Image and Link primitives
+  - Existing /profile route as the private owner experience
+  - Existing long-name and missing-avatar safeguards
 
 REPLACE
-  - Ungated Rewards content with domain-level feature isolation
-  - Informal final review with one deterministic M10 review hub
-  - Unrecorded visual sign-off with an explicit approval manifest
-  - Manual source copying with checksum-addressed immutable packaging
+  - No M11.1 screen or route
+  - No existing public-player implementation
+  - No browser-decided field visibility
 
 DELETE
-  - No M10.1-M10.7 reward, progression, claim, history or reliability behavior
-  - No browser-authoritative reward granting
-  - No combined Rewards dashboard endpoint
-  - No Vitest execution during installation
-  - No Playwright execution during installation
-  - No automatic production promotion without explicit visual approval
+  - No Rewards, Crew, Leaderboard, Match or Profile foundation code
+  - No sensitive field sent to the public UI when policy denies access
+  - No public edit controls or fake relationship mutations
+  - No client-side permission authority
+  - No Vitest or Playwright execution during installation
 
 CREATE
-  - NEXT_PUBLIC_ENABLE_M10_REWARDS feature flag
-  - Reward feature gate preserving shell and unrelated domains
-  - M10 review hub covering normal, empty, failure, audit and isolation cases
-  - Explicit 390px, 768px and 1440px responsive review record
-  - Optional single-worker browser and visual checks
-  - Lean structural, ESLint and TypeScript verification
-  - Production build and approval-gated release command
-  - Immutable standalone artifact with SHA-256 manifest
-  - M10 rollback runbook and timestamped installer rollback archive
+  - Dynamic /players/[playerId] public-profile route
+  - Server-side viewer and privacy policy projection
+  - Distinct owner, friend, member, anonymous and blocked viewer modes
+  - Public, friends-only and private profile visibility enforcement
+  - Field-level controls for location, Crew, statistics, trust, matches, game handles, achievements and availability
+  - Full, limited and blocked public-profile presentations
+  - Long-name and missing-avatar public fixtures
+  - Server-side not-found handling for unknown players
+  - Own-profile link to the public representation
+  - Focused structural verifier, ESLint and TypeScript gate
+  - Timestamped backup, automatic failed-install restoration and rollback
 PLAN
 }
 
@@ -67,84 +62,49 @@ require_repo_root() {
   }
 }
 
-require_local_tools() {
-  [[ -x node_modules/.bin/eslint && -x node_modules/.bin/tsc ]] || {
-    echo "Error: local dependencies are unavailable. Run npm install, then rerun the installer."
-    exit 1
-  }
-}
-
-require_m10_7_prerequisite() {
+require_m11_1_prerequisite() {
   require_repo_root
 
   local required=(
     package.json
-    scripts/verify-m10-10-7.mjs
-    tsconfig.m10-10-7.json
-    src/features/rewards/foundation/ui/RewardsFoundationScreen.tsx
-    src/features/rewards/resources/ui/RewardsResourceScreen.tsx
-    src/features/rewards/claims/hooks/useRewardClaim.ts
-    src/features/rewards/telemetry/RewardTelemetry.tsx
-    src/app/api/health/rewards/route.ts
-    src/app/api/telemetry/rewards/route.ts
-    "src/app/(platform)/rewards/page.tsx"
+    scripts/verify-m11-11-1.mjs
+    src/features/profiles/foundation/model/player-profile.types.ts
+    src/features/profiles/foundation/mocks/player-profile.mock.ts
+    src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.tsx
+    src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.module.css
+    'src/app/(platform)/profile/page.tsx'
   )
 
   local file
   for file in "${required[@]}"; do
     [[ -f "$file" ]] || {
-      echo "Error: missing M10.7 prerequisite: $file"
+      echo "Error: missing M11.1 prerequisite: $file"
       exit 1
     }
   done
 
-  if [[ -f scripts/verify-m10-10-8.mjs ]] && \
-    grep -q 'data-m10-stage="10.8"' src/features/rewards/foundation/ui/RewardsFoundationScreen.tsx; then
-    echo "M10.8 already appears to be installed. Running its lean verifier instead."
-    npm run verify:m10:10.8
-    exit 0
-  fi
-
-  grep -q 'data-m10-stage="10.7"' \
-    src/features/rewards/foundation/ui/RewardsFoundationScreen.tsx || {
-      echo "Error: M10.7 foundation stage marker was not found."
-      exit 1
-    }
-
-  grep -q 'data-m10-stage="10.7"' \
-    src/features/rewards/resources/ui/RewardsResourceScreen.tsx || {
-      echo "Error: M10.7 resource stage marker was not found."
-      exit 1
-    }
-
-  echo "Running M10.7 prerequisite marker verification..."
-  node scripts/verify-m10-10-7.mjs
+  echo "Running M11.1 prerequisite marker verification..."
+  node scripts/verify-m11-11-1.mjs
 
   local owned_new_files=(
-    src/features/rewards/release/reward-release.config.ts
-    src/features/rewards/release/RewardFeatureGate.tsx
-    src/features/rewards/release/RewardFeatureGate.module.css
-    src/features/rewards/release/index.ts
-    "src/app/(platform)/rewards/layout.tsx"
-    "src/app/(preview)/m10-rewards-review/page.tsx"
-    "src/app/(preview)/m10-rewards-review/review.module.css"
-    tests/e2e/m10/m10-rewards-release.spec.ts
-    tests/visual/m10-rewards.visual.spec.ts
-    playwright.m10.config.ts
-    scripts/verify-m10-10-8.mjs
-    scripts/package-m10-release.mjs
-    scripts/approve-m10-visuals.mjs
-    docs/milestones/M10/m10-10-8-release-readiness-feature-isolation-packaging.md
-    docs/milestones/M10/m10-reference-approval.json
-    docs/runbooks/m10-reward-rollback.md
-    tsconfig.m10-10-8.json
+    src/features/profiles/public-profile/model/public-player-profile.types.ts
+    src/features/profiles/public-profile/mocks/public-player-profile.mock.ts
+    src/features/profiles/public-profile/server/public-profile-policy.ts
+    src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.tsx
+    src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.module.css
+    src/features/profiles/public-profile/ui/index.ts
+    src/features/profiles/public-profile/index.ts
+    'src/app/(platform)/players/[playerId]/page.tsx'
+    'src/app/(platform)/players/[playerId]/loading.tsx'
+    'src/app/(platform)/players/[playerId]/error.tsx'
+    'src/app/(platform)/players/[playerId]/not-found.tsx'
+    docs/milestones/M11/m11-11-2-public-profile-permissions.md
+    scripts/verify-m11-11-2.mjs
+    tsconfig.m11-11-2.json
   )
 
   for file in "${owned_new_files[@]}"; do
-    if [[ "$file" == "docs/milestones/M10/m10-reference-approval.json" ]]; then
-      continue
-    fi
-    if [[ -f "$file" ]] && ! grep -q 'VERZUS M10.8\|M10.8' "$file"; then
+    if [[ -f "$file" ]] && ! grep -q 'VERZUS M11.2\|M11.2 —' "$file"; then
       echo "Error: refusing to overwrite unowned file: $file"
       exit 1
     fi
@@ -154,40 +114,36 @@ require_m10_7_prerequisite() {
 backup_current_state() {
   mkdir -p "$BACKUP_DIR"
 
-  local paths=(
-    .env.example
+  local candidates=(
     package.json
-    src/features/rewards/index.ts
-    src/features/rewards/foundation/ui/RewardsFoundationScreen.tsx
-    src/features/rewards/resources/ui/RewardsResourceScreen.tsx
-    src/app/api/health/rewards/route.ts
+    src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.tsx
+    src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.module.css
+    src/features/profiles/public-profile/model/public-player-profile.types.ts
+    src/features/profiles/public-profile/mocks/public-player-profile.mock.ts
+    src/features/profiles/public-profile/server/public-profile-policy.ts
+    src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.tsx
+    src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.module.css
+    src/features/profiles/public-profile/ui/index.ts
+    src/features/profiles/public-profile/index.ts
+    'src/app/(platform)/players/[playerId]/page.tsx'
+    'src/app/(platform)/players/[playerId]/loading.tsx'
+    'src/app/(platform)/players/[playerId]/error.tsx'
+    'src/app/(platform)/players/[playerId]/not-found.tsx'
+    docs/milestones/M11/m11-11-2-public-profile-permissions.md
+    scripts/verify-m11-11-2.mjs
+    tsconfig.m11-11-2.json
   )
 
-  local optional=(
-    src/features/rewards/release
-    "src/app/(platform)/rewards/layout.tsx"
-    "src/app/(preview)/m10-rewards-review"
-    tests/e2e/m10
-    tests/visual/m10-rewards.visual.spec.ts
-    playwright.m10.config.ts
-    scripts/verify-m10-10-8.mjs
-    scripts/package-m10-release.mjs
-    scripts/approve-m10-visuals.mjs
-    docs/milestones/M10/m10-10-8-release-readiness-feature-isolation-packaging.md
-    docs/milestones/M10/m10-reference-approval.json
-    docs/runbooks/m10-reward-rollback.md
-    tsconfig.m10-10-8.json
-  )
-
+  local paths=()
   local file
-  for file in "${optional[@]}"; do
-    [[ -e "$file" ]] && paths+=("$file")
+  for file in "${candidates[@]}"; do
+    [[ -f "$file" ]] && paths+=("$file")
   done
 
   tar -czf "$ARCHIVE" "${paths[@]}"
 
   cat > "$BACKUP_DIR/manifest.txt" <<MANIFEST
-VERZUS M10.8 backup
+VERZUS M11.2 backup
 Created: $(date -Iseconds)
 Branch: $(git branch --show-current 2>/dev/null || echo unavailable)
 Commit: $(git rev-parse HEAD 2>/dev/null || echo unavailable)
@@ -199,44 +155,43 @@ MANIFEST
   echo "Rollback archive created: $ARCHIVE"
 }
 
-remove_m10_8_files() {
-  rm -rf \
-    src/features/rewards/release \
-    "src/app/(preview)/m10-rewards-review" \
-    tests/e2e/m10
-
+remove_m11_2_files() {
   rm -f \
-    "src/app/(platform)/rewards/layout.tsx" \
-    tests/visual/m10-rewards.visual.spec.ts \
-    playwright.m10.config.ts \
-    scripts/verify-m10-10-8.mjs \
-    scripts/package-m10-release.mjs \
-    scripts/approve-m10-visuals.mjs \
-    docs/milestones/M10/m10-10-8-release-readiness-feature-isolation-packaging.md \
-    docs/milestones/M10/m10-reference-approval.json \
-    docs/runbooks/m10-reward-rollback.md \
-    tsconfig.m10-10-8.json \
-    tsconfig.m10-10-8.tsbuildinfo
+    src/features/profiles/public-profile/model/public-player-profile.types.ts \
+    src/features/profiles/public-profile/mocks/public-player-profile.mock.ts \
+    src/features/profiles/public-profile/server/public-profile-policy.ts \
+    src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.tsx \
+    src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.module.css \
+    src/features/profiles/public-profile/ui/index.ts \
+    src/features/profiles/public-profile/index.ts \
+    'src/app/(platform)/players/[playerId]/page.tsx' \
+    'src/app/(platform)/players/[playerId]/loading.tsx' \
+    'src/app/(platform)/players/[playerId]/error.tsx' \
+    'src/app/(platform)/players/[playerId]/not-found.tsx' \
+    docs/milestones/M11/m11-11-2-public-profile-permissions.md \
+    scripts/verify-m11-11-2.mjs \
+    tsconfig.m11-11-2.json
+
+  rmdir 'src/app/(platform)/players/[playerId]' 2>/dev/null || true
+  rmdir 'src/app/(platform)/players' 2>/dev/null || true
+  rmdir src/features/profiles/public-profile/model 2>/dev/null || true
+  rmdir src/features/profiles/public-profile/mocks 2>/dev/null || true
+  rmdir src/features/profiles/public-profile/server 2>/dev/null || true
+  rmdir src/features/profiles/public-profile/ui 2>/dev/null || true
+  rmdir src/features/profiles/public-profile 2>/dev/null || true
 }
 
 restore_archive() {
   local archive="$1"
-  remove_m10_8_files
+  remove_m11_2_files
   tar -xzf "$archive"
-}
-
-cleanup_temp() {
-  if [[ -n "$TEMP_PAYLOAD" && -f "$TEMP_PAYLOAD" ]]; then
-    rm -f "$TEMP_PAYLOAD"
-  fi
 }
 
 on_error() {
   local code=$?
-  cleanup_temp
   if [[ "$MODE" == "install" && "$BACKUP_CREATED" == "true" && "$INSTALL_COMPLETE" != "true" ]]; then
     echo
-    echo "M10.8 installation failed. Restoring the pre-install archive..."
+    echo "M11.2 installation failed. Restoring the pre-install archive..."
     restore_archive "$ARCHIVE"
     echo "Restored: $ARCHIVE"
   fi
@@ -244,206 +199,2048 @@ on_error() {
 }
 
 trap on_error ERR
-trap cleanup_temp EXIT
 
-decode_payload() {
-  TEMP_PAYLOAD="$(mktemp "${TMPDIR:-/tmp}/verzus-m10-10-8.XXXXXX.tar.gz")"
+write_types() {
+  mkdir -p src/features/profiles/public-profile/model
 
-  sed -n '/^__VERZUS_PAYLOAD_BELOW__$/,$p' "$0" | tail -n +2 | base64 --decode > "$TEMP_PAYLOAD"
+  cat > src/features/profiles/public-profile/model/public-player-profile.types.ts <<'EOF'
+// VERZUS M11.2 PUBLIC PROFILE TYPES AND PERMISSION CONTRACT
 
-  local actual
-  actual="$(sha256sum "$TEMP_PAYLOAD" | awk '{print $1}')"
-  if [[ "$actual" != "$PAYLOAD_SHA256" ]]; then
-    echo "Error: embedded M10.8 payload checksum mismatch."
-    exit 1
-  fi
+import type {
+  PlayerAchievementPreview,
+  PlayerCrewIdentity,
+  PlayerMatchResult,
+  PlayerProfileStats,
+  PlayerProfileVisibility,
+} from "../../foundation";
+
+export const publicProfileViewerModes = [
+  "anonymous",
+  "member",
+  "friend",
+  "owner",
+  "blocked",
+] as const;
+
+export type PublicProfileViewerMode = (typeof publicProfileViewerModes)[number];
+export type PublicProfileAccess = "full" | "limited" | "blocked";
+export type ProfileFieldAudience = "public" | "friends" | "private";
+
+export type PublicProfileIdentityRecord = {
+  id: string;
+  displayName: string;
+  handle: string;
+  title: string;
+  bio: string;
+  locationLabel: string;
+  avatarSrc: string | null;
+  avatarAlt: string;
+  bannerSrc: string;
+  verified: boolean;
+  profileVisibility: PlayerProfileVisibility;
+  joinedLabel: string;
+};
+
+export type PublicProfileGameRecord = {
+  id: string;
+  gameLabel: string;
+  handle: string;
+  platformLabel: string;
+  rankLabel: string;
+  recordLabel: string;
+  verified: boolean;
+};
+
+export type PublicProfileMatchRecord = {
+  id: string;
+  opponentLabel: string;
+  competitionLabel: string;
+  gameLabel: string;
+  scoreLabel: string;
+  result: PlayerMatchResult;
+  playedAtLabel: string;
+  href: string;
+};
+
+export type PublicProfileAvailabilityRecord = {
+  state: "available" | "limited" | "unavailable";
+  publicLabel: string;
+  privateDetail: string;
+  nextWindowLabel: string;
+};
+
+export type PublicProfilePrivacyPolicy = {
+  location: ProfileFieldAudience;
+  crew: ProfileFieldAudience;
+  statistics: ProfileFieldAudience;
+  trustScore: ProfileFieldAudience;
+  matchHistory: ProfileFieldAudience;
+  gameHandles: ProfileFieldAudience;
+  achievements: ProfileFieldAudience;
+  availability: ProfileFieldAudience;
+};
+
+export type PublicPlayerProfileRecord = {
+  identity: PublicProfileIdentityRecord;
+  crew: PlayerCrewIdentity | null;
+  stats: PlayerProfileStats;
+  games: readonly PublicProfileGameRecord[];
+  recentMatches: readonly PublicProfileMatchRecord[];
+  achievements: readonly PlayerAchievementPreview[];
+  availability: PublicProfileAvailabilityRecord;
+  privacy: PublicProfilePrivacyPolicy;
+};
+
+export type PublicProfilePermissions = {
+  canEdit: boolean;
+  canViewLocation: boolean;
+  canViewCrew: boolean;
+  canViewStatistics: boolean;
+  canViewTrustScore: boolean;
+  canViewMatchHistory: boolean;
+  canViewGameHandles: boolean;
+  canViewAchievements: boolean;
+  canViewAvailability: boolean;
+};
+
+export type PublicPlayerIdentityView = {
+  id: string;
+  displayName: string;
+  handle: string;
+  title: string;
+  bio: string | null;
+  locationLabel: string | null;
+  avatarSrc: string | null;
+  avatarAlt: string;
+  bannerSrc: string;
+  verified: boolean;
+  visibility: PlayerProfileVisibility;
+  joinedLabel: string;
+};
+
+export type PublicGameIdentityView = Omit<PublicProfileGameRecord, "handle"> & {
+  handle: string | null;
+};
+
+export type PublicAvailabilityView = {
+  state: PublicProfileAvailabilityRecord["state"];
+  label: string;
+  detail: string | null;
+  nextWindowLabel: string | null;
+};
+
+export type PublicPlayerProfileViewModel = {
+  access: PublicProfileAccess;
+  viewerMode: PublicProfileViewerMode;
+  identity: PublicPlayerIdentityView;
+  permissions: PublicProfilePermissions;
+  crew: PlayerCrewIdentity | null;
+  stats: Omit<PlayerProfileStats, "trustScore"> & { trustScore: number | null } | null;
+  games: readonly PublicGameIdentityView[];
+  recentMatches: readonly PublicProfileMatchRecord[];
+  achievements: readonly PlayerAchievementPreview[];
+  availability: PublicAvailabilityView | null;
+  redactedFields: readonly string[];
+};
+EOF
 }
 
-extract_payload() {
-  decode_payload
-  tar -xzf "$TEMP_PAYLOAD" -C .
+write_mocks() {
+  mkdir -p src/features/profiles/public-profile/mocks
+
+  cat > src/features/profiles/public-profile/mocks/public-player-profile.mock.ts <<'EOF'
+// VERZUS M11.2 DETERMINISTIC PUBLIC PLAYER RECORDS
+
+import type { PublicPlayerProfileRecord } from "../model/public-player-profile.types";
+
+const baseMatches = [
+  {
+    id: "match-prismo-9076",
+    opponentLabel: "Team Alpha",
+    competitionLabel: "Weekly Elite Pool",
+    gameLabel: "EA FC",
+    scoreLabel: "2-0",
+    result: "win" as const,
+    playedAtLabel: "2 hours ago",
+    href: "/matches/match-prismo-9076",
+  },
+  {
+    id: "match-prismo-8190",
+    opponentLabel: "Night Owls",
+    competitionLabel: "Xenon Crew Series",
+    gameLabel: "EA FC",
+    scoreLabel: "1-2",
+    result: "loss" as const,
+    playedAtLabel: "1 day ago",
+    href: "/matches/match-prismo-8190",
+  },
+  {
+    id: "match-prismo-7481",
+    opponentLabel: "Apex Crew",
+    competitionLabel: "COD Mobile Clash",
+    gameLabel: "COD Mobile",
+    scoreLabel: "3-1",
+    result: "win" as const,
+    playedAtLabel: "2 days ago",
+    href: "/matches/match-prismo-7481",
+  },
+] as const;
+
+const baseGames = [
+  {
+    id: "identity-eafc",
+    gameLabel: "EA FC",
+    handle: "Prismo_PS",
+    platformLabel: "PlayStation",
+    rankLabel: "Elite Division",
+    recordLabel: "128-36",
+    verified: true,
+  },
+  {
+    id: "identity-codm",
+    gameLabel: "COD Mobile",
+    handle: "PrismoX",
+    platformLabel: "Mobile",
+    rankLabel: "Legendary",
+    recordLabel: "64-28",
+    verified: true,
+  },
+  {
+    id: "identity-clash",
+    gameLabel: "Clash Royale",
+    handle: "PrismoCR",
+    platformLabel: "Mobile",
+    rankLabel: "Ultimate Champion",
+    recordLabel: "17-11",
+    verified: false,
+  },
+] as const;
+
+const baseAchievements = [
+  {
+    id: "achievement-first-blood",
+    title: "First blood",
+    rarity: "rare" as const,
+    progressLabel: "Unlocked",
+    unlocked: true,
+  },
+  {
+    id: "achievement-weekly-warrior",
+    title: "Weekly warrior",
+    rarity: "epic" as const,
+    progressLabel: "80%",
+    unlocked: false,
+  },
+  {
+    id: "achievement-tournament-contender",
+    title: "Tournament contender",
+    rarity: "legendary" as const,
+    progressLabel: "50%",
+    unlocked: false,
+  },
+] as const;
+
+const prismo: PublicPlayerProfileRecord = {
+  identity: {
+    id: "player-prismo",
+    displayName: "Prismo",
+    handle: "@prismo",
+    title: "Competitive warrior",
+    bio: "EA FC competitor, Crew contributor and verified VERZUS player focused on clean wins and consistent improvement.",
+    locationLabel: "Lagos, Nigeria",
+    avatarSrc: "/profiles/prismo-avatar.svg",
+    avatarAlt: "Prismo profile avatar",
+    bannerSrc: "/profiles/prismo-banner.svg",
+    verified: true,
+    profileVisibility: "public",
+    joinedLabel: "Joined November 2024",
+  },
+  crew: {
+    id: "crew-xenon-esports",
+    name: "Xenon Esports",
+    tag: "XEN",
+    roleLabel: "Captain",
+    href: "/crews/crew-xenon-esports",
+  },
+  stats: {
+    matches: 312,
+    wins: 209,
+    losses: 91,
+    draws: 12,
+    winRateLabel: "67%",
+    rating: 2184,
+    weeklyRank: 23,
+    points: 9840,
+    trustScore: 92,
+    currentStreakLabel: "4W",
+  },
+  games: baseGames,
+  recentMatches: baseMatches,
+  achievements: baseAchievements,
+  availability: {
+    state: "available",
+    publicLabel: "Available for competition",
+    privateDetail: "Open to ranked EA FC matches and Crew fixtures.",
+    nextWindowLabel: "Today, 18:00-23:00 WAT",
+  },
+  privacy: {
+    location: "public",
+    crew: "public",
+    statistics: "public",
+    trustScore: "public",
+    matchHistory: "public",
+    gameHandles: "friends",
+    achievements: "public",
+    availability: "friends",
+  },
+};
+
+const rivalKing: PublicPlayerProfileRecord = {
+  ...prismo,
+  identity: {
+    ...prismo.identity,
+    id: "player-rivalking",
+    displayName: "RivalKing",
+    handle: "@rivalking",
+    title: "Calculated finisher",
+    bio: "Ranked EA FC player known for controlled possession and late-match pressure.",
+    locationLabel: "Abuja, Nigeria",
+    avatarSrc: null,
+    avatarAlt: "RivalKing avatar",
+    joinedLabel: "Joined January 2025",
+  },
+  crew: {
+    id: "crew-nova",
+    name: "Nova",
+    tag: "NO",
+    roleLabel: "Member",
+    href: "/crews/crew-nova",
+  },
+  stats: {
+    ...prismo.stats,
+    matches: 296,
+    wins: 213,
+    losses: 75,
+    draws: 8,
+    winRateLabel: "72%",
+    rating: 2310,
+    weeklyRank: 2,
+    points: 24330,
+    trustScore: 95,
+    currentStreakLabel: "2W",
+  },
+};
+
+const ghosty: PublicPlayerProfileRecord = {
+  ...prismo,
+  identity: {
+    ...prismo.identity,
+    id: "player-ghosty",
+    displayName: "Ghosty",
+    handle: "@ghosty",
+    title: "Clutch specialist",
+    bio: "Competitive player profile shared with approved friends.",
+    locationLabel: "Accra, Ghana",
+    profileVisibility: "friends",
+  },
+  privacy: {
+    location: "friends",
+    crew: "friends",
+    statistics: "friends",
+    trustScore: "friends",
+    matchHistory: "friends",
+    gameHandles: "friends",
+    achievements: "friends",
+    availability: "friends",
+  },
+};
+
+const privatePlayer: PublicPlayerProfileRecord = {
+  ...prismo,
+  identity: {
+    ...prismo.identity,
+    id: "player-private",
+    displayName: "Cipher",
+    handle: "@cipher",
+    title: "Private competitor",
+    bio: "This biography must not be exposed to unauthorized viewers.",
+    locationLabel: "Private location",
+    avatarSrc: null,
+    avatarAlt: "Cipher avatar",
+    profileVisibility: "private",
+  },
+  crew: null,
+  privacy: {
+    location: "private",
+    crew: "private",
+    statistics: "private",
+    trustScore: "private",
+    matchHistory: "private",
+    gameHandles: "private",
+    achievements: "private",
+    availability: "private",
+  },
+};
+
+const longNamePlayer: PublicPlayerProfileRecord = {
+  ...rivalKing,
+  identity: {
+    ...rivalKing.identity,
+    id: "player-long-name",
+    displayName: "The Relentless Continental Champion",
+    handle: "@relentless-continental-champion",
+    title: "Long-content resilience preview",
+    avatarSrc: null,
+    avatarAlt: "Long-name player avatar",
+  },
+};
+
+const records: Record<string, PublicPlayerProfileRecord> = {
+  [prismo.identity.id]: prismo,
+  [rivalKing.identity.id]: rivalKing,
+  [ghosty.identity.id]: ghosty,
+  [privatePlayer.identity.id]: privatePlayer,
+  [longNamePlayer.identity.id]: longNamePlayer,
+};
+
+export function getPublicPlayerProfileRecord(playerId: string): PublicPlayerProfileRecord | null {
+  return records[playerId] ?? null;
 }
 
-patch_existing_files() {
+export const publicPlayerProfileIds = Object.freeze(Object.keys(records));
+EOF
+}
+
+write_policy() {
+  mkdir -p src/features/profiles/public-profile/server
+
+  cat > src/features/profiles/public-profile/server/public-profile-policy.ts <<'EOF'
+// VERZUS M11.2 SERVER-AUTHORITATIVE PUBLIC PROFILE PROJECTION
+
+import type {
+  ProfileFieldAudience,
+  PublicPlayerProfileRecord,
+  PublicPlayerProfileViewModel,
+  PublicProfilePermissions,
+  PublicProfileViewerMode,
+} from "../model/public-player-profile.types";
+import { publicProfileViewerModes } from "../model/public-player-profile.types";
+
+function first(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export function parsePublicProfileViewerMode(
+  value: string | string[] | undefined,
+): PublicProfileViewerMode {
+  const candidate = first(value);
+  return publicProfileViewerModes.includes(candidate as PublicProfileViewerMode)
+    ? (candidate as PublicProfileViewerMode)
+    : "member";
+}
+
+function audienceAllows(audience: ProfileFieldAudience, viewerMode: PublicProfileViewerMode): boolean {
+  if (viewerMode === "owner") return true;
+  if (audience === "public") return viewerMode !== "blocked";
+  if (audience === "friends") return viewerMode === "friend";
+  return false;
+}
+
+function derivePermissions(
+  record: PublicPlayerProfileRecord,
+  viewerMode: PublicProfileViewerMode,
+): PublicProfilePermissions {
+  if (viewerMode === "blocked") {
+    return {
+      canEdit: false,
+      canViewLocation: false,
+      canViewCrew: false,
+      canViewStatistics: false,
+      canViewTrustScore: false,
+      canViewMatchHistory: false,
+      canViewGameHandles: false,
+      canViewAchievements: false,
+      canViewAvailability: false,
+    };
+  }
+
+  const profileAccess =
+    record.identity.profileVisibility === "public" ||
+    viewerMode === "owner" ||
+    (record.identity.profileVisibility === "friends" && viewerMode === "friend");
+
+  if (!profileAccess) {
+    return {
+      canEdit: false,
+      canViewLocation: false,
+      canViewCrew: false,
+      canViewStatistics: false,
+      canViewTrustScore: false,
+      canViewMatchHistory: false,
+      canViewGameHandles: false,
+      canViewAchievements: false,
+      canViewAvailability: false,
+    };
+  }
+
+  return {
+    canEdit: viewerMode === "owner",
+    canViewLocation: audienceAllows(record.privacy.location, viewerMode),
+    canViewCrew: audienceAllows(record.privacy.crew, viewerMode),
+    canViewStatistics: audienceAllows(record.privacy.statistics, viewerMode),
+    canViewTrustScore: audienceAllows(record.privacy.trustScore, viewerMode),
+    canViewMatchHistory: audienceAllows(record.privacy.matchHistory, viewerMode),
+    canViewGameHandles: audienceAllows(record.privacy.gameHandles, viewerMode),
+    canViewAchievements: audienceAllows(record.privacy.achievements, viewerMode),
+    canViewAvailability: audienceAllows(record.privacy.availability, viewerMode),
+  };
+}
+
+export function projectPublicPlayerProfile(
+  record: PublicPlayerProfileRecord,
+  viewerMode: PublicProfileViewerMode,
+): PublicPlayerProfileViewModel {
+  const permissions = derivePermissions(record, viewerMode);
+  const blocked = viewerMode === "blocked";
+  const hasProfileAccess =
+    !blocked &&
+    (record.identity.profileVisibility === "public" ||
+      viewerMode === "owner" ||
+      (record.identity.profileVisibility === "friends" && viewerMode === "friend"));
+  const access = blocked ? "blocked" : hasProfileAccess ? "full" : "limited";
+
+  const redactedFields = Object.entries({
+    location: permissions.canViewLocation,
+    crew: permissions.canViewCrew,
+    statistics: permissions.canViewStatistics,
+    trust: permissions.canViewTrustScore,
+    matches: permissions.canViewMatchHistory,
+    gameHandles: permissions.canViewGameHandles,
+    achievements: permissions.canViewAchievements,
+    availability: permissions.canViewAvailability,
+  })
+    .filter(([, allowed]) => !allowed)
+    .map(([field]) => field);
+
+  return {
+    access,
+    viewerMode,
+    identity: {
+      id: record.identity.id,
+      displayName: record.identity.displayName,
+      handle: record.identity.handle,
+      title: record.identity.title,
+      bio: hasProfileAccess ? record.identity.bio : null,
+      locationLabel: permissions.canViewLocation ? record.identity.locationLabel : null,
+      avatarSrc: blocked ? null : record.identity.avatarSrc,
+      avatarAlt: record.identity.avatarAlt,
+      bannerSrc: record.identity.bannerSrc,
+      verified: blocked ? false : record.identity.verified,
+      visibility: record.identity.profileVisibility,
+      joinedLabel: record.identity.joinedLabel,
+    },
+    permissions,
+    crew: permissions.canViewCrew ? record.crew : null,
+    stats: permissions.canViewStatistics
+      ? {
+          ...record.stats,
+          trustScore: permissions.canViewTrustScore ? record.stats.trustScore : null,
+        }
+      : null,
+    games: hasProfileAccess
+      ? record.games.map((game) => ({
+          ...game,
+          handle: permissions.canViewGameHandles ? game.handle : null,
+        }))
+      : [],
+    recentMatches: permissions.canViewMatchHistory ? record.recentMatches : [],
+    achievements: permissions.canViewAchievements ? record.achievements : [],
+    availability: hasProfileAccess
+      ? {
+          state: record.availability.state,
+          label: record.availability.publicLabel,
+          detail: permissions.canViewAvailability ? record.availability.privateDetail : null,
+          nextWindowLabel: permissions.canViewAvailability
+            ? record.availability.nextWindowLabel
+            : null,
+        }
+      : null,
+    redactedFields,
+  };
+}
+EOF
+}
+
+write_ui() {
+  mkdir -p src/features/profiles/public-profile/ui
+
+  cat > src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.tsx <<'EOF'
+// VERZUS M11.2 PUBLIC PROFILE PRESENTATION
+
+import Image from "next/image";
+import Link from "next/link";
+
+import { Badge } from "@/components/primitives/badge";
+
+import type {
+  PublicGameIdentityView,
+  PublicPlayerProfileViewModel,
+  PublicProfileMatchRecord,
+} from "../model/public-player-profile.types";
+import styles from "./PlayerPublicProfileScreen.module.css";
+
+const numberFormatter = new Intl.NumberFormat("en-US");
+
+function initialsFor(displayName: string): string {
+  return (
+    displayName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join("") || "P"
+  );
+}
+
+function PublicAvatar({ model }: { model: PublicPlayerProfileViewModel }) {
+  return (
+    <div className={styles.avatarWrap}>
+      {model.identity.avatarSrc ? (
+        <Image
+          alt={model.identity.avatarAlt}
+          className={styles.avatar}
+          height={112}
+          priority
+          src={model.identity.avatarSrc}
+          width={112}
+        />
+      ) : (
+        <span
+          aria-label={`${model.identity.displayName} avatar fallback`}
+          className={styles.avatarFallback}
+        >
+          {initialsFor(model.identity.displayName)}
+        </span>
+      )}
+      {model.identity.verified ? (
+        <span aria-label="Verified player" className={styles.verifiedMark}>
+          ✓
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+function AccessNotice({ model }: { model: PublicPlayerProfileViewModel }) {
+  const copy =
+    model.viewerMode === "owner"
+      ? "You are reviewing the public representation of your profile. Private controls remain on your own profile."
+      : model.viewerMode === "friend"
+        ? "Friend-level fields are visible because the server-authorized viewer relationship permits them."
+        : "Only fields allowed by this player's privacy policy are included in this public view.";
+
+  return (
+    <aside className={styles.accessNotice} data-access={model.access}>
+      <div>
+        <strong>{model.access === "full" ? "Permission-aware profile" : "Restricted profile"}</strong>
+        <p>{copy}</p>
+      </div>
+      <Badge tone={model.access === "full" ? "positive" : "warning"} variant="soft">
+        {model.viewerMode}
+      </Badge>
+    </aside>
+  );
+}
+
+function RestrictedProfile({ model }: { model: PublicPlayerProfileViewModel }) {
+  const blocked = model.access === "blocked";
+
+  return (
+    <main
+      className={styles.page}
+      data-m11-stage="11.2"
+      data-profile-access={model.access}
+      data-profile-scope="public"
+    >
+      <header className={styles.pageHeader}>
+        <div>
+          <p className={styles.eyebrow}>Season Zero · Public profile</p>
+          <h1>Player profile</h1>
+        </div>
+        <Badge tone={blocked ? "negative" : "warning"} variant="outline">
+          {blocked ? "Blocked" : model.identity.visibility}
+        </Badge>
+      </header>
+
+      <section className={styles.restrictedCard}>
+        <span aria-hidden="true" className={styles.restrictedGlyph}>
+          {blocked ? "⊘" : "◇"}
+        </span>
+        <p>{model.identity.handle}</p>
+        <h2>{blocked ? "Profile unavailable" : "This profile is restricted"}</h2>
+        <p>
+          {blocked
+            ? "This viewer relationship cannot access the player profile. No private profile data was sent to this screen."
+            : "The player shares profile details only with approved viewers. Public identity is intentionally limited."}
+        </p>
+        <Link className={styles.secondaryAction} href="/leaderboards/weekly">
+          Return to leaderboards
+        </Link>
+      </section>
+    </main>
+  );
+}
+
+function StatPanel({ model }: { model: PublicPlayerProfileViewModel }) {
+  if (!model.stats) {
+    return (
+      <section className={styles.redactedPanel}>
+        <strong>Statistics are private</strong>
+        <p>The server projection did not include competitive statistics for this viewer.</p>
+      </section>
+    );
+  }
+
+  const items = [
+    ["Matches", numberFormatter.format(model.stats.matches)],
+    ["Win rate", model.stats.winRateLabel],
+    ["Rating", numberFormatter.format(model.stats.rating)],
+    ["Trust", model.stats.trustScore === null ? "Private" : `${model.stats.trustScore}`],
+  ] as const;
+
+  return (
+    <section aria-labelledby="public-stats-title" className={styles.panel} id="statistics">
+      <div className={styles.sectionHeading}>
+        <div>
+          <p>Confirmed record</p>
+          <h2 id="public-stats-title">Competitive statistics</h2>
+        </div>
+        <Badge tone="positive" variant="soft">
+          {model.stats.currentStreakLabel} streak
+        </Badge>
+      </div>
+      <dl className={styles.statGrid}>
+        {items.map(([label, value]) => (
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+      <div className={styles.recordLine}>
+        <span>{model.stats.wins} wins</span>
+        <span>{model.stats.losses} losses</span>
+        <span>{model.stats.draws} draws</span>
+        <span>#{model.stats.weeklyRank} weekly</span>
+      </div>
+    </section>
+  );
+}
+
+function GameRow({ game }: { game: PublicGameIdentityView }) {
+  return (
+    <li className={styles.gameRow}>
+      <span aria-hidden="true" className={styles.gameGlyph}>
+        {game.gameLabel.slice(0, 2).toUpperCase()}
+      </span>
+      <div>
+        <strong>{game.gameLabel}</strong>
+        <span>
+          {game.handle ?? "Handle hidden"} · {game.platformLabel}
+        </span>
+      </div>
+      <p>
+        <strong>{game.rankLabel}</strong>
+        <span>{game.verified ? "Verified" : "Pending"}</span>
+      </p>
+    </li>
+  );
+}
+
+function MatchRow({ match }: { match: PublicProfileMatchRecord }) {
+  const resultLabel = match.result === "win" ? "Victory" : match.result === "loss" ? "Defeat" : "Draw";
+
+  return (
+    <li>
+      <Link className={styles.matchRow} href={match.href}>
+        <span className={styles.matchResult} data-result={match.result}>
+          {resultLabel}
+        </span>
+        <div>
+          <strong>vs {match.opponentLabel}</strong>
+          <span>
+            {match.gameLabel} · {match.competitionLabel}
+          </span>
+        </div>
+        <p>
+          <strong>{match.scoreLabel}</strong>
+          <span>{match.playedAtLabel}</span>
+        </p>
+      </Link>
+    </li>
+  );
+}
+
+export function PlayerPublicProfileScreen({
+  model,
+}: {
+  model: PublicPlayerProfileViewModel;
+}) {
+  if (model.access !== "full") return <RestrictedProfile model={model} />;
+
+  return (
+    <main
+      className={styles.page}
+      data-m11-stage="11.2"
+      data-profile-access={model.access}
+      data-profile-scope="public"
+      data-viewer-mode={model.viewerMode}
+    >
+      <header className={styles.pageHeader}>
+        <div>
+          <p className={styles.eyebrow}>Season Zero · Public profile</p>
+          <h1>Player profile</h1>
+        </div>
+        <Badge tone="information" variant="outline">
+          Public view
+        </Badge>
+      </header>
+
+      <AccessNotice model={model} />
+
+      <section aria-labelledby="public-profile-name" className={styles.identityCard}>
+        <div className={styles.banner} style={{ backgroundImage: `url(${model.identity.bannerSrc})` }} />
+        <div className={styles.identityBody}>
+          <PublicAvatar model={model} />
+          <div className={styles.identityHeading}>
+            <div className={styles.nameRow}>
+              <h2 id="public-profile-name">{model.identity.displayName}</h2>
+              <Badge tone="special" variant="outline">
+                Public
+              </Badge>
+            </div>
+            <p className={styles.handle}>{model.identity.handle}</p>
+            <p className={styles.playerTitle}>{model.identity.title}</p>
+          </div>
+
+          <div className={styles.identityBadges}>
+            {model.identity.verified ? <Badge tone="positive">Verified</Badge> : null}
+            {model.identity.locationLabel ? (
+              <Badge tone="information" variant="outline">
+                {model.identity.locationLabel}
+              </Badge>
+            ) : null}
+            <Badge tone="special" variant="soft">
+              {model.identity.visibility}
+            </Badge>
+          </div>
+
+          {model.identity.bio ? <p className={styles.bio}>{model.identity.bio}</p> : null}
+
+          <div className={styles.profileActions}>
+            {model.permissions.canEdit ? (
+              <Link className={styles.primaryAction} href="/profile">
+                Open own profile
+              </Link>
+            ) : null}
+            {model.crew ? (
+              <Link className={styles.primaryAction} href={model.crew.href}>
+                View Crew
+              </Link>
+            ) : null}
+            <Link
+              className={styles.secondaryAction}
+              href={`/leaderboards/weekly?q=${encodeURIComponent(model.identity.displayName)}`}
+            >
+              Weekly ranking
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <nav aria-label="Public profile sections" className={styles.sectionNav}>
+        <a href="#overview">Overview</a>
+        <a href="#statistics">Stats</a>
+        <a href="#matches">Matches</a>
+        <a href="#achievements">Achievements</a>
+      </nav>
+
+      <StatPanel model={model} />
+
+      <div className={styles.contentGrid} id="overview">
+        <section aria-labelledby="public-availability-title" className={styles.panel}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <p>Competition readiness</p>
+              <h2 id="public-availability-title">Availability</h2>
+            </div>
+          </div>
+          {model.availability ? (
+            <div className={styles.availabilityCard}>
+              <strong>{model.availability.label}</strong>
+              <p>{model.availability.detail ?? "Exact availability is shared with approved friends."}</p>
+              {model.availability.nextWindowLabel ? <span>{model.availability.nextWindowLabel}</span> : null}
+            </div>
+          ) : (
+            <div className={styles.redactedInline}>Availability is private.</div>
+          )}
+        </section>
+
+        <section aria-labelledby="public-crew-title" className={styles.panel}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <p>Competitive team</p>
+              <h2 id="public-crew-title">Crew</h2>
+            </div>
+          </div>
+          {model.crew ? (
+            <Link className={styles.crewCard} href={model.crew.href}>
+              <span aria-hidden="true">{model.crew.tag}</span>
+              <div>
+                <strong>{model.crew.name}</strong>
+                <p>
+                  {model.crew.roleLabel} · {model.crew.tag}
+                </p>
+              </div>
+              <b>Open</b>
+            </Link>
+          ) : (
+            <div className={styles.redactedInline}>Crew membership is private or unavailable.</div>
+          )}
+        </section>
+
+        <section aria-labelledby="public-games-title" className={styles.panel}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <p>Connected platforms</p>
+              <h2 id="public-games-title">Game identities</h2>
+            </div>
+            {!model.permissions.canViewGameHandles ? <span>Handles hidden</span> : null}
+          </div>
+          <ul className={styles.list}>
+            {model.games.map((game) => (
+              <GameRow game={game} key={game.id} />
+            ))}
+          </ul>
+        </section>
+
+        <section aria-labelledby="public-matches-title" className={styles.panel} id="matches">
+          <div className={styles.sectionHeading}>
+            <div>
+              <p>Verified results</p>
+              <h2 id="public-matches-title">Recent matches</h2>
+            </div>
+          </div>
+          {model.permissions.canViewMatchHistory ? (
+            <ul className={styles.list}>
+              {model.recentMatches.map((match) => (
+                <MatchRow key={match.id} match={match} />
+              ))}
+            </ul>
+          ) : (
+            <div className={styles.redactedInline}>Match history is private.</div>
+          )}
+        </section>
+
+        <section aria-labelledby="public-achievements-title" className={styles.panel} id="achievements">
+          <div className={styles.sectionHeading}>
+            <div>
+              <p>Milestones</p>
+              <h2 id="public-achievements-title">Achievements</h2>
+            </div>
+          </div>
+          {model.permissions.canViewAchievements ? (
+            <ul className={styles.achievementList}>
+              {model.achievements.map((achievement) => (
+                <li data-rarity={achievement.rarity} key={achievement.id}>
+                  <span aria-hidden="true">✦</span>
+                  <div>
+                    <strong>{achievement.title}</strong>
+                    <p>{achievement.rarity}</p>
+                  </div>
+                  <b>{achievement.progressLabel}</b>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className={styles.redactedInline}>Achievements are private.</div>
+          )}
+        </section>
+      </div>
+
+      {model.redactedFields.length > 0 ? (
+        <aside className={styles.redactionSummary}>
+          <strong>Privacy protections active</strong>
+          <p>Hidden for this viewer: {model.redactedFields.join(", ")}.</p>
+        </aside>
+      ) : null}
+    </main>
+  );
+}
+EOF
+
+  cat > src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.module.css <<'EOF'
+/* VERZUS M11.2 PUBLIC PROFILE PRESENTATION */
+
+.page {
+  display: grid;
+  width: min(100%, 76rem);
+  min-width: 0;
+  gap: 1rem;
+  margin: 0 auto;
+  padding: 1rem 0 6.75rem;
+}
+
+.pageHeader,
+.sectionHeading,
+.nameRow,
+.recordLine,
+.profileActions,
+.accessNotice {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pageHeader > div,
+.sectionHeading > div,
+.identityHeading,
+.gameRow > div,
+.matchRow > div,
+.crewCard > div,
+.achievementList li > div {
+  min-width: 0;
+}
+
+.pageHeader h1,
+.pageHeader p,
+.identityHeading h2,
+.identityHeading p,
+.bio,
+.accessNotice p,
+.sectionHeading h2,
+.sectionHeading p,
+.availabilityCard p,
+.crewCard p,
+.gameRow p,
+.matchRow p,
+.achievementList p,
+.redactedPanel p,
+.redactedInline,
+.redactionSummary p,
+.restrictedCard p,
+.restrictedCard h2 {
+  margin: 0;
+}
+
+.pageHeader h1 {
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.8rem, 9vw, 2.8rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.eyebrow,
+.sectionHeading p {
+  color: var(--vz-color-purple-400);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.identityCard,
+.panel,
+.redactedPanel,
+.restrictedCard,
+.redactionSummary,
+.accessNotice {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 8%, rgb(136 81 255 / 12%), transparent 34%),
+    linear-gradient(145deg, rgb(25 31 37 / 98%), rgb(12 16 20 / 98%));
+  border: 1px solid rgb(177 132 255 / 16%);
+  border-radius: 1.25rem;
+  box-shadow: 0 1rem 2.6rem rgb(0 0 0 / 24%);
+}
+
+.accessNotice {
+  align-items: flex-start;
+  padding: 0.9rem 1rem;
+  border-left: 3px solid var(--vz-color-purple-400);
+}
+
+.accessNotice[data-access="limited"],
+.accessNotice[data-access="blocked"] {
+  border-left-color: #ffbc42;
+}
+
+.accessNotice p,
+.redactionSummary p,
+.restrictedCard p {
+  margin-top: 0.25rem;
+  color: var(--vz-color-text-secondary);
+  line-height: 1.5;
+}
+
+.banner {
+  min-height: 8.5rem;
+  background-color: #11131a;
+  background-position: center;
+  background-size: cover;
+  border-bottom: 1px solid rgb(177 132 255 / 18%);
+}
+
+.identityBody {
+  display: grid;
+  min-width: 0;
+  gap: 0.8rem;
+  padding: 0 1rem 1rem;
+}
+
+.avatarWrap {
+  position: relative;
+  width: 6.5rem;
+  height: 6.5rem;
+  margin-top: -3.25rem;
+}
+
+.avatar,
+.avatarFallback {
+  display: grid;
+  width: 6.5rem;
+  height: 6.5rem;
+  place-items: center;
+  object-fit: cover;
+  color: white;
+  font-family: var(--vz-font-display);
+  font-size: 2rem;
+  background: linear-gradient(135deg, #30125f, #111820 60%, #0ef0d2);
+  border: 4px solid rgb(12 16 20);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(170 115 255 / 56%), 0 0.9rem 2rem rgb(0 0 0 / 32%);
+}
+
+.verifiedMark {
+  position: absolute;
+  right: -0.1rem;
+  bottom: 0.45rem;
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  color: #04110e;
+  font-weight: 900;
+  background: var(--vz-color-green-400, #23f0a5);
+  border: 3px solid rgb(12 16 20);
+  border-radius: 50%;
+}
+
+.identityHeading {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.nameRow {
+  align-items: flex-start;
+}
+
+.identityHeading h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--vz-font-display);
+  font-size: clamp(2rem, 11vw, 3.6rem);
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+}
+
+.handle {
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-numeric);
+  font-size: var(--vz-text-sm);
+  overflow-wrap: anywhere;
+}
+
+.playerTitle {
+  color: var(--vz-color-purple-300, #c7a7ff);
+  font-weight: var(--vz-font-weight-bold);
+  text-transform: uppercase;
+}
+
+.identityBadges,
+.profileActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.bio {
+  max-width: 50rem;
+  color: var(--vz-color-text-secondary);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-grid;
+  min-height: 2.75rem;
+  place-items: center;
+  padding: 0.65rem 0.9rem;
+  color: white;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.7rem;
+}
+
+.primaryAction {
+  background: linear-gradient(135deg, #7d3eff, #5621b6);
+  border: 1px solid rgb(190 149 255 / 55%);
+}
+
+.secondaryAction {
+  background: rgb(255 255 255 / 4%);
+  border: 1px solid rgb(255 255 255 / 12%);
+}
+
+.primaryAction:focus-visible,
+.secondaryAction:focus-visible,
+.sectionNav a:focus-visible,
+.matchRow:focus-visible,
+.crewCard:focus-visible {
+  outline: 2px solid var(--vz-color-purple-300, #c7a7ff);
+  outline-offset: 3px;
+}
+
+.sectionNav {
+  display: grid;
+  grid-auto-columns: minmax(6.8rem, 1fr);
+  grid-auto-flow: column;
+  gap: 0.4rem;
+  padding: 0.45rem;
+  overflow-x: auto;
+  background: rgb(8 12 16 / 86%);
+  border: 1px solid rgb(177 132 255 / 14%);
+  border-radius: 0.9rem;
+  scrollbar-width: thin;
+}
+
+.sectionNav a {
+  display: grid;
+  min-height: 2.75rem;
+  place-items: center;
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+  font-weight: var(--vz-font-weight-bold);
+  text-decoration: none;
+  border-radius: 0.6rem;
+}
+
+.sectionNav a:first-child,
+.sectionNav a:hover {
+  color: white;
+  background: rgb(134 75 255 / 17%);
+}
+
+.panel,
+.redactedPanel,
+.redactionSummary {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.sectionHeading h2 {
+  font-family: var(--vz-font-display);
+  font-size: 1.08rem;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.sectionHeading > span {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.statGrid > div {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 0.8rem;
+  background: rgb(255 255 255 / 3%);
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0.8rem;
+}
+
+.statGrid dt {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-xs);
+  text-transform: uppercase;
+}
+
+.statGrid dd {
+  margin: 0;
+  font-family: var(--vz-font-numeric);
+  font-size: clamp(1.35rem, 7vw, 2rem);
+  font-weight: 800;
+}
+
+.recordLine {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+}
+
+.recordLine span:not(:last-child)::after {
+  content: "·";
+  margin-left: 0.75rem;
+  color: var(--vz-color-purple-400);
+}
+
+.contentGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.availabilityCard {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem;
+  background: rgb(0 255 163 / 5%);
+  border: 1px solid rgb(0 255 163 / 16%);
+  border-left: 3px solid var(--vz-color-green-400, #23f0a5);
+  border-radius: 0.8rem;
+}
+
+.availabilityCard p,
+.availabilityCard span,
+.crewCard p,
+.gameRow span,
+.gameRow p,
+.matchRow span,
+.achievementList p {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+}
+
+.crewCard {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.85rem;
+  color: inherit;
+  text-decoration: none;
+  background: rgb(134 75 255 / 6%);
+  border: 1px solid rgb(177 132 255 / 16%);
+  border-radius: 0.8rem;
+}
+
+.crewCard > span,
+.gameGlyph {
+  display: grid;
+  width: 3rem;
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--vz-color-purple-300, #c7a7ff);
+  font-family: var(--vz-font-display);
+  background: rgb(134 75 255 / 14%);
+  border: 1px solid rgb(177 132 255 / 30%);
+  border-radius: 0.7rem;
+}
+
+.crewCard strong,
+.crewCard p,
+.gameRow strong,
+.gameRow span,
+.matchRow strong,
+.matchRow span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.list,
+.achievementList {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.gameRow,
+.matchRow,
+.achievementList li {
+  display: grid;
+  align-items: center;
+  min-width: 0;
+  padding: 0.78rem;
+  background: rgb(255 255 255 / 2.7%);
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0.75rem;
+}
+
+.gameRow {
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 0.7rem;
+}
+
+.gameRow > p {
+  grid-column: 2;
+}
+
+.gameRow > p span,
+.gameRow > p strong {
+  display: block;
+}
+
+.matchRow {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.matchResult {
+  min-width: 3.7rem;
+  color: #ffcb5c !important;
+  font-size: var(--vz-text-xs) !important;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.matchResult[data-result="win"] {
+  color: var(--vz-color-green-400, #23f0a5) !important;
+}
+
+.matchResult[data-result="loss"] {
+  color: #ff6c7d !important;
+}
+
+.matchRow > p {
+  text-align: right;
+}
+
+.achievementList li {
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  gap: 0.7rem;
+}
+
+.achievementList li > span {
+  display: grid;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  color: #c7a7ff;
+  background: rgb(134 75 255 / 14%);
+  border-radius: 50%;
+}
+
+.achievementList li[data-rarity="legendary"] > span {
+  color: #ffd061;
+}
+
+.redactedInline,
+.redactedPanel {
+  color: var(--vz-color-text-secondary);
+  background: rgb(255 188 66 / 4%);
+  border-color: rgb(255 188 66 / 18%);
+}
+
+.redactionSummary {
+  border-left: 3px solid #ffbc42;
+}
+
+.restrictedCard {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: clamp(2rem, 10vw, 5rem) 1.25rem;
+  text-align: center;
+}
+
+.restrictedGlyph {
+  display: grid;
+  width: 5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  color: #ffbc42;
+  font-size: 2.5rem;
+  background: rgb(255 188 66 / 8%);
+  border: 1px solid rgb(255 188 66 / 24%);
+  border-radius: 50%;
+}
+
+.restrictedCard h2 {
+  max-width: 30rem;
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.7rem, 8vw, 2.8rem);
+  text-transform: uppercase;
+}
+
+.restrictedCard > p {
+  max-width: 36rem;
+}
+
+@media (min-width: 48rem) {
+  .page {
+    gap: 1.2rem;
+    padding: 1.5rem 0 3rem;
+  }
+
+  .identityBody {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 1.2rem;
+    padding: 0 1.4rem 1.4rem;
+  }
+
+  .avatarWrap {
+    grid-row: 1 / span 4;
+  }
+
+  .identityBadges,
+  .bio,
+  .profileActions {
+    grid-column: 2;
+  }
+
+  .contentGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gameRow {
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+  }
+
+  .gameRow > p {
+    grid-column: auto;
+    text-align: right;
+  }
+}
+
+@media (min-width: 64rem) {
+  .page {
+    grid-template-columns: minmax(0, 1.65fr) minmax(18rem, 0.75fr);
+    align-items: start;
+  }
+
+  .pageHeader,
+  .accessNotice,
+  .identityCard,
+  .sectionNav,
+  .redactionSummary,
+  .restrictedCard {
+    grid-column: 1 / -1;
+  }
+
+  .contentGrid {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primaryAction,
+  .secondaryAction,
+  .sectionNav a,
+  .matchRow,
+  .crewCard {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}
+EOF
+
+  cat > src/features/profiles/public-profile/ui/index.ts <<'EOF'
+// VERZUS M11.2 PUBLIC PROFILE UI EXPORTS
+export * from "./PlayerPublicProfileScreen";
+EOF
+
+  cat > src/features/profiles/public-profile/index.ts <<'EOF'
+// VERZUS M11.2 PUBLIC PROFILE EXPORTS
+export * from "./model/public-player-profile.types";
+export * from "./mocks/public-player-profile.mock";
+export * from "./server/public-profile-policy";
+export * from "./ui";
+EOF
+}
+
+write_routes() {
+  mkdir -p 'src/app/(platform)/players/[playerId]'
+
+  cat > 'src/app/(platform)/players/[playerId]/page.tsx' <<'EOF'
+// VERZUS M11.2 SERVER-AUTHORITATIVE PUBLIC PLAYER ROUTE
+
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import {
+  getPublicPlayerProfileRecord,
+  parsePublicProfileViewerMode,
+  PlayerPublicProfileScreen,
+  projectPublicPlayerProfile,
+} from "@/features/profiles/public-profile";
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ playerId: string }>;
+}): Promise<Metadata> {
+  const { playerId } = await params;
+  const record = getPublicPlayerProfileRecord(playerId);
+
+  if (!record) {
+    return {
+      title: "Player not found — VERZUS",
+      description: "The requested VERZUS player profile could not be found.",
+    };
+  }
+
+  return {
+    title: `${record.identity.displayName} — VERZUS`,
+    description: `View ${record.identity.displayName}'s permission-aware public VERZUS player profile.`,
+  };
+}
+
+export default async function PublicPlayerPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ playerId: string }>;
+  searchParams: Promise<{ viewer?: string | string[] }>;
+}) {
+  const [{ playerId }, query] = await Promise.all([params, searchParams]);
+  const record = getPublicPlayerProfileRecord(playerId);
+
+  if (!record) notFound();
+
+  const viewerMode = parsePublicProfileViewerMode(query.viewer);
+  const model = projectPublicPlayerProfile(record, viewerMode);
+
+  return <PlayerPublicProfileScreen model={model} />;
+}
+EOF
+
+  cat > 'src/app/(platform)/players/[playerId]/loading.tsx' <<'EOF'
+// VERZUS M11.2 PUBLIC PROFILE LOADING STATE
+
+export default function PublicPlayerLoading() {
+  return (
+    <main aria-busy="true" aria-label="Loading player profile" data-m11-stage="11.2">
+      <div className="vz-route-boundary vz-route-boundary--loading">
+        <p>Loading public player profile…</p>
+      </div>
+    </main>
+  );
+}
+EOF
+
+  cat > 'src/app/(platform)/players/[playerId]/error.tsx' <<'EOF'
+"use client";
+
+// VERZUS M11.2 PUBLIC PROFILE ROUTE ERROR
+
+export default function PublicPlayerError({ reset }: { reset: () => void }) {
+  return (
+    <main data-m11-stage="11.2">
+      <div className="vz-route-boundary vz-route-boundary--error">
+        <h1>Player profile unavailable</h1>
+        <p>The public profile could not be loaded. Other VERZUS features remain available.</p>
+        <button onClick={reset} type="button">
+          Retry profile
+        </button>
+      </div>
+    </main>
+  );
+}
+EOF
+
+  cat > 'src/app/(platform)/players/[playerId]/not-found.tsx' <<'EOF'
+// VERZUS M11.2 PUBLIC PROFILE NOT-FOUND STATE
+
+import Link from "next/link";
+
+export default function PublicPlayerNotFound() {
+  return (
+    <main data-m11-stage="11.2">
+      <div className="vz-route-boundary vz-route-boundary--not-found">
+        <h1>Player not found</h1>
+        <p>This profile may have been removed, renamed or never existed.</p>
+        <Link href="/leaderboards/weekly">Browse weekly players</Link>
+      </div>
+    </main>
+  );
+}
+EOF
+}
+
+patch_own_profile_link() {
   node <<'NODE'
 const fs = require("node:fs");
+const screenPath = "src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.tsx";
+const cssPath = "src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.module.css";
+let screen = fs.readFileSync(screenPath, "utf8");
+let css = fs.readFileSync(cssPath, "utf8");
 
-function replaceRequired(file, from, to) {
-  const text = fs.readFileSync(file, "utf8");
-  if (!text.includes(from)) {
-    throw new Error(`Missing expected M10.7 marker in ${file}: ${from}`);
+if (!screen.includes("VERZUS M11.2 PUBLIC VIEW LINK")) {
+  const before = `        <Badge tone="positive" variant="outline">Active</Badge>\n`;
+  const after = `        <div className={styles.profileHeaderActions}>\n          <Badge tone="positive" variant="outline">Active</Badge>\n          {/* VERZUS M11.2 PUBLIC VIEW LINK */}\n          <Link className={styles.publicViewLink} href={\`/players/\${model.identity.id}?viewer=owner\`}>\n            Public view\n          </Link>\n        </div>\n`;
+  if (!screen.includes(before)) {
+    throw new Error("M11.2 could not locate the M11.1 profile header action marker.");
   }
-  fs.writeFileSync(file, text.replace(from, to));
+  screen = screen.replace(before, after);
 }
 
-replaceRequired(
-  "src/features/rewards/foundation/ui/RewardsFoundationScreen.tsx",
-  "// VERZUS M10.7 INDEPENDENT WIDGET FAILURE ISOLATION",
-  "// VERZUS M10.7 INDEPENDENT WIDGET FAILURE ISOLATION\n// VERZUS M10.8 RELEASE-READY RESPONSIVE CONTAINMENT",
-);
-replaceRequired(
-  "src/features/rewards/foundation/ui/RewardsFoundationScreen.tsx",
-  'data-m10-stage="10.7"',
-  'data-m10-stage="10.8"',
-);
-
-replaceRequired(
-  "src/features/rewards/resources/ui/RewardsResourceScreen.tsx",
-  "// VERZUS M10.7 RELIABILITY AND OBSERVABILITY COMPOSITION",
-  "// VERZUS M10.7 RELIABILITY AND OBSERVABILITY COMPOSITION\n// VERZUS M10.8 RELEASE-READY REWARD COMPOSITION",
-);
-replaceRequired(
-  "src/features/rewards/resources/ui/RewardsResourceScreen.tsx",
-  'data-m10-stage="10.7"',
-  'data-m10-stage="10.8"',
-);
-
-replaceRequired(
-  "src/app/api/health/rewards/route.ts",
-  "// VERZUS M10.7 REWARD DOMAIN HEALTH ENDPOINT",
-  "// VERZUS M10.8 REWARD DOMAIN RELEASE HEALTH ENDPOINT",
-);
-replaceRequired(
-  "src/app/api/health/rewards/route.ts",
-  'stage: "10.7"',
-  'stage: "10.8"',
-);
-replaceRequired(
-  "src/app/api/health/rewards/route.ts",
-  '        telemetry: "ready",',
-  '        telemetry: "ready",\n        featureIsolation: "ready",\n        immutablePackaging: "ready",',
-);
-
-const indexPath = "src/features/rewards/index.ts";
-let index = fs.readFileSync(indexPath, "utf8");
-if (!index.includes('export * from "./release";')) {
-  index = index.replace(
-    'export * from "./reliability";\n',
-    'export * from "./reliability";\nexport * from "./release";\n',
-  );
-  fs.writeFileSync(indexPath, index);
+if (!css.includes("VERZUS M11.2 PUBLIC VIEW LINK")) {
+  css += `\n\n/* VERZUS M11.2 PUBLIC VIEW LINK */\n.profileHeaderActions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n  align-items: center;\n  justify-content: flex-end;\n}\n\n.publicViewLink {\n  display: inline-grid;\n  min-height: 2.75rem;\n  place-items: center;\n  padding: 0.55rem 0.8rem;\n  color: white;\n  font-size: var(--vz-text-sm);\n  font-weight: 800;\n  text-decoration: none;\n  background: rgb(134 75 255 / 12%);\n  border: 1px solid rgb(177 132 255 / 28%);\n  border-radius: 0.65rem;\n}\n\n.publicViewLink:focus-visible {\n  outline: 2px solid var(--vz-color-purple-300, #c7a7ff);\n  outline-offset: 3px;\n}\n`;
 }
 
-const envPath = ".env.example";
-let env = fs.readFileSync(envPath, "utf8");
-if (!env.includes("NEXT_PUBLIC_ENABLE_M10_REWARDS=true")) {
-  env = `${env.trimEnd()}\n\n# VERZUS M10.8 Rewards release control\nNEXT_PUBLIC_ENABLE_M10_REWARDS=true\n`;
-  fs.writeFileSync(envPath, env);
-}
-
-const packagePath = "package.json";
-const packageJson = JSON.parse(fs.readFileSync(packagePath, "utf8"));
-packageJson.scripts ??= {};
-packageJson.scripts["typecheck:m10:10.8"] = "tsc --noEmit -p tsconfig.m10-10-8.json";
-packageJson.scripts["verify:m10:10.8"] =
-  'node scripts/verify-m10-10-8.mjs && eslint src/features/rewards src/app/api/rewards src/app/api/health/rewards src/app/api/telemetry/rewards "src/app/(platform)/rewards" "src/app/(preview)/m10-rewards-review" scripts/verify-m10-10-8.mjs scripts/package-m10-release.mjs scripts/approve-m10-visuals.mjs playwright.m10.config.ts tests/e2e/m10 tests/visual/m10-rewards.visual.spec.ts --max-warnings=0 && npm run typecheck:m10:10.8';
-packageJson.scripts["verify:m10:10.8:build"] =
-  "npm run verify:m10:10.8 && npm run build";
-packageJson.scripts["test:m10:10.8:e2e"] =
-  "playwright test --config=playwright.m10.config.ts tests/e2e/m10";
-packageJson.scripts["test:m10:10.8:visual"] =
-  "playwright test --config=playwright.m10.config.ts tests/visual/m10-rewards.visual.spec.ts";
-packageJson.scripts["m10:visual:update"] =
-  "playwright test --config=playwright.m10.config.ts tests/visual/m10-rewards.visual.spec.ts --update-snapshots";
-packageJson.scripts["m10:approve"] = "node scripts/approve-m10-visuals.mjs";
-packageJson.scripts["m10:approval:check"] =
-  "node scripts/approve-m10-visuals.mjs --check";
-packageJson.scripts["m10:artifact"] = "node scripts/package-m10-release.mjs";
-packageJson.scripts["m10:release"] =
-  "npm run verify:m10:10.8 && npm run m10:approval:check && npm run build && npm run m10:artifact";
-fs.writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
+fs.writeFileSync(screenPath, screen);
+fs.writeFileSync(cssPath, css);
 NODE
 }
 
-format_changed_files() {
-  if [[ -x node_modules/.bin/prettier ]]; then
-    node_modules/.bin/prettier --write \
+write_docs() {
+  mkdir -p docs/milestones/M11
+
+  cat > docs/milestones/M11/m11-11-2-public-profile-permissions.md <<'EOF'
+# M11.2 — Public Player Profile and Permission Boundaries
+
+<!-- VERZUS M11.2 -->
+
+## Purpose
+
+Add a public player route without reusing the own-profile permission surface. The server projects only the fields permitted for the resolved viewer relationship and profile policy.
+
+## Route
+
+```text
+/players/[playerId]
+```
+
+Preview-only viewer modes:
+
+```text
+?viewer=anonymous
+?viewer=member
+?viewer=friend
+?viewer=owner
+?viewer=blocked
+```
+
+The query parameter is interpreted on the server for deterministic review. It does not grant browser authority and must be replaced by authenticated server context when production identity integration arrives.
+
+## Visibility policy
+
+Profile visibility:
+
+- `public`: authorized public fields may be shown.
+- `friends`: full profile is available only to a server-confirmed friend or owner.
+- `private`: only a restricted identity state is returned to non-owners.
+
+Field audiences:
+
+- `public`
+- `friends`
+- `private`
+
+Controlled fields:
+
+- location
+- Crew membership
+- competitive statistics
+- trust score
+- match history
+- game handles
+- achievements
+- exact availability
+
+## Security boundary
+
+The UI receives a projected `PublicPlayerProfileViewModel`; it never receives the source privacy record. Hidden fields are removed or replaced with null before rendering.
+
+No public route contains profile editing or privacy mutations. Unknown player IDs use the route not-found boundary.
+
+## Deterministic previews
+
+```text
+/players/player-prismo
+/players/player-prismo?viewer=friend
+/players/player-prismo?viewer=owner
+/players/player-rivalking
+/players/player-ghosty
+/players/player-ghosty?viewer=friend
+/players/player-private
+/players/player-private?viewer=owner
+/players/player-long-name
+/players/player-prismo?viewer=blocked
+```
+
+## Deferred
+
+- authenticated viewer resolution
+- friend-request mutations
+- Crew invite mutations from the public profile
+- production profile API resources
+- profile editing
+- suspended and platform-blocked account states
+EOF
+}
+
+write_verifier() {
+  cat > scripts/verify-m11-11-2.mjs <<'EOF'
+// VERZUS M11.2 STRUCTURAL VERIFIER
+
+import { existsSync, readFileSync } from "node:fs";
+
+const requiredFiles = [
+  "src/features/profiles/public-profile/model/public-player-profile.types.ts",
+  "src/features/profiles/public-profile/mocks/public-player-profile.mock.ts",
+  "src/features/profiles/public-profile/server/public-profile-policy.ts",
+  "src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.tsx",
+  "src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.module.css",
+  "src/features/profiles/public-profile/ui/index.ts",
+  "src/features/profiles/public-profile/index.ts",
+  "src/app/(platform)/players/[playerId]/page.tsx",
+  "src/app/(platform)/players/[playerId]/loading.tsx",
+  "src/app/(platform)/players/[playerId]/error.tsx",
+  "src/app/(platform)/players/[playerId]/not-found.tsx",
+  "docs/milestones/M11/m11-11-2-public-profile-permissions.md",
+  "tsconfig.m11-11-2.json",
+];
+
+for (const file of requiredFiles) {
+  if (!existsSync(file)) throw new Error(`M11.2 missing required file: ${file}`);
+}
+
+const types = readFileSync(
+  "src/features/profiles/public-profile/model/public-player-profile.types.ts",
+  "utf8",
+);
+const policy = readFileSync(
+  "src/features/profiles/public-profile/server/public-profile-policy.ts",
+  "utf8",
+);
+const screen = readFileSync(
+  "src/features/profiles/public-profile/ui/PlayerPublicProfileScreen.tsx",
+  "utf8",
+);
+const route = readFileSync("src/app/(platform)/players/[playerId]/page.tsx", "utf8");
+const ownScreen = readFileSync(
+  "src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.tsx",
+  "utf8",
+);
+const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+
+for (const marker of [
+  "PublicProfileViewerMode",
+  "PublicProfilePrivacyPolicy",
+  "PublicProfilePermissions",
+  "PublicPlayerProfileViewModel",
+  "redactedFields",
+]) {
+  if (!types.includes(marker)) throw new Error(`M11.2 type marker missing: ${marker}`);
+}
+
+for (const marker of [
+  "derivePermissions",
+  "audienceAllows",
+  "projectPublicPlayerProfile",
+  'viewerMode === "blocked"',
+  'record.identity.profileVisibility === "friends"',
+]) {
+  if (!policy.includes(marker)) throw new Error(`M11.2 policy marker missing: ${marker}`);
+}
+
+for (const marker of [
+  'data-m11-stage="11.2"',
+  'data-profile-scope="public"',
+  "Permission-aware profile",
+  "Competitive statistics",
+  "Game identities",
+  "Recent matches",
+  "Privacy protections active",
+]) {
+  if (!screen.includes(marker)) throw new Error(`M11.2 screen marker missing: ${marker}`);
+}
+
+for (const marker of [
+  "notFound()",
+  "parsePublicProfileViewerMode",
+  "projectPublicPlayerProfile",
+  "PlayerPublicProfileScreen",
+]) {
+  if (!route.includes(marker)) throw new Error(`M11.2 route marker missing: ${marker}`);
+}
+
+if (!ownScreen.includes("VERZUS M11.2 PUBLIC VIEW LINK")) {
+  throw new Error("M11.2 own-profile public-view link is missing.");
+}
+
+for (const script of ["m11:preview", "typecheck:m11:11.2", "verify:m11:11.2"]) {
+  if (!packageJson.scripts?.[script]) throw new Error(`M11.2 package script missing: ${script}`);
+}
+
+const publicFiles = `${screen}\n${route}`;
+if (/useMutation|method:\s*["'](?:POST|PUT|PATCH|DELETE)|fetch\([^)]*api\/profile\/me/.test(publicFiles)) {
+  throw new Error("M11.2 public profile must remain read-only and non-authoritative.");
+}
+
+if (/privacy:\s*record\.privacy|record\.privacy\s*[},]/.test(screen)) {
+  throw new Error("M11.2 UI must not receive the source privacy record.");
+}
+
+console.log(
+  "M11.2 public-player route, server permission projection, field redaction, restricted states and owner/public separation are installed.",
+);
+EOF
+
+  cat > tsconfig.m11-11-2.json <<'EOF'
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/profiles/foundation/**/*.ts",
+    "src/features/profiles/foundation/**/*.tsx",
+    "src/features/profiles/public-profile/**/*.ts",
+    "src/features/profiles/public-profile/**/*.tsx",
+    "src/app/(platform)/profile/**/*.ts",
+    "src/app/(platform)/profile/**/*.tsx",
+    "src/app/(platform)/players/**/*.ts",
+    "src/app/(platform)/players/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}
+EOF
+}
+
+update_package_json() {
+  node <<'NODE'
+const fs = require("node:fs");
+const path = "package.json";
+const pkg = JSON.parse(fs.readFileSync(path, "utf8"));
+pkg.scripts = pkg.scripts || {};
+pkg.scripts["typecheck:m11:11.2"] = "tsc --noEmit -p tsconfig.m11-11-2.json";
+pkg.scripts["verify:m11:11.2"] = "node scripts/verify-m11-11-2.mjs && eslint src/features/profiles/public-profile src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.tsx \"src/app/(platform)/players\" scripts/verify-m11-11-2.mjs --max-warnings=0 && npm run typecheck:m11:11.2";
+fs.writeFileSync(path, `${JSON.stringify(pkg, null, 2)}\n`);
+NODE
+}
+
+format_owned_files() {
+  local prettier="./node_modules/.bin/prettier"
+  if [[ -x "$prettier" ]]; then
+    "$prettier" --write \
       package.json \
-      "src/app/(platform)/rewards/layout.tsx" \
-      "src/app/(preview)/m10-rewards-review" \
-      src/app/api/health/rewards/route.ts \
-      src/features/rewards/foundation/ui/RewardsFoundationScreen.tsx \
-      src/features/rewards/resources/ui/RewardsResourceScreen.tsx \
-      src/features/rewards/index.ts \
-      src/features/rewards/release \
-      tests/e2e/m10 \
-      tests/visual/m10-rewards.visual.spec.ts \
-      playwright.m10.config.ts \
-      scripts/verify-m10-10-8.mjs \
-      scripts/package-m10-release.mjs \
-      scripts/approve-m10-visuals.mjs \
-      docs/milestones/M10/m10-10-8-release-readiness-feature-isolation-packaging.md \
-      docs/milestones/M10/m10-reference-approval.json \
-      docs/runbooks/m10-reward-rollback.md \
-      tsconfig.m10-10-8.json >/dev/null
+      src/features/profiles/public-profile \
+      src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.tsx \
+      src/features/profiles/foundation/ui/PlayerProfileFoundationScreen.module.css \
+      'src/app/(platform)/players' \
+      docs/milestones/M11/m11-11-2-public-profile-permissions.md \
+      scripts/verify-m11-11-2.mjs \
+      tsconfig.m11-11-2.json >/dev/null
   else
-    echo "Prettier is not installed locally; continuing with the formatted embedded payload."
+    echo "Prettier binary not present; files were written in repository format."
   fi
+}
+
+run_verification() {
+  echo "Running focused M11.2 verification..."
+  npm run verify:m11:11.2
 }
 
 install_stage() {
   print_plan
-  require_m10_7_prerequisite
-  require_local_tools
+  require_m11_1_prerequisite
   backup_current_state
-  extract_payload
-  patch_existing_files
-  format_changed_files
-
-  echo "Running lean M10.8 verification (marker, ESLint and focused TypeScript only)..."
-  npm run verify:m10:10.8
-
+  write_types
+  write_mocks
+  write_policy
+  write_ui
+  write_routes
+  patch_own_profile_link
+  write_docs
+  write_verifier
+  update_package_json
+  format_owned_files
+  run_verification
   INSTALL_COMPLETE="true"
+
   cat <<'DONE'
 
-M10.8 installation complete.
+M11.2 installation complete.
 
 Preview:
-  npm run m10:preview
+  npm run m11:preview
 
-Review hub:
-  http://127.0.0.1:3122/m10-rewards-review
+Public profile:
+  http://127.0.0.1:3123/players/player-prismo
 
-Health:
-  http://127.0.0.1:3122/api/health/rewards
+Friend-authorized view:
+  http://127.0.0.1:3123/players/player-prismo?viewer=friend
 
-Verify again without Vitest or Playwright:
-  npm run verify:m10:10.8
+Owner review:
+  http://127.0.0.1:3123/players/player-prismo?viewer=owner
 
-Optional browser review:
-  npm run test:m10:10.8:e2e
-  npm run m10:visual:update
-  npm run test:m10:10.8:visual
+Friends-only profile:
+  http://127.0.0.1:3123/players/player-ghosty
+  http://127.0.0.1:3123/players/player-ghosty?viewer=friend
 
-Record manual approval after reviewing 390px, 768px and 1440px:
-  VERZUS_M10_VISUAL_APPROVAL=APPROVED VERZUS_M10_APPROVED_BY="<name>" npm run m10:approve
+Private profile:
+  http://127.0.0.1:3123/players/player-private
 
-Build and package the approved immutable artifact:
-  npm run m10:release
+Missing avatar and long-name resilience:
+  http://127.0.0.1:3123/players/player-rivalking
+  http://127.0.0.1:3123/players/player-long-name
 
-Fast feature isolation:
-  NEXT_PUBLIC_ENABLE_M10_REWARDS=false
+Blocked viewer:
+  http://127.0.0.1:3123/players/player-prismo?viewer=blocked
+
+Unknown player:
+  http://127.0.0.1:3123/players/player-unknown
+
+Verify again:
+  npm run verify:m11:11.2
 
 Rollback:
-  bash ./VERZUS_M10_10_8_Release_Readiness_Feature_Isolation_Packaging_NO_TESTS.sh rollback
+  bash ./VERZUS_M11_11_2_Public_Profile_Permission_Boundaries_NO_TESTS.sh rollback
 DONE
 }
 
 rollback_stage() {
   require_repo_root
+
   local latest
-  latest="$(find "$BACKUP_ROOT" -type f -name 'verzus-m10-10-8-before.tar.gz' 2>/dev/null | sort | tail -n 1 || true)"
+  latest="$(find "$BACKUP_ROOT" -type f -name 'verzus-m11-11-2-before.tar.gz' 2>/dev/null | sort | tail -n 1)"
 
   if [[ -z "$latest" ]]; then
-    echo "Error: no M10.8 rollback archive was found under $BACKUP_ROOT."
+    echo "Error: no M11.2 rollback archive found under $BACKUP_ROOT."
     exit 1
   fi
 
-  echo "Restoring M10.8 archive: $latest"
+  echo "Restoring M11.2 predecessor from: $latest"
   restore_archive "$latest"
-  echo "Running restored M10.7 marker verification..."
-  node scripts/verify-m10-10-7.mjs
-  echo "M10.8 rollback complete."
+  echo "Rollback complete. M11.1 was restored."
 }
 
 case "$MODE" in
@@ -453,167 +2250,11 @@ case "$MODE" in
   rollback)
     rollback_stage
     ;;
+  plan)
+    print_plan
+    ;;
   *)
-    echo "Usage: bash ./$SCRIPT_NAME [install|rollback]"
+    echo "Usage: bash ./$SCRIPT_NAME [install|rollback|plan]"
     exit 1
     ;;
 esac
-
-exit 0
-__VERZUS_PAYLOAD_BELOW__
-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

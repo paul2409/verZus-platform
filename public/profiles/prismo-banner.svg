@@ -1,0 +1,33 @@
+<!-- VERZUS M11.1 ORIGINAL PROFILE BANNER -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" role="img" aria-labelledby="title description" preserveAspectRatio="xMidYMid slice">
+  <title id="title">Prismo profile banner</title>
+  <desc id="description">Original dark competitive banner with purple energy and cyan grid accents.</desc>
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#070a0f"/>
+      <stop offset=".42" stop-color="#14102a"/>
+      <stop offset="1" stop-color="#07171a"/>
+    </linearGradient>
+    <radialGradient id="violet" cx="68%" cy="38%" r="48%">
+      <stop stop-color="#8e3dff" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#8e3dff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#35f0d0" stroke-opacity=".11" stroke-width="2"/>
+    </pattern>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#8d45ff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#d4b5ff"/>
+      <stop offset="1" stop-color="#22e9c8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="420" fill="url(#base)"/>
+  <rect width="1600" height="420" fill="url(#violet)"/>
+  <rect width="1600" height="420" fill="url(#grid)"/>
+  <path d="M-30 334 510 82l165 74 325-126 642 238" fill="none" stroke="url(#beam)" stroke-width="8" opacity=".72"/>
+  <path d="M-20 380 430 176l225 92 404-154 580 217" fill="none" stroke="#7e45ff" stroke-opacity=".28" stroke-width="3"/>
+  <g fill="#d2b8ff">
+    <circle cx="1120" cy="90" r="4"/><circle cx="1240" cy="180" r="3"/><circle cx="980" cy="232" r="3"/><circle cx="1430" cy="116" r="4"/>
+  </g>
+  <text x="1330" y="360" fill="#a978ff" fill-opacity=".45" font-family="monospace" font-size="56" font-weight="700">V / 01</text>
+</svg>

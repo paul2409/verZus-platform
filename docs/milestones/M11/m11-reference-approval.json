@@ -1,0 +1,29 @@
+{
+  "milestone": "M11",
+  "stage": "11.1",
+  "reference": "M11 Player Profile and Identity visual batch",
+  "authoritativeViewport": 390,
+  "screen": "own-player-profile",
+  "status": "approved-for-foundation",
+  "approvedModules": [
+    "identity",
+    "bio",
+    "location",
+    "crew",
+    "rank",
+    "trust",
+    "statistics",
+    "recent-match-preview",
+    "game-identities",
+    "achievement-preview",
+    "availability"
+  ],
+  "deferred": [
+    "profile-editing",
+    "public-profile-permissions",
+    "privacy-mutations",
+    "full-history-pagination",
+    "suspended-profile",
+    "blocked-profile"
+  ]
+}

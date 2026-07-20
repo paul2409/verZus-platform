@@ -224,7 +224,10 @@
     "m10:approve": "node scripts/approve-m10-visuals.mjs",
     "m10:approval:check": "node scripts/approve-m10-visuals.mjs --check",
     "m10:artifact": "node scripts/package-m10-release.mjs",
-    "m10:release": "npm run verify:m10:10.8 && npm run m10:approval:check && npm run build && npm run m10:artifact"
+    "m10:release": "npm run verify:m10:10.8 && npm run m10:approval:check && npm run build && npm run m10:artifact",
+    "m11:preview": "next dev --hostname 127.0.0.1 --port 3123",
+    "typecheck:m11:11.1": "tsc --noEmit -p tsconfig.m11-11-1.json",
+    "verify:m11:11.1": "node scripts/verify-m11-11-1.mjs && eslint src/features/profiles \"src/app/(platform)/profile\" scripts/verify-m11-11-1.mjs --max-warnings=0 && npm run typecheck:m11:11.1"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [

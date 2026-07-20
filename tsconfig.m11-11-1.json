@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/profiles/**/*.ts",
+    "src/features/profiles/**/*.tsx",
+    "src/app/(platform)/profile/**/*.ts",
+    "src/app/(platform)/profile/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}

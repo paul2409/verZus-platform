@@ -1,0 +1,629 @@
+/* VERZUS M11.1 APPROVED MOBILE PLAYER PROFILE FOUNDATION */
+
+.page {
+  display: grid;
+  width: min(100%, 72rem);
+  gap: 1rem;
+  margin-inline: auto;
+  padding: 1rem;
+  color: var(--vz-color-text-primary);
+}
+
+.pageHeader,
+.sectionHeading,
+.nameRow,
+.recordLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.pageHeader {
+  min-height: 3.5rem;
+}
+
+.pageHeader > div,
+.sectionHeading > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.pageHeader h2,
+.pageHeader p,
+.sectionHeading h2,
+.sectionHeading p,
+.identityHeading h1,
+.identityHeading p,
+.bio,
+.identityMeta dt,
+.identityMeta dd,
+.availabilityCard p,
+.crewCard p,
+.matchRow p,
+.stageNotice p {
+  margin: 0;
+}
+
+.pageHeader h2 {
+  font-family: var(--vz-font-display);
+  font-size: clamp(1.75rem, 9vw, 2.8rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.eyebrow,
+.sectionHeading p {
+  color: var(--vz-color-purple-400);
+  font-family: var(--vz-font-interface);
+  font-size: var(--vz-text-xs);
+  font-weight: var(--vz-font-weight-bold);
+  letter-spacing: var(--vz-tracking-label);
+  text-transform: uppercase;
+}
+
+.identityCard,
+.statPanel,
+.panel,
+.stageNotice {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 8%, rgb(136 81 255 / 12%), transparent 34%),
+    linear-gradient(145deg, rgb(25 31 37 / 98%), rgb(12 16 20 / 98%));
+  border: 1px solid rgb(177 132 255 / 16%);
+  border-radius: 1.25rem;
+  box-shadow: 0 1rem 2.6rem rgb(0 0 0 / 24%);
+}
+
+.identityCard {
+  min-width: 0;
+}
+
+.banner {
+  min-height: 8.5rem;
+  background-color: #11131a;
+  background-position: center;
+  background-size: cover;
+  border-bottom: 1px solid rgb(177 132 255 / 18%);
+}
+
+.identityBody {
+  display: grid;
+  min-width: 0;
+  gap: 0.8rem;
+  padding: 0 1rem 1rem;
+}
+
+.avatarWrap {
+  position: relative;
+  width: 6.5rem;
+  height: 6.5rem;
+  margin-top: -3.25rem;
+}
+
+.avatar,
+.avatarFallback {
+  display: grid;
+  width: 6.5rem;
+  height: 6.5rem;
+  place-items: center;
+  object-fit: cover;
+  color: white;
+  font-family: var(--vz-font-display);
+  font-size: 2rem;
+  background: linear-gradient(135deg, #30125f, #111820 60%, #0ef0d2);
+  border: 4px solid rgb(12 16 20);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgb(170 115 255 / 56%),
+    0 0.9rem 2rem rgb(0 0 0 / 32%);
+}
+
+.verifiedMark {
+  position: absolute;
+  right: -0.1rem;
+  bottom: 0.45rem;
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  color: #04110e;
+  font-weight: 900;
+  background: var(--vz-color-green-400, #23f0a5);
+  border: 3px solid rgb(12 16 20);
+  border-radius: 50%;
+}
+
+.identityHeading {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.nameRow {
+  align-items: flex-start;
+}
+
+.identityHeading h1 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--vz-font-display);
+  font-size: clamp(2rem, 11vw, 3.6rem);
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+}
+
+.handle {
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-numeric);
+  font-size: var(--vz-text-sm);
+}
+
+.playerTitle {
+  color: var(--vz-color-purple-300, #c7a7ff);
+  font-weight: var(--vz-font-weight-bold);
+  text-transform: uppercase;
+}
+
+.identityBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.bio {
+  max-width: 50rem;
+  color: var(--vz-color-text-secondary);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.identityMeta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.identityMeta > div {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: 0.7rem;
+  background: rgb(255 255 255 / 2.5%);
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0.75rem;
+}
+
+.identityMeta dt {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-xs);
+  text-transform: uppercase;
+}
+
+.identityMeta dd {
+  overflow-wrap: anywhere;
+  font-weight: var(--vz-font-weight-bold);
+  text-transform: capitalize;
+}
+
+.sectionNav {
+  display: grid;
+  grid-auto-columns: minmax(6.8rem, 1fr);
+  grid-auto-flow: column;
+  gap: 0.4rem;
+  padding: 0.45rem;
+  overflow-x: auto;
+  background: rgb(8 12 16 / 86%);
+  border: 1px solid rgb(177 132 255 / 14%);
+  border-radius: 0.9rem;
+  scrollbar-width: thin;
+}
+
+.sectionNav a {
+  display: grid;
+  min-height: 2.65rem;
+  place-items: center;
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+  font-weight: var(--vz-font-weight-bold);
+  text-decoration: none;
+  border-radius: 0.6rem;
+}
+
+.sectionNav a:first-child,
+.sectionNav a:hover,
+.sectionNav a:focus-visible {
+  color: white;
+  background: rgb(134 75 255 / 17%);
+  outline: none;
+}
+
+.statPanel,
+.panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.sectionHeading h2 {
+  font-family: var(--vz-font-display);
+  font-size: 1.08rem;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.sectionHeading > span {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.statGrid > div {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 0.8rem;
+  background: rgb(255 255 255 / 3%);
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0.8rem;
+}
+
+.statGrid dt {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-xs);
+  text-transform: uppercase;
+}
+
+.statGrid dd {
+  margin: 0;
+  font-family: var(--vz-font-numeric);
+  font-size: clamp(1.35rem, 7vw, 2rem);
+  font-weight: 800;
+}
+
+.recordLine {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+}
+
+.recordLine span:not(:last-child)::after {
+  content: "·";
+  margin-left: 0.75rem;
+  color: var(--vz-color-purple-400);
+}
+
+.contentGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.availabilityCard {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem;
+  background: rgb(0 255 163 / 5%);
+  border: 1px solid rgb(0 255 163 / 16%);
+  border-left: 3px solid var(--vz-color-green-400, #23f0a5);
+  border-radius: 0.8rem;
+}
+
+.availabilityCard p,
+.availabilityCard span,
+.crewCard p,
+.gamePrimary span,
+.gameMeta span,
+.matchRow span,
+.achievementRow span {
+  color: var(--vz-color-text-secondary);
+  font-size: var(--vz-text-sm);
+}
+
+.crewCard {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.85rem;
+  color: inherit;
+  text-decoration: none;
+  background: rgb(134 75 255 / 6%);
+  border: 1px solid rgb(177 132 255 / 16%);
+  border-radius: 0.8rem;
+}
+
+.crewCard > span {
+  display: grid;
+  width: 3rem;
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--vz-color-purple-300, #c7a7ff);
+  font-family: var(--vz-font-display);
+  background: rgb(134 75 255 / 14%);
+  border: 1px solid rgb(177 132 255 / 30%);
+  border-radius: 0.7rem;
+}
+
+.crewCard > div {
+  min-width: 0;
+}
+
+.crewCard strong,
+.crewCard p {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crewCard > b {
+  color: var(--vz-color-purple-300, #c7a7ff);
+  font-size: var(--vz-text-sm);
+}
+
+.gameList,
+.matchList,
+.achievementList {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gameRow {
+  display: grid;
+  grid-template-columns: 2.7rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.75rem;
+  background: rgb(255 255 255 / 2.5%);
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0.75rem;
+}
+
+.gameGlyph {
+  display: grid;
+  width: 2.7rem;
+  aspect-ratio: 1;
+  place-items: center;
+  color: #06110f;
+  font-family: var(--vz-font-display);
+  background: linear-gradient(135deg, var(--vz-color-green-300, #6cffc6), #0bbd9a);
+  border-radius: 0.65rem;
+}
+
+.gamePrimary,
+.gameMeta {
+  display: grid;
+  min-width: 0;
+  gap: 0.1rem;
+}
+
+.gamePrimary strong,
+.gamePrimary span,
+.gameMeta strong,
+.gameMeta span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gameMeta {
+  grid-column: 2;
+}
+
+.matchRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: center;
+  min-width: 0;
+  min-height: 4.35rem;
+  padding: 0.7rem;
+  color: inherit;
+  text-decoration: none;
+  background: rgb(255 255 255 / 2.5%);
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0.75rem;
+}
+
+.matchResult {
+  display: grid;
+  min-width: 3.6rem;
+  min-height: 2rem;
+  place-items: center;
+  padding-inline: 0.45rem;
+  font-size: var(--vz-text-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 0.5rem;
+}
+
+.matchResult[data-result="win"] {
+  color: var(--vz-color-green-300, #6cffc6);
+  background: rgb(0 255 163 / 9%);
+}
+
+.matchResult[data-result="loss"] {
+  color: #ff7c8d;
+  background: rgb(255 74 101 / 9%);
+}
+
+.matchResult[data-result="draw"] {
+  color: #ffd367;
+  background: rgb(255 198 54 / 9%);
+}
+
+.matchRow > div,
+.matchRow > p {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.matchRow > div strong,
+.matchRow > div span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.matchRow > p {
+  justify-items: end;
+  text-align: right;
+}
+
+.achievementRow {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.75rem;
+  background: rgb(255 255 255 / 2.5%);
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0.75rem;
+}
+
+.achievementGlyph {
+  display: grid;
+  width: 2.4rem;
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--vz-color-purple-300, #c7a7ff);
+  background: rgb(134 75 255 / 12%);
+  border: 1px solid rgb(177 132 255 / 22%);
+  border-radius: 50%;
+}
+
+.achievementRow > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.1rem;
+}
+
+.achievementRow > div strong,
+.achievementRow > div span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.achievementRow > p {
+  margin: 0;
+  color: var(--vz-color-purple-300, #c7a7ff);
+  font-family: var(--vz-font-numeric);
+  font-weight: 800;
+}
+
+.emptyInline,
+.stageNotice {
+  color: var(--vz-color-text-secondary);
+}
+
+.emptyInline {
+  padding: 0.9rem;
+  border: 1px dashed rgb(177 132 255 / 20%);
+  border-radius: 0.75rem;
+}
+
+.stageNotice {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+  border-left: 3px solid var(--vz-color-purple-400);
+}
+
+.stageNotice strong {
+  color: var(--vz-color-purple-300, #c7a7ff);
+  text-transform: uppercase;
+}
+
+@media (min-width: 48rem) {
+  .page {
+    gap: 1.25rem;
+    padding: 1.5rem;
+  }
+
+  .identityBody {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.8rem 1.15rem;
+    padding: 0 1.5rem 1.5rem;
+  }
+
+  .avatarWrap {
+    grid-row: 1 / span 3;
+  }
+
+  .identityBadges,
+  .bio,
+  .identityMeta {
+    grid-column: 2;
+  }
+
+  .statGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .contentGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .widePanel {
+    grid-column: 1 / -1;
+  }
+
+  .gameRow {
+    grid-template-columns: 2.7rem minmax(0, 1fr) minmax(10rem, 0.8fr);
+  }
+
+  .gameMeta {
+    grid-column: auto;
+    justify-items: end;
+    text-align: right;
+  }
+}
+
+@media (min-width: 64rem) {
+  .banner {
+    min-height: 11rem;
+  }
+
+  .identityBody {
+    grid-template-columns: auto minmax(0, 1fr) minmax(17rem, 0.48fr);
+  }
+
+  .avatarWrap {
+    grid-row: 1 / span 4;
+  }
+
+  .identityBadges,
+  .bio {
+    grid-column: 2;
+  }
+
+  .identityMeta {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sectionNav,
+  .matchRow,
+  .crewCard {
+    scroll-behavior: auto;
+  }
+}
