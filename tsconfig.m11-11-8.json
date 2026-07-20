@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/profiles/**/*.ts",
+    "src/features/profiles/**/*.tsx",
+    "src/app/(platform)/profile/**/*.ts",
+    "src/app/(platform)/profile/**/*.tsx",
+    "src/app/(platform)/players/**/*.ts",
+    "src/app/(platform)/players/**/*.tsx",
+    "src/app/(preview)/m11-profile-review/**/*.ts",
+    "src/app/(preview)/m11-profile-review/**/*.tsx",
+    "src/app/api/profile/**/*.ts",
+    "src/app/api/health/profiles/**/*.ts",
+    "src/app/api/telemetry/profiles/**/*.ts",
+    "scripts/approve-m11-visuals.mjs",
+    "scripts/package-m11-release.mjs",
+    "scripts/verify-m11-11-8.mjs",
+    "playwright.m11.config.ts",
+    "tests/e2e/m11/**/*.ts",
+    "tests/visual/m11-profiles.visual.spec.ts"
+  ],
+  "exclude": ["node_modules"]
+}

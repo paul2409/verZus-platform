@@ -1,6 +1,6 @@
 {
   "milestone": "M11",
-  "stage": "11.1",
+  "stage": "11.8",
   "reference": "M11 Player Profile and Identity visual batch",
   "authoritativeViewport": 390,
   "screen": "own-player-profile",
@@ -25,5 +25,11 @@
     "full-history-pagination",
     "suspended-profile",
     "blocked-profile"
-  ]
+  ],
+  "releaseGate": {
+    "status": "pending",
+    "stage": "11.8",
+    "reviewedViewports": [390, 768, 1440],
+    "note": "Record explicit approval after reviewing owner, public, edit, history, identity-insight, privacy and account-state surfaces."
+  }
 }

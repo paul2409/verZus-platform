@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/features/profiles/foundation/**/*.ts",
+    "src/features/profiles/foundation/**/*.tsx",
+    "src/features/profiles/public-profile/**/*.ts",
+    "src/features/profiles/public-profile/**/*.tsx",
+    "src/app/(platform)/profile/**/*.ts",
+    "src/app/(platform)/profile/**/*.tsx",
+    "src/app/(platform)/players/**/*.ts",
+    "src/app/(platform)/players/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}

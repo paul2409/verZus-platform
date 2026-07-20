@@ -1,0 +1,68 @@
+/* VERZUS M11.8 PROFILE RELEASE BOUNDARY */
+
+.fallback {
+  width: min(100%, 720px);
+  margin: clamp(24px, 8vh, 80px) auto;
+  padding: clamp(22px, 5vw, 42px);
+  border: 1px solid color-mix(in srgb, var(--color-status-danger) 55%, transparent);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-panel);
+  text-align: center;
+}
+
+.fallback > span {
+  color: var(--color-status-danger);
+  font-size: var(--font-size-label);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.fallback h1 {
+  margin: 12px 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.fallback p {
+  max-width: 58ch;
+  margin: 0 auto;
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 24px 0 16px;
+}
+
+.actions button,
+.actions a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid color-mix(in srgb, var(--color-accent-primary) 58%, transparent);
+  border-radius: var(--radius-md);
+  background: rgb(118 76 255 / 14%);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.actions button:focus-visible,
+.actions a:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+.fallback small {
+  color: var(--color-text-muted);
+}

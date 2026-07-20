@@ -1,0 +1,127 @@
+/* VERZUS M11.7 PROFILE ACCOUNT STATES */
+
+.page {
+  display: grid;
+  min-height: 60vh;
+  place-items: center;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.stateCard,
+.publicStateCard {
+  display: grid;
+  justify-items: start;
+  gap: 0.8rem;
+  width: min(100%, 38rem);
+  padding: clamp(1.2rem, 4vw, 2rem);
+  border: 1px solid rgb(151 122 255 / 22%);
+  border-radius: 1.2rem;
+  background:
+    radial-gradient(circle at top right, rgb(167 122 255 / 13%), transparent 38%),
+    linear-gradient(145deg, rgb(21 15 45 / 98%), rgb(9 7 23 / 98%));
+  box-shadow: 0 1.5rem 4rem rgb(3 2 12 / 34%);
+}
+
+.page[data-account-state="suspended"] .stateCard,
+.page[data-account-state="suspended"] .publicStateCard {
+  border-color: rgb(255 184 76 / 38%);
+}
+
+.page[data-account-state="blocked"] .stateCard,
+.page[data-account-state="blocked"] .publicStateCard,
+.page[data-account-state="error"] .stateCard {
+  border-color: rgb(255 96 130 / 42%);
+}
+
+.icon {
+  display: grid;
+  width: 3.4rem;
+  height: 3.4rem;
+  place-items: center;
+  border: 1px solid rgb(167 122 255 / 38%);
+  border-radius: 1rem;
+  color: #fff;
+  background: rgb(167 122 255 / 12%);
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.stateCard h1,
+.publicStateCard h1,
+.publicStateCard h2 {
+  margin: 0;
+}
+
+.stateCard p,
+.publicStateCard p,
+.stateCard span {
+  margin: 0;
+  color: var(--vz-color-text-secondary);
+  line-height: 1.55;
+}
+
+.stateCard code,
+.publicStateCard code {
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.5rem;
+  color: #dfd4ff;
+  background: rgb(255 255 255 / 5%);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.25rem;
+}
+
+.actions a,
+.actions button {
+  min-height: 2.65rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgb(167 122 255 / 34%);
+  border-radius: 0.7rem;
+  color: var(--vz-color-text-primary);
+  background: rgb(167 122 255 / 9%);
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.actions a:first-child,
+.actions button:first-child {
+  border-color: rgb(167 122 255 / 72%);
+  background: linear-gradient(135deg, #8854ff, #6a35df);
+}
+
+.actions a:focus-visible,
+.actions button:focus-visible {
+  outline: 3px solid rgb(31 238 183 / 72%);
+  outline-offset: 2px;
+}
+
+.publicIdentity {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.publicIdentity > span {
+  display: grid;
+  width: 3.4rem;
+  height: 3.4rem;
+  place-items: center;
+  border: 1px solid rgb(167 122 255 / 36%);
+  border-radius: 50%;
+  background: rgb(167 122 255 / 12%);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.publicIdentity p {
+  margin-top: 0.15rem;
+}

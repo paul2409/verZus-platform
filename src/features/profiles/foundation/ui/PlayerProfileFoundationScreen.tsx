@@ -1,5 +1,7 @@
 // VERZUS M11.1 APPROVED MOBILE PLAYER PROFILE FOUNDATION
 
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,6 +14,7 @@ import type {
   PlayerProfileViewModel,
   PlayerRecentMatch,
 } from "../model/player-profile.types";
+import { useConfirmedPlayerProfile } from "../../edit";
 import styles from "./PlayerProfileFoundationScreen.module.css";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
@@ -197,16 +200,20 @@ function AchievementRow({ achievement }: { achievement: PlayerAchievementPreview
   );
 }
 
+// VERZUS M11.8 RELEASE-READY PROFILE FOUNDATION
 export function PlayerProfileFoundationScreen({
-  model = ownPlayerProfileMock,
+  model: initialModel = ownPlayerProfileMock,
 }: {
   model?: PlayerProfileViewModel;
 } = {}) {
+  const model = useConfirmedPlayerProfile(initialModel);
+
   return (
     <main
       className={styles.page}
-      data-m11-stage="11.1"
+      data-m11-stage="11.8"
       data-profile-scope="own"
+      data-profile-edit-integration="11.3"
       data-reference-viewport="390"
     >
       <header className={styles.pageHeader}>
@@ -214,9 +221,26 @@ export function PlayerProfileFoundationScreen({
           <p className={styles.eyebrow}>Season Zero · Own profile</p>
           <h2>Player profile</h2>
         </div>
-        <Badge tone="positive" variant="outline">
-          Active
-        </Badge>
+        <div className={styles.profileHeaderActions}>
+          <Badge tone="positive" variant="outline">
+            Active
+          </Badge>
+          {/* VERZUS M11.3 EDIT PROFILE LINK */}
+          <Link className={styles.editProfileLink} href="/profile/edit">
+            Edit profile
+          </Link>
+          {/* VERZUS M11.7 PRIVACY SETTINGS LINK */}
+          <Link className={styles.publicViewLink} href="/profile/settings">
+            Privacy
+          </Link>
+          {/* VERZUS M11.2 PUBLIC VIEW LINK */}
+          <Link
+            className={styles.publicViewLink}
+            href={`/players/${model.identity.id}?viewer=owner`}
+          >
+            Public view
+          </Link>
+        </div>
       </header>
 
       <AvatarIdentity model={model} />
@@ -275,7 +299,10 @@ export function PlayerProfileFoundationScreen({
               <p>Connected platforms</p>
               <h2 id="games-title">Game identities</h2>
             </div>
-            <span>{model.games.length} linked</span>
+            {/* VERZUS M11.6 COMPLETE GAME IDENTITY RECORD LINK */}
+            <Link className={styles.sectionActionLink} href="/profile/achievements#game-identities">
+              {model.games.length} linked
+            </Link>
           </div>
           <ul className={styles.gameList}>
             {model.games.map((identity) => (
@@ -294,7 +321,10 @@ export function PlayerProfileFoundationScreen({
               <p>Verified results</p>
               <h2 id="recent-title">Recent matches</h2>
             </div>
-            <span>{model.recentMatches.length} shown</span>
+            {/* VERZUS M11.5 COMPLETE MATCH HISTORY LINK */}
+            <Link className={styles.sectionActionLink} href="/profile/matches">
+              View all
+            </Link>
           </div>
           <ul className={styles.matchList}>
             {model.recentMatches.map((match) => (
@@ -313,7 +343,10 @@ export function PlayerProfileFoundationScreen({
               <p>Progress highlights</p>
               <h2 id="achievements-title">Achievements</h2>
             </div>
-            <span>{model.achievements.filter((item) => item.unlocked).length} unlocked</span>
+            {/* VERZUS M11.6 COMPLETE ACHIEVEMENT AND TRUST RECORD LINK */}
+            <Link className={styles.sectionActionLink} href="/profile/achievements">
+              {model.achievements.filter((item) => item.unlocked).length} unlocked
+            </Link>
           </div>
           <ul className={styles.achievementList}>
             {model.achievements.map((achievement) => (
@@ -326,8 +359,9 @@ export function PlayerProfileFoundationScreen({
       <aside className={styles.stageNotice}>
         <strong>Own-profile foundation</strong>
         <p>
-          Editing, public-player permissions, full history, trust history and privacy controls
-          arrive in later M11 stages.
+          Public permissions, validated editing, independent profile resources and complete match
+          history are active. Complete achievements, game identities and trust history are active.
+          Privacy controls and edge states follow next.
         </p>
       </aside>
     </main>

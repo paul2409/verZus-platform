@@ -1,7 +1,13 @@
-// VERZUS M11.1 PROFILE ROUTE COMPOSITION
+// VERZUS M11.7 PROFILE ACCOUNT-STATE AND RESOURCE COMPOSITION
+// VERZUS M11.8 RELEASE-READY PROFILE COMPOSITION
 
-import { PlayerProfileFoundationScreen } from "../foundation";
+import { ProfileAccountStateGate } from "../account-state";
+import { PlayerProfileResourceScreen } from "../resources";
 
 export function ProfileScreen() {
-  return <PlayerProfileFoundationScreen />;
+  return (
+    <ProfileAccountStateGate>
+      <PlayerProfileResourceScreen />
+    </ProfileAccountStateGate>
+  );
 }
