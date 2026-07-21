@@ -1,0 +1,21 @@
+{
+  "milestone": "M12.6",
+  "title": "Cross-feature reliability and edge-state matrix",
+  "resources": {
+    "search": {
+      "isolation": "per-domain",
+      "states": ["loading", "success", "empty", "stale", "retrying", "error", "offline", "unauthorized", "forbidden", "not-found", "maintenance", "schema-invalid", "partial-failure"]
+    },
+    "notifications": {
+      "isolation": "read-resource and mutation-resource",
+      "states": ["loading", "success", "empty", "stale", "retrying", "error", "offline", "unauthorized", "forbidden", "not-found", "maintenance", "schema-invalid", "conflict"]
+    },
+    "activity": {
+      "isolation": "initial-page and next-page",
+      "states": ["loading", "success", "empty", "stale", "retrying", "error", "offline", "unauthorized", "forbidden", "not-found", "maintenance", "schema-invalid", "partial-failure"]
+    }
+  },
+  "shellMustSurvive": true,
+  "automaticMutationRetry": false,
+  "testsExecutedByInstaller": []
+}

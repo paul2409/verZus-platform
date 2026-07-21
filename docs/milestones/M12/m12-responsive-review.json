@@ -1,0 +1,63 @@
+{
+  "milestone": "M12",
+  "stage": "12.8",
+  "status": "review-required",
+  "viewports": [360, 390, 430, 768, 1024, 1440],
+  "routes": [
+    {
+      "name": "Search discovery",
+      "path": "/search",
+      "owner": "search"
+    },
+    {
+      "name": "Search results and long content",
+      "path": "/search?q=Prismo",
+      "owner": "search"
+    },
+    {
+      "name": "Search partial-domain failure",
+      "path": "/search?q=Xenon&resource=players&scenario=error",
+      "owner": "search"
+    },
+    {
+      "name": "Notification centre",
+      "path": "/notifications",
+      "owner": "notifications"
+    },
+    {
+      "name": "Unread notifications",
+      "path": "/notifications?state=unread",
+      "owner": "notifications"
+    },
+    {
+      "name": "Notification settings",
+      "path": "/notifications/settings",
+      "owner": "notifications"
+    },
+    {
+      "name": "Activity feed",
+      "path": "/activity",
+      "owner": "activity"
+    },
+    {
+      "name": "Activity partial-page failure",
+      "path": "/activity?scenario=partial",
+      "owner": "activity"
+    }
+  ],
+  "checks": [
+    "no horizontal page overflow",
+    "navigation remains usable",
+    "primary action remains visible",
+    "long names truncate or wrap intentionally",
+    "missing artwork does not collapse layout",
+    "loading does not cause layout collapse",
+    "local error recovery does not hide healthy resources",
+    "keyboard focus is visible",
+    "touch targets remain operable",
+    "mobile is not a compressed desktop table"
+  ],
+  "approvedBy": null,
+  "approvedAt": null,
+  "evidence": []
+}

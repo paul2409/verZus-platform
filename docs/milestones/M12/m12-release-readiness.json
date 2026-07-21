@@ -1,0 +1,49 @@
+{
+  "milestone": "M12",
+  "stage": "12.8",
+  "title": "Release readiness, responsive approval and immutable artifact evidence",
+  "status": "release-candidate",
+  "featureDomains": ["search", "notifications", "activity"],
+  "independentResources": [
+    "GET /api/search/players",
+    "GET /api/search/crews",
+    "GET /api/search/competitions",
+    "GET /api/search/matches",
+    "GET /api/notifications",
+    "GET /api/notifications/unread-count",
+    "PATCH /api/notifications/[notificationId]",
+    "POST /api/notifications/read-all",
+    "GET /api/notifications/settings",
+    "PATCH /api/notifications/settings",
+    "GET /api/activity"
+  ],
+  "qualityGate": {
+    "focused": "npm run verify:m12:12.8",
+    "full": "npm run release:gate:m12",
+    "required": ["lint", "typecheck", "test", "build"],
+    "optionalWhenPresent": ["test:e2e", "test:a11y", "test:visual"]
+  },
+  "artifact": {
+    "root": ".verzus-artifacts/m12",
+    "identity": "sha256",
+    "requiresCleanWorktree": true,
+    "requiresNextBuildId": true,
+    "overwriteAllowed": false,
+    "promoteSameDigest": true
+  },
+  "environments": ["local", "development", "preview", "staging", "production"],
+  "rollback": {
+    "installer": "bash ./script.sh rollback",
+    "deployment": "redeploy previous retained digest without rebuilding",
+    "retainFailedArtifact": true
+  },
+  "productionReady": false,
+  "productionReadyWhen": [
+    "responsive review approved",
+    "full release gate passed",
+    "artifact integrity verified",
+    "preview approved",
+    "same digest selected for promotion"
+  ],
+  "testsExecutedByInstaller": []
+}

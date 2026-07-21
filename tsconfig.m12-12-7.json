@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/reliability/**/*.ts",
+    "src/components/feedback/resource-state/**/*.ts",
+    "src/components/feedback/resource-state/**/*.tsx",
+    "src/features/notifications/**/*.ts",
+    "src/features/notifications/**/*.tsx",
+    "src/app/api/notifications/**/*.ts",
+    "src/app/(platform)/notifications/**/*.ts",
+    "src/app/(platform)/notifications/**/*.tsx",
+    "scripts/verify-m12-12-7.mjs"
+  ],
+  "exclude": ["node_modules"]
+}

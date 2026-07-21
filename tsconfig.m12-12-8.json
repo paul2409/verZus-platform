@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/reliability/**/*.ts",
+    "src/components/feedback/resource-state/**/*.ts",
+    "src/components/feedback/resource-state/**/*.tsx",
+    "src/features/search/**/*.ts",
+    "src/features/search/**/*.tsx",
+    "src/features/notifications/**/*.ts",
+    "src/features/notifications/**/*.tsx",
+    "src/features/activity/**/*.ts",
+    "src/features/activity/**/*.tsx",
+    "src/app/api/search/**/*.ts",
+    "src/app/api/notifications/**/*.ts",
+    "src/app/api/activity/**/*.ts",
+    "src/app/(platform)/search/**/*.ts",
+    "src/app/(platform)/search/**/*.tsx",
+    "src/app/(platform)/notifications/**/*.ts",
+    "src/app/(platform)/notifications/**/*.tsx",
+    "src/app/(platform)/activity/**/*.ts",
+    "src/app/(platform)/activity/**/*.tsx"
+  ],
+  "exclude": ["node_modules", ".verzus-artifacts"]
+}

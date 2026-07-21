@@ -1,7 +1,8 @@
+// VERZUS M12.4 NOTIFICATION BADGE BRIDGE
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-import { PlatformShell } from "@/components/layout/app-shell";
+import { NotificationAwarePlatformShell } from "@/features/notifications/mutations/shell/NotificationAwarePlatformShell";
 
 export const metadata: Metadata = {
   title: {
@@ -15,5 +16,5 @@ type PlatformLayoutProps = Readonly<{
 }>;
 
 export default function PlatformLayout({ children }: PlatformLayoutProps) {
-  return <PlatformShell>{children}</PlatformShell>;
+  return <NotificationAwarePlatformShell>{children}</NotificationAwarePlatformShell>;
 }

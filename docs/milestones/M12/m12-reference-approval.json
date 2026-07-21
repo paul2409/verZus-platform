@@ -1,0 +1,27 @@
+{
+  "milestone": "M12",
+  "stage": "12.1",
+  "reference": {
+    "mobile390": {
+      "status": "approved-for-foundation",
+      "source": "Generated M12 Search, Notifications and Activity visual direction",
+      "scope": "Global Search hierarchy, domain navigation, discovery and cross-domain result anatomy"
+    },
+    "tablet768": {
+      "status": "implementation-review-required",
+      "scope": "Two-column discovery using the approved mobile information hierarchy"
+    },
+    "desktop1440": {
+      "status": "implementation-review-required",
+      "scope": "Purpose-built multi-column Search composition"
+    }
+  },
+  "deferred": [
+    "debounced-live-suggestions",
+    "independent-domain-apis",
+    "notification-centre",
+    "notification-mutations",
+    "activity-feed",
+    "release-approval"
+  ]
+}

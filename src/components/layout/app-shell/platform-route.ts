@@ -1,3 +1,4 @@
+// VERZUS M12.5 ACTIVITY PLATFORM ROUTE
 import { normalizeShellPath } from "./navigation-state";
 
 export type PlatformRouteId =
@@ -9,6 +10,7 @@ export type PlatformRouteId =
   | "rewards"
   | "profile"
   | "notifications"
+  | "activity"
   | "search"
   | "settings";
 
@@ -99,6 +101,15 @@ export const platformRoutes: readonly PlatformRouteDescriptor[] = [
     description: "Review match, Crew, ranking and platform updates.",
     section: "Account",
     breadcrumbs: [{ label: "Notifications" }],
+  },
+  {
+    id: "activity",
+    href: "/activity",
+    title: "Activity Feed",
+    eyebrow: "Personalized signals",
+    description: "Follow verified movement across your competitive network.",
+    section: "Account",
+    breadcrumbs: [{ label: "Activity" }],
   },
   {
     id: "search",

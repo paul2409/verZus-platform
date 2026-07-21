@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "include": [
+    "next-env.d.ts",
+    "src/features/notifications/**/*.ts",
+    "src/features/notifications/**/*.tsx",
+    "src/components/layout/app-shell/PlatformShell.tsx",
+    "src/app/(platform)/layout.tsx",
+    "src/app/(platform)/notifications/**/*.ts",
+    "src/app/(platform)/notifications/**/*.tsx",
+    "src/app/api/notifications/**/*.ts",
+    "scripts/verify-m12-12-4.mjs"
+  ],
+  "exclude": ["node_modules"]
+}

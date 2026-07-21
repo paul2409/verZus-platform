@@ -1,0 +1,96 @@
+/* VERZUS M12.6 RESOURCE STATE PANEL */
+
+.panel {
+  --state-accent: #ff6f86;
+  display: grid;
+  justify-items: start;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--state-accent) 42%, transparent);
+  border-left: 3px solid var(--state-accent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--state-accent) 8%, #07100d), #050a08);
+}
+
+.panel[data-resource-state="offline"] { --state-accent: #5ce8ff; }
+.panel[data-resource-state="unauthorized"] { --state-accent: #ffd163; }
+.panel[data-resource-state="forbidden"] { --state-accent: #ff8b61; }
+.panel[data-resource-state="not-found"] { --state-accent: #a88bff; }
+.panel[data-resource-state="maintenance"] { --state-accent: #6effa0; }
+.panel[data-resource-state="schema-invalid"] { --state-accent: #ff70ce; }
+.panel[data-resource-state="partial-failure"] { --state-accent: #ffd163; }
+
+.statusLine {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statusLine p,
+.panel h2,
+.message,
+.panel small { margin: 0; }
+
+.statusLine p {
+  color: var(--state-accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.signal {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--state-accent);
+  box-shadow: 0 0 1rem color-mix(in srgb, var(--state-accent) 72%, transparent);
+}
+
+.panel h2 {
+  color: #f7fbf8;
+  font-size: clamp(1rem, 4vw, 1.35rem);
+  line-height: 1.2;
+}
+
+.message {
+  max-width: 48rem;
+  color: #a9b7b0;
+  line-height: 1.55;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.actions button,
+.actions a {
+  min-height: 2.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--state-accent);
+  background: color-mix(in srgb, var(--state-accent) 9%, transparent);
+  color: #f8fcfa;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.actions button:focus-visible,
+.actions a:focus-visible {
+  outline: 2px solid var(--state-accent);
+  outline-offset: 3px;
+}
+
+.panel small {
+  max-width: 100%;
+  color: #7f9188;
+  overflow-wrap: anywhere;
+}
+
+.panel code { color: var(--state-accent); }

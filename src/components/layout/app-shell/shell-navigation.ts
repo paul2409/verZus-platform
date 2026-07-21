@@ -1,3 +1,4 @@
+// VERZUS M12.5 ACTIVITY NAVIGATION
 import type { ShellNavigationItem } from "./shell.types";
 
 export const shellNavigationItems: readonly ShellNavigationItem[] = [
@@ -56,6 +57,12 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
     href: "/notifications",
     label: "Notifications",
     icon: "bell",
+  },
+  {
+    id: "activity",
+    href: "/activity",
+    label: "Activity",
+    icon: "calendar",
   },
   {
     id: "search",

@@ -1,0 +1,332 @@
+/* VERZUS M12.7 NOTIFICATION SETTINGS */
+
+.page {
+  --cyan: #58e7ff;
+  --green: #57f397;
+  --gold: #ffc84a;
+  --red: #ff5f74;
+  display: grid;
+  width: min(100%, 78rem);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 1rem 1rem 6.5rem;
+  gap: 1rem;
+}
+
+.hero,
+.preferenceSection,
+.sideRail > section,
+.saveBar,
+.stageNote,
+.loadingState,
+.mutationError,
+.successNotice {
+  border: 1px solid rgb(126 167 197 / 20%);
+  background: linear-gradient(145deg, rgb(9 17 28 / 97%), rgb(4 10 18 / 97%));
+}
+
+.hero {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-top: 3px solid var(--cyan);
+}
+
+.hero h1,
+.preferenceSection h2,
+.sideRail h2 {
+  margin: 0;
+  color: #f4fbff;
+  letter-spacing: -0.03em;
+}
+
+.hero h1 {
+  margin-top: 0.2rem;
+  font-size: clamp(2rem, 8vw, 4.2rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.hero p,
+.preferenceSection p,
+.sideRail p,
+.stageNote span,
+.saveBar span {
+  color: #9fb2c3;
+}
+
+.hero p {
+  max-width: 46rem;
+  margin: 0.65rem 0 0;
+  line-height: 1.6;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--cyan) !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.backLink,
+.primaryButton,
+.inlineActions button,
+.saveBar button {
+  display: inline-flex;
+  min-height: 2.8rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(88 231 255 / 35%);
+  border-radius: 0.45rem;
+  padding: 0.7rem 0.9rem;
+  background: rgb(7 18 29 / 90%);
+  color: #eafaff;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.backLink {
+  justify-self: start;
+}
+
+.settingsGrid {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.formColumn,
+.sideRail {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+  align-content: start;
+}
+
+.preferenceSection,
+.sideRail > section,
+.saveBar,
+.stageNote,
+.loadingState,
+.mutationError,
+.successNotice {
+  padding: 1rem;
+  border-radius: 0.6rem;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.sectionHeading > span {
+  flex: none;
+  color: #71879a;
+  font-size: 0.75rem;
+}
+
+.preferenceRow {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid rgb(126 167 197 / 13%);
+  color: #eaf6ff;
+}
+
+.preferenceRow span {
+  display: grid;
+  min-width: 0;
+  gap: 0.25rem;
+}
+
+.preferenceRow small {
+  color: #8da0b1;
+  line-height: 1.45;
+}
+
+.preferenceRow input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  accent-color: var(--cyan);
+}
+
+.fieldGrid {
+  display: grid;
+  gap: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgb(126 167 197 / 13%);
+}
+
+.fieldGrid label,
+.selectRow {
+  display: grid;
+  gap: 0.4rem;
+  color: #c9d9e4;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.fieldGrid input,
+.fieldGrid select,
+.selectRow select {
+  min-width: 0;
+  min-height: 2.8rem;
+  border: 1px solid rgb(126 167 197 / 28%);
+  border-radius: 0.4rem;
+  padding: 0.65rem 0.75rem;
+  background: #07111c;
+  color: #f1f8fc;
+  font: inherit;
+}
+
+.selectRow {
+  padding-top: 0.8rem;
+  border-top: 1px solid rgb(126 167 197 / 13%);
+}
+
+.mutationError {
+  display: grid;
+  gap: 0.8rem;
+  border-color: rgb(255 95 116 / 42%);
+}
+
+.mutationError > div:first-child,
+.successNotice {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.mutationError code,
+.requestCard code {
+  overflow-wrap: anywhere;
+  color: #a7bdcc;
+  font-size: 0.72rem;
+}
+
+.successNotice {
+  border-color: rgb(87 243 151 / 35%);
+}
+
+.successNotice strong {
+  color: var(--green);
+}
+
+.successNotice span {
+  color: #a5b8c6;
+}
+
+.saveBar {
+  display: grid;
+  gap: 0.8rem;
+  position: sticky;
+  bottom: 0.75rem;
+  z-index: 2;
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 35%);
+}
+
+.saveBar > div:first-child {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.inlineActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.primaryButton {
+  border-color: rgb(88 231 255 / 75%) !important;
+  background: linear-gradient(135deg, rgb(30 167 194 / 45%), rgb(22 77 112 / 55%)) !important;
+}
+
+.inlineActions button:disabled,
+.saveBar button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.sideRail > section {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.sideRail p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.requestCard span {
+  color: #71879a;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.loadingState {
+  display: grid;
+  gap: 0.7rem;
+  color: #b8cad6;
+}
+
+.loadingState div {
+  height: 4.6rem;
+  border-radius: 0.45rem;
+  background: linear-gradient(90deg, rgb(255 255 255 / 3%), rgb(255 255 255 / 7%), rgb(255 255 255 / 3%));
+}
+
+.stageNote {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.stageNote strong {
+  color: var(--gold);
+}
+
+@media (min-width: 48rem) {
+  .page {
+    padding: 1.5rem 1.5rem 5rem;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    padding: 1.5rem;
+  }
+
+  .backLink {
+    justify-self: end;
+  }
+
+  .fieldGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .saveBar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+@media (min-width: 64rem) {
+  .settingsGrid {
+    grid-template-columns: minmax(0, 1fr) 19rem;
+  }
+
+  .sideRail {
+    position: sticky;
+    top: 1rem;
+  }
+}
