@@ -4,7 +4,7 @@ import { createHash, randomUUID } from "node:crypto";
 
 import type { PoolClient, QueryResultRow } from "pg";
 
-import type { AuthRole } from "@/features/auth/model/auth-state";
+import type { PlatformRole } from "@/lib/session/runtime-session.types";
 import type {
   MatchClockSnapshot,
   MatchOperationState,
@@ -156,7 +156,7 @@ export type MatchContext = {
 
 type Queryable = Pick<PoolClient, "query">;
 
-const elevatedRoles: readonly AuthRole[] = ["referee", "admin", "superadmin"];
+const elevatedRoles: readonly PlatformRole[] = ["referee", "admin", "superadmin"];
 const terminalStates = new Set<MatchOperationState>(["forfeit", "cancelled", "completed"]);
 
 function iso(value: Date): string {
@@ -276,7 +276,7 @@ async function loadMatchContextWith(
   database: Queryable,
   matchId: string,
   userId: string,
-  role: AuthRole,
+  role: PlatformRole,
   lock = false,
 ): Promise<MatchContext> {
   const matchResult = await database.query<MatchRow>(
@@ -726,7 +726,7 @@ export function buildReadResource(
 export async function readMatchResource(input: {
   matchId: string;
   userId: string;
-  role: AuthRole;
+  role: PlatformRole;
   resource: MatchResourceName;
 }) {
   const context = await loadMatchContextWith(
@@ -747,7 +747,7 @@ export async function readMatchResource(input: {
 export async function readMatchClock(input: {
   matchId: string;
   userId: string;
-  role: AuthRole;
+  role: PlatformRole;
 }) {
   const context = await loadMatchContextWith(
     { query: queryDatabase as Queryable["query"] },
@@ -899,7 +899,7 @@ function rawCheckInSnapshot(context: MatchContext, eventId: string | null, repla
 export async function executeCheckIn(input: {
   matchId: string;
   userId: string;
-  role: AuthRole;
+  role: PlatformRole;
   expectedState: MatchOperationState;
   expectedVersion: number;
   idempotencyKey: string;
@@ -1013,7 +1013,7 @@ function rawLobbySnapshot(context: MatchContext, eventId: string | null, actionN
 export async function executeLobbyAction(input: {
   matchId: string;
   userId: string;
-  role: AuthRole;
+  role: PlatformRole;
   action: "enter_lobby" | "confirm_ready" | "start_match" | "report_issue";
   issue?: { category: "connection" | "opponent" | "rules" | "other"; summary: string };
   expectedState: MatchOperationState;
@@ -1212,7 +1212,7 @@ async function updateCompetitiveSummaries(client: Queryable, context: MatchConte
 export async function executeResultAction(input: {
   matchId: string;
   userId: string;
-  role: AuthRole;
+  role: PlatformRole;
   action: "submit_result" | "confirm_result";
   score: { home: number; away: number };
   note?: string;
@@ -1322,7 +1322,7 @@ export async function executeResultAction(input: {
 export async function executeDispute(input: {
   matchId: string;
   userId: string;
-  role: AuthRole;
+  role: PlatformRole;
   reason: "score_mismatch" | "opponent_no_show" | "rule_violation" | "connection_failure" | "other";
   summary: string;
   claimedScore: { home: number; away: number } | null;
@@ -1419,7 +1419,7 @@ export async function executeDispute(input: {
   });
 }
 
-export async function readTerminalSnapshot(input: { matchId: string; userId: string; role: AuthRole }) {
+export async function readTerminalSnapshot(input: { matchId: string; userId: string; role: PlatformRole }) {
   const context = await loadMatchContextWith(
     { query: queryDatabase as Queryable["query"] },
     input.matchId,
@@ -1448,7 +1448,7 @@ export async function readTerminalSnapshot(input: { matchId: string; userId: str
 export async function executeTerminal(input: {
   matchId: string;
   userId: string;
-  role: AuthRole;
+  role: PlatformRole;
   action: "forfeit_match" | "cancel_match" | "complete_match";
   reason: string;
   expectedState: MatchOperationState;
@@ -1559,7 +1559,7 @@ export async function executeTerminal(input: {
 export async function getInitialMatchViewModel(input: {
   matchId: string;
   userId: string;
-  role: AuthRole;
+  role: PlatformRole;
 }): Promise<MatchOperationsViewModel> {
   const context = await loadMatchContextWith(
     { query: queryDatabase as Queryable["query"] },
@@ -1644,7 +1644,7 @@ export type MatchListItem = {
   ranks: string;
 };
 
-export async function listVisibleMatches(userId: string, role: AuthRole): Promise<MatchListItem[]> {
+export async function listVisibleMatches(userId: string, role: PlatformRole): Promise<MatchListItem[]> {
   const elevated = elevatedRoles.includes(role);
   const result = await queryDatabase<
     QueryResultRow & {
@@ -1714,7 +1714,7 @@ export async function listVisibleMatches(userId: string, role: AuthRole): Promis
   }));
 }
 
-export async function getNextMatchForUser(userId: string, role: AuthRole) {
+export async function getNextMatchForUser(userId: string, role: PlatformRole) {
   const result = await queryDatabase<QueryResultRow & { id: string }>(
     `
       SELECT match_record.id

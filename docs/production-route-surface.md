@@ -12,6 +12,11 @@ This file is the allowlist enforced by `scripts/check-production-routes.mjs`.
 - `/reset-password`
 - `/session-expired`
 
+## Controlled account states
+
+- `/account/suspended`
+- `/account/banned`
+
 ## Onboarding
 
 - `/onboarding`

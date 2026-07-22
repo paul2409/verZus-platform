@@ -6,41 +6,41 @@ import styles from "./play-command-center.module.css";
 const actions = [
   {
     href: "/compete",
-    label: "COMPETITIONS",
-    detail: "Browse and enter eligible events",
-    glyph: "▶",
-    tone: "primary",
+    label: "FIND MATCH",
+    detail: "Enter an eligible competition",
+    glyph: "◎",
+    tone: "cyan",
   },
   {
     href: "/matches",
     label: "MY MATCHES",
-    detail: "Open scheduled and active matches",
-    glyph: "◎",
-    tone: "info",
+    detail: "Open your active schedule",
+    glyph: "▣",
+    tone: "violet",
+  },
+  {
+    href: "/crews",
+    label: "JOIN CREW",
+    detail: "Find your competitive unit",
+    glyph: "C",
+    tone: "violet",
   },
   {
     href: "/leaderboards/weekly",
     label: "WEEKLY RANK",
     detail: "Track confirmed movement",
     glyph: "#",
-    tone: "neutral",
-  },
-  {
-    href: "/crews",
-    label: "CREW HQ",
-    detail: "Membership, roster, and operations",
-    glyph: "◇",
-    tone: "war",
+    tone: "magenta",
   },
 ] as const;
 
 export function QuickActions() {
   return (
-    <WidgetFrame eyebrow="QUICK ACTIONS" title="Choose your next move" status="READY">
-      <div className={styles.quickActionGrid}>
+    <WidgetFrame title="QUICK ACTIONS" className={styles.quickActionsWidget}>
+      <div className={styles.quickActionList}>
         {actions.map((action) => (
           <Link data-tone={action.tone} href={action.href} key={action.label}>
-            <span className={styles.quickActionGlyph} aria-hidden="true">
+            <span className={styles.quickActionIcon} aria-hidden="true">
               {action.glyph}
             </span>
             <span>

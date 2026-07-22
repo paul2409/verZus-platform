@@ -7,12 +7,15 @@ import { recordPlayTelemetry } from "../telemetry/play-telemetry";
 import { usePlayCommandCenterTelemetry } from "../telemetry/use-play-telemetry";
 import { CrewPulseWidget } from "./CrewPulseWidget";
 import { CurrentPositionWidget } from "./CurrentPositionWidget";
+import { DailyChallengesPanel } from "./DailyChallengesPanel";
 import { OpportunityRail } from "./OpportunityRail";
-import { PlayHero } from "./PlayHero";
-import { PlayerStatusStrip } from "./PlayerStatusStrip";
+import { PlayModesPanel } from "./PlayModesPanel";
+import { PlayOverviewStrip } from "./PlayOverviewStrip";
+import { PlayStatusFooter } from "./PlayStatusFooter";
 import { PrimaryActionPanel } from "./PrimaryActionPanel";
 import { QuickActions } from "./QuickActions";
 import { RecentActivityWidget } from "./RecentActivityWidget";
+import { UpNextPanel } from "./UpNextPanel";
 import { usePlayCommandCenter } from "./usePlayCommandCenter";
 import styles from "./play-command-center.module.css";
 
@@ -54,78 +57,70 @@ export function PlayCommandCenter() {
       data-play-ready={playReady ? "true" : "false"}
       data-play-variant={viewModel.variant}
     >
-      <header className={styles.playPageHeader}>
-        <div>
-          <span>PLAYER COMMAND CENTRE</span>
+      <header className={styles.playHeader}>
+        <div className={styles.playTitleBlock}>
+          <span>PLAY COMMAND CENTRE</span>
           <h1>PLAY</h1>
+          <p>Your arena. Your rules. Your legacy.</p>
         </div>
-        <div className={styles.liveStatus} data-online={viewModel.online}>
-          <i aria-hidden="true" />
-          <span>{viewModel.online ? "LIVE OPERATIONS" : "OFFLINE MODE"}</span>
-        </div>
+
+        <WidgetBoundary
+          name="play-player-overview"
+          resetKeys={[
+            viewModel.playerStatus.state,
+            viewModel.playerStatus.requestId,
+            viewModel.currentPosition.state,
+            viewModel.currentPosition.requestId,
+          ]}
+        >
+          <PlayOverviewStrip
+            playerStatus={viewModel.playerStatus}
+            currentPosition={viewModel.currentPosition}
+            onRetryPlayer={() => retryWidget("player-status", retry.playerStatus)}
+            onRetryPosition={() => retryWidget("current-position", retry.currentPosition)}
+          />
+        </WidgetBoundary>
       </header>
-
-      <WidgetBoundary
-        name="play-player-status"
-        resetKeys={[viewModel.playerStatus.state, viewModel.playerStatus.requestId]}
-      >
-        <PlayerStatusStrip
-          view={viewModel.playerStatus}
-          onRetry={() => retryWidget("player-status", retry.playerStatus)}
-        />
-      </WidgetBoundary>
-
-      <div className={styles.serviceRibbon} data-online={viewModel.online}>
-        <span className={styles.statusDot} aria-hidden="true" />
-        <strong>{viewModel.online ? "PLAY NETWORK ONLINE" : "NETWORK UNAVAILABLE"}</strong>
-        <span>
-          {controller.refreshing
-            ? "Synchronising live modules"
-            : viewModel.partialFailureCount > 0
-              ? `${viewModel.partialFailureCount} isolated module${viewModel.partialFailureCount === 1 ? "" : "s"} unavailable`
-              : "All essential actions available"}
-        </span>
-        {viewModel.partialFailureCount > 0 || !viewModel.online ? (
-          <button type="button" onClick={() => retryWidget("all", retry.all)}>
-            RETRY ALL
-          </button>
-        ) : null}
-      </div>
 
       {!viewModel.online ? (
         <div className={styles.globalBanner} role="status">
-          <strong>OFFLINE MODE</strong>
-          <span>Network actions are disabled. Navigation and saved information remain available.</span>
+          <div>
+            <strong>OFFLINE MODE</strong>
+            <span>Saved information remains visible. Network actions are paused.</span>
+          </div>
+          <button type="button" onClick={() => retryWidget("all", retry.all)}>
+            RETRY CONNECTION
+          </button>
         </div>
       ) : viewModel.partialFailureCount > 0 ? (
         <div className={styles.globalBanner} data-tone="warning" role="status">
-          <strong>PARTIAL SERVICE DEGRADATION</strong>
-          <span>
-            Failed widgets remain isolated. Match, check-in, navigation, and healthy modules
-            continue working.
-          </span>
+          <div>
+            <strong>PARTIAL SERVICE DEGRADATION</strong>
+            <span>
+              {viewModel.partialFailureCount} isolated module
+              {viewModel.partialFailureCount === 1 ? "" : "s"} unavailable.
+            </span>
+          </div>
+          <button type="button" onClick={() => retryWidget("all", retry.all)}>
+            RETRY ALL
+          </button>
         </div>
       ) : null}
 
-      <main className={styles.commandGrid}>
-        <div className={styles.heroArea}>
-          <PlayHero
-            competitions={viewModel.recommendedCompetitions}
-            currentPosition={viewModel.currentPosition}
-            nextMatch={viewModel.nextMatch}
-            online={viewModel.online}
-            playerStatus={viewModel.playerStatus}
-          />
-        </div>
-
+      <main className={styles.dashboardGrid}>
         <div className={styles.matchArea}>
-          <PrimaryActionPanel
-            nextMatch={viewModel.nextMatch}
-            currentCheckIn={viewModel.currentCheckIn}
-            checkInAction={checkInAction}
-            retryNextMatch={() => retryWidget("next-match", retry.nextMatch)}
-            retryCheckIn={() => retryWidget("current-check-in", retry.currentCheckIn)}
-          />
+          <WidgetBoundary
+            name="play-primary-action"
+            resetKeys={[viewModel.nextMatch.state, viewModel.currentCheckIn.state]}
+          >
+            <PrimaryActionPanel
+              nextMatch={viewModel.nextMatch}
+              currentCheckIn={viewModel.currentCheckIn}
+              checkInAction={checkInAction}
+              retryNextMatch={() => retryWidget("next-match", retry.nextMatch)}
+              retryCheckIn={() => retryWidget("current-check-in", retry.currentCheckIn)}
+            />
+          </WidgetBoundary>
         </div>
 
         <div className={styles.quickArea}>
@@ -134,7 +129,26 @@ export function PlayCommandCenter() {
           </WidgetBoundary>
         </div>
 
-        <div className={styles.positionArea}>
+        <div className={styles.upNextArea}>
+          <WidgetBoundary
+            name="play-up-next"
+            resetKeys={[viewModel.nextMatch.state, viewModel.recommendedCompetitions.state]}
+          >
+            <UpNextPanel
+              nextMatch={viewModel.nextMatch}
+              competitions={viewModel.recommendedCompetitions}
+              onRetry={() => retryWidget("up-next", retry.all)}
+            />
+          </WidgetBoundary>
+        </div>
+
+        <div className={styles.modesArea}>
+          <WidgetBoundary name="play-modes">
+            <PlayModesPanel />
+          </WidgetBoundary>
+        </div>
+
+        <div className={styles.statsArea}>
           <WidgetBoundary
             name="play-current-position"
             resetKeys={[viewModel.currentPosition.state, viewModel.currentPosition.requestId]}
@@ -146,7 +160,13 @@ export function PlayCommandCenter() {
           </WidgetBoundary>
         </div>
 
-        <div className={styles.competitionArea}>
+        <div className={styles.challengesArea}>
+          <WidgetBoundary name="play-challenges">
+            <DailyChallengesPanel />
+          </WidgetBoundary>
+        </div>
+
+        <div className={styles.opportunitiesArea}>
           <WidgetBoundary
             name="play-opportunities"
             resetKeys={[
@@ -185,6 +205,8 @@ export function PlayCommandCenter() {
           </WidgetBoundary>
         </div>
       </main>
+
+      <PlayStatusFooter online={viewModel.online} degraded={viewModel.partialFailureCount > 0} />
     </div>
   );
 }

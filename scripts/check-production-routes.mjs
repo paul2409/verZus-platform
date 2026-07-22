@@ -14,6 +14,8 @@ const allowedRoutes = new Set([
   "/forgot-password",
   "/reset-password",
   "/session-expired",
+  "/account/suspended",
+  "/account/banned",
   "/onboarding",
   "/onboarding/identity",
   "/onboarding/games",

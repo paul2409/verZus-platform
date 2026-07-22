@@ -1,0 +1,37 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07131B"/>
+      <stop offset="0.5" stop-color="#0B0F1B"/>
+      <stop offset="1" stop-color="#06100D"/>
+    </linearGradient>
+    <linearGradient id="field" x1="600" y1="264" x2="600" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00FF95" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#00FF95" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="640" fill="url(#bg)"/>
+  <ellipse cx="600" cy="220" rx="520" ry="145" stroke="#19F5FF" stroke-opacity="0.24" stroke-width="3"/>
+  <ellipse cx="600" cy="220" rx="430" ry="110" stroke="#9D4DFF" stroke-opacity="0.22" stroke-width="2"/>
+  <path d="M80 180H1120L1010 365H190L80 180Z" fill="#111827" fill-opacity="0.64"/>
+  <path d="M220 335H980L1160 640H40L220 335Z" fill="url(#field)"/>
+  <path d="M600 335V640M420 335L340 640M780 335L860 640M300 335L160 640M900 335L1040 640" stroke="#19F5FF" stroke-opacity="0.13"/>
+  <path d="M40 500H1160M95 430H1105M160 380H1040" stroke="#00FF95" stroke-opacity="0.14"/>
+  <g filter="url(#glow)" opacity="0.8">
+    <circle cx="210" cy="180" r="24" fill="#00FF95"/>
+    <circle cx="390" cy="145" r="20" fill="#19F5FF"/>
+    <circle cx="600" cy="132" r="22" fill="#FCE149"/>
+    <circle cx="810" cy="145" r="20" fill="#FF3CF0"/>
+    <circle cx="990" cy="180" r="24" fill="#FF4D5E"/>
+  </g>
+  <g opacity="0.72">
+    <circle cx="210" cy="180" r="5" fill="#00FF95"/>
+    <circle cx="390" cy="145" r="5" fill="#19F5FF"/>
+    <circle cx="600" cy="132" r="5" fill="#FCE149"/>
+    <circle cx="810" cy="145" r="5" fill="#FF3CF0"/>
+    <circle cx="990" cy="180" r="5" fill="#FF4D5E"/>
+  </g>
+</svg>

@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 
 import { serializeRewardHistoryAuditPage } from "./reward-history-audit.service";
 
@@ -14,7 +14,7 @@ function parsePositiveInt(value: string | null, fallback: number, maximum: numbe
 
 export async function handleRewardHistoryAuditGet(request: NextRequest): Promise<NextResponse> {
   const requestId = `reward-history-audit-${crypto.randomUUID()}`;
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return NextResponse.json(
       {

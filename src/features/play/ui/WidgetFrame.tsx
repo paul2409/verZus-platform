@@ -1,5 +1,4 @@
-// VERZUS STAGE 3 WIDGET FRAME
-
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import styles from "./play-command-center.module.css";
@@ -8,12 +7,14 @@ export function WidgetFrame({
   eyebrow,
   title,
   status,
+  statusHref,
   children,
   className,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   status?: string;
+  statusHref?: string;
   children: ReactNode;
   className?: string | undefined;
 }) {
@@ -21,10 +22,14 @@ export function WidgetFrame({
     <section className={`${styles.widget} ${className ?? ""}`}>
       <header className={styles.widgetHeader}>
         <div>
-          <span>{eyebrow}</span>
+          {eyebrow ? <span>{eyebrow}</span> : null}
           <h2>{title}</h2>
         </div>
-        {status ? <b>{status}</b> : null}
+        {status && statusHref ? (
+          <Link href={statusHref}>{status}</Link>
+        ) : status ? (
+          <b>{status}</b>
+        ) : null}
       </header>
       {children}
     </section>

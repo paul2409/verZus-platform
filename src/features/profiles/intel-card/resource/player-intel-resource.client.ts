@@ -1,23 +1,16 @@
-// VERZUS M8.9 PLAYER INTEL RESOURCE CLIENT
-
 import {
   adaptPlayerIntelPayload,
   PlayerIntelResourceError,
   type PlayerIntelResource,
 } from "./player-intel-resource.adapter";
-import type { PlayerIntelResourceScenario } from "./player-intel-resource.schema";
 
 export async function getPlayerIntelResource(
   playerId: string,
-  input: { scenario?: PlayerIntelResourceScenario; signal?: AbortSignal } = {},
+  input: { signal?: AbortSignal } = {},
 ): Promise<PlayerIntelResource> {
-  const params = new URLSearchParams();
-  if (input.scenario && input.scenario !== "normal") params.set("scenario", input.scenario);
-  const query = params.size > 0 ? `?${params.toString()}` : "";
-
   let response: Response;
   try {
-    response = await fetch(`/api/players/${encodeURIComponent(playerId)}/intel${query}`, {
+    response = await fetch(`/api/players/${encodeURIComponent(playerId)}/intel`, {
       method: "GET",
       credentials: "same-origin",
       cache: "no-store",

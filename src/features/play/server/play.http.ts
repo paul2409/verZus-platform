@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 import { readPlayPlayerStatus } from "./play.repository";
 
 function requestId(scope: string): string {
@@ -33,7 +33,7 @@ function failure(input: {
 }
 
 async function authenticatedUserId(id: string) {
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return {
       response: failure({

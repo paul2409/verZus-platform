@@ -71,7 +71,7 @@ export const playPrimaryQuestions = [
 export const playWidgetContracts: readonly PlayWidgetContract[] = [
   {
     id: "player-status",
-    component: "PlayerStatusStrip",
+    component: "PlayOverviewStrip",
     purpose: "Establish the current player, game lane, week, trust, and notification context.",
     endpoint: "/api/me/status",
     essential: true,

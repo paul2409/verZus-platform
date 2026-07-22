@@ -29,3 +29,5 @@ export { ShellStatusRegion } from "./ShellStatusRegion";
 export type { ShellStatusRegionProps } from "./ShellStatusRegion";
 // VERZUS M3 STEP 3.6 EXPORTS END
 export { useBrowserConnectivity } from "./use-browser-connectivity";
+
+export { PublicQuerySanitizer } from "./PublicQuerySanitizer";

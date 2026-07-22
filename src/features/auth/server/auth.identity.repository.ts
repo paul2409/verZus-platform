@@ -229,7 +229,7 @@ async function audit(
   await client.query(
     `INSERT INTO audit_events (
        id, actor_user_id, action, target_type, target_id, request_id
-     ) VALUES ($1, $2, $3, 'user', $2, $4)`,
+     ) VALUES ($1, $2, $3, 'user', $2::uuid::text, $4)`,
     [randomUUID(), userId, action, requestId],
   );
 }

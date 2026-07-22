@@ -3,8 +3,7 @@ import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { readSessionToken } from "@/features/auth/server/auth.http";
-import { readAccountSession } from "@/features/auth/server/auth.service";
+import { readRuntimeSession, readRuntimeSessionToken } from "@/lib/session/runtime-session.server";
 
 import type { ProfileResourceName } from "../model/profile-resource.types";
 import { serializeProfileResource } from "./profile-resource.service";
@@ -37,7 +36,7 @@ export async function handleProfileResourceGet(
   resource: ProfileResourceName,
 ): Promise<NextResponse> {
   const requestId = `profile-${resource}-${randomUUID()}`;
-  const session = await readAccountSession(readSessionToken(request));
+  const session = await readRuntimeSession(readRuntimeSessionToken(request));
 
   if (!session.user || !session.session) {
     return errorResponse({

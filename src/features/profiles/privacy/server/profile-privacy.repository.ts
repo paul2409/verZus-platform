@@ -165,7 +165,7 @@ export async function updateProfilePrivacy(input: {
     await client.query(
       `INSERT INTO audit_events
         (id, actor_user_id, action, target_type, target_id, request_id, metadata)
-       VALUES ($1, $2, 'profile.privacy.updated', 'player_profile', $2::text, $3, $4::jsonb)`,
+       VALUES ($1, $2, 'profile.privacy.updated', 'player_profile', $2::uuid::text, $3, $4::jsonb)`,
       [randomUUID(), input.userId, input.requestId, JSON.stringify({ version: snapshot.version })],
     );
     return snapshot;

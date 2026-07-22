@@ -5,8 +5,7 @@ import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { readSessionToken } from "@/features/auth/server/auth.http";
-import { readAccountSession } from "@/features/auth/server/auth.service";
+import { readRuntimeSession, readRuntimeSessionToken } from "@/lib/session/runtime-session.server";
 
 import type { CrewResourceName } from "../resources/model/crew-resource.types";
 import {
@@ -48,7 +47,7 @@ function errorResponse(input: {
 }
 
 async function requireApiUser(request: NextRequest, requestId: string) {
-  const session = await readAccountSession(readSessionToken(request));
+  const session = await readRuntimeSession(readRuntimeSessionToken(request));
   if (!session.user || !session.session) {
     return {
       response: errorResponse({

@@ -5,8 +5,7 @@ import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { AUTH_SESSION_COOKIE } from "@/features/auth/server/auth.constants";
-import { readAccountSession } from "@/features/auth/server/auth.service";
+import { readRuntimeSession, readRuntimeSessionToken } from "@/lib/session/runtime-session.server";
 
 import type { CompetitionLifecycleDecision } from "../lifecycle/model/competition-lifecycle.types";
 import {
@@ -34,8 +33,8 @@ function requestId(): string {
 }
 
 async function authenticatedUserId(request: NextRequest): Promise<string> {
-  const rawToken = request.cookies.get(AUTH_SESSION_COOKIE)?.value ?? null;
-  const session = await readAccountSession(rawToken);
+  const rawToken = readRuntimeSessionToken(request);
+  const session = await readRuntimeSession(rawToken);
 
   if (session.state === "anonymous" || session.state === "session_expired") {
     throw new CompetitionAccessError(401, "unauthorized", "Sign in before using competitions.");

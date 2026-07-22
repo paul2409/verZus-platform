@@ -1,18 +1,4 @@
-// VERZUS M8.9 PLAYER INTEL RESOURCE SCHEMAS
-
 import { z } from "zod";
-
-export const playerIntelResourceScenarios = [
-  "normal",
-  "stale",
-  "partial",
-  "error",
-  "not-found",
-  "malformed",
-  "slow",
-] as const;
-
-export type PlayerIntelResourceScenario = (typeof playerIntelResourceScenarios)[number];
 
 const playerFormResultSchema = z.enum(["W", "D", "L"]);
 
@@ -33,7 +19,7 @@ export const playerIntelRawSchema = z.object({
   game_label: z.string().min(1),
   crew_name: z.string().min(1),
   avatar_src: z.string().min(1),
-  rank: z.number().int().positive(),
+  rank: z.number().int().nonnegative(),
   trust: z.number().int().min(0).max(100),
   verified: z.boolean(),
   wins: z.number().int().min(0),
@@ -53,7 +39,7 @@ export const playerIntelEnvelopeSchema = z.object({
     request_id: z.string().min(1),
     fetched_at: z.string().datetime(),
     freshness: z.enum(["fresh", "stale", "partial"]),
-    source: z.literal("mock-player-intel"),
+    source: z.literal("profile-read-model"),
   }),
 });
 

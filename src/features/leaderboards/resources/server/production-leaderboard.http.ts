@@ -6,7 +6,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import type { QueryResultRow } from "pg";
 
-import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 import {
   leaderboardModes,
   type LeaderboardMode,
@@ -64,7 +64,7 @@ type RawRow = {
 };
 
 async function actorId(): Promise<string> {
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     throw Object.assign(new Error("Authentication is required."), {
       status: 401,

@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 import {
   normalizeActivityDomain,
   normalizeActivityPageSize,
@@ -37,7 +37,7 @@ function errorResponse(input: {
 
 export async function handleActivityFeedGet(request: NextRequest) {
   const id = requestId();
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return errorResponse({
       status: 401,

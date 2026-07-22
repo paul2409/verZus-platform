@@ -1462,18 +1462,18 @@
 .skipCard,
 .benefitGrid article,
 .summaryGrid article {
-  border-color: var(--vz-ref-line);
+  border-color: var(--vz-retro-line);
   background: linear-gradient(180deg, rgb(13 15 22 / 98%), rgb(5 6 10 / 98%));
   border-radius: 0;
-  clip-path: var(--vz-ref-cut-md);
+  clip-path: var(--vz-retro-cut-md);
 }
 
 .brandMark {
   color: var(--vz-retro-black);
-  background: var(--vz-ref-green);
-  border-color: var(--vz-ref-green-soft);
+  background: var(--vz-retro-green);
+  border-color: var(--vz-retro-green-bright);
   box-shadow: var(--vz-shadow-glow-green);
-  clip-path: var(--vz-ref-cut-sm);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .brandCopy strong {
@@ -1488,15 +1488,15 @@
 .crewCard,
 .skipCard {
   border-radius: 0;
-  clip-path: var(--vz-ref-cut-sm);
+  clip-path: var(--vz-retro-cut-sm);
 }
 
 .railStepActive,
 .optionCardSelected,
 .crewCardSelected,
 .skipCardSelected {
-  color: var(--vz-ref-white);
-  border-color: var(--vz-ref-green);
+  color: var(--vz-retro-white);
+  border-color: var(--vz-retro-green);
   background: rgb(0 255 135 / 7%);
   box-shadow: var(--vz-shadow-glow-green);
 }
@@ -1505,13 +1505,13 @@
 .optionCardSelected .optionCheck,
 .crewCardSelected .optionCheck {
   color: var(--vz-retro-black);
-  border-color: var(--vz-ref-green);
-  background: var(--vz-ref-green);
+  border-color: var(--vz-retro-green);
+  background: var(--vz-retro-green);
 }
 
 .optionIcon,
 .crewLogo {
-  color: var(--vz-ref-cyan);
+  color: var(--vz-retro-cyan);
   border-color: rgb(0 229 255 / 48%);
   background: rgb(0 229 255 / 5%);
   border-radius: 0;
@@ -1525,10 +1525,10 @@
 
 .primaryButton {
   color: var(--vz-retro-black);
-  background: var(--vz-ref-green);
-  border-color: var(--vz-ref-green-soft);
+  background: var(--vz-retro-green);
+  border-color: var(--vz-retro-green-bright);
   border-radius: 0;
-  clip-path: var(--vz-ref-cut-sm);
+  clip-path: var(--vz-retro-cut-sm);
   font-family: var(--vz-font-display);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1625,3 +1625,13 @@
 }
 
 /* VERZUS STAGE 5 ONBOARDING:END */
+
+
+/* VERZUS ONBOARDING ACTION VISIBILITY FIX */
+.primaryButton:disabled {
+  color: var(--vz-color-text-primary-secondary);
+  background: var(--vz-color-panel-raised);
+  border: 1px solid var(--vz-color-border-default);
+  box-shadow: none;
+  opacity: 1;
+}

@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 
 import type { RewardResourceName } from "../model/reward-resource.types";
 import { serializeRewardResource } from "./reward-resource.service";
@@ -31,7 +31,7 @@ export async function handleRewardResourceGet(
   resource: RewardResourceName,
 ): Promise<NextResponse> {
   const requestId = `reward-${resource}-${crypto.randomUUID()}`;
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return errorResponse(requestId, {
       code: "REWARD_RESOURCE_UNAUTHORIZED",

@@ -6,8 +6,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import type { z } from "zod";
 
-import { readSessionToken } from "@/features/auth/server/auth.http";
-import { readAccountSession } from "@/features/auth/server/auth.service";
+import { readRuntimeSession, readRuntimeSessionToken } from "@/lib/session/runtime-session.server";
 
 import { CrewOperationError } from "./crew-operation.service";
 
@@ -50,7 +49,7 @@ export async function requireCrewApiActor(
   requestId: string,
   stage: string,
 ) {
-  const session = await readAccountSession(readSessionToken(request));
+  const session = await readRuntimeSession(readRuntimeSessionToken(request));
   if (!session.user || !session.session) {
     return {
       response: crewOperationErrorResponse(requestId, stage, {

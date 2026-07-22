@@ -24,16 +24,12 @@ export function MatchAvailabilityStateScreen({
             ? "The last confirmed snapshot remains visible. Mutations are disabled until connectivity returns."
             : "This snapshot may be behind the server. Refresh before any state-changing action."}
         </p>
-        <Link href={`/matches/${encodeURIComponent(initialMatch.id)}?state=${initialMatch.state}`}>
+        <Link href={`/matches/${encodeURIComponent(initialMatch.id)}`}>
           Retry live state
         </Link>
       </section>
       <div aria-disabled="true" className={styles.cachedSnapshot}>
-        <MatchOperationsScreen
-          clock={initialMatch.clock}
-          matchId={initialMatch.id}
-          state={initialMatch.state}
-        />
+        <MatchOperationsScreen match={initialMatch} />
       </div>
     </div>
   );

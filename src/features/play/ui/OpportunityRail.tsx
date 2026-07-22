@@ -1,41 +1,26 @@
-// VERZUS STAGE 3 OPPORTUNITIES
 "use client";
 
 import Link from "next/link";
 
 import type { RecommendedCompetition } from "../model";
 import type { PlayWidgetView } from "../view-model";
+import { PlayEmptyState } from "./PlayEmptyState";
 import { PlayWidgetStatePanel } from "./PlayWidgetState";
 import { WidgetFrame } from "./WidgetFrame";
 import styles from "./play-command-center.module.css";
 
 function formatStart(value: string): string {
   return new Intl.DateTimeFormat("en-GB", {
-    weekday: "short",
     day: "2-digit",
     month: "short",
     hour: "2-digit",
     minute: "2-digit",
-    hour12: false,
+    hour12: true,
   }).format(new Date(value));
 }
 
-function gameTone(game: string, index: number): "green" | "cyan" | "gold" | "magenta" {
-  const normalized = game.toLowerCase();
-
-  if (normalized.includes("fc") || normalized.includes("football")) {
-    return "gold";
-  }
-
-  if (normalized.includes("clash") || normalized.includes("royale")) {
-    return "cyan";
-  }
-
-  if (normalized.includes("league")) {
-    return "magenta";
-  }
-
-  return (["green", "cyan", "gold", "magenta"] as const)[index % 4] ?? "green";
+function tone(index: number): "red" | "gold" | "cyan" {
+  return (["red", "gold", "cyan"] as const)[index % 3] ?? "cyan";
 }
 
 export function OpportunityRail({
@@ -45,58 +30,55 @@ export function OpportunityRail({
   view: PlayWidgetView<RecommendedCompetition[]>;
   onRetry: () => void;
 }) {
-  const featured = view.data?.some((competition) => competition.isFeatured) ?? false;
+  const unresolved =
+    (!view.data || view.data.length === 0) &&
+    view.state !== "empty" &&
+    view.state !== "success";
 
   return (
     <WidgetFrame
-      eyebrow="04 · FEATURED COMPETITIONS"
-      title="Eligible opportunities"
-      status={featured ? "FEATURED" : `${view.data?.length ?? 0} OPEN`}
-      className={featured ? styles.featuredWidget : undefined}
+      title="LIVE & UPCOMING"
+      eyebrow="HAPPENING NOW IN VERZUS"
+      status="VIEW ALL"
+      statusHref="/compete"
+      className={styles.opportunitiesWidget}
     >
-      {!view.data || view.data.length === 0 ? (
+      {unresolved ? (
         <PlayWidgetStatePanel
           state={view.state}
           errorCode={view.errorCode}
           requestId={view.requestId}
           onRetry={onRetry}
-          emptyTitle="NO RECOMMENDATIONS"
-          emptyDetail="Your eligible competitions will appear here."
         />
+      ) : !view.data || view.data.length === 0 ? (
+        <PlayEmptyState
+          compact
+          variant="competition"
+          title="THE NEXT EVENT HAS NOT DROPPED YET"
+          detail="Published competitions will appear here the moment you become eligible."
+          primaryAction={{ href: "/compete", label: "EXPLORE COMPETITIONS" }}
+        >
+          <div className={styles.emptyOpportunityGrid}>
+            <span><b>OPEN</b><strong>Competitive cups</strong><small>Awaiting publish</small></span>
+            <span><b>WEEKLY</b><strong>Ranked events</strong><small>Awaiting publish</small></span>
+            <span><b>CREW</b><strong>Team battles</strong><small>Join a Crew first</small></span>
+          </div>
+        </PlayEmptyState>
       ) : (
-        <div className={styles.opportunityList}>
-          {view.data.map((competition, index) => (
-            <article
-              className={styles.opportunityCard}
-              data-featured={competition.isFeatured}
-              data-tone={gameTone(competition.game, index)}
-              key={competition.competitionId}
-            >
-              <div className={styles.opportunityArt} aria-hidden="true">
+        <div className={styles.opportunityCards}>
+          {view.data.slice(0, 3).map((competition, index) => (
+            <article data-tone={tone(index)} key={competition.competitionId}>
+              <div className={styles.opportunityBackdrop} aria-hidden="true">
                 <span>{competition.game.slice(0, 2).toUpperCase()}</span>
               </div>
-
-              <div className={styles.opportunityBody}>
+              <div className={styles.opportunityCopy}>
+                <small>{competition.isFeatured ? "FEATURED" : "UP NEXT"}</small>
                 <span>{competition.game}</span>
-                <strong>{competition.title}</strong>
-                <small>{competition.format}</small>
-
-                <dl className={styles.opportunityMeta}>
-                  <div>
-                    <dt>REWARD</dt>
-                    <dd>{competition.rewardLabel}</dd>
-                  </div>
-                  <div>
-                    <dt>ENTRY</dt>
-                    <dd>{competition.entryLabel}</dd>
-                  </div>
-                </dl>
+                <h3>{competition.title}</h3>
+                <strong>{competition.rewardLabel}</strong>
+                <p>{formatStart(competition.startsAt)}</p>
               </div>
-
-              <footer className={styles.opportunityFooter}>
-                <span>{formatStart(competition.startsAt)}</span>
-                <Link href={`/compete/${competition.competitionId}`}>VIEW</Link>
-              </footer>
+              <Link href={`/compete/${competition.competitionId}`}>VIEW DETAILS</Link>
             </article>
           ))}
         </div>

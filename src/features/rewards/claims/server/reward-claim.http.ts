@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 
 import { rewardClaimCommandRawSchema } from "../schema/reward-claim.schema";
 import { claimReward, RewardClaimServiceError } from "./reward-claim.service";
@@ -40,7 +40,7 @@ export async function handleRewardClaim(
   context: { params: Promise<{ rewardId: string }> },
 ) {
   const requestId = randomUUID();
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return errorResponse(requestId, {
       code: "REWARD_CLAIM_UNAUTHORIZED",

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 import { readViewerActivity } from "./activity-feed.repository";
 
 function requestId(): string {
@@ -9,7 +9,7 @@ function requestId(): string {
 
 export async function handlePlayRecentActivityGet() {
   const id = requestId();
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return NextResponse.json(
       {

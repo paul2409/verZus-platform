@@ -14,7 +14,7 @@ import {
   type OnboardingDraft,
   type OnboardingProgressUpdate,
 } from "../model";
-import { readAccountSession } from "@/features/auth/server/auth.service";
+import { readRuntimeSession } from "@/lib/session/runtime-session.server";
 import {
   completePlayerIdentity,
   getUserGamerTag,
@@ -52,7 +52,7 @@ function failure(
 export async function resolveOnboardingUser(
   rawToken: string | null,
 ): Promise<{ userId: string; gamerTag: string } | OnboardingResult> {
-  const session = await readAccountSession(rawToken);
+  const session = await readRuntimeSession(rawToken);
   if (!session.user) return failure(401, "unauthorized", "Sign in before accessing onboarding.");
   if (session.state === "suspended" || session.state === "banned") {
     return failure(403, "forbidden", "This account cannot access onboarding.");

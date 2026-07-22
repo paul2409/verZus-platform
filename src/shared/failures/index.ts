@@ -17,6 +17,3 @@ export type { CreateAppFailureInput } from "./app-failure.factory";
 
 export { adaptHttpFailure, parseRetryAfterSeconds } from "./http-failure.adapter";
 export type { AdaptHttpFailureInput } from "./http-failure.adapter";
-
-export { mockFailureScenarioValues, resolveMockFailureScenario } from "./mock-failure-scenario";
-export type { MockFailureScenario, ResolveMockFailureScenarioInput } from "./mock-failure-scenario";

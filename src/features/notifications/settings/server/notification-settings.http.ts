@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 import type { NotificationSettingsSnapshot } from "../model/notification-settings.types";
 import { notificationSettingsUpdateRequestSchema } from "../schema/notification-settings.schema";
 import {
@@ -64,7 +64,7 @@ function errorResponse(input: {
 }
 
 async function authenticatedUserId(id: string) {
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return {
       response: errorResponse({

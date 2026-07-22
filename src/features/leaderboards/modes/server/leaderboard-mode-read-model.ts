@@ -1,6 +1,6 @@
 // VERZUS M8.4 INDEPENDENT MODE READ MODELS
 
-import { leaderboardFoundationBoards } from "../../foundation/mocks/leaderboard-foundation.mock";
+import { emptyLeaderboardBoards } from "../../foundation/model/leaderboard-empty-state";
 import type {
   LeaderboardFoundationBoard,
   LeaderboardMode,
@@ -29,7 +29,7 @@ function assertModeOwnership(readModel: LeaderboardModeReadModel): LeaderboardMo
 function createWeeklyPlayerReadModel(): LeaderboardModeReadModel {
   return assertModeOwnership({
     mode: "weekly",
-    board: leaderboardFoundationBoards.weekly,
+    board: emptyLeaderboardBoards.weekly,
     composition: getLeaderboardModeComposition("weekly"),
   });
 }
@@ -37,7 +37,7 @@ function createWeeklyPlayerReadModel(): LeaderboardModeReadModel {
 function createWeeklyPoolReadModel(): LeaderboardModeReadModel {
   return assertModeOwnership({
     mode: "pools",
-    board: leaderboardFoundationBoards.pools,
+    board: emptyLeaderboardBoards.pools,
     composition: getLeaderboardModeComposition("pools"),
   });
 }
@@ -45,7 +45,7 @@ function createWeeklyPoolReadModel(): LeaderboardModeReadModel {
 function createGameLaneReadModel(): LeaderboardModeReadModel {
   return assertModeOwnership({
     mode: "game",
-    board: leaderboardFoundationBoards.game,
+    board: emptyLeaderboardBoards.game,
     composition: getLeaderboardModeComposition("game"),
   });
 }
@@ -53,7 +53,7 @@ function createGameLaneReadModel(): LeaderboardModeReadModel {
 function createCrewChampionshipReadModel(): LeaderboardModeReadModel {
   return assertModeOwnership({
     mode: "crew",
-    board: leaderboardFoundationBoards.crew,
+    board: emptyLeaderboardBoards.crew,
     composition: getLeaderboardModeComposition("crew"),
   });
 }
@@ -61,7 +61,7 @@ function createCrewChampionshipReadModel(): LeaderboardModeReadModel {
 function createCombineReadModel(): LeaderboardModeReadModel {
   return assertModeOwnership({
     mode: "combine",
-    board: leaderboardFoundationBoards.combine,
+    board: emptyLeaderboardBoards.combine,
     composition: getLeaderboardModeComposition("combine"),
   });
 }

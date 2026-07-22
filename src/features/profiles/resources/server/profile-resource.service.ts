@@ -1,6 +1,6 @@
 import "server-only";
 
-import { readCurrentCrewForProfile } from "@/features/crews/server";
+import { readCurrentCrewSummary } from "@/lib/read-models/current-crew.server";
 
 import type { ProfileResourceName } from "../model/profile-resource.types";
 import {
@@ -71,7 +71,7 @@ export async function serializeProfileResource(
       };
     }
     case "crew": {
-      const crew = await readCurrentCrewForProfile(userId);
+      const crew = await readCurrentCrewSummary(userId);
       return {
         crew: crew
           ? {

@@ -3,8 +3,7 @@ import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { readSessionToken } from "@/features/auth/server/auth.http";
-import { readAccountSession } from "@/features/auth/server/auth.service";
+import { readRuntimeSession, readRuntimeSessionToken } from "@/lib/session/runtime-session.server";
 
 import type { ProfilePrivacySnapshot } from "../model/profile-privacy.types";
 import { profilePrivacyUpdateCommandRawSchema } from "../schema/profile-privacy.schema";
@@ -60,7 +59,7 @@ function errorResponse(
 }
 
 async function authenticatedUser(request: NextRequest) {
-  const session = await readAccountSession(readSessionToken(request));
+  const session = await readRuntimeSession(readRuntimeSessionToken(request));
   return session.state === "authenticated" ? session.user : null;
 }
 

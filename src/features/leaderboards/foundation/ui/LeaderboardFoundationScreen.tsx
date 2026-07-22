@@ -23,7 +23,7 @@ import {
   useDebouncedValue,
   useLeaderboardUrlState,
 } from "../../explorer";
-import { leaderboardFoundationBoards } from "../mocks/leaderboard-foundation.mock";
+import { emptyLeaderboardBoards } from "../model/leaderboard-empty-state";
 import {
   leaderboardGameLabels,
   type LeaderboardFoundationBoard,
@@ -111,7 +111,7 @@ export function LeaderboardFoundationScreen({
   });
   const searchInput = searchDraft.sourceSearch === state.search ? searchDraft.value : state.search;
   const debouncedSearch = useDebouncedValue(searchInput, 300);
-  const localBoard = leaderboardFoundationBoards[state.mode];
+  const localBoard = emptyLeaderboardBoards[state.mode];
   const board = useMemo<LeaderboardFoundationBoard>(() => {
     const summary = resourceSnapshot?.summary;
     return {
@@ -178,14 +178,18 @@ export function LeaderboardFoundationScreen({
         minute: "2-digit",
         timeZone: "UTC",
       }).format(new Date(resourceSnapshot.status.lastUpdatedAt))} UTC`
-    : "Updated 2 minutes ago";
+    : "No confirmed update yet";
   const changedEntryIds = liveUpdate?.changedEntryIds ?? [];
   const currentInsight = liveUpdate?.currentPosition;
   const entriesHealth = reliability?.resources.entries;
   const currentPositionHealth = reliability?.resources["current-position"];
   const rewardsHealth = reliability?.resources.rewards;
-  const showCurrentPosition = !reliability || currentPositionHealth?.hasData === true;
-  const showRewards = !reliability || rewardsHealth?.hasData === true;
+  const showCurrentPosition =
+    Boolean(resourceSnapshot?.currentPosition?.entry) &&
+    (!reliability || currentPositionHealth?.hasData === true);
+  const showRewards =
+    Boolean(resourceSnapshot?.rewards?.items.length) &&
+    (!reliability || rewardsHealth?.hasData === true);
   const entriesBlocked =
     Boolean(entriesHealth) &&
     !entriesHealth?.hasData &&
@@ -201,7 +205,7 @@ export function LeaderboardFoundationScreen({
       className={styles.page}
       data-m8-stage="8.10"
       data-rendered-row-count={renderPlan.renderedRowCount}
-      data-resource-source={resourceSnapshot ? "api" : "local"}
+      data-resource-source={resourceSnapshot ? "api" : "empty"}
     >
       <a className={styles.skipLink} href="#leaderboard-results">
         Skip to rankings

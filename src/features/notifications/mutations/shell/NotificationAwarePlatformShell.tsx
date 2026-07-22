@@ -11,7 +11,7 @@ import {
   type GlobalShellStatus,
   type ShellProfile,
 } from "@/components/layout/app-shell";
-import { PublicQuerySanitizer } from "@/features/platform-runtime/ui";
+import { PublicQuerySanitizer } from "@/components/layout/app-shell";
 
 import { notificationUnreadCountQueryOptions } from "../api/notification-mutation.query";
 

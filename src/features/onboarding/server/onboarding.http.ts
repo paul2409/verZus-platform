@@ -6,12 +6,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type { ZodError } from "zod";
 
-import { readSessionToken } from "@/features/auth/server/auth.http";
+import { readRuntimeSessionToken } from "@/lib/session/runtime-session.server";
 import type { OnboardingApiFailure } from "../api";
 import type { OnboardingResult } from "./onboarding.service";
 
 export function onboardingToken(request: NextRequest): string | null {
-  return readSessionToken(request);
+  return readRuntimeSessionToken(request);
 }
 
 export function onboardingResponse(result: OnboardingResult): NextResponse {

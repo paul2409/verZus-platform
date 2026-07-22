@@ -5,7 +5,7 @@ import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 
 import type {
   PlayerHistoryGameFilter,
@@ -42,7 +42,7 @@ function page(value: string | null): number {
 }
 
 async function userId(): Promise<string> {
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     throw Object.assign(new Error("Authentication is required to access player history."), {
       status: 401,

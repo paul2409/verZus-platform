@@ -6,7 +6,6 @@ export type {
   CompetitionViewModel,
   EligibilityState,
 } from "./model/competition.types";
-export { competitionPreviewMock } from "./mocks/competition.mock";
 
 export { competitionDiscoveryFilterOptionsFallback } from "./discovery/model/competition-discovery.constants";
 export {

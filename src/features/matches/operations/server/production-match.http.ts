@@ -5,8 +5,8 @@ import { randomUUID } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import type { AuthRole } from "@/features/auth/model/auth-state";
-import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
+import type { PlatformRole } from "@/lib/session/runtime-session.types";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 import { matchCheckInRequestRawSchema } from "@/features/matches/operations/api/match-check-in-api.schema";
 import { matchLobbyRequestRawSchema } from "@/features/matches/operations/api/match-lobby-api.schema";
 import {
@@ -35,8 +35,8 @@ export const noStoreHeaders = (requestId: string) => ({
   "X-Request-ID": requestId,
 });
 
-async function authUser(): Promise<{ userId: string; role: AuthRole }> {
-  const session = await getServerAuthSession();
+async function authUser(): Promise<{ userId: string; role: PlatformRole }> {
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     throw new ProductionMatchError({
       status: 401,

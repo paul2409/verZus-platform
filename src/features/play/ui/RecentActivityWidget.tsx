@@ -1,21 +1,19 @@
-// VERZUS STAGE 3 RECENT ACTIVITY
 "use client";
 
 import Link from "next/link";
 
 import type { RecentActivityItem } from "../model";
 import type { PlayWidgetView } from "../view-model";
+import { PlayEmptyState } from "./PlayEmptyState";
 import { PlayWidgetStatePanel } from "./PlayWidgetState";
 import { WidgetFrame } from "./WidgetFrame";
 import styles from "./play-command-center.module.css";
 
 function formatActivityTime(value: string): string {
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(value));
+  return new Intl.RelativeTimeFormat("en", { numeric: "auto" }).format(
+    Math.round((new Date(value).getTime() - Date.now()) / 3_600_000),
+    "hour",
+  );
 }
 
 export function RecentActivityWidget({
@@ -25,46 +23,48 @@ export function RecentActivityWidget({
   view: PlayWidgetView<RecentActivityItem[]>;
   onRetry: () => void;
 }) {
+  const unresolved =
+    (!view.data || view.data.length === 0) &&
+    view.state !== "empty" &&
+    view.state !== "success";
+
   return (
-    <WidgetFrame
-      eyebrow="05 · RECENT ACTIVITY"
-      title="Latest movement"
-      status={view.stale ? "REFRESHING" : "FEED"}
-    >
-      {!view.data || view.data.length === 0 ? (
+    <WidgetFrame title="ACTIVITY FEED" status="ALL ACTIVITY" statusHref="/activity" className={styles.activityWidget}>
+      {unresolved ? (
         <PlayWidgetStatePanel
           state={view.state}
           errorCode={view.errorCode}
           requestId={view.requestId}
           onRetry={onRetry}
-          emptyTitle="NO ACTIVITY YET"
-          emptyDetail="Verified results, points, and Crew updates will appear here."
         />
-      ) : (
-        <>
-          <div className={styles.activityList}>
-            {view.data.map((activity) => (
-              <article data-activity-type={activity.type} key={activity.activityId}>
-                <span aria-hidden="true">›</span>
-                <div>
-                  <strong>{activity.title}</strong>
-                  <small>
-                    {activity.detail} · {formatActivityTime(activity.occurredAt)}
-                  </small>
-                </div>
-                <b data-numeric>
-                  {activity.pointsDelta === null
-                    ? "—"
-                    : `${activity.pointsDelta > 0 ? "+" : ""}${activity.pointsDelta}`}
-                </b>
-              </article>
-            ))}
+      ) : !view.data || view.data.length === 0 ? (
+        <PlayEmptyState
+          compact
+          variant="activity"
+          title="YOUR FEED IS READY FOR ITS FIRST MOMENT"
+          detail="Confirmed matches, Crew moves, and claimed rewards will build your competitive timeline."
+          primaryAction={{ href: "/compete", label: "START COMPETING" }}
+        >
+          <div className={styles.emptyActivityPreview} aria-hidden="true">
+            <span><i>VS</i><b>MATCH RESULT</b><em>Waiting</em></span>
+            <span><i>C</i><b>CREW UPDATE</b><em>Waiting</em></span>
+            <span><i>V</i><b>REWARD CLAIM</b><em>Waiting</em></span>
           </div>
-
-          <Link className={styles.secondaryLink} href="/profile/matches">
-            VIEW ALL ACTIVITY
-          </Link>
-        </>
+        </PlayEmptyState>
+      ) : (
+        <div className={styles.activityFeed}>
+          {view.data.slice(0, 4).map((activity) => (
+            <article data-type={activity.type} key={activity.activityId}>
+              <span aria-hidden="true">{activity.type.startsWith("match_") ? "VS" : activity.type === "crew_update" ? "C" : "V"}</span>
+              <div>
+                <strong>{activity.title}</strong>
+                <small>{activity.detail} · {formatActivityTime(activity.occurredAt)}</small>
+              </div>
+              <b>{activity.pointsDelta === null ? "INFO" : activity.pointsDelta > 0 ? "GAIN" : "RESULT"}</b>
+            </article>
+          ))}
+          <Link className={styles.fullWidthLink} href="/activity">VIEW ALL ACTIVITY</Link>
+        </div>
       )}
     </WidgetFrame>
   );

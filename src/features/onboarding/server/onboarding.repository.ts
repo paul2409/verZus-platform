@@ -167,7 +167,7 @@ async function audit(
   await client.query(
     `INSERT INTO audit_events (
        id, actor_user_id, action, target_type, target_id, request_id, metadata
-     ) VALUES ($1, $2, $3, 'user', $2, $4, $5::jsonb)`,
+     ) VALUES ($1, $2, $3, 'user', $2::uuid::text, $4, $5::jsonb)`,
     [randomUUID(), userId, action, requestId, JSON.stringify(metadata)],
   );
 }

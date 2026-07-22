@@ -19,5 +19,5 @@ export * from "./release";
 export * from "./telemetry";
 export * from "./server";
 
-export { getMatchWorkflowSections } from "./match-workflow";
-export type { MatchWorkflowSections } from "./match-workflow";
+export { getMatchWorkflowSections } from "./model/match-workflow";
+export type { MatchWorkflowSections } from "./model/match-workflow";

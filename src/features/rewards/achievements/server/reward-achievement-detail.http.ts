@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 
 import { serializeRewardAchievementDetail } from "./reward-achievement-detail.service";
 
@@ -10,7 +10,7 @@ export async function handleRewardAchievementDetailGet(
   context: { params: Promise<{ achievementId: string }> },
 ): Promise<NextResponse> {
   const requestId = `reward-achievement-detail-${crypto.randomUUID()}`;
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return NextResponse.json(
       {

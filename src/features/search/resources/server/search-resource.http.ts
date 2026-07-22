@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getServerAuthSession } from "@/features/auth/server";
+import { getServerRuntimeSession } from "@/lib/session/runtime-session.server";
 import type { SearchEntityDomain } from "../../foundation";
 import { normalizeSearchQuery, searchDomainItems, serializeSearchItem } from "./search-resource.service";
 
@@ -37,7 +37,7 @@ export async function handleSearchResourceGet(
   domain: SearchEntityDomain,
 ): Promise<NextResponse> {
   const id = requestId(domain);
-  const session = await getServerAuthSession();
+  const session = await getServerRuntimeSession();
   if (session.state !== "authenticated" || !session.user) {
     return errorResponse({
       status: 401,

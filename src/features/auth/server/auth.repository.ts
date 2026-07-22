@@ -204,7 +204,7 @@ export async function createUserAndSession(input: {
          target_id,
          request_id,
          metadata
-       ) VALUES ($1, $2, 'auth.account_registered', 'user', $2, $3, $4::jsonb)`,
+       ) VALUES ($1, $2, 'auth.account_registered', 'user', $2::uuid::text, $3, $4::jsonb)`,
       [
         randomUUID(),
         input.userId,

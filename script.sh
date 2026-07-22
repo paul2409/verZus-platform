@@ -1,659 +1,515 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -euo pipefail
 
-# VERZUS M12.9 - Step 7A v2
-# Remove remaining runtime mock/fixture files reported by production guards.
-# Preserves legacy content as .txt under tests/fixtures and creates rollback backup.
-# Does not run lint, typecheck, tests, E2E, visual tests, or build.
+REPO_PATH="${1:-.}"
+cd "$REPO_PATH"
 
-ROOT="${1:-.}"
-cd "$ROOT"
+CSS_PATH="src/features/play/ui/play-command-center.module.css"
 
-fail() {
-  printf '\nERROR: %s\n' "$1" >&2
+if [[ ! -f "$CSS_PATH" ]]; then
+  echo "ERROR: $CSS_PATH was not found." >&2
   exit 1
-}
-
-[[ -d .git ]] || fail "Run this from the VERZUS repository root, or pass the repository path."
-[[ -f package.json ]] || fail "package.json was not found."
-node -e 'const p=require("./package.json"); if (p.name !== "verzus-platform") process.exit(1)' \
-  || fail "This is not the verzus-platform repository."
-
-for command_name in node npm git tar; do
-  command -v "$command_name" >/dev/null 2>&1 || fail "$command_name is required."
-done
-
-required_production_files=(
-  "src/features/auth/server/auth-session.server.ts"
-  "src/features/competitions/server/competition.repository.ts"
-  "src/features/competitions/server/competition.service.ts"
-  "src/features/matches/operations/server/production-match.service.ts"
-  "src/features/leaderboards/resources/server/production-leaderboard.http.ts"
-  "src/features/crews/server/crew.repository.ts"
-  "src/features/profiles/resources/server/profile-resource.repository.ts"
-)
-
-for path in "${required_production_files[@]}"; do
-  [[ -f "$path" ]] || fail "Production replacement is missing: $path. Do not delete its legacy mock yet."
-done
-
-printf '\n==> Step 7A: remove remaining runtime mocks and fixtures\n'
-printf 'Repository: %s\n' "$(pwd)"
-printf 'Branch    : %s\n' "$(git branch --show-current 2>/dev/null || printf unknown)"
-printf '\nThis step will:\n'
-printf '  - archive legacy mock files as non-runtime .txt fixtures\n'
-printf '  - delete dead runtime mock servers and stores\n'
-printf '  - replace Intel Card mock rendering with a controlled production fallback\n'
-printf '  - replace leaderboard mock fallback data with neutral empty boards\n'
-printf '  - remove mock exports from runtime barrels\n'
-printf '  - retain valid suspended and banned account-state routes\n'
-printf '  - run only npm run check:production-guards\n\n'
-
-legacy_paths=(
-  "src/features/competitions/details/mocks/competition-detail.mock.ts"
-  "src/features/competitions/details/server/mock-competition-detail.http.ts"
-  "src/features/competitions/details/server/mock-competition-detail.service.ts"
-  "src/features/competitions/discovery/mocks/competition-discovery.mock.ts"
-  "src/features/competitions/discovery/server/mock-competition-discovery.http.ts"
-  "src/features/competitions/discovery/server/mock-competition-discovery.service.ts"
-  "src/features/competitions/entry/server/mock-competition-entry.cookie.ts"
-  "src/features/competitions/entry/server/mock-competition-entry.http.ts"
-  "src/features/competitions/entry/server/mock-competition-entry.service.ts"
-  "src/features/competitions/lifecycle/server/mock-competition-lifecycle.http.ts"
-  "src/features/competitions/lifecycle/server/mock-competition-lifecycle.service.ts"
-  "src/features/competitions/mocks/competition.mock.ts"
-  "src/features/crews/discovery/mocks/crew-discovery.mock.ts"
-  "src/features/crews/foundation/mocks/crew-foundation.mock.ts"
-  "src/features/crews/intel-card/crew-intel.mock.ts"
-  "src/features/leaderboards/foundation/mocks/leaderboard-foundation.mock.ts"
-  "src/features/leaderboards/mocks/leaderboard.mock.ts"
-  "src/features/leaderboards/resources/server/mock-leaderboard.http.ts"
-  "src/features/leaderboards/resources/server/mock-leaderboard.service.ts"
-  "src/features/matches/intel-card/match-intel.mock.ts"
-  "src/features/matches/mocks/match.mock.ts"
-  "src/features/matches/operations/mocks/match-operations.mock.ts"
-  "src/features/matches/operations/server/match-resource.fixture.ts"
-  "src/features/profiles/intel-card/player-intel.mock.ts"
-  "src/shared/failures/mock-failure-scenario.ts"
-  "src/shared/session/mock-session.ts"
-)
-
-# Old runtime files that are only valid with the fixtures above.
-legacy_companion_paths=(
-  "src/features/matches/operations/server/match-resource.route.ts"
-  "src/features/competitions/lifecycle/server/competition-entry-lifecycle.guard.ts"
-)
-
-# Refuse to remove obsolete Match files if production code still imports them directly.
-if grep -RInE --include='*.ts' --include='*.tsx' \
-  'getMatchOperationsMock|match-resource\.fixture|match-resource\.route' \
-  src/app src/features \
-  | grep -vE '\.(test|stories)\.(ts|tsx):' \
-  | grep -vE 'MatchOperationsScreen\.tsx|match-operations\.mock\.ts|match-resource\.fixture\.ts|match-resource\.route\.ts|operations/index\.ts|operations/server/index\.ts' \
-  >/tmp/verzus-step7a-match-refs.txt 2>/dev/null; then
-  printf '\nRemaining production references to the obsolete Match fixture path were found:\n' >&2
-  cat /tmp/verzus-step7a-match-refs.txt >&2
-  rm -f /tmp/verzus-step7a-match-refs.txt
-  fail "Step 4D route cutover is incomplete. Fix these references before deleting the fixture path."
 fi
-rm -f /tmp/verzus-step7a-match-refs.txt
 
-# Refuse to delete competition mocks if any public API still calls mock handlers.
-if grep -RInE --include='*.ts' --include='*.tsx' \
-  'handleMockCompetition|mock-competition-(detail|discovery|entry|lifecycle)' \
-  src/app src/features/competitions \
-  | grep -vE '\.(test|stories)\.(ts|tsx):' \
-  | grep -vE '/mocks/|/server/mock-|competitions/.*/server/index\.ts|competition-entry-lifecycle\.guard\.ts' \
-  >/tmp/verzus-step7a-competition-refs.txt 2>/dev/null; then
-  printf '\nRemaining production references to old competition handlers were found:\n' >&2
-  cat /tmp/verzus-step7a-competition-refs.txt >&2
-  rm -f /tmp/verzus-step7a-competition-refs.txt
-  fail "Step 4C API route cutover is incomplete. Fix these references before deleting the old servers."
-fi
-rm -f /tmp/verzus-step7a-competition-refs.txt
-
+BACKUP_ROOT=".git/verzus-backups/play-large-type"
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
-GIT_DIR="$(git rev-parse --git-dir)"
-BACKUP_DIR="$GIT_DIR/verzus-backups/m12-9-step7a/$TIMESTAMP"
-BACKUP_ARCHIVE="$BACKUP_DIR/files-before-step7a.tar.gz"
-TOUCHED_FILE="$BACKUP_DIR/touched-paths.txt"
-EXISTING_FILE="$BACKUP_DIR/existing-paths.txt"
-ARCHIVE_ROOT="tests/fixtures/legacy-runtime-mocks"
-
+BACKUP_DIR="$BACKUP_ROOT/$TIMESTAMP"
 mkdir -p "$BACKUP_DIR"
+cp "$CSS_PATH" "$BACKUP_DIR/play-command-center.module.css"
 
-cat > "$TOUCHED_FILE" <<'EOF_TOUCHED'
-scripts/check-production-routes.mjs
-docs/production-route-surface.md
-src/components/primitives/intel-card/IntelCardOverlayHost.tsx
-src/features/competitions/details/mocks
-src/features/competitions/details/server
-src/features/competitions/discovery/mocks
-src/features/competitions/discovery/server
-src/features/competitions/entry/server
-src/features/competitions/lifecycle/server
-src/features/competitions/lifecycle/server/competition-entry-lifecycle.guard.ts
-src/features/competitions/mocks
-src/features/competitions/index.ts
-src/features/crews/discovery/mocks
-src/features/crews/discovery/index.ts
-src/features/crews/foundation/mocks
-src/features/crews/foundation/index.ts
-src/features/crews/intel-card/crew-intel.mock.ts
-src/features/crews/intel-card/index.ts
-src/features/leaderboards/foundation/mocks
-src/features/leaderboards/foundation/index.ts
-src/features/leaderboards/foundation/model/leaderboard-empty-state.ts
-src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.tsx
-src/features/leaderboards/mocks
-src/features/leaderboards/modes/server/leaderboard-mode-read-model.ts
-src/features/leaderboards/resources/server/mock-leaderboard.http.ts
-src/features/leaderboards/resources/server/mock-leaderboard.service.ts
-src/features/leaderboards/resources/server/index.ts
-src/features/matches/intel-card/match-intel.mock.ts
-src/features/matches/intel-card/index.ts
-src/features/matches/mocks
-src/features/matches/operations/mocks
-src/features/matches/operations/index.ts
-src/features/matches/operations/server/index.ts
-src/features/matches/operations/server/match-resource.fixture.ts
-src/features/matches/operations/server/match-resource.route.ts
-src/features/matches/operations/ui/MatchOperationsScreen.tsx
-src/features/matches/operations/ui/MatchAvailabilityStateScreen.tsx
-src/features/profiles/intel-card/player-intel.mock.ts
-src/features/profiles/intel-card/index.ts
-src/shared/failures/mock-failure-scenario.ts
-src/shared/failures/index.ts
-src/shared/session/mock-session.ts
-tests/fixtures/legacy-runtime-mocks
-EOF_TOUCHED
-
-: > "$EXISTING_FILE"
-while IFS= read -r path; do
-  [[ -e "$path" ]] && printf '%s\n' "$path" >> "$EXISTING_FILE"
-done < "$TOUCHED_FILE"
-
-if [[ -s "$EXISTING_FILE" ]]; then
-  tar -czf "$BACKUP_ARCHIVE" -T "$EXISTING_FILE"
-else
-  tar -czf "$BACKUP_ARCHIVE" --files-from /dev/null
-fi
-
-RESTORE_REQUIRED=true
-restore_on_error() {
+rollback() {
   local status=$?
-  if [[ "$RESTORE_REQUIRED" == true ]]; then
-    printf '\nStep 7A failed. Restoring repository files from:\n  %s\n' "$BACKUP_DIR" >&2
-    while IFS= read -r path; do
-      rm -rf -- "$path"
-    done < "$TOUCHED_FILE"
-    tar -xzf "$BACKUP_ARCHIVE" -C .
-    printf 'Repository files restored.\n' >&2
+  if (( status == 0 )); then
+    return
   fi
+
+  echo >&2
+  echo "Large-type pass failed. Restoring $CSS_PATH" >&2
+  cp "$BACKUP_DIR/play-command-center.module.css" "$CSS_PATH"
   exit "$status"
 }
-trap restore_on_error ERR
+trap rollback EXIT
 
-printf '==> Retaining valid controlled account-state routes\n'
-node <<'EOF_ACCOUNT_ROUTES'
-const fs = require('node:fs');
+node <<'NODE'
+const fs = require("node:fs");
 
-const checkerPath = 'scripts/check-production-routes.mjs';
-const docsPath = 'docs/production-route-surface.md';
-const routes = ['/account/suspended', '/account/banned'];
+const path = "src/features/play/ui/play-command-center.module.css";
+const start = "/* PLAY LARGE TYPE PASS START */";
+const end = "/* PLAY LARGE TYPE PASS END */";
+let css = fs.readFileSync(path, "utf8");
 
-if (!fs.existsSync(checkerPath)) {
-  throw new Error(`${checkerPath} is missing. Run Step 7 before Step 7A.`);
+const block = String.raw`
+/* PLAY LARGE TYPE PASS START */
+/*
+ * Large, high-contrast typography for laptop and desktop Play dashboards.
+ * This intentionally overrides the earlier compact-density typography.
+ * Decorative space and padding are reduced instead of shrinking readable text.
+ */
+.playRoot {
+  --play-muted: #c8d2dc;
+  --play-soft: #aebbc8;
 }
 
-let checker = fs.readFileSync(checkerPath, 'utf8');
-const missingRoutes = routes.filter((route) => !checker.includes(`  "${route}",`));
-if (missingRoutes.length > 0) {
-  const marker = '  "/session-expired",';
-  if (!checker.includes(marker)) {
-    throw new Error(`Could not locate the anonymous route marker in ${checkerPath}.`);
+.playRoot :where(p, small, span, strong, b, dt, dd, a, button) {
+  text-rendering: optimizeLegibility;
+}
+
+.playTitleBlock > span {
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+}
+
+.playTitleBlock p {
+  color: #d6dee7;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.overviewTrust small,
+.overviewFacts dt {
+  color: #c6d1dc;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+}
+
+.overviewTrust strong {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.overviewTrust b {
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.overviewFacts dd {
+  font-size: 1.32rem;
+  font-weight: 850;
+}
+
+.overviewRefresh {
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.globalBanner {
+  padding-block: 0.56rem;
+}
+
+.globalBanner strong {
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.globalBanner span {
+  color: #cbd5df;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.globalBanner button {
+  min-height: 2.35rem;
+  padding: 0.48rem 0.78rem;
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.widgetHeader h2 {
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.025em;
+}
+
+.widgetHeader > div > span {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+}
+
+.widgetHeader > b,
+.widgetHeader > a {
+  font-size: 0.74rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.quickActionList a {
+  min-height: 3.15rem;
+  padding-block: 0.48rem;
+}
+
+.quickActionIcon {
+  width: 2.35rem;
+  height: 2.35rem;
+  font-size: 0.88rem;
+}
+
+.quickActionList strong {
+  font-family: var(--vz-font-interface);
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.quickActionList small {
+  margin-top: 0.16rem;
+  color: #bdc9d4;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.28;
+}
+
+.emptyContent > small,
+.emptyStatsCopy > small {
+  color: var(--play-green);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+}
+
+.emptyContent h3,
+.emptyStatsCopy h3 {
+  font-size: clamp(1.4rem, 1.8vw, 1.85rem);
+  font-weight: 900;
+  line-height: 1.06;
+  letter-spacing: 0.02em;
+}
+
+.emptyContent > p,
+.emptyStatsCopy > p {
+  color: #d0d9e2;
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.emptySteps span {
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.emptySteps strong {
+  font-family: var(--vz-font-interface);
+  font-size: 0.72rem;
+  font-weight: 750;
+  line-height: 1.32;
+}
+
+.emptyActions a,
+.heroPrimaryButton,
+.heroSecondaryButton {
+  min-height: 2.45rem;
+  padding: 0.58rem 0.82rem;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.045em;
+}
+
+.emptyScheduleSlots b,
+.emptyScheduleSlots i {
+  font-size: 0.68rem;
+  line-height: 1.25;
+}
+
+.playModeGrid strong {
+  font-size: 0.88rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.playModeGrid small {
+  color: #c5d0da;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.statsRing span,
+.statsRing small,
+.emptyStatsRing span,
+.emptyStatsRing small {
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.statsList dt,
+.emptyStatsCopy dt {
+  color: #bdc9d4;
+  font-size: 0.69rem;
+  font-weight: 800;
+}
+
+.statsList dd,
+.emptyStatsCopy dd {
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.opportunityCopy > small,
+.opportunityCopy > span {
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.opportunityCopy h3 {
+  font-size: 1.1rem;
+  line-height: 1.1;
+}
+
+.opportunityCopy strong {
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.opportunityCopy p {
+  color: #c5d0da;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.opportunityCards article > a {
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.activityFeed strong,
+.crewRosterSummary strong,
+.emptyActivityPreview b,
+.emptyCrewBenefits strong,
+.emptyOpportunityGrid strong {
+  font-family: var(--vz-font-interface);
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.activityFeed small,
+.crewRosterSummary small,
+.crewSignalRows span,
+.emptyActivityPreview em,
+.emptyOpportunityGrid small {
+  color: #becad5;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.activityFeed article > b,
+.crewSignalRows strong,
+.emptyOpportunityGrid b,
+.emptyChallengePreview b,
+.emptyCrewBenefits b {
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+/*
+ * Laptop-height override: keep large text and recover room from decoration,
+ * gaps and padding rather than reducing type below readable sizes.
+ */
+@media (min-width: 76.01rem) and (max-height: 62rem) {
+  .playTitleBlock > span {
+    font-size: 0.66rem;
   }
 
-  checker = checker.replace(
-    marker,
-    `${marker}\n${missingRoutes.map((route) => `  "${route}",`).join('\n')}`,
-  );
-  fs.writeFileSync(checkerPath, checker);
-}
+  .playTitleBlock p {
+    font-size: 0.92rem;
+  }
 
-if (fs.existsSync(docsPath)) {
-  let docs = fs.readFileSync(docsPath, 'utf8');
-  const missingDocs = routes.filter((route) => !docs.includes(`- \`${route}\``));
+  .overviewTrust small,
+  .overviewFacts dt {
+    font-size: 0.64rem;
+  }
 
-  if (missingDocs.length > 0) {
-    const section = [
-      '## Controlled account states',
-      '',
-      '- `/account/suspended`',
-      '- `/account/banned`',
-      '',
-    ].join('\n');
-    const onboardingMarker = '## Onboarding';
+  .overviewTrust strong {
+    font-size: 1.22rem;
+  }
 
-    docs = docs.includes(onboardingMarker)
-      ? docs.replace(onboardingMarker, `${section}\n${onboardingMarker}`)
-      : `${docs.trimEnd()}\n\n${section}`;
+  .overviewTrust b {
+    font-size: 0.7rem;
+  }
 
-    fs.writeFileSync(docsPath, docs);
+  .overviewFacts dd {
+    font-size: 1.16rem;
+  }
+
+  .globalBanner strong,
+  .globalBanner span,
+  .globalBanner button {
+    font-size: 0.7rem;
+  }
+
+  .widgetHeader h2 {
+    font-size: 0.92rem;
+  }
+
+  .widgetHeader > b,
+  .widgetHeader > a {
+    font-size: 0.68rem;
+  }
+
+  .emptyNextMatchPanel .emptyExperience {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .emptyNextMatchPanel .emptyVisual {
+    min-height: 5.5rem;
+  }
+
+  .emptyNextMatchPanel .emptyContent > small {
+    font-size: 0.66rem;
+  }
+
+  .emptyNextMatchPanel .emptyContent h3 {
+    font-size: 1.42rem;
+  }
+
+  .emptyNextMatchPanel .emptyContent > p {
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+
+  .emptyNextMatchPanel .emptySteps span,
+  .emptyNextMatchPanel .emptySteps strong {
+    font-size: 0.64rem;
+  }
+
+  .emptyNextMatchPanel .emptyActions a {
+    font-size: 0.68rem;
+  }
+
+  .quickActionList {
+    gap: 0.28rem;
+  }
+
+  .quickActionList a {
+    min-height: 3rem;
+    grid-template-columns: 2.2rem minmax(0, 1fr);
+    padding-block: 0.38rem;
+  }
+
+  .quickActionList strong {
+    font-size: 0.76rem;
+  }
+
+  .quickActionList small {
+    font-size: 0.67rem;
+  }
+
+  .upNextWidget .emptyContent > small {
+    font-size: 0.64rem;
+  }
+
+  .upNextWidget .emptyContent h3 {
+    font-size: 1.25rem;
+  }
+
+  .upNextWidget .emptyContent > p {
+    font-size: 0.73rem;
+  }
+
+  .upNextWidget .emptyScheduleSlots b,
+  .upNextWidget .emptyScheduleSlots i {
+    font-size: 0.62rem;
+  }
+
+  .upNextWidget .emptyActions a {
+    font-size: 0.66rem;
+  }
+
+  .playModeGrid strong {
+    font-size: 0.8rem;
+  }
+
+  .playModeGrid small {
+    font-size: 0.67rem;
   }
 }
-EOF_ACCOUNT_ROUTES
 
-printf '==> Archiving legacy runtime fixtures outside src\n' 
-mkdir -p "$ARCHIVE_ROOT"
-cat > "$ARCHIVE_ROOT/README.md" <<'EOF_README'
-# Legacy runtime fixtures
+@media (max-width: 76rem) {
+  .widgetHeader h2 {
+    font-size: 0.96rem;
+  }
 
-These files were removed from `src` during M12.9 Step 7A.
+  .quickActionList strong,
+  .upNextList strong,
+  .activityFeed strong,
+  .crewRosterSummary strong {
+    font-size: 0.8rem;
+  }
 
-They are retained only as plain-text historical references. They are not imported,
-compiled, bundled, seeded, or used by production code. New deterministic fixtures
-must be created inside the owning test directory and must never be imported by
-runtime application or server modules.
-EOF_README
-
-for path in "${legacy_paths[@]}"; do
-  if [[ -f "$path" ]]; then
-    target="$ARCHIVE_ROOT/$path.txt"
-    mkdir -p "$(dirname "$target")"
-    cp "$path" "$target"
-  fi
-done
-
-printf '==> Replacing the shared Intel Card mock renderer\n'
-cat > src/components/primitives/intel-card/IntelCardOverlayHost.tsx <<'EOF_INTEL'
-"use client";
-
-import { Modal } from "@/components/primitives/overlay";
-
-import { useIntelCard } from "./IntelCardProvider";
-import styles from "./IntelCardOverlayHost.module.css";
-
-function resolveDestination(type: string, id: string): string | null {
-  switch (type) {
-    case "player":
-      return `/players/${encodeURIComponent(id)}`;
-    case "crew":
-      return `/crews/${encodeURIComponent(id)}`;
-    case "match":
-    case "crewWar":
-      return `/matches/${encodeURIComponent(id)}`;
-    default:
-      return null;
+  .quickActionList small,
+  .upNextList b,
+  .activityFeed small,
+  .crewRosterSummary small,
+  .crewSignalRows span {
+    font-size: 0.7rem;
   }
 }
 
-export function IntelCardOverlayHost() {
-  const { open, request, closeIntel } = useIntelCard();
-
-  if (!request) return null;
-
-  const destination = resolveDestination(request.type, request.id);
-
-  return (
-    <Modal
-      description="Live entity intelligence is temporarily unavailable."
-      onOpenChange={(next) => {
-        if (!next) closeIntel();
-      }}
-      open={open}
-      size="lg"
-      title={request.label ?? "Entity details"}
-    >
-      <div className={styles.host}>
-        <section aria-live="polite">
-          <h3>Live intel unavailable</h3>
-          <p>
-            VERZUS could not load a verified intelligence snapshot. No placeholder or
-            fictional record has been substituted.
-          </p>
-          {destination ? <a href={destination}>Open the full production record</a> : null}
-        </section>
-      </div>
-    </Modal>
-  );
-}
-EOF_INTEL
-
-printf '==> Replacing the cached Match fixture renderer\n'
-cat > src/features/matches/operations/ui/MatchOperationsScreen.tsx <<'EOF_MATCH_SCREEN'
-// VERZUS M12.9 PRODUCTION CACHED MATCH SNAPSHOT
-
-import type { MatchOperationsViewModel } from "../model/match-operations.types";
-import {
-  CheckInPanel,
-  DisputePanel,
-  EvidenceUploader,
-  LobbyPanel,
-  MatchHeader,
-  MatchSupportPanel,
-  MatchTimeline,
-  ParticipantPanel,
-  ResultSubmissionPanel,
-} from "./MatchOperationsPanels";
-import styles from "./MatchOperationsScreen.module.css";
-
-export type MatchOperationsScreenProps = {
-  match: MatchOperationsViewModel;
-};
-
-export function MatchOperationsScreen({ match }: MatchOperationsScreenProps) {
-  return (
-    <main className={styles.page} data-match-operation-state={match.state}>
-      <MatchHeader match={match} />
-      <ParticipantPanel match={match} />
-
-      <div className={styles.operationsGrid}>
-        <MatchTimeline match={match} />
-
-        <div className={styles.primaryColumn}>
-          <CheckInPanel match={match} />
-          <LobbyPanel match={match} />
-          <ResultSubmissionPanel match={match} />
-          <DisputePanel match={match} />
-          <EvidenceUploader match={match} />
-        </div>
-
-        <MatchSupportPanel match={match} />
-      </div>
-    </main>
-  );
-}
-EOF_MATCH_SCREEN
-
-node <<'EOF_MATCH_AVAILABILITY'
-const fs = require('node:fs');
-const path = 'src/features/matches/operations/ui/MatchAvailabilityStateScreen.tsx';
-if (fs.existsSync(path)) {
-  let source = fs.readFileSync(path, 'utf8');
-  source = source.replace(
-    'href={`/matches/${encodeURIComponent(initialMatch.id)}?state=${initialMatch.state}`}',
-    'href={`/matches/${encodeURIComponent(initialMatch.id)}`}',
-  );
-  source = source.replace(
-    /<MatchOperationsScreen\s+clock=\{initialMatch\.clock\}\s+matchId=\{initialMatch\.id\}\s+state=\{initialMatch\.state\}\s*\/>/m,
-    '<MatchOperationsScreen match={initialMatch} />',
-  );
-  fs.writeFileSync(path, source);
-}
-EOF_MATCH_AVAILABILITY
-
-printf '==> Creating neutral leaderboard fallback boards\n'
-mkdir -p src/features/leaderboards/foundation/model
-cat > src/features/leaderboards/foundation/model/leaderboard-empty-state.ts <<'EOF_LEADERBOARD_EMPTY'
-import type {
-  LeaderboardEntityType,
-  LeaderboardFoundationBoard,
-  LeaderboardFoundationRow,
-  LeaderboardMode,
-} from "./leaderboard-foundation.types";
-
-const modeCopy: Record<
-  LeaderboardMode,
-  { eyebrow: string; title: string; description: string; entityType: LeaderboardEntityType }
-> = {
-  weekly: {
-    eyebrow: "Weekly standings",
-    title: "Weekly leaderboard",
-    description: "Confirmed weekly results will appear here.",
-    entityType: "player",
-  },
-  pools: {
-    eyebrow: "Pool standings",
-    title: "Pool leaderboard",
-    description: "Confirmed pool standings will appear here.",
-    entityType: "pool",
-  },
-  game: {
-    eyebrow: "Game rankings",
-    title: "Game leaderboard",
-    description: "Confirmed game-lane rankings will appear here.",
-    entityType: "player",
-  },
-  crew: {
-    eyebrow: "Crew championship",
-    title: "Crew leaderboard",
-    description: "Confirmed Crew standings will appear here.",
-    entityType: "crew",
-  },
-  combine: {
-    eyebrow: "Combine rankings",
-    title: "Combine leaderboard",
-    description: "Confirmed combine rankings will appear here.",
-    entityType: "player",
-  },
-};
-
-function unrankedEntry(mode: LeaderboardMode): LeaderboardFoundationRow {
-  return {
-    id: `unranked-${mode}`,
-    rank: 0,
-    previousRank: null,
-    movement: "same",
-    movementDelta: null,
-    entityType: modeCopy[mode].entityType,
-    name: "Unranked",
-    handle: "No confirmed position",
-    initials: "--",
-    crewName: null,
-    countryCode: "--",
-    game: "ea-fc",
-    scope: "global",
-    wins: 0,
-    losses: 0,
-    winRate: 0,
-    points: 0,
-    streak: 0,
-    trust: 0,
-    tier: "bronze",
-    memberCount: mode === "crew" ? 0 : null,
-    isCurrentUser: true,
-  };
-}
-
-export const emptyLeaderboardBoards: Record<LeaderboardMode, LeaderboardFoundationBoard> = {
-  weekly: createEmptyBoard("weekly"),
-  pools: createEmptyBoard("pools"),
-  game: createEmptyBoard("game"),
-  crew: createEmptyBoard("crew"),
-  combine: createEmptyBoard("combine"),
-};
-
-function createEmptyBoard(mode: LeaderboardMode): LeaderboardFoundationBoard {
-  const copy = modeCopy[mode];
-  return {
-    mode,
-    eyebrow: copy.eyebrow,
-    title: copy.title,
-    description: copy.description,
-    periodLabel: "No active period",
-    countdownLabel: "Awaiting confirmed results",
-    totalCompetitors: 0,
-    percentileLabel: "Unranked",
-    rows: [],
-    currentEntry: unrankedEntry(mode),
-    rewards: [],
-  };
-}
-EOF_LEADERBOARD_EMPTY
-
-node <<'EOF_NODE_PATCH'
-const fs = require('node:fs');
-
-function edit(path, transform) {
-  if (!fs.existsSync(path)) return;
-  const before = fs.readFileSync(path, 'utf8');
-  const after = transform(before);
-  if (after !== before) fs.writeFileSync(path, after);
-}
-
-function removeLinesContaining(source, needles) {
-  return source
-    .split(/\r?\n/)
-    .filter((line) => !needles.some((needle) => line.includes(needle)))
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .replace(/\s*$/, '\n');
-}
-
-edit('src/features/competitions/index.ts', (source) =>
-  removeLinesContaining(source, ['competitionPreviewMock', './mocks/competition.mock']),
-);
-edit('src/features/crews/discovery/index.ts', (source) =>
-  removeLinesContaining(source, ['crew-discovery.mock', 'crewDiscoveryMock']),
-);
-edit('src/features/crews/foundation/index.ts', (source) =>
-  removeLinesContaining(source, ['crew-foundation.mock', 'getCrewFoundationMock']),
-);
-edit('src/features/crews/intel-card/index.ts', (source) =>
-  removeLinesContaining(source, ['crew-intel.mock', 'crewIntelMock']),
-);
-edit('src/features/profiles/intel-card/index.ts', (source) =>
-  removeLinesContaining(source, ['player-intel.mock', 'playerIntelMock']),
-);
-edit('src/features/matches/intel-card/index.ts', (source) =>
-  removeLinesContaining(source, ['match-intel.mock', 'matchIntelMock', 'warMatchIntelMock']),
-);
-edit('src/features/matches/operations/index.ts', (source) =>
-  removeLinesContaining(source, ['match-operations.mock', 'getMatchOperationsMock']),
-);
-edit('src/features/matches/operations/server/index.ts', (source) =>
-  removeLinesContaining(source, ['match-resource.fixture', 'match-resource.route']),
-);
-edit('src/shared/failures/index.ts', (source) =>
-  removeLinesContaining(source, [
-    'mock-failure-scenario',
-    'mockFailureScenarioValues',
-    'resolveMockFailureScenario',
-    'MockFailureScenario',
-    'ResolveMockFailureScenarioInput',
-  ]),
-);
-edit('src/features/leaderboards/foundation/index.ts', (source) => {
-  let next = removeLinesContaining(source, [
-    'leaderboard-foundation.mock',
-    'leaderboardFoundationBoards',
-  ]);
-  if (!next.includes('leaderboard-empty-state')) {
-    next = next.replace(
-      'export * from "./model/leaderboard-foundation.types";',
-      'export * from "./model/leaderboard-foundation.types";\nexport * from "./model/leaderboard-empty-state";',
-    );
+@media (max-width: 48rem) {
+  .playTitleBlock p {
+    font-size: 0.94rem;
   }
-  return next;
-});
-edit('src/features/leaderboards/resources/server/index.ts', (source) =>
-  removeLinesContaining(source, ['mock-leaderboard.http', 'mock-leaderboard.service']),
-);
 
-edit('src/features/leaderboards/foundation/ui/LeaderboardFoundationScreen.tsx', (source) => {
-  let next = source.replace(
-    'import { leaderboardFoundationBoards } from "../mocks/leaderboard-foundation.mock";',
-    'import { emptyLeaderboardBoards } from "../model/leaderboard-empty-state";',
-  );
-  next = next.replace(
-    'const localBoard = leaderboardFoundationBoards[state.mode];',
-    'const localBoard = emptyLeaderboardBoards[state.mode];',
-  );
-  next = next.replace(
-    ': "Updated 2 minutes ago";',
-    ': "No confirmed update yet";',
-  );
-  next = next.replace(
-    'const showCurrentPosition = !reliability || currentPositionHealth?.hasData === true;',
-    'const showCurrentPosition =\n    Boolean(resourceSnapshot?.currentPosition?.entry) &&\n    (!reliability || currentPositionHealth?.hasData === true);',
-  );
-  next = next.replace(
-    'const showRewards = !reliability || rewardsHealth?.hasData === true;',
-    'const showRewards =\n    Boolean(resourceSnapshot?.rewards?.items.length) &&\n    (!reliability || rewardsHealth?.hasData === true);',
-  );
-  next = next.replace(
-    'data-resource-source={resourceSnapshot ? "api" : "local"}',
-    'data-resource-source={resourceSnapshot ? "api" : "empty"}',
-  );
-  return next;
-});
+  .widgetHeader h2 {
+    font-size: 1rem;
+  }
 
-edit('src/features/leaderboards/modes/server/leaderboard-mode-read-model.ts', (source) =>
-  source
-    .replace(
-      'import { leaderboardFoundationBoards } from "../../foundation/mocks/leaderboard-foundation.mock";',
-      'import { emptyLeaderboardBoards } from "../../foundation/model/leaderboard-empty-state";',
-    )
-    .replaceAll('leaderboardFoundationBoards.', 'emptyLeaderboardBoards.'),
-);
-EOF_NODE_PATCH
+  .quickActionList strong {
+    font-size: 0.84rem;
+  }
 
-printf '==> Removing obsolete runtime paths\n'
-for path in "${legacy_paths[@]}" "${legacy_companion_paths[@]}"; do
-  rm -f -- "$path"
-done
+  .quickActionList small,
+  .emptyContent > p,
+  .emptyStatsCopy > p {
+    font-size: 0.76rem;
+  }
+}
+/* PLAY LARGE TYPE PASS END */`;
 
-# Remove empty mock directories but retain model/api/ui directories.
-find src/features/competitions src/features/crews src/features/leaderboards src/features/matches \
-  -type d \( -name mocks -o -name fixtures \) -empty -delete 2>/dev/null || true
+const startIndex = css.indexOf(start);
+if (startIndex >= 0) {
+  const endIndex = css.indexOf(end, startIndex);
+  if (endIndex < 0) {
+    throw new Error("Existing large-type block is missing its end marker.");
+  }
+  css = `${css.slice(0, startIndex)}${block}${css.slice(endIndex + end.length)}`;
+} else {
+  css = `${css.trimEnd()}\n\n${block}\n`;
+}
 
-# Old competition server barrels are no longer part of the production path.
-for index_file in \
-  src/features/competitions/details/server/index.ts \
-  src/features/competitions/discovery/server/index.ts \
-  src/features/competitions/entry/server/index.ts \
-  src/features/competitions/lifecycle/server/index.ts; do
-  if [[ -f "$index_file" ]]; then
-    node - "$index_file" <<'EOF_INDEX'
-const fs = require('node:fs');
-const path = process.argv[2];
-const before = fs.readFileSync(path, 'utf8');
-const after = before
-  .split(/\r?\n/)
-  .filter((line) => !/mock-|MockCompetition|MOCK_COMPETITION/.test(line))
-  .join('\n')
-  .replace(/\n{3,}/g, '\n\n')
-  .replace(/\s*$/, '\n');
-fs.writeFileSync(path, after.trim() ? after : 'export {};\n');
-EOF_INDEX
-  fi
-done
+fs.writeFileSync(path, css);
+NODE
 
-printf '==> Verifying runtime imports before running the guard\n'
-if grep -RInE --include='*.ts' --include='*.tsx' \
-  '(from|import\()[^;]*(/mock|/mocks|\.mock|/fixture|/fixtures|\.fixture|/seed|/seeds)' \
-  src \
-  | grep -vE '\.(test|stories)\.(ts|tsx):' \
-  >/tmp/verzus-step7a-imports.txt 2>/dev/null; then
-  cat /tmp/verzus-step7a-imports.txt >&2
-  rm -f /tmp/verzus-step7a-imports.txt
-  fail "Runtime imports still reference mock, fixture, or seed modules."
+if ! grep -Fq "/* PLAY LARGE TYPE PASS START */" "$CSS_PATH"; then
+  echo "ERROR: Large-type block was not written." >&2
+  exit 1
 fi
-rm -f /tmp/verzus-step7a-imports.txt
 
-printf '==> Running only the production guard gate\n'
-set +e
-npm run check:production-guards
-GUARD_STATUS=$?
-set -e
-
-RESTORE_REQUIRED=false
-trap - ERR
-
-if [[ "$GUARD_STATUS" -ne 0 ]]; then
-  printf '\nSTEP 7A APPLIED, BUT ANOTHER PRODUCTION GUARD STILL FAILS.\n'
-  printf 'The runtime mock/fixture cleanup was kept.\n'
-  printf 'Run the failing individual guard shown above for the next narrow remediation.\n'
-  printf 'Backup: %s\n' "$BACKUP_DIR"
-  exit "$GUARD_STATUS"
+if ! grep -Fq "font-size: 0.82rem;" "$CSS_PATH"; then
+  echo "ERROR: Large quick-action typography was not applied." >&2
+  exit 1
 fi
 
-printf '\nSTEP 7A COMPLETE\n\n'
-printf 'Remaining runtime mock and fixture files were removed from src.\n'
-printf 'Legacy content was retained only as plain-text test reference.\n'
-printf 'Intel Cards now fail closed instead of rendering fictional entities.\n'
-printf 'Leaderboards use neutral empty boards until production data loads.\n'
-printf 'Valid suspended and banned account-state routes remain allowlisted.\n'
-printf 'Production guards now pass.\n'
-printf 'Backup: %s\n' "$BACKUP_DIR"
+if ! grep -Fq "font-size: 1.42rem;" "$CSS_PATH"; then
+  echo "ERROR: Large laptop empty-state heading was not applied." >&2
+  exit 1
+fi
+
+trap - EXIT
+
+echo
+echo "PLAY FONTS ENLARGED"
+echo "Changed: $CSS_PATH"
+echo "Backup : $BACKUP_DIR"
+echo
+echo "Restart the dev server and hard-refresh /play."

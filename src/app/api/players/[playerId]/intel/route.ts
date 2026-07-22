@@ -1,15 +1,10 @@
-// VERZUS M8.9 PLAYER INTEL API ROUTE
-
 import { randomUUID } from "node:crypto";
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import {
-  createPlayerIntelModel,
-  normalizePlayerIntelScenario,
-  serializePlayerIntelModel,
-} from "@/features/profiles/intel-card/resource";
+import { readPublicPlayerProfileRecord } from "@/features/profiles/public-profile/server/public-profile.repository";
+import { serializePlayerIntelModel } from "@/features/profiles/intel-card/resource/player-intel-resource.service";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -19,7 +14,7 @@ function errorResponse(
   status: number,
   code: string,
   message: string,
-  retryable: boolean,
+  retryable = false,
 ) {
   return NextResponse.json(
     { error: { code, message, request_id: requestId, retryable } },
@@ -31,38 +26,48 @@ export async function GET(
   request: NextRequest,
   context: { params: Promise<{ playerId: string }> },
 ): Promise<NextResponse> {
-  const { playerId } = await context.params;
   const requestId = request.headers.get("x-request-id") ?? randomUUID();
-  const scenario = normalizePlayerIntelScenario(request.nextUrl.searchParams.get("scenario"));
+  const { playerId } = await context.params;
+  const profile = await readPublicPlayerProfileRecord(playerId);
 
-  if (scenario === "slow") await new Promise((resolve) => setTimeout(resolve, 1_200));
-  if (scenario === "error") {
+  if (!profile || profile.status !== "active") {
+    return errorResponse(requestId, 404, "PLAYER_INTEL_NOT_FOUND", "Player intel was not found.");
+  }
+
+  if (profile.record.identity.profileVisibility !== "public") {
     return errorResponse(
       requestId,
-      503,
-      "PLAYER_INTEL_UNAVAILABLE",
-      "Player intel is temporarily unavailable.",
-      true,
-    );
-  }
-  if (scenario === "not-found") {
-    return errorResponse(
-      requestId,
-      404,
-      "PLAYER_INTEL_NOT_FOUND",
-      "Player intel was not found.",
-      false,
-    );
-  }
-  if (scenario === "malformed") {
-    return NextResponse.json(
-      { data: { id: playerId }, meta: { request_id: requestId } },
-      { status: 200, headers: { "Cache-Control": "no-store", "X-Request-ID": requestId } },
+      403,
+      "PLAYER_INTEL_FORBIDDEN",
+      "This player has not made their competitive intel public.",
     );
   }
 
-  const freshness = scenario === "stale" ? "stale" : scenario === "partial" ? "partial" : "fresh";
-  const model = createPlayerIntelModel(playerId);
+  const primaryGame = profile.record.games[0];
+  const rank = Math.max(0, profile.record.stats.weeklyRank);
+  const currentStreak = profile.record.stats.currentStreakLabel;
+  const model = {
+    id: profile.record.identity.id,
+    displayName: profile.record.identity.displayName,
+    handle: profile.record.identity.handle,
+    subtitle: profile.record.identity.title || "VERZUS player",
+    locationLabel: profile.record.identity.locationLabel || "Location private",
+    gameLabel: primaryGame?.gameLabel ?? "No game linked",
+    crewName: profile.record.crew?.name ?? "Independent",
+    avatarSrc: profile.record.identity.avatarSrc ?? "/profiles/default-banner.svg",
+    rank,
+    trust: profile.record.stats.trustScore,
+    verified: profile.record.identity.verified,
+    wins: profile.record.stats.wins,
+    winRateLabel: profile.record.stats.winRateLabel,
+    pointsLabel: new Intl.NumberFormat("en").format(profile.record.stats.points),
+    streakLabel: currentStreak,
+    recentForm: [] as const,
+    recentMatches: [],
+    achievementPreview: [],
+    profileHref: `/players/${encodeURIComponent(playerId)}`,
+    challengeHref: null,
+  };
 
   return NextResponse.json(
     {
@@ -70,8 +75,8 @@ export async function GET(
       meta: {
         request_id: requestId,
         fetched_at: new Date().toISOString(),
-        freshness,
-        source: "mock-player-intel",
+        freshness: "fresh",
+        source: "profile-read-model",
       },
     },
     { status: 200, headers: { "Cache-Control": "no-store", "X-Request-ID": requestId } },

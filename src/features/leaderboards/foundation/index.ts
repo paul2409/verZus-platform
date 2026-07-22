@@ -2,5 +2,5 @@
 // VERZUS M8.2 FOUNDATION CONSUMES URL EXPLORER STATE
 
 export * from "./model/leaderboard-foundation.types";
-export { leaderboardFoundationBoards } from "./mocks/leaderboard-foundation.mock";
+export * from "./model/leaderboard-empty-state";
 export * from "./ui";
