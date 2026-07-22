@@ -1,5 +1,3 @@
-// VERZUS M9.5 CREW APPLICATION DECISION ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleDecideCrewApplication } from "@/features/crews/membership/server";

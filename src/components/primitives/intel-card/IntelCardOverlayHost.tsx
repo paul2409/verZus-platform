@@ -3,11 +3,6 @@
 import { Modal } from "@/components/primitives/overlay";
 import { CrewIntelCard } from "@/features/crews/intel-card";
 import { crewIntelMock } from "@/features/crews/intel-card/crew-intel.mock";
-import { MatchIntelCard, WarMatchIntelCard } from "@/features/matches/intel-card";
-import {
-  matchIntelMock,
-  warMatchIntelMock,
-} from "@/features/matches/intel-card/match-intel.mock";
 import { PlayerIntelCard } from "@/features/profiles/intel-card";
 import { playerIntelMock } from "@/features/profiles/intel-card/player-intel.mock";
 
@@ -28,13 +23,13 @@ function resolveCard(type: string, id: string) {
       };
     case "match":
       return {
-        title: `${matchIntelMock.home.name} vs ${matchIntelMock.away.name}`,
-        node: <MatchIntelCard model={{ ...matchIntelMock, id }} state="default" />,
+        title: "Match intel",
+        node: <p>Open the match page to view authoritative match details.</p>,
       };
     case "crewWar":
       return {
-        title: `${warMatchIntelMock.home.name} vs ${warMatchIntelMock.away.name}`,
-        node: <WarMatchIntelCard model={{ ...warMatchIntelMock, id }} state="default" />,
+        title: "Crew war intel",
+        node: <p>Crew war intel becomes available after the Crew domain cutover.</p>,
       };
     default:
       return { title: "Intel", node: null };

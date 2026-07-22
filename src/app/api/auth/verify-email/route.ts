@@ -1,7 +1,7 @@
-// VERZUS M4 STEP 4.5
-
 import { verifyEmailRequestSchema } from "@/features/auth/api";
-import { createMockAuthPostHandler } from "@/features/auth/server/mock-auth.http";
-import { mockVerifyEmail } from "@/features/auth/server/mock-auth.service";
+import { createAuthPostHandler, readSessionToken } from "@/features/auth/server/auth.http";
+import { verifyCurrentEmail } from "@/features/auth/server/auth.identity.service";
 
-export const POST = createMockAuthPostHandler(verifyEmailRequestSchema, mockVerifyEmail);
+export const POST = createAuthPostHandler(verifyEmailRequestSchema, (input, request) =>
+  verifyCurrentEmail(readSessionToken(request), input),
+);

@@ -1,6 +1,12 @@
-// VERZUS M4 STEP 4.5
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-import { createMockAuthNoBodyHandler } from "@/features/auth/server/mock-auth.http";
-import { mockLogout } from "@/features/auth/server/mock-auth.service";
+import { applySessionCookie, readSessionToken } from "@/features/auth/server/auth.http";
+import { logoutAccount } from "@/features/auth/server/auth.service";
 
-export const POST = createMockAuthNoBodyHandler(mockLogout);
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  const result = await logoutAccount(readSessionToken(request));
+  const response = NextResponse.json(result.body, { status: result.status });
+  applySessionCookie(response, result.sessionCookie);
+  return response;
+}

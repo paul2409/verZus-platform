@@ -1,5 +1,3 @@
-// VERZUS M12.2 ABORTABLE SEARCH CLIENT
-
 import type { SearchEntityDomain } from "../../foundation";
 import {
   adaptSearchResourceError,
@@ -16,7 +14,6 @@ export async function getSearchResource(input: {
   signal?: AbortSignal;
 }): Promise<SearchResourceSnapshot> {
   const params = new URLSearchParams({ q: input.query, limit: String(input.limit) });
-  if (input.scenario !== "normal") params.set("scenario", input.scenario);
 
   let response: Response;
   try {

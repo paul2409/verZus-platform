@@ -1,82 +1,111 @@
-// VERZUS M11.4 SERVER-AUTHORITATIVE PROFILE READ MODELS
+import "server-only";
 
-import { ownPlayerProfileMock } from "../../foundation";
-import { readProfilePrivacyForPublicProjection } from "../../privacy/server/profile-privacy.store";
-import type { ProfileResourceName, ProfileResourceScenario } from "../model/profile-resource.types";
+import { readCurrentCrewForProfile } from "@/features/crews/server";
 
-export function normalizeProfileResourceScenario(value: string | null): ProfileResourceScenario {
-  const allowed: ProfileResourceScenario[] = [
-    "normal",
-    "stale",
-    "empty",
-    "error",
-    "offline",
-    "slow",
-    "malformed",
-    "unauthorized",
-    "forbidden",
-    "not-found",
-    "maintenance",
-  ];
-  return allowed.includes(value as ProfileResourceScenario)
-    ? (value as ProfileResourceScenario)
-    : "normal";
+import type { ProfileResourceName } from "../model/profile-resource.types";
+import {
+  readProfileAvailability,
+  readProfileCompetitiveSummary,
+  readProfileIdentity,
+} from "./profile-resource.repository";
+
+function joinedLabel(value: Date): string {
+  return `Joined ${new Intl.DateTimeFormat("en", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(value)}`;
 }
 
-export function serializeProfileResource(
+function percent(wins: number, matches: number): string {
+  if (matches === 0) return "Not ranked";
+  return `${Math.round((wins / matches) * 100)}%`;
+}
+
+function titleCase(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function timeLabel(value: string | null): string {
+  return value ? value.slice(0, 5) : "";
+}
+
+export async function serializeProfileResource(
+  userId: string,
   resource: ProfileResourceName,
-  scenario: ProfileResourceScenario,
-): unknown {
-  const privacySettings = readProfilePrivacyForPublicProjection();
+): Promise<unknown | null> {
   switch (resource) {
-    case "identity":
+    case "identity": {
+      const identity = await readProfileIdentity(userId);
+      if (!identity) return null;
       return {
-        id: ownPlayerProfileMock.identity.id,
-        display_name: ownPlayerProfileMock.identity.displayName,
-        handle: ownPlayerProfileMock.identity.handle,
-        title: ownPlayerProfileMock.identity.title,
-        bio: ownPlayerProfileMock.identity.bio,
-        location_label: ownPlayerProfileMock.identity.locationLabel,
-        country_code: ownPlayerProfileMock.identity.countryCode,
-        avatar_src: ownPlayerProfileMock.identity.avatarSrc,
-        avatar_alt: ownPlayerProfileMock.identity.avatarAlt,
-        banner_src: ownPlayerProfileMock.identity.bannerSrc,
-        verified: ownPlayerProfileMock.identity.verified,
-        profile_visibility: privacySettings.profileVisibility,
-        joined_label: ownPlayerProfileMock.identity.joinedLabel,
+        id: identity.id,
+        display_name: identity.displayName,
+        handle: identity.handle,
+        title: identity.title,
+        bio: identity.bio,
+        location_label: identity.locationLabel,
+        country_code: identity.countryCode,
+        avatar_src: identity.avatarUrl,
+        avatar_alt: `${identity.displayName} player avatar`,
+        banner_src: identity.bannerUrl ?? "",
+        verified: identity.verified,
+        profile_visibility: identity.profileVisibility,
+        joined_label: joinedLabel(identity.joinedAt),
       };
-    case "competitive-summary":
+    }
+    case "competitive-summary": {
+      const summary = await readProfileCompetitiveSummary(userId);
       return {
-        matches: ownPlayerProfileMock.stats.matches,
-        wins: ownPlayerProfileMock.stats.wins,
-        losses: ownPlayerProfileMock.stats.losses,
-        draws: ownPlayerProfileMock.stats.draws,
-        win_rate_label: ownPlayerProfileMock.stats.winRateLabel,
-        rating: ownPlayerProfileMock.stats.rating,
-        weekly_rank: ownPlayerProfileMock.stats.weeklyRank,
-        points: ownPlayerProfileMock.stats.points,
-        trust_score: ownPlayerProfileMock.stats.trustScore,
-        current_streak_label: ownPlayerProfileMock.stats.currentStreakLabel,
+        matches: summary.matches,
+        wins: summary.wins,
+        losses: summary.losses,
+        draws: summary.draws,
+        win_rate_label: percent(summary.wins, summary.matches),
+        rating: summary.rating,
+        weekly_rank: summary.weeklyRank,
+        points: summary.points,
+        trust_score: summary.trustScore,
+        current_streak_label:
+          summary.currentStreak === 0 ? "No active" : `${summary.currentStreak}`,
       };
-    case "crew":
+    }
+    case "crew": {
+      const crew = await readCurrentCrewForProfile(userId);
       return {
-        crew:
-          scenario === "empty" || !ownPlayerProfileMock.crew
-            ? null
-            : {
-                id: ownPlayerProfileMock.crew.id,
-                name: ownPlayerProfileMock.crew.name,
-                tag: ownPlayerProfileMock.crew.tag,
-                role_label: ownPlayerProfileMock.crew.roleLabel,
-                href: ownPlayerProfileMock.crew.href,
-              },
+        crew: crew
+          ? {
+              id: crew.id,
+              name: crew.name,
+              tag: crew.tag,
+              role_label: crew.roleLabel,
+              href: `/crews/${crew.id}`,
+            }
+          : null,
       };
-    case "availability":
+    }
+    case "availability": {
+      const availability = await readProfileAvailability(userId);
+      if (
+        availability.slotCount === 0 ||
+        !availability.dayOfWeek ||
+        !availability.startTime ||
+        !availability.endTime
+      ) {
+        return {
+          state: "unavailable",
+          label: "No availability set",
+          detail: "Add availability from your profile settings.",
+          next_window_label: "No upcoming window",
+        };
+      }
+
       return {
-        state: ownPlayerProfileMock.availability.state,
-        label: ownPlayerProfileMock.availability.label,
-        detail: ownPlayerProfileMock.availability.detail,
-        next_window_label: ownPlayerProfileMock.availability.nextWindowLabel,
+        state: "available",
+        label: "Availability configured",
+        detail: `${availability.slotCount} weekly window${availability.slotCount === 1 ? "" : "s"}`,
+        next_window_label: `${titleCase(availability.dayOfWeek)} ${timeLabel(availability.startTime)}-${timeLabel(availability.endTime)}${availability.timezone ? ` ${availability.timezone}` : ""}`,
       };
+    }
   }
 }

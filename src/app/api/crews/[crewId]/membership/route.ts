@@ -1,5 +1,3 @@
-// VERZUS M9.5 CREW MEMBERSHIP READ ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleCrewMembershipGet } from "@/features/crews/membership/server";

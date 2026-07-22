@@ -178,7 +178,7 @@ export function ActivityFeedScreen() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const domain = readDomain(searchParams.get("domain"));
-  const scenario = readScenario(searchParams.get("scenario"));
+  const scenario: ActivityFeedScenario = "normal";
   const query = useInfiniteQuery(
     activityFeedInfiniteQueryOptions({ domain, pageSize: 6, scenario }),
   );

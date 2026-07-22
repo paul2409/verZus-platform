@@ -40,7 +40,7 @@ export const matchParticipantSchema = z.object({
   playerId: z.string().min(1),
   handle: z.string().min(1),
   avatarUrl: z.string().url().nullable(),
-  rank: z.number().int().positive().nullable(),
+  rank: z.number().int().nonnegative().nullable(),
   locationLabel: z.string().min(1),
   isCurrentPlayer: z.boolean(),
 });
@@ -100,7 +100,7 @@ export type RankMovement = z.infer<typeof rankMovementSchema>;
 export const currentPositionSchema = z.object({
   leaderboardId: z.string().min(1),
   weekLabel: z.string().min(1),
-  rank: z.number().int().positive(),
+  rank: z.number().int().nonnegative(),
   previousRank: z.number().int().positive().nullable(),
   movement: rankMovementSchema,
   points: z.number().int().min(0),
@@ -120,7 +120,7 @@ export const crewSummarySchema = z.object({
   name: z.string().min(1),
   tag: z.string().min(1),
   emblemUrl: z.string().url().nullable(),
-  rank: z.number().int().positive(),
+  rank: z.number().int().nonnegative(),
   points: z.number().int().min(0),
   onlineMembers: z.number().int().min(0),
   totalMembers: z.number().int().positive(),

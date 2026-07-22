@@ -1,7 +1,7 @@
-import type { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-import { handleMockCompetitionDiscoveryGet } from "@/features/competitions/discovery/server";
+import { handleCompetitionDiscoveryGet } from "@/features/competitions/server";
 
-export function GET(request: NextRequest): NextResponse {
-  return handleMockCompetitionDiscoveryGet(request, "featured");
+export function GET(request: NextRequest) {
+  return handleCompetitionDiscoveryGet(request, "featured");
 }

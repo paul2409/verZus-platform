@@ -37,7 +37,7 @@ function roleLabel(role: CrewFoundationViewModel["members"][number]["role"]): st
 
 function CrewStatGrid({ model }: { model: CrewFoundationViewModel }) {
   const stats = [
-    { label: "Rank", value: `#${model.stats.rank}`, extra: `▲ ${model.stats.movement}` },
+    { label: "Rank", value: model.stats.rank > 0 ? `#${model.stats.rank}` : "Unranked", extra: `▲ ${model.stats.movement}` },
     { label: "Points", value: formatNumber(model.stats.points), extra: null },
     { label: "Win rate", value: `${model.stats.winRate}%`, extra: null },
     { label: "Matches", value: `${model.stats.wins}W - ${model.stats.losses}L`, extra: null },
@@ -156,7 +156,7 @@ function RosterPanel({ model }: { model: CrewFoundationViewModel }) {
           <p>{model.identity.memberCount} registered members</p>
         </div>
         <Badge tone="information" variant="outline">
-          Read-only foundation
+          Current roster
         </Badge>
       </header>
       <div className={styles.rosterGrid}>
@@ -189,7 +189,7 @@ function RequestsPanel({ model }: { model: CrewFoundationViewModel }) {
       <header className={styles.panelHeader}>
         <div>
           <h2>Join requests</h2>
-          <p>Review mutations arrive in M9.5.</p>
+          <p>Authorized Crew staff can review active applications.</p>
         </div>
         <Badge tone="warning" variant="solid">
           {model.requests.length} pending
@@ -256,8 +256,8 @@ function RankingsPanel({ model }: { model: CrewFoundationViewModel }) {
       </header>
       <div className={styles.rankHero}>
         <span>Global rank</span>
-        <strong>#{model.stats.rank}</strong>
-        <b>▲ {model.stats.movement} this week</b>
+        <strong>{model.stats.rank > 0 ? `#${model.stats.rank}` : "Unranked"}</strong>
+        <b>{model.stats.rank > 0 ? `▲ ${model.stats.movement} this week` : "Awaiting ranked results"}</b>
       </div>
       <dl className={styles.rankingMetrics}>
         <div>
@@ -288,7 +288,7 @@ function AchievementsPanel({ model }: { model: CrewFoundationViewModel }) {
     <article className={styles.panel} data-crew-panel="achievements">
       <header className={styles.panelHeader}>
         <h2>Crew achievements</h2>
-        <span>Season Zero</span>
+        <span>Verified Crew history</span>
       </header>
       <div className={styles.achievementGrid}>
         {model.achievements.map((achievement) => (
@@ -509,7 +509,7 @@ export function CrewFoundationScreen({
         <div>
           <Icon decorative name="trophy" size="md" />
           <span>Global rank</span>
-          <strong>#{model.stats.rank}</strong>
+          <strong>{model.stats.rank > 0 ? `#${model.stats.rank}` : "Unranked"}</strong>
         </div>
         <div>
           <Icon decorative name="check" size="md" />

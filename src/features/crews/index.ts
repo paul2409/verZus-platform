@@ -16,5 +16,6 @@ export * from "./lifecycle";
 export * from "./membership";
 export * from "./release";
 export * from "./resources";
+export * from "./server";
 export * from "./telemetry";
 export * from "./ui";

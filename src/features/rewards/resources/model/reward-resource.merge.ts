@@ -17,7 +17,7 @@ export type RewardResourceViewModel = {
 export function mergeRewardResourceSnapshots(
   fallbackFoundation: RewardsFoundationModel,
   fallbackInventory: RewardInventoryItem[],
-  fallbackSeason: RewardSeasonProgress,
+  fallbackSeason: RewardSeasonProgress | null,
   fallbackAchievements: RewardAchievementSummary[],
   snapshots: RewardResourceSnapshotMap,
 ): RewardResourceViewModel {

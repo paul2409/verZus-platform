@@ -10,7 +10,6 @@ export type SubmitMatchLobbyInput = MatchLobbyCommand & {
 
 export async function submitMatchLobbyOperation({
   matchId,
-  seedState,
   expectedState,
   expectedVersion,
   idempotencyKey,
@@ -20,8 +19,7 @@ export async function submitMatchLobbyOperation({
 }: SubmitMatchLobbyInput): Promise<MatchLobbyResult> {
   let response: Response;
   try {
-    const query = new URLSearchParams({ state: seedState });
-    response = await fetch(`/api/matches/${encodeURIComponent(matchId)}/lobby?${query}`, {
+    response = await fetch(`/api/matches/${encodeURIComponent(matchId)}/lobby`, {
       method: "POST",
       credentials: "same-origin",
       headers: {

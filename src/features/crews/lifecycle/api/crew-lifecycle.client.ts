@@ -1,5 +1,3 @@
-// VERZUS M9.7 CREW LIFECYCLE API CLIENT
-
 import type {
   CrewLifecycleErrorShape,
   CrewLifecycleMutationResult,
@@ -55,7 +53,12 @@ function adaptSnapshot(
       leaveAllowed: raw.operations.leave_allowed,
       activityMode: raw.operations.activity_mode,
     },
-    blockers: raw.blockers,
+    blockers: raw.blockers.map((blocker) => ({
+      code: blocker.code,
+      label: blocker.label,
+      count: blocker.count,
+      active: blocker.active,
+    })),
     auditEvents: raw.audit_events.map((event) => ({
       id: event.id,
       crewId: event.crew_id,
@@ -148,15 +151,12 @@ async function postCommand(url: string, body: unknown): Promise<CrewLifecycleMut
 
 export async function getCrewLifecycle(
   crewId: string,
-  scenario: CrewLifecycleScenario,
+  _scenario: CrewLifecycleScenario,
   signal?: AbortSignal,
 ): Promise<CrewLifecycleSnapshot> {
-  const params = new URLSearchParams();
-  if (scenario !== "normal") params.set("scenario", scenario);
-  const suffix = params.size > 0 ? `?${params.toString()}` : "";
   let response: Response;
   try {
-    response = await fetch(`/api/crews/${encodeURIComponent(crewId)}/lifecycle${suffix}`, {
+    response = await fetch(`/api/crews/${encodeURIComponent(crewId)}/lifecycle`, {
       method: "GET",
       credentials: "same-origin",
       cache: "no-store",

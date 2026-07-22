@@ -1,11 +1,16 @@
-// VERZUS M9.5 CREW MEMBERSHIP HTTP HANDLERS
-
-import { randomUUID } from "node:crypto";
+import "server-only";
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import type { z } from "zod";
 
+import {
+  crewOperationHeaders,
+  handleCrewOperationFailure,
+  parseCrewOperationBody,
+  requestIdFor,
+  requireCrewApiActor,
+  requireCrewIdempotencyKey,
+} from "../../server/crew-operation.http";
 import {
   createCrewInviteRawSchema,
   decideCrewApplicationRawSchema,
@@ -16,7 +21,6 @@ import {
 } from "../schema/crew-membership.schema";
 import {
   createCrewInvite,
-  CrewMembershipServiceError,
   decideCrewApplication,
   decideCrewInvite,
   expireCrewMembershipItems,
@@ -25,15 +29,9 @@ import {
   submitCrewApplication,
 } from "./crew-membership.service";
 
-function responseHeaders(requestId: string) {
-  return {
-    "Cache-Control": "no-store, max-age=0",
-    "X-Request-ID": requestId,
-    "X-Crew-Membership-Stage": "9.5",
-  };
-}
+const STAGE = "membership";
 
-function serializeSnapshot(snapshot: ReturnType<typeof getCrewMembershipForRead>) {
+function serializeSnapshot(snapshot: Awaited<ReturnType<typeof getCrewMembershipForRead>>) {
   return {
     crew_id: snapshot.crewId,
     version: snapshot.version,
@@ -87,70 +85,10 @@ function serializeSnapshot(snapshot: ReturnType<typeof getCrewMembershipForRead>
   };
 }
 
-function errorResponse(
+function successResponse(
   requestId: string,
-  input: {
-    code: string;
-    message: string;
-    status: number;
-    retryable: boolean;
-    fieldErrors?: Record<string, string[]>;
-  },
+  result: Awaited<ReturnType<typeof submitCrewApplication>>,
 ) {
-  return NextResponse.json(
-    {
-      ok: false,
-      error: {
-        code: input.code,
-        message: input.message,
-        request_id: requestId,
-        retryable: input.retryable,
-        field_errors: input.fieldErrors,
-      },
-    },
-    { status: input.status, headers: responseHeaders(requestId) },
-  );
-}
-
-async function parseBody<T extends z.ZodType>(request: NextRequest, schema: T, requestId: string) {
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    body = null;
-  }
-  const parsed = schema.safeParse(body);
-  if (!parsed.success) {
-    return {
-      response: errorResponse(requestId, {
-        code: "VALIDATION_ERROR",
-        message: "The Crew membership command is invalid.",
-        status: 400,
-        retryable: false,
-        fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
-      }),
-    } as const;
-  }
-  return { data: parsed.data } as const;
-}
-
-function requireIdempotencyKey(request: NextRequest, requestId: string) {
-  const idempotencyKey = request.headers.get("idempotency-key")?.trim();
-  if (!idempotencyKey || idempotencyKey.length < 16 || idempotencyKey.length > 128) {
-    return {
-      response: errorResponse(requestId, {
-        code: "INVALID_IDEMPOTENCY_KEY",
-        message: "A 16 to 128 character Idempotency-Key header is required.",
-        status: 400,
-        retryable: false,
-        fieldErrors: { idempotencyKey: ["Provide a valid idempotency key."] },
-      }),
-    } as const;
-  }
-  return { idempotencyKey } as const;
-}
-
-function successResponse(requestId: string, result: ReturnType<typeof submitCrewApplication>) {
   return NextResponse.json(
     {
       ok: true,
@@ -160,157 +98,188 @@ function successResponse(requestId: string, result: ReturnType<typeof submitCrew
       replayed: result.replayed,
       data: serializeSnapshot(result.snapshot),
     },
-    { status: 200, headers: responseHeaders(requestId) },
+    { headers: crewOperationHeaders(requestId, STAGE) },
   );
 }
 
-function executeSafely(requestId: string, action: () => ReturnType<typeof submitCrewApplication>) {
-  try {
-    return successResponse(requestId, action());
-  } catch (error) {
-    if (error instanceof CrewMembershipServiceError) {
-      return errorResponse(requestId, {
-        code: error.code,
-        message: error.message,
-        status: error.status,
-        retryable: error.retryable,
-        ...(error.fieldErrors ? { fieldErrors: error.fieldErrors } : {}),
-      });
-    }
-    throw error;
-  }
+async function contextCrewId(context: { params: Promise<{ crewId: string }> }) {
+  return (await context.params).crewId;
 }
 
 export async function handleCrewMembershipGet(
   request: NextRequest,
   context: { params: Promise<{ crewId: string }> },
 ) {
-  const { crewId } = await context.params;
-  const requestId = request.headers.get("x-request-id") ?? randomUUID();
-  return NextResponse.json(
-    { ok: true, request_id: requestId, data: serializeSnapshot(getCrewMembershipForRead(crewId)) },
-    { status: 200, headers: responseHeaders(requestId) },
-  );
+  const requestId = requestIdFor(request);
+  const auth = await requireCrewApiActor(request, requestId, STAGE);
+  if ("response" in auth) return auth.response;
+  try {
+    const snapshot = await getCrewMembershipForRead(await contextCrewId(context), auth.userId);
+    return NextResponse.json(
+      { ok: true, request_id: requestId, data: serializeSnapshot(snapshot) },
+      { headers: crewOperationHeaders(requestId, STAGE) },
+    );
+  } catch (error) {
+    return handleCrewOperationFailure(requestId, STAGE, error);
+  }
+}
+
+async function prepareMutation(
+  request: NextRequest,
+  stage = STAGE,
+) {
+  const requestId = requestIdFor(request);
+  const auth = await requireCrewApiActor(request, requestId, stage);
+  if ("response" in auth) return { requestId, response: auth.response } as const;
+  const key = requireCrewIdempotencyKey(request, requestId, stage);
+  if ("response" in key) return { requestId, response: key.response } as const;
+  return { requestId, userId: auth.userId, idempotencyKey: key.idempotencyKey } as const;
 }
 
 export async function handleSubmitCrewApplication(
   request: NextRequest,
   context: { params: Promise<{ crewId: string }> },
 ) {
-  const { crewId } = await context.params;
-  const requestId = request.headers.get("x-request-id") ?? randomUUID();
-  const key = requireIdempotencyKey(request, requestId);
-  if ("response" in key) return key.response;
-  const parsed = await parseBody(request, submitCrewApplicationRawSchema, requestId);
+  const prepared = await prepareMutation(request);
+  if ("response" in prepared) return prepared.response;
+  const parsed = await parseCrewOperationBody(request, submitCrewApplicationRawSchema, prepared.requestId, STAGE);
   if ("response" in parsed) return parsed.response;
-  return executeSafely(requestId, () =>
-    submitCrewApplication({
-      crewId,
-      expectedVersion: parsed.data.expected_version,
-      game: parsed.data.game,
-      message: parsed.data.message,
-      idempotencyKey: key.idempotencyKey,
-    }),
-  );
+  try {
+    return successResponse(
+      prepared.requestId,
+      await submitCrewApplication({
+        crewId: await contextCrewId(context),
+        actorUserId: prepared.userId,
+        expectedVersion: parsed.data.expected_version,
+        game: parsed.data.game,
+        message: parsed.data.message,
+        idempotencyKey: prepared.idempotencyKey,
+      }),
+    );
+  } catch (error) {
+    return handleCrewOperationFailure(prepared.requestId, STAGE, error);
+  }
 }
 
 export async function handleDecideCrewApplication(
   request: NextRequest,
   context: { params: Promise<{ crewId: string; applicationId: string }> },
 ) {
-  const { crewId, applicationId } = await context.params;
-  const requestId = request.headers.get("x-request-id") ?? randomUUID();
-  const key = requireIdempotencyKey(request, requestId);
-  if ("response" in key) return key.response;
-  const parsed = await parseBody(request, decideCrewApplicationRawSchema, requestId);
+  const prepared = await prepareMutation(request);
+  if ("response" in prepared) return prepared.response;
+  const parsed = await parseCrewOperationBody(request, decideCrewApplicationRawSchema, prepared.requestId, STAGE);
   if ("response" in parsed) return parsed.response;
-  return executeSafely(requestId, () =>
-    decideCrewApplication({
-      crewId,
-      applicationId,
-      expectedVersion: parsed.data.expected_version,
-      decision: parsed.data.decision,
-      idempotencyKey: key.idempotencyKey,
-    }),
-  );
+  const params = await context.params;
+  try {
+    return successResponse(
+      prepared.requestId,
+      await decideCrewApplication({
+        crewId: params.crewId,
+        applicationId: params.applicationId,
+        actorUserId: prepared.userId,
+        expectedVersion: parsed.data.expected_version,
+        decision: parsed.data.decision,
+        idempotencyKey: prepared.idempotencyKey,
+      }),
+    );
+  } catch (error) {
+    return handleCrewOperationFailure(prepared.requestId, STAGE, error);
+  }
 }
 
 export async function handleCreateCrewInvite(
   request: NextRequest,
   context: { params: Promise<{ crewId: string }> },
 ) {
-  const { crewId } = await context.params;
-  const requestId = request.headers.get("x-request-id") ?? randomUUID();
-  const key = requireIdempotencyKey(request, requestId);
-  if ("response" in key) return key.response;
-  const parsed = await parseBody(request, createCrewInviteRawSchema, requestId);
+  const prepared = await prepareMutation(request);
+  if ("response" in prepared) return prepared.response;
+  const parsed = await parseCrewOperationBody(request, createCrewInviteRawSchema, prepared.requestId, STAGE);
   if ("response" in parsed) return parsed.response;
-  return executeSafely(requestId, () =>
-    createCrewInvite({
-      crewId,
-      expectedVersion: parsed.data.expected_version,
-      playerHandle: parsed.data.player_handle,
-      role: parsed.data.role,
-      idempotencyKey: key.idempotencyKey,
-    }),
-  );
+  try {
+    return successResponse(
+      prepared.requestId,
+      await createCrewInvite({
+        crewId: await contextCrewId(context),
+        actorUserId: prepared.userId,
+        expectedVersion: parsed.data.expected_version,
+        playerHandle: parsed.data.player_handle,
+        role: parsed.data.role,
+        idempotencyKey: prepared.idempotencyKey,
+      }),
+    );
+  } catch (error) {
+    return handleCrewOperationFailure(prepared.requestId, STAGE, error);
+  }
 }
 
 export async function handleDecideCrewInvite(
   request: NextRequest,
   context: { params: Promise<{ crewId: string; inviteId: string }> },
 ) {
-  const { crewId, inviteId } = await context.params;
-  const requestId = request.headers.get("x-request-id") ?? randomUUID();
-  const key = requireIdempotencyKey(request, requestId);
-  if ("response" in key) return key.response;
-  const parsed = await parseBody(request, decideCrewInviteRawSchema, requestId);
+  const prepared = await prepareMutation(request);
+  if ("response" in prepared) return prepared.response;
+  const parsed = await parseCrewOperationBody(request, decideCrewInviteRawSchema, prepared.requestId, STAGE);
   if ("response" in parsed) return parsed.response;
-  return executeSafely(requestId, () =>
-    decideCrewInvite({
-      crewId,
-      inviteId,
-      expectedVersion: parsed.data.expected_version,
-      decision: parsed.data.decision,
-      idempotencyKey: key.idempotencyKey,
-    }),
-  );
+  const params = await context.params;
+  try {
+    return successResponse(
+      prepared.requestId,
+      await decideCrewInvite({
+        crewId: params.crewId,
+        inviteId: params.inviteId,
+        actorUserId: prepared.userId,
+        expectedVersion: parsed.data.expected_version,
+        decision: parsed.data.decision,
+        idempotencyKey: prepared.idempotencyKey,
+      }),
+    );
+  } catch (error) {
+    return handleCrewOperationFailure(prepared.requestId, STAGE, error);
+  }
 }
 
 export async function handleLeaveCrewMembership(
   request: NextRequest,
   context: { params: Promise<{ crewId: string }> },
 ) {
-  const { crewId } = await context.params;
-  const requestId = request.headers.get("x-request-id") ?? randomUUID();
-  const key = requireIdempotencyKey(request, requestId);
-  if ("response" in key) return key.response;
-  const parsed = await parseBody(request, leaveCrewRawSchema, requestId);
+  const prepared = await prepareMutation(request);
+  if ("response" in prepared) return prepared.response;
+  const parsed = await parseCrewOperationBody(request, leaveCrewRawSchema, prepared.requestId, STAGE);
   if ("response" in parsed) return parsed.response;
-  return executeSafely(requestId, () =>
-    leaveCrewMembership({
-      crewId,
-      expectedVersion: parsed.data.expected_version,
-      idempotencyKey: key.idempotencyKey,
-    }),
-  );
+  try {
+    return successResponse(
+      prepared.requestId,
+      await leaveCrewMembership({
+        crewId: await contextCrewId(context),
+        actorUserId: prepared.userId,
+        expectedVersion: parsed.data.expected_version,
+        idempotencyKey: prepared.idempotencyKey,
+      }),
+    );
+  } catch (error) {
+    return handleCrewOperationFailure(prepared.requestId, STAGE, error);
+  }
 }
 
 export async function handleExpireCrewMembership(
   request: NextRequest,
   context: { params: Promise<{ crewId: string }> },
 ) {
-  const { crewId } = await context.params;
-  const requestId = request.headers.get("x-request-id") ?? randomUUID();
-  const key = requireIdempotencyKey(request, requestId);
-  if ("response" in key) return key.response;
-  const parsed = await parseBody(request, expireCrewMembershipRawSchema, requestId);
+  const prepared = await prepareMutation(request);
+  if ("response" in prepared) return prepared.response;
+  const parsed = await parseCrewOperationBody(request, expireCrewMembershipRawSchema, prepared.requestId, STAGE);
   if ("response" in parsed) return parsed.response;
-  return executeSafely(requestId, () =>
-    expireCrewMembershipItems({
-      crewId,
-      expectedVersion: parsed.data.expected_version,
-      idempotencyKey: key.idempotencyKey,
-    }),
-  );
+  try {
+    return successResponse(
+      prepared.requestId,
+      await expireCrewMembershipItems({
+        crewId: await contextCrewId(context),
+        actorUserId: prepared.userId,
+        expectedVersion: parsed.data.expected_version,
+        idempotencyKey: prepared.idempotencyKey,
+      }),
+    );
+  } catch (error) {
+    return handleCrewOperationFailure(prepared.requestId, STAGE, error);
+  }
 }

@@ -42,21 +42,15 @@ async function read<TData>(
   adapter: Adapter<TData>,
   request: MatchOperationsReadRequest,
 ) {
-  const params = new URLSearchParams({ state: request.state });
-  if (request.scenario && request.scenario !== "normal") params.set("scenario", request.scenario);
-
   let response: Response;
   try {
-    response = await fetch(
-      `/api/matches/${encodeURIComponent(matchId)}/${resource}?${params.toString()}`,
-      {
+    response = await fetch(`/api/matches/${encodeURIComponent(matchId)}/${resource}`, {
         method: "GET",
         credentials: "same-origin",
         cache: "no-store",
         headers: { accept: "application/json" },
-        ...(request.signal ? { signal: request.signal } : {}),
-      },
-    );
+      ...(request.signal ? { signal: request.signal } : {}),
+    });
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") throw error;
     throw new MatchOperationsApiClientError({

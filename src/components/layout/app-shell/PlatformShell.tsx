@@ -34,7 +34,7 @@ export function PlatformShell({
   status = defaultPlatformStatus,
   featureFlags = defaultPlatformFeatureFlags,
   navigationRuntimeStates,
-  notificationCount = 4,
+  notificationCount = 0,
   notificationsContent,
   routeLoading = false,
   offline,

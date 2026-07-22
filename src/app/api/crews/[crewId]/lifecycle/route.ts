@@ -1,5 +1,3 @@
-// VERZUS M9.7 CREW LIFECYCLE READ ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleCrewLifecycleGet } from "@/features/crews/lifecycle/server";

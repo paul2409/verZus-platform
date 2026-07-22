@@ -23,3 +23,5 @@ export { useAuthForm } from "./auth-form.controller";
 export type { AuthFormController, UseAuthFormOptions } from "./auth-form.controller";
 export { createPreviewAuthSubmitter } from "./auth-form.submitter";
 export type { AuthSubmitResult, AuthSubmitter } from "./auth-form.submitter";
+
+export { ResendVerificationButton } from "./ResendVerificationButton";

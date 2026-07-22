@@ -1,5 +1,3 @@
-// VERZUS M9.7 CREW LIFECYCLE TRANSITION ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleCrewLifecycleTransition } from "@/features/crews/lifecycle/server";

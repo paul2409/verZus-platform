@@ -10,7 +10,6 @@ export type SubmitMatchCheckInInput = MatchCheckInCommand & {
 
 export async function submitMatchCheckIn({
   matchId,
-  seedState,
   expectedState,
   expectedVersion,
   idempotencyKey,
@@ -18,8 +17,7 @@ export async function submitMatchCheckIn({
 }: SubmitMatchCheckInInput): Promise<MatchCheckInResult> {
   let response: Response;
   try {
-    const query = new URLSearchParams({ state: seedState });
-    response = await fetch(`/api/matches/${encodeURIComponent(matchId)}/check-in?${query}`, {
+    response = await fetch(`/api/matches/${encodeURIComponent(matchId)}/check-in`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

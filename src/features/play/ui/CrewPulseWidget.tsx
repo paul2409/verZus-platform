@@ -49,7 +49,7 @@ export function CrewPulseWidget({
             <div>
               <strong>{view.data.name}</strong>
               <small>
-                Rank #{view.data.rank} · {formatNumber(view.data.points)} points
+                {view.data.rank > 0 ? `Rank #${view.data.rank}` : "Unranked"} · {formatNumber(view.data.points)} points
               </small>
             </div>
           </div>

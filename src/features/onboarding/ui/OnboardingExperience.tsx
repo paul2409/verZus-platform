@@ -57,9 +57,9 @@ const stepDetails = {
   identity: {
     label: "Identity",
     eyebrow: "CLAIM YOUR PLAYER IDENTITY",
-    title: "How should players know you?",
+    title: "Connect your game identity.",
     description:
-      "Create the identity shown in rankings, matches, Crew activity, and your public player card.",
+      "Your VERZUS gamer tag is already set. Add the platform account used for match verification.",
   },
   availability: {
     label: "Availability",
@@ -893,8 +893,10 @@ function IdentityStep({ draft, online }: { draft: OnboardingDraft; online: boole
 
   const data = optionsQuery.data;
 
+  const accountGamerTag = data?.currentGamerTag ?? identity.gamerTag;
+
   const submit = () => {
-    const gamerTag = identity.gamerTag.trim();
+    const gamerTag = accountGamerTag.trim();
     const platformHandle = identity.platformHandle.trim();
     const rules = data?.gamerTagRules;
 
@@ -970,33 +972,26 @@ function IdentityStep({ draft, online }: { draft: OnboardingDraft; online: boole
           <MetaNotice meta={data.meta} />
           <section className={styles.playerPreview}>
             <div className={styles.avatar}>
-              {(identity.gamerTag || "VZ").slice(0, 2).toUpperCase()}
+              {(accountGamerTag || "VZ").slice(0, 2).toUpperCase()}
             </div>
             <div>
               <span>PLAYER CARD PREVIEW</span>
-              <strong>{identity.gamerTag || "YOUR GAMER TAG"}</strong>
-              <small>{platform?.label ?? "Platform"} · Rookie · Level 01</small>
+              <strong>{accountGamerTag || "YOUR GAMER TAG"}</strong>
+              <small>{platform?.label ?? "Platform"} · Verification identity</small>
             </div>
-            <b>0 XP</b>
+            <b>READY</b>
           </section>
 
           <div className={styles.formGrid}>
             <label className={styles.field}>
               <span>VERZUS GAMER TAG</span>
               <input
-                value={identity.gamerTag}
+                value={accountGamerTag}
                 maxLength={data.gamerTagRules.maximumLength}
-                onChange={(event) =>
-                  setIdentity((current) => ({
-                    ...current,
-                    gamerTag: event.target.value,
-                  }))
-                }
+                readOnly
                 autoComplete="nickname"
               />
-              <small>
-                {identity.gamerTag.length}/{data.gamerTagRules.maximumLength} characters
-              </small>
+              <small>Inherited from registration. Change it later in profile settings.</small>
             </label>
 
             <label className={styles.field}>
@@ -1387,7 +1382,7 @@ function CompleteStep({ draft, online }: { draft: OnboardingDraft; online: boole
             {draft.selectedGameIds.join(" · ")} · {draft.location?.city ?? "Region ready"}
           </small>
         </div>
-        <b>LV. 01</b>
+        <b>READY</b>
       </section>
 
       <div className={styles.summaryGrid}>
@@ -1408,12 +1403,6 @@ function CompleteStep({ draft, online }: { draft: OnboardingDraft; online: boole
           <strong>{crewLabel}</strong>
         </article>
       </div>
-
-      <section className={styles.firstMission}>
-        <span>FIRST MISSION · 250 XP</span>
-        <strong>Complete your first ranked match</strong>
-        <p>Enter Play to see your next action and available competitive opportunities.</p>
-      </section>
 
       <MutationError error={completeMutation.error} />
     </OnboardingFrame>

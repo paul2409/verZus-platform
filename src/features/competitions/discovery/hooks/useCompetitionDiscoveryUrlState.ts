@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { competitionDiscoveryScenarioSchema } from "../model/competition-discovery.schema";
 import {
   defaultCompetitionDiscoveryFilters,
   hasActiveCompetitionDiscoveryFilters,
@@ -14,18 +13,12 @@ import type {
   CompetitionDiscoveryEntryFee,
   CompetitionDiscoveryFilters,
   CompetitionDiscoveryGame,
-  CompetitionDiscoveryScenario,
   CompetitionDiscoverySort,
   CompetitionDiscoveryTab,
   CompetitionDiscoveryTeamSize,
 } from "../model/competition-discovery.types";
 
 const SEARCH_DEBOUNCE_MS = 300;
-
-function readScenario(params: URLSearchParams): CompetitionDiscoveryScenario {
-  const parsed = competitionDiscoveryScenarioSchema.safeParse(params.get("scenario"));
-  return parsed.success ? parsed.data : "normal";
-}
 
 export function useCompetitionDiscoveryUrlState() {
   const router = useRouter();
@@ -36,19 +29,17 @@ export function useCompetitionDiscoveryUrlState() {
     () => parseCompetitionDiscoverySearchParams(initialParams),
     [initialParams],
   );
-  const scenario = useMemo(() => readScenario(initialParams), [initialParams]);
   const [filters, setFilters] = useState<CompetitionDiscoveryFilters>(initialFilters);
   const [searchInput, setSearchInput] = useState(initialFilters.search);
 
   const replaceUrl = useCallback(
     (next: CompetitionDiscoveryFilters) => {
       const query = serializeCompetitionDiscoverySearchParams(next);
-      if (scenario !== "normal") query.set("scenario", scenario);
       router.replace(query.size > 0 ? `${pathname}?${query.toString()}` : pathname, {
         scroll: false,
       });
     },
-    [pathname, router, scenario],
+    [pathname, router],
   );
 
   const commit = useCallback(
@@ -110,7 +101,6 @@ export function useCompetitionDiscoveryUrlState() {
 
   return {
     filters,
-    scenario,
     searchInput,
     isSearchPending: searchInput.trim() !== filters.search.trim(),
     isFiltered: hasActiveCompetitionDiscoveryFilters(filters),

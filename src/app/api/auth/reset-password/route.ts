@@ -1,7 +1,7 @@
-// VERZUS M4 STEP 4.5
-
 import { resetPasswordRequestSchema } from "@/features/auth/api";
-import { createMockAuthPostHandler } from "@/features/auth/server/mock-auth.http";
-import { mockResetPassword } from "@/features/auth/server/mock-auth.service";
+import { createAuthPostHandler } from "@/features/auth/server/auth.http";
+import { resetAccountPassword } from "@/features/auth/server/auth.identity.service";
 
-export const POST = createMockAuthPostHandler(resetPasswordRequestSchema, mockResetPassword);
+export const POST = createAuthPostHandler(resetPasswordRequestSchema, (input) =>
+  resetAccountPassword(input),
+);

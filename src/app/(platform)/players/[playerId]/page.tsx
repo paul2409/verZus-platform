@@ -1,15 +1,12 @@
-// VERZUS M11.7 SERVER-AUTHORITATIVE PUBLIC PLAYER ROUTE AND ACCOUNT STATES
-
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
 import { PublicProfileAccountStateScreen } from "@/features/profiles/account-state/ui";
-import { getPublicProfileAccountState } from "@/features/profiles/account-state/server";
 import {
-  getPublicPlayerProfileRecord,
-  parsePublicProfileViewerMode,
   PlayerPublicProfileScreen,
   projectPublicPlayerProfile,
+  readPublicPlayerProfileRecord,
 } from "@/features/profiles/public-profile";
 
 export const dynamic = "force-dynamic";
@@ -20,46 +17,46 @@ export async function generateMetadata({
   params: Promise<{ playerId: string }>;
 }): Promise<Metadata> {
   const { playerId } = await params;
-  const accountState = getPublicProfileAccountState(playerId);
-  if (accountState.status !== "active") {
-    return {
-      title: `${accountState.displayName} — VERZUS`,
-      description: accountState.message,
-    };
-  }
-
-  const record = getPublicPlayerProfileRecord(playerId);
-  if (!record) {
-    return {
-      title: "Player not found — VERZUS",
-      description: "The requested VERZUS player profile could not be found.",
-    };
-  }
-
-  return {
-    title: `${record.identity.displayName} — VERZUS`,
-    description: `View ${record.identity.displayName}'s permission-aware public VERZUS player profile.`,
-  };
+  const result = await readPublicPlayerProfileRecord(playerId);
+  return result
+    ? {
+        title: `${result.record.identity.displayName} — VERZUS`,
+        description: `View ${result.record.identity.displayName}'s VERZUS player profile.`,
+      }
+    : { title: "Player not found — VERZUS" };
 }
 
 export default async function PublicPlayerPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ playerId: string }>;
-  searchParams: Promise<{ viewer?: string | string[] }>;
 }) {
-  const [{ playerId }, query] = await Promise.all([params, searchParams]);
-  const accountState = getPublicProfileAccountState(playerId);
-  if (accountState.status !== "active") {
-    return <PublicProfileAccountStateScreen state={accountState} />;
+  const { playerId } = await params;
+  const [result, session] = await Promise.all([
+    readPublicPlayerProfileRecord(playerId),
+    getServerAuthSession(),
+  ]);
+  if (!result) notFound();
+  if (result.status !== "active") {
+    return (
+      <PublicProfileAccountStateScreen
+        state={{
+          status: result.status === "suspended" ? "suspended" : "blocked",
+          playerId,
+          displayName: result.record.identity.displayName,
+          handle: result.record.identity.handle,
+          title:
+            result.status === "suspended"
+              ? "Player profile suspended"
+              : "Player profile unavailable",
+          message: result.restrictionReason ?? "This profile is currently unavailable.",
+          caseReference: null,
+        }}
+      />
+    );
   }
-
-  const record = getPublicPlayerProfileRecord(playerId);
-  if (!record) notFound();
-
-  const viewerMode = parsePublicProfileViewerMode(query.viewer);
-  const model = projectPublicPlayerProfile(record, viewerMode);
-
-  return <PlayerPublicProfileScreen model={model} />;
+  const viewerMode = session.user?.id === playerId ? "owner" : "member";
+  return (
+    <PlayerPublicProfileScreen model={projectPublicPlayerProfile(result.record, viewerMode)} />
+  );
 }

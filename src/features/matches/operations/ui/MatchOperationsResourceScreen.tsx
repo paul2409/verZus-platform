@@ -8,7 +8,6 @@
 // VERZUS M7.8 TESTING, OBSERVABILITY AND RELEASE
 
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import { createContext, type ReactNode, useContext } from "react";
 
 import {
@@ -23,7 +22,6 @@ import {
   matchSupportQueryOptions,
   matchTimelineQueryOptions,
 } from "../api";
-import { matchOperationStateLabels } from "../model/match-operations.state";
 import type {
   MatchOperationReadScenario,
   MatchOperationResourceName,
@@ -31,10 +29,8 @@ import type {
   MatchResourceData,
 } from "../model/match-resource.types";
 import type { MatchTerminalRole } from "../model/match-terminal-operations.types";
-import {
-  matchOperationStates,
-  type MatchOperationsViewModel,
-} from "../model/match-operations.types";
+import type { MatchOperationsViewModel } from "../model/match-operations.types";
+import { getMatchWorkflowSections } from "../model/match-workflow";
 import { CheckInMutationPanel } from "./CheckInMutationPanel";
 import { DisputeOperationsPanel } from "./DisputeOperationsPanel";
 import { EvidenceUploadPanel } from "./EvidenceUploadPanel";
@@ -193,6 +189,7 @@ export function MatchOperationsResourceScreen({
   const currentUserCheckedIn =
     participants.data?.value.home.checkedIn ?? initialMatch.home.checkedIn;
   const opponentCheckedIn = participants.data?.value.away.checkedIn ?? initialMatch.away.checkedIn;
+  const workflow = getMatchWorkflowSections(authoritativeState);
 
   return (
     <CrashContext.Provider value={crashWidget}>
@@ -209,19 +206,6 @@ export function MatchOperationsResourceScreen({
           {(value) => <MatchHeader match={{ ...initialMatch, ...value, clock: currentClock }} />}
         </ResourceBoundary>
 
-        <nav aria-label="Match state references" className={styles.stateRail}>
-          {matchOperationStates.map((item, index) => (
-            <Link
-              aria-current={item === authoritativeState ? "page" : undefined}
-              className={styles.stateLink}
-              href={`/matches/${encodeURIComponent(id)}?state=${item}`}
-              key={item}
-            >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              {matchOperationStateLabels[item]}
-            </Link>
-          ))}
-        </nav>
 
         <ResourceBoundary
           label="participants"
@@ -245,6 +229,7 @@ export function MatchOperationsResourceScreen({
           </ResourceBoundary>
 
           <div className={styles.primaryColumn}>
+{workflow.checkIn ? (
             <ResourceBoundary
               label="check-in"
               resource={checkIn}
@@ -263,7 +248,9 @@ export function MatchOperationsResourceScreen({
                 />
               )}
             </ResourceBoundary>
+            ) : null}
 
+{workflow.lobby ? (
             <ResourceBoundary
               label="lobby"
               resource={lobby}
@@ -280,7 +267,9 @@ export function MatchOperationsResourceScreen({
                 />
               )}
             </ResourceBoundary>
+            ) : null}
 
+{workflow.terminal ? (
             <MatchWidgetBoundary name="terminal control">
               <TerminalOperationsPanel
                 currentState={authoritativeState}
@@ -290,7 +279,9 @@ export function MatchOperationsResourceScreen({
                 viewerRole={viewerRole}
               />
             </MatchWidgetBoundary>
+            ) : null}
 
+{workflow.result ? (
             <ResourceBoundary
               label="result"
               resource={result}
@@ -306,7 +297,9 @@ export function MatchOperationsResourceScreen({
                 />
               )}
             </ResourceBoundary>
+            ) : null}
 
+{workflow.dispute ? (
             <ResourceBoundary
               label="dispute"
               resource={dispute}
@@ -322,7 +315,9 @@ export function MatchOperationsResourceScreen({
                 />
               )}
             </ResourceBoundary>
+            ) : null}
 
+{workflow.evidence ? (
             <ResourceBoundary
               label="evidence"
               resource={evidence}
@@ -338,6 +333,7 @@ export function MatchOperationsResourceScreen({
                 />
               )}
             </ResourceBoundary>
+            ) : null}
           </div>
 
           <ResourceBoundary
@@ -359,14 +355,6 @@ export function MatchOperationsResourceScreen({
             )}
           </ResourceBoundary>
         </div>
-
-        <footer className={styles.foundationNote}>
-          <strong>M7.7 TERMINAL AND FAILURE-ISOLATED FLOW</strong>
-          <span>
-            Server-authoritative terminal transitions · role enforcement · cached offline states ·
-            independent widget recovery.
-          </span>
-        </footer>
       </main>
     </CrashContext.Provider>
   );

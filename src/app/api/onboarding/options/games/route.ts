@@ -1,22 +1,12 @@
-// VERZUS M4 STEP 4.9
+import { randomUUID } from "node:crypto";
+import { NextResponse } from "next/server";
 
-import type { NextRequest, NextResponse } from "next/server";
+import { getProductionGameOptions } from "@/features/onboarding/server/onboarding.catalog";
 
-import {
-  createMockOnboardingOptionsResponse,
-  readOnboardingMockScenario,
-} from "@/features/onboarding/server/mock-onboarding-options.http";
-import { getMockOnboardingGameOptions } from "@/features/onboarding/server/mock-onboarding-options.service";
-import { getOnboardingAccessFailure } from "@/features/onboarding/server/mock-onboarding.http";
-
-export function GET(request: NextRequest): NextResponse {
-  const accessFailure = getOnboardingAccessFailure(request);
-
-  if (accessFailure) {
-    return accessFailure;
-  }
-
-  return createMockOnboardingOptionsResponse(
-    getMockOnboardingGameOptions(readOnboardingMockScenario(request)),
-  );
+export function GET(): NextResponse {
+  return NextResponse.json({
+    ok: true,
+    data: getProductionGameOptions(),
+    requestId: `onboarding-${randomUUID()}`,
+  });
 }

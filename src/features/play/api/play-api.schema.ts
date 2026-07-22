@@ -43,7 +43,7 @@ export const matchParticipantRawSchema = z.object({
   player_id: z.string().min(1),
   handle: z.string().min(1),
   avatar_url: nullableUrlSchema,
-  rank: z.number().int().positive().nullable(),
+  rank: z.number().int().nonnegative().nullable(),
   location_label: z.string().min(1),
   is_current_player: z.boolean(),
 });
@@ -89,8 +89,8 @@ export type CurrentCheckInRaw = z.infer<typeof currentCheckInRawSchema>;
 export const currentPositionRawSchema = z.object({
   leaderboard_id: z.string().min(1),
   week_label: z.string().min(1),
-  rank: z.number().int().positive(),
-  previous_rank: z.number().int().positive().nullable(),
+  rank: z.number().int().nonnegative(),
+  previous_rank: z.number().int().nonnegative().nullable(),
   movement: z.enum(["up", "down", "same", "new"]),
   points: z.number().int().min(0),
   target_points: z.number().int().positive(),
@@ -109,7 +109,7 @@ export const crewSummaryRawSchema = z.object({
   name: z.string().min(1),
   tag: z.string().min(1),
   emblem_url: nullableUrlSchema,
-  rank: z.number().int().positive(),
+  rank: z.number().int().nonnegative(),
   points: z.number().int().min(0),
   online_members: z.number().int().min(0),
   total_members: z.number().int().positive(),

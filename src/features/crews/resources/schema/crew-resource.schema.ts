@@ -17,7 +17,7 @@ const metaSchema = z.object({
   request_id: z.string().min(1),
   fetched_at: z.string().datetime(),
   freshness: freshnessSchema,
-  source: z.literal("mock-crew-resource"),
+  source: z.literal("postgres-crew-resource"),
 });
 
 const envelope = <T extends z.ZodTypeAny>(data: T) => z.object({ data, meta: metaSchema });
@@ -93,7 +93,7 @@ export const crewActivityEnvelopeSchema = envelope(
 export const crewRankingsEnvelopeSchema = envelope(
   z.object({
     stats: z.object({
-      rank: z.number().int().positive(),
+      rank: z.number().int().nonnegative(),
       movement: z.number().int(),
       points: z.number().int().min(0),
       wins: z.number().int().min(0),

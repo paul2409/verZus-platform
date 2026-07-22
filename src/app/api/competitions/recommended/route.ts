@@ -1,9 +1,7 @@
-// VERZUS M5 STEPS 5.1-5.4
+import type { NextRequest } from "next/server";
 
-import type { NextRequest, NextResponse } from "next/server";
+import { handleRecommendedCompetitionsGet } from "@/features/competitions/server";
 
-import { handleMockPlayGet } from "@/features/play/server/mock-play.http";
-
-export function GET(request: NextRequest): NextResponse {
-  return handleMockPlayGet(request, "recommended-competitions");
+export function GET(request: NextRequest) {
+  return handleRecommendedCompetitionsGet(request);
 }

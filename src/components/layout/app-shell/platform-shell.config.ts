@@ -1,19 +1,16 @@
 import type { GlobalShellStatus, ShellFeatureFlags, ShellProfile } from "./shell.types";
 
 export const defaultPlatformProfile: ShellProfile = {
-  name: "Jayflex",
-  handle: "@jayflex",
-  title: "Elite Competitor",
-  initials: "JF",
+  name: "Player",
+  initials: "P",
   presence: "online",
-  points: 2310,
-  crewName: "Mainland Titans",
+  points: 0,
 };
 
 export const defaultPlatformStatus: GlobalShellStatus = {
   kind: "operational",
-  label: "Online",
-  detail: "All systems operational",
+  label: "Connected",
+  detail: "Production data is current.",
 };
 
 export const defaultPlatformFeatureFlags: ShellFeatureFlags = {

@@ -1,20 +1,13 @@
-// VERZUS M9.1 CREW FOUNDATION ROOT ROUTE
-// VERZUS M9.2 DISCOVERY URL STATE ROUTE
-// VERZUS M9.4 CREW RESOURCE SCENARIO ROUTE
-// VERZUS M9.7 CREW LIFECYCLE SCENARIO ROUTE
-
 import type { Metadata } from "next";
 
 import { getPlatformRouteById } from "@/components/layout/app-shell";
+import { requireAuthenticatedServerSession } from "@/features/auth/server";
 import {
   CrewsScreen,
   parseCrewDiscoveryQuery,
-  parseCrewLifecycleScenario,
-  parseCrewResourceName,
-  parseCrewResourceScenario,
-  type CrewMembershipState,
   type CrewRootView,
 } from "@/features/crews";
+import { getCrewRootState } from "@/features/crews/server";
 
 const route = getPlatformRouteById("crews");
 
@@ -28,17 +21,23 @@ export default async function CrewsPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const query = await searchParams;
-  const view: CrewRootView = query.view === "discover" ? "discover" : "profile";
-  const membership: CrewMembershipState = query.membership === "none" ? "none" : "current";
+  const [query, session] = await Promise.all([
+    searchParams,
+    requireAuthenticatedServerSession(),
+  ]);
+  const userId = session.user?.id;
+  if (!userId) return null;
+
+  const state = await getCrewRootState(userId);
+  const requestedView: CrewRootView = query.view === "discover" ? "discover" : "profile";
+  const view: CrewRootView = state.currentCrewId ? requestedView : "discover";
 
   return (
     <CrewsScreen
+      crewId={state.currentCrewId ?? undefined}
+      crews={state.crews}
       discoveryQuery={parseCrewDiscoveryQuery(query)}
-      lifecycleScenario={parseCrewLifecycleScenario(query.lifecycleScenario)}
-      membership={membership}
-      resource={parseCrewResourceName(query.resource)}
-      scenario={parseCrewResourceScenario(query.scenario)}
+      membership={state.currentCrewId ? "current" : "none"}
       view={view}
     />
   );

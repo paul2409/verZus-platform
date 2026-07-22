@@ -14,8 +14,6 @@ import { Input } from "@/components/primitives/input";
 import { Select } from "@/components/primitives/select";
 
 import {
-  clearCrewCreationState,
-  createCrewRecord,
   createEmptyCrewCreationState,
   loadCrewCreationState,
   saveCrewCreationState,
@@ -183,6 +181,7 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
   const [errors, setErrors] = useState<CrewCreationErrors>({});
   const [hydrated, setHydrated] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
@@ -244,25 +243,64 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
     else if (step === "settings") navigate("review");
   };
 
-  const submitCreation = () => {
+  const submitCreation = async () => {
     const nextErrors = validateCrewCreationDraft(draft);
     setErrors(nextErrors);
+    setSubmitError(null);
     if (hasCrewCreationErrors(nextErrors) || submitting) return;
 
     setSubmitting(true);
-    const created = createCrewRecord(draft, new Date(), state.created);
-    const nextState = { ...state, created };
-    setState(nextState);
-    saveCrewCreationState(window.localStorage, nextState);
-    navigate("created", true);
-    setSubmitting(false);
-  };
+    try {
+      const response = await fetch("/api/crews", {
+        method: "POST",
+        credentials: "same-origin",
+        cache: "no-store",
+        headers: {
+          accept: "application/json",
+          "content-type": "application/json",
+          "idempotency-key": draft.submissionId,
+        },
+        body: JSON.stringify({
+          submissionId: draft.submissionId,
+          name: draft.name.trim(),
+          tag: draft.tag,
+          description: draft.description.trim(),
+          primaryGame: draft.primaryGame,
+          region: draft.region,
+          crestPreset: draft.crestPreset,
+          bannerPreset: draft.bannerPreset,
+          visibility: draft.visibility,
+          recruiting: draft.recruiting,
+          language: draft.language,
+          minimumRank: draft.minimumRank,
+        }),
+      });
+      const payload = (await response.json()) as {
+        data?: CrewCreationPersistedState["created"];
+        error?: { message?: string; field_errors?: Record<string, string[]> };
+      };
+      if (!response.ok || !payload.data) {
+        const fieldErrors = payload.error?.field_errors;
+        if (fieldErrors) {
+          setErrors((current) => ({
+            ...current,
+            ...Object.fromEntries(
+              Object.entries(fieldErrors).map(([key, messages]) => [key, messages[0] ?? "Invalid"]),
+            ),
+          }));
+        }
+        throw new Error(payload.error?.message ?? "Crew creation failed.");
+      }
 
-  const resetCreation = () => {
-    clearCrewCreationState(window.localStorage);
-    setState(createEmptyCrewCreationState(createSubmissionId()));
-    setErrors({});
-    navigate("basics", true);
+      const nextState = { ...state, created: payload.data };
+      setState(nextState);
+      saveCrewCreationState(window.localStorage, nextState);
+      navigate("created", true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Crew creation failed.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (membership === "current") {
@@ -286,11 +324,11 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
     <main className={styles.page} data-m9-stage="9.3" data-creation-step={step}>
       <header className={styles.header}>
         <div>
-          <span className={styles.eyebrow}>M9.3 Crew creation</span>
+          <span className={styles.eyebrow}>Crew creation</span>
           <h1>Build your competitive identity</h1>
           <p>
-            Create the Crew foundation now. Membership, role and ownership mutations remain
-            server-controlled in M9.5-M9.7.
+            Define your Crew identity and operating settings. Ownership and membership remain
+            server-controlled.
           </p>
         </div>
         <Link href="/crews?membership=none&view=discover">Back to discovery</Link>
@@ -561,10 +599,7 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
                   <li>The creator is assigned the owner role.</li>
                   <li>The Crew starts in the forming lifecycle.</li>
                   <li>Ownership cannot be orphaned by later membership actions.</li>
-                  <li>
-                    This stage uses the versioned mock repository; M9.4 connects production
-                    resources.
-                  </li>
+                  <li>The final submission is persisted by the server and audited.</li>
                 </ul>
               </div>
             </div>
@@ -574,8 +609,8 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
               <span className={styles.eyebrow}>Crew foundation created</span>
               <h2>{state.created?.identity.name ?? draft.name}</h2>
               <p>
-                The creation record is persisted for this preview and will survive refresh. The
-                owner and forming lifecycle invariants are locked into the record.
+                The Crew is now stored in VERZUS. You are the owner and the Crew begins in the
+                forming lifecycle.
               </p>
               <dl className={styles.createdMeta}>
                 <div>
@@ -596,10 +631,8 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
                 </div>
               </dl>
               <div className={styles.createdActions}>
-                <Link href="/crews?membership=none&view=discover">Return to Crew discovery</Link>
-                <Button onClick={resetCreation} variant="secondary">
-                  Create another preview
-                </Button>
+                <Link href={`/crews/${state.created?.id ?? ""}`}>Open Crew profile</Link>
+                <Link href="/crews">Return to Crews</Link>
               </div>
             </div>
           )}
@@ -619,9 +652,12 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
                 <span />
               )}
               {step === "review" ? (
-                <Button loading={submitting} loadingLabel="Creating Crew" onClick={submitCreation}>
-                  Create Crew
-                </Button>
+                <div>
+                  {submitError ? <p className={styles.fieldError} role="alert">{submitError}</p> : null}
+                  <Button loading={submitting} loadingLabel="Creating Crew" onClick={() => void submitCreation()}>
+                    Create Crew
+                  </Button>
+                </div>
               ) : (
                 <Button onClick={continueFromStep} trailingIcon="chevron-right">
                   Continue

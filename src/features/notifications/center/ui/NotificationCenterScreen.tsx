@@ -326,6 +326,6 @@ export function NotificationCenterScreen() {
   const state = readState(searchParams.get("state"));
   const category = readCategory(searchParams.get("category"));
   const page = readPage(searchParams.get("page"));
-  const scenario = readScenario(searchParams.get("scenario"));
+  const scenario: NotificationScenario = "normal";
   return <NotificationCenterExperience category={category} key={`${state}:${category}:${page}:${scenario}`} page={page} scenario={scenario} state={state} />;
 }

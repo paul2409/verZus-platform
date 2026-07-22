@@ -1,5 +1,3 @@
-// VERZUS M5 STEPS 5.9-5.13
-
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -7,7 +5,7 @@ import { useRef } from "react";
 
 import { playQueryKeys, PlayApiClientError } from "../api";
 import { submitPlayCheckIn } from "../api/check-in-api.client";
-import type { CurrentCheckIn, NextMatch, PlayScenario } from "../model";
+import type { CurrentCheckIn, NextMatch } from "../model";
 import { recordPlayTelemetry } from "../telemetry/play-telemetry";
 
 export interface PlayCheckInAction {
@@ -18,44 +16,32 @@ export interface PlayCheckInAction {
   reset: () => void;
 }
 
-export function usePlayCheckIn(scenario: PlayScenario): PlayCheckInAction {
+export function usePlayCheckIn(): PlayCheckInAction {
   const queryClient = useQueryClient();
   const immediateLock = useRef(false);
 
   const mutation = useMutation({
-    mutationKey: ["play", "check-in", scenario],
+    mutationKey: ["play", "check-in", "live"],
     mutationFn: submitPlayCheckIn,
     onMutate: ({ command }) => {
       recordPlayTelemetry("play.check_in.started", {
         route: "/play",
-        scenario,
+        scenario: "normal",
         matchId: command.matchId,
       });
     },
     onSuccess: (result) => {
-      queryClient.setQueryData<CurrentCheckIn>(playQueryKeys.currentCheckIn(scenario), (current) =>
+      queryClient.setQueryData<CurrentCheckIn>(playQueryKeys.currentCheckIn(undefined), (current) =>
         current
-          ? {
-              ...current,
-              state: "checked_in",
-              checkedInAt: result.checkedInAt,
-              canCheckIn: false,
-            }
+          ? { ...current, state: "checked_in", checkedInAt: result.checkedInAt, canCheckIn: false }
           : current,
       );
-
-      queryClient.setQueryData<NextMatch | null>(playQueryKeys.nextMatch(scenario), (current) =>
-        current
-          ? {
-              ...current,
-              status: "checked_in",
-            }
-          : current,
+      queryClient.setQueryData<NextMatch | null>(playQueryKeys.nextMatch(undefined), (current) =>
+        current ? { ...current, status: "checked_in" } : current,
       );
-
       recordPlayTelemetry("play.check_in.succeeded", {
         route: "/play",
-        scenario,
+        scenario: "normal",
         matchId: result.matchId,
         requestId: result.requestId,
         duplicate: result.duplicate,
@@ -64,7 +50,7 @@ export function usePlayCheckIn(scenario: PlayScenario): PlayCheckInAction {
     onError: (error, variables) => {
       recordPlayTelemetry("play.check_in.failed", {
         route: "/play",
-        scenario,
+        scenario: "normal",
         matchId: variables.command.matchId,
         requestId: error instanceof PlayApiClientError ? error.requestId : null,
         errorCode: error instanceof PlayApiClientError ? error.code : "unknown_error",
@@ -101,14 +87,10 @@ export function usePlayCheckIn(scenario: PlayScenario): PlayCheckInAction {
         !value.matchId ||
         !value.mutationKey ||
         !value.canCheckIn
-      ) {
-        return;
-      }
+      ) return;
 
       immediateLock.current = true;
-
       mutation.mutate({
-        scenario,
         command: {
           matchId: value.matchId,
           mutationKey: value.mutationKey,

@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
-import { handlePersistentCompetitionEntryDiscoveryGet } from "@/features/competitions/entry/server";
+import { handleCompetitionDiscoveryGet } from "@/features/competitions/server";
 
 export function GET(request: NextRequest) {
-  return handlePersistentCompetitionEntryDiscoveryGet(request);
+  return handleCompetitionDiscoveryGet(request, "current-entry");
 }

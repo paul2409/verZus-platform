@@ -79,8 +79,6 @@ export async function getPlayerMatchHistory(input: {
     result: input.result,
     page: String(input.page),
   });
-  if (input.scenario !== "normal") params.set("scenario", input.scenario);
-
   try {
     return adaptPlayerMatchHistory(
       await requestJson(`/api/profile/matches?${params.toString()}`, input.signal),
@@ -97,8 +95,6 @@ export async function getPlayerDetailedStatistics(input: {
   signal?: AbortSignal;
 }): Promise<PlayerDetailedStatistics> {
   const params = new URLSearchParams({ game: input.game, window: input.window });
-  if (input.scenario !== "normal") params.set("scenario", input.scenario);
-
   try {
     return adaptPlayerDetailedStatistics(
       await requestJson(`/api/profile/statistics?${params.toString()}`, input.signal),

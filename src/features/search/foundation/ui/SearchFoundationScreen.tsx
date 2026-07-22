@@ -10,12 +10,7 @@ import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { ResourceStatePanel } from "@/components/feedback/resource-state";
 import { Badge } from "@/components/primitives/badge";
 
-import {
-  recentSearchItems,
-  searchDomainDefinitions,
-  searchFoundationItems,
-  trendingSearchItems,
-} from "../mocks/search-foundation.mock";
+import { searchDomainDefinitions } from "../config/search-foundation.config";
 import type {
   SearchDomain,
   SearchEntityDomain,
@@ -36,19 +31,6 @@ const validDomains = new Set<SearchDomain>([
   "competitions",
   "matches",
 ]);
-const validScenarios = new Set<SearchResourceScenario>([
-  "normal",
-  "stale",
-  "empty",
-  "error",
-  "offline",
-  "slow",
-  "malformed",
-  "unauthorized",
-  "forbidden",
-  "not-found",
-  "maintenance",
-]);
 const entityDomains: readonly SearchEntityDomain[] = [
   "players",
   "crews",
@@ -64,12 +46,6 @@ const domainLabels: Record<SearchEntityDomain, string> = {
 
 function readDomain(value: string | null): SearchDomain {
   return value && validDomains.has(value as SearchDomain) ? (value as SearchDomain) : "all";
-}
-
-function readScenario(value: string | null): SearchResourceScenario {
-  return value && validScenarios.has(value as SearchResourceScenario)
-    ? (value as SearchResourceScenario)
-    : "normal";
 }
 
 function createSearchHref(query: string, domain: SearchDomain): string {
@@ -344,10 +320,10 @@ function SearchResourceExperience({
       <header className={styles.hero}>
         <div className={styles.heroTopline}>
           <div>
-            <p className={styles.eyebrow}>M12 // COMPETITIVE NETWORK</p>
+            <p className={styles.eyebrow}>COMPETITIVE NETWORK</p>
             <h1>SEARCH VERZUS</h1>
           </div>
-          <Badge size="sm" tone="live" variant="outline">4 indexes live</Badge>
+          <Badge size="sm" tone="live" variant="outline">Live domain search</Badge>
         </div>
         <p className={styles.heroCopy}>
           Find players, Crews, competitions and matches without exposing private competitive data.
@@ -407,70 +383,43 @@ function SearchResourceExperience({
         </section>
       ) : (
         <div className={styles.discoveryLayout}>
-          <section aria-labelledby="recent-searches-title" className={styles.panel}>
+          <section aria-labelledby="search-start-title" className={styles.panel}>
             <div className={styles.sectionHeader}>
-              <div><p className={styles.sectionEyebrow}>Continue searching</p><h2 id="recent-searches-title">Recent searches</h2></div>
-              <span className={styles.countBadge}>{recentSearchItems.length}</span>
+              <div>
+                <p className={styles.sectionEyebrow}>Production search</p>
+                <h2 id="search-start-title">Find a competitive record</h2>
+              </div>
+              <Badge size="sm" tone="live" variant="outline">Live data</Badge>
             </div>
-            <div className={styles.compactList}>
-              {recentSearchItems.map((item) => (
-                <Link className={styles.compactItem} href={createSearchHref(item.query, item.domain)} key={item.id}>
-                  <span aria-hidden="true" className={styles.historyGlyph}>↺</span>
-                  <span><strong>{item.label}</strong><small>{item.context}</small></span>
-                  <span aria-hidden="true">›</span>
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          <section aria-labelledby="trending-searches-title" className={styles.panel}>
-            <div className={styles.sectionHeader}>
-              <div><p className={styles.sectionEyebrow}>Network pulse</p><h2 id="trending-searches-title">Trending now</h2></div>
-              <Badge size="sm" tone="positive">Live</Badge>
-            </div>
-            <div className={styles.compactList}>
-              {trendingSearchItems.map((item, index) => (
-                <Link className={styles.compactItem} href={createSearchHref(item.query, item.domain)} key={item.id}>
-                  <span aria-hidden="true" className={styles.trendRank}>{index + 1}</span>
-                  <span><strong>{item.label}</strong><small>{item.context}</small></span>
-                  <span className={styles.movement}>{item.movement}</span>
-                </Link>
-              ))}
-            </div>
+            <p className={styles.heroCopy}>
+              Search by player handle, Crew name or tag, competition title, or one of your match references.
+              Results are read directly from production domain records and respect profile visibility.
+            </p>
           </section>
 
           <section aria-labelledby="search-domains-title" className={styles.domainPanel}>
             <div className={styles.sectionHeader}>
-              <div><p className={styles.sectionEyebrow}>Search by domain</p><h2 id="search-domains-title">Explore the network</h2></div>
+              <div>
+                <p className={styles.sectionEyebrow}>Search by domain</p>
+                <h2 id="search-domains-title">Explore the network</h2>
+              </div>
             </div>
             <div className={styles.domainGrid}>
               {searchDomainDefinitions.filter((domain) => domain.id !== "all").map((domain) => (
-                <Link className={styles.domainCard} data-domain={domain.id} href={createSearchHref("", domain.id)} key={domain.id}>
-                  <span className={styles.domainCardCount}>{searchFoundationItems.filter((item) => item.domain === domain.id).length}</span>
-                  <strong>{domain.label}</strong><span>{domain.description}</span>
+                <Link
+                  className={styles.domainCard}
+                  data-domain={domain.id}
+                  href={createSearchHref("", domain.id)}
+                  key={domain.id}
+                >
+                  <strong>{domain.label}</strong>
+                  <span>{domain.description}</span>
                 </Link>
               ))}
             </div>
           </section>
-
-          <section aria-labelledby="suggested-records-title" className={styles.suggestedPanel}>
-            <div className={styles.sectionHeader}>
-              <div><p className={styles.sectionEyebrow}>Suggested for you</p><h2 id="suggested-records-title">Competitive records</h2></div>
-              <Link className={styles.textAction} href="/leaderboards/weekly">View rankings</Link>
-            </div>
-            <div className={styles.resultList}>
-              {searchFoundationItems
-                .filter((item) => ["player-prismo", "crew-island-elites", "competition-rookie-cup"].includes(item.id))
-                .map((item) => <SearchResultCard item={item} key={item.id} />)}
-            </div>
-          </section>
         </div>
       )}
-
-      <footer className={styles.foundationNote}>
-        <strong>M12.2 independent search resources</strong>
-        <span>Suggestions debounce for 300 ms. Changing queries aborts stale requests, and one failed domain cannot hide healthy results.</span>
-      </footer>
     </main>
   );
 }
@@ -479,21 +428,11 @@ export function SearchFoundationScreen() {
   const searchParams = useSearchParams();
   const activeQuery = (searchParams.get("q") ?? "").trim();
   const activeDomain = readDomain(searchParams.get("domain"));
-  const targetedDomain = readDomain(searchParams.get("resource"));
-  const targetedScenario = readScenario(searchParams.get("scenario"));
-
   const scenarios = useMemo(() => {
     const result = {} as Record<SearchEntityDomain, SearchResourceScenario>;
-    for (const domain of entityDomains) {
-      const explicit = searchParams.get(`${domain}Scenario`);
-      result[domain] = explicit
-        ? readScenario(explicit)
-        : targetedDomain === domain
-          ? targetedScenario
-          : "normal";
-    }
+    for (const domain of entityDomains) result[domain] = "normal";
     return result;
-  }, [searchParams, targetedDomain, targetedScenario]);
+  }, []);
 
   return (
     <SearchResourceExperience

@@ -40,10 +40,9 @@ function networkError(resource: string) {
 export async function submitMatchResultOperation(
   input: MatchResultCommand & { signal?: AbortSignal },
 ): Promise<MatchResultMutationResult> {
-  const query = new URLSearchParams({ state: input.seedState });
   let response: Response;
   try {
-    response = await fetch(`/api/matches/${encodeURIComponent(input.matchId)}/result?${query}`, {
+    response = await fetch(`/api/matches/${encodeURIComponent(input.matchId)}/result`, {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -70,7 +69,6 @@ export async function submitMatchResultOperation(
 export async function uploadMatchEvidence(
   input: MatchEvidenceUploadCommand & { signal?: AbortSignal },
 ): Promise<MatchEvidenceUploadResult> {
-  const query = new URLSearchParams({ state: input.seedState });
   const body = new FormData();
   body.set("expected_state", input.expectedState);
   body.set("expected_version", String(input.expectedVersion));
@@ -78,7 +76,7 @@ export async function uploadMatchEvidence(
 
   let response: Response;
   try {
-    response = await fetch(`/api/matches/${encodeURIComponent(input.matchId)}/evidence?${query}`, {
+    response = await fetch(`/api/matches/${encodeURIComponent(input.matchId)}/evidence`, {
       method: "POST",
       credentials: "same-origin",
       headers: { "Idempotency-Key": input.idempotencyKey },
@@ -96,10 +94,9 @@ export async function uploadMatchEvidence(
 export async function createMatchDispute(
   input: MatchDisputeCommand & { signal?: AbortSignal },
 ): Promise<MatchDisputeMutationResult> {
-  const query = new URLSearchParams({ state: input.seedState });
   let response: Response;
   try {
-    response = await fetch(`/api/matches/${encodeURIComponent(input.matchId)}/dispute?${query}`, {
+    response = await fetch(`/api/matches/${encodeURIComponent(input.matchId)}/dispute`, {
       method: "POST",
       credentials: "same-origin",
       headers: {

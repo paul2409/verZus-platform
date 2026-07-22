@@ -1,4 +1,3 @@
-// VERZUS M4 STEP 4.5
 "use client";
 
 import { submitResetPassword } from "../api/auth-form.submitters";
@@ -10,21 +9,17 @@ import type { AuthSubmitter } from "./auth-form.submitter";
 import { useAuthForm } from "./auth-form.controller";
 
 export interface ResetPasswordFormProps {
-  resetToken?: string;
+  resetToken: string;
   submitter?: AuthSubmitter<ResetPasswordFormInput>;
 }
 
 export function ResetPasswordForm({
-  resetToken = "preview-reset-token-value",
+  resetToken,
   submitter = submitResetPassword,
 }: ResetPasswordFormProps) {
   const form = useAuthForm({
     schema: resetPasswordFormSchema,
-    initialValues: {
-      resetToken,
-      password: "",
-      confirmPassword: "",
-    },
+    initialValues: { resetToken, password: "", confirmPassword: "" },
     submitter,
   });
 
@@ -36,7 +31,6 @@ export function ResetPasswordForm({
         retryAfterSeconds={form.retryAfterSeconds}
         submissionError={form.submissionError}
       />
-
       <PasswordField
         autoComplete="new-password"
         disabled={form.busy}
@@ -48,7 +42,6 @@ export function ResetPasswordForm({
         placeholder="Enter new password"
         value={form.values.password}
       />
-
       <PasswordField
         autoComplete="new-password"
         disabled={form.busy}
@@ -60,24 +53,14 @@ export function ResetPasswordForm({
         placeholder="Confirm new password"
         value={form.values.confirmPassword}
       />
-
-      <ul className={styles.passwordRules} aria-label="Password requirements">
-        <li className={styles.passwordRule}>At least 8 characters</li>
-        <li className={styles.passwordRule}>Uppercase and lowercase letters</li>
-        <li className={styles.passwordRule}>At least one number</li>
-        <li className={styles.passwordRule}>At least one special character</li>
-        <li className={styles.passwordRule}>Both passwords must match</li>
-      </ul>
-
       <button
         aria-busy={form.busy}
         className={styles.submitButton}
-        disabled={form.busy}
+        disabled={form.busy || resetToken.length < 16}
         type="submit"
       >
         Update password
       </button>
-
       <div className={styles.statusRegion} aria-live="polite">
         {form.status === "submitting" ? (
           <p className={styles.statusMessage}>Updating secure password…</p>

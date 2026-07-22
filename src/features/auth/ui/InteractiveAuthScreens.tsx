@@ -5,6 +5,7 @@ import {
   ForgotPasswordForm,
   LoginForm,
   RegisterForm,
+  ResendVerificationButton,
   ResetPasswordForm,
 } from "../forms";
 import { AuthFrame } from "./AuthFrame";
@@ -82,7 +83,7 @@ export function RegisterInteractiveScreen() {
   );
 }
 
-export function EmailVerificationInteractiveScreen() {
+export function EmailVerificationInteractiveScreen({ email }: { email: string }) {
   return (
     <AuthFrame
       accent="info"
@@ -103,16 +104,14 @@ export function EmailVerificationInteractiveScreen() {
 
         <div className={styles.maskedIdentity}>
           <span aria-hidden="true">@</span>
-          <span>ja********@gmail.com</span>
+          <span>{email.replace(/(^.).*(@.*$)/u, "$1********$2")}</span>
         </div>
 
         <EmailVerificationForm />
 
         <div className={styles.orDivider}>or</div>
 
-        <button className={styles.secondaryButton} type="button">
-          Resend code (00:45)
-        </button>
+        <ResendVerificationButton email={email} />
 
         <div className={styles.inlineRow}>
           <a className={styles.textAction} href="/register">
@@ -165,7 +164,7 @@ export function ForgotPasswordInteractiveScreen() {
   );
 }
 
-export function ResetPasswordInteractiveScreen() {
+export function ResetPasswordInteractiveScreen({ resetToken }: { resetToken: string }) {
   return (
     <AuthFrame
       description="Create a new password to restore secure access to your VERZUS account."
@@ -179,11 +178,11 @@ export function ResetPasswordInteractiveScreen() {
             Reset token is valid
           </h2>
           <p className={styles.noticeCopy}>
-            This secure preview token will be replaced by the API in Step 4.5.
+            The reset link is checked once when you submit the new password.
           </p>
         </div>
 
-        <ResetPasswordForm />
+        <ResetPasswordForm resetToken={resetToken} />
 
         <div className={styles.orDivider}>or</div>
 

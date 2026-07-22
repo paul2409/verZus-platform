@@ -1,5 +1,3 @@
-// VERZUS M9.5 CREW MEMBERSHIP EXPIRY ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleExpireCrewMembership } from "@/features/crews/membership/server";

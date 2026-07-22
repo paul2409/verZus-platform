@@ -1,5 +1,3 @@
-// VERZUS M9.6 CREW OWNERSHIP TRANSFER ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleTransferCrewOwnership } from "@/features/crews/governance/server";

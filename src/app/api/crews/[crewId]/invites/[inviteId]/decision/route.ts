@@ -1,5 +1,3 @@
-// VERZUS M9.5 CREW INVITE DECISION ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleDecideCrewInvite } from "@/features/crews/membership/server";

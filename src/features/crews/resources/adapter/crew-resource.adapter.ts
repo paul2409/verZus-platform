@@ -40,7 +40,7 @@ function adaptMeta(meta: {
   request_id: string;
   fetched_at: string;
   freshness: "fresh" | "stale";
-  source: "mock-crew-resource";
+  source: "postgres-crew-resource";
 }): CrewResourceMeta {
   return {
     requestId: meta.request_id,

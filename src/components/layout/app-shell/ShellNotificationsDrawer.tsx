@@ -1,8 +1,9 @@
-// VERZUS M3 STEP 3.7
+// VERZUS M12.9 PRODUCTION NOTIFICATION DRAWER
 "use client";
 
 import type { ReactNode } from "react";
 
+import { EmptyState } from "@/components/primitives/feedback";
 import { Drawer } from "@/components/primitives/overlay";
 
 import { WidgetBoundary, WidgetErrorFallback } from "../widget-boundary";
@@ -15,54 +16,13 @@ export interface ShellNotificationsDrawerProps {
   children?: ReactNode;
 }
 
-const defaultNotifications = [
-  {
-    id: "match-check-in",
-    category: "Match",
-    title: "Check-in opens soon",
-    description: "Your match against Lagos Lynx opens for check-in in 42 minutes.",
-    time: "Now",
-    unread: true,
-  },
-  {
-    id: "crew-rank",
-    category: "Crew",
-    title: "Mainland Titans moved up",
-    description: "Your Crew reached second place in the weekly championship.",
-    time: "18m",
-    unread: true,
-  },
-  {
-    id: "reward",
-    category: "Reward",
-    title: "Weekly reward available",
-    description: "A new reward is ready to inspect in your progression summary.",
-    time: "2h",
-    unread: false,
-  },
-] as const;
-
 function DefaultNotificationContent({ onOpenChange }: { onOpenChange: (open: boolean) => void }) {
   return (
-    <>
-      <ol className={styles.notificationList}>
-        {defaultNotifications.map((notification) => (
-          <li
-            className={styles.notificationItem}
-            data-unread={notification.unread ? "true" : "false"}
-            key={notification.id}
-          >
-            <div className={styles.notificationMeta}>
-              <span>{notification.category}</span>
-              <time>{notification.time}</time>
-            </div>
-            <h3>{notification.title}</h3>
-            <p>{notification.description}</p>
-          </li>
-        ))}
-      </ol>
-
-      <div className={styles.notificationFooter}>
+    <EmptyState
+      compact
+      title="No unread notifications"
+      description="Match, competition, Crew, and reward updates will appear here when production events occur."
+      action={
         <a
           className={styles.notificationLink}
           href="/notifications"
@@ -70,8 +30,8 @@ function DefaultNotificationContent({ onOpenChange }: { onOpenChange: (open: boo
         >
           Open notification centre
         </a>
-      </div>
-    </>
+      }
+    />
   );
 }
 
@@ -83,7 +43,7 @@ export function ShellNotificationsDrawer({
 }: ShellNotificationsDrawerProps) {
   return (
     <Drawer
-      description={`${notificationCount} unread notifications`}
+      description={`${notificationCount} unread notification${notificationCount === 1 ? "" : "s"}`}
       onOpenChange={onOpenChange}
       open={open}
       side="right"

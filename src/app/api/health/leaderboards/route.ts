@@ -1,25 +1,35 @@
-// VERZUS M8.10 LEADERBOARD HEALTH ENDPOINT
-
 import { NextResponse } from "next/server";
 
-import { getLeaderboardReleaseConfig } from "@/features/leaderboards/release";
+import { queryDatabase } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET(): Promise<NextResponse> {
-  const config = getLeaderboardReleaseConfig();
-
-  return NextResponse.json(
-    {
-      feature: "leaderboards",
-      stage: "8.10",
-      status: config.leaderboardsEnabled ? "ok" : "disabled",
-      entityIntel: config.entityIntelEnabled ? "enabled" : "disabled",
-      environment: config.appEnvironment,
-      releaseSha: config.releaseSha,
-      checkedAt: new Date().toISOString(),
-    },
-    { headers: { "Cache-Control": "no-store, max-age=0" } },
-  );
+  try {
+    const result = await queryDatabase<{ count: string }>(
+      "SELECT COUNT(*)::text AS count FROM leaderboard_revisions",
+    );
+    return NextResponse.json(
+      {
+        ok: true,
+        feature: "leaderboards",
+        status: "ready",
+        registeredModes: Number(result.rows[0]?.count ?? 0),
+        source: "leaderboard-api",
+        checkedAt: new Date().toISOString(),
+      },
+      { status: 200, headers: { "cache-control": "no-store" } },
+    );
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        feature: "leaderboards",
+        status: "unavailable",
+        checkedAt: new Date().toISOString(),
+      },
+      { status: 503, headers: { "cache-control": "no-store" } },
+    );
+  }
 }

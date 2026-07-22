@@ -1,5 +1,3 @@
-// VERZUS M4 STEP 4.6
-
 export {
   bannedAccountPath,
   createLoginDestination,
@@ -19,6 +17,7 @@ export type { AuthRouteDecision } from "./auth-route-policy";
 
 export {
   getServerAuthContext,
+  getServerAuthSession,
   getServerAuthState,
   requireAuthenticatedServerSession,
   requireServerAuthStates,

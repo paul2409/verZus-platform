@@ -1,61 +1,17 @@
-// VERZUS M12.6 RELIABILITY EDGE STATES
-// VERZUS M12.2 SERVER SEARCH READ MODELS
-
-import { searchFoundationItems } from "../../foundation";
 import type { SearchEntityDomain, SearchFoundationItem } from "../../foundation";
-import type { SearchResourceScenario } from "../model/search-resource.types";
-
-const allowedScenarios: readonly SearchResourceScenario[] = [
-  "normal",
-  "stale",
-  "empty",
-  "error",
-  "offline",
-  "slow",
-  "malformed",
-  "unauthorized",
-  "forbidden",
-  "not-found",
-  "maintenance",
-];
-
-export function normalizeSearchResourceScenario(value: string | null): SearchResourceScenario {
-  return allowedScenarios.includes(value as SearchResourceScenario)
-    ? (value as SearchResourceScenario)
-    : "normal";
-}
+import { searchProductionDomain } from "./search-resource.repository";
 
 export function normalizeSearchQuery(value: string | null): string {
-  return (value ?? "").trim().slice(0, 80);
+  return (value ?? "").trim().replace(/\s+/g, " ").slice(0, 80);
 }
 
-function includesQuery(item: SearchFoundationItem, query: string): boolean {
-  const normalized = query.toLocaleLowerCase();
-  const haystack = [
-    item.title,
-    item.subtitle,
-    item.supportingText,
-    item.meta,
-    item.badge,
-    ...item.searchTerms,
-  ]
-    .join(" ")
-    .toLocaleLowerCase();
-  return haystack.includes(normalized);
-}
-
-export function searchDomainItems(
-  domain: SearchEntityDomain,
-  query: string,
-  limit: number,
-  scenario: SearchResourceScenario,
-): SearchFoundationItem[] {
-  if (scenario === "empty" || query.length < 2) return [];
-
-  return searchFoundationItems
-    .filter((item) => item.domain === domain && includesQuery(item, query))
-    .sort((left, right) => left.title.localeCompare(right.title) || left.id.localeCompare(right.id))
-    .slice(0, limit);
+export async function searchDomainItems(input: {
+  domain: SearchEntityDomain;
+  query: string;
+  limit: number;
+  viewerUserId: string;
+}): Promise<SearchFoundationItem[]> {
+  return searchProductionDomain(input);
 }
 
 export function serializeSearchItem(item: SearchFoundationItem) {

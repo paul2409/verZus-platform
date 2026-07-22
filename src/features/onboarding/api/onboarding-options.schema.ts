@@ -71,6 +71,7 @@ export const onboardingPlatformOptionSchema = z.object({
 });
 
 export const onboardingIdentityOptionsDataSchema = z.object({
+  currentGamerTag: z.string().min(3).max(24),
   platforms: z.array(onboardingPlatformOptionSchema),
   gamerTagRules: z.object({
     minimumLength: z.number().int().positive(),

@@ -42,7 +42,7 @@ export type RewardResourceMeta = {
   requestId: string;
   fetchedAt: string;
   freshness: "fresh" | "stale";
-  source: "mock-reward-resource";
+  source: "production-reward-resource";
 };
 
 export type RewardProgressResource = {

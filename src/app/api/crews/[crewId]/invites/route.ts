@@ -1,5 +1,3 @@
-// VERZUS M9.5 CREW INVITE CREATION ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleCreateCrewInvite } from "@/features/crews/membership/server";

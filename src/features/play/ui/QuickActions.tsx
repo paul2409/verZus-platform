@@ -1,5 +1,3 @@
-// VERZUS STAGE 3 QUICK ACTIONS
-
 import Link from "next/link";
 
 import { WidgetFrame } from "./WidgetFrame";
@@ -8,31 +6,31 @@ import styles from "./play-command-center.module.css";
 const actions = [
   {
     href: "/compete",
-    label: "FIND MATCH",
-    detail: "Open competitive queue",
+    label: "COMPETITIONS",
+    detail: "Browse and enter eligible events",
     glyph: "▶",
     tone: "primary",
   },
   {
-    href: "/leaderboards/weekly",
-    label: "VIEW RANK",
-    detail: "Track weekly movement",
-    glyph: "#",
+    href: "/matches",
+    label: "MY MATCHES",
+    detail: "Open scheduled and active matches",
+    glyph: "◎",
     tone: "info",
+  },
+  {
+    href: "/leaderboards/weekly",
+    label: "WEEKLY RANK",
+    detail: "Track confirmed movement",
+    glyph: "#",
+    tone: "neutral",
   },
   {
     href: "/crews",
     label: "CREW HQ",
-    detail: "Check War Week status",
-    glyph: "◎",
+    detail: "Membership, roster, and operations",
+    glyph: "◇",
     tone: "war",
-  },
-  {
-    href: "/compete",
-    label: "VIEW RULES",
-    detail: "Competition requirements",
-    glyph: "i",
-    tone: "neutral",
   },
 ] as const;
 

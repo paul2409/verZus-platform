@@ -444,8 +444,8 @@ function SettingsExperience(props: {
 
 export function NotificationSettingsScreen() {
   const searchParams = useSearchParams();
-  const readScenario = parseNotificationSettingsScenario(searchParams.get("scenario"));
-  const mutationScenario = parseNotificationSettingsScenario(searchParams.get("mutationScenario"));
+  const readScenario: NotificationSettingsScenario = "normal";
+  const mutationScenario: NotificationSettingsScenario = "normal";
 
   return (
     <SettingsExperience

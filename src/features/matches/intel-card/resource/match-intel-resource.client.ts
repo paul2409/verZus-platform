@@ -11,13 +11,9 @@ export async function getMatchIntelResource(
   matchId: string,
   input: { scenario?: MatchIntelResourceScenario; signal?: AbortSignal } = {},
 ): Promise<MatchIntelResource> {
-  const params = new URLSearchParams();
-  if (input.scenario && input.scenario !== "normal") params.set("scenario", input.scenario);
-  const query = params.size > 0 ? `?${params.toString()}` : "";
-
   let response: Response;
   try {
-    response = await fetch(`/api/matches/${encodeURIComponent(matchId)}/intel${query}`, {
+    response = await fetch(`/api/matches/${encodeURIComponent(matchId)}/intel`, {
       method: "GET",
       credentials: "same-origin",
       cache: "no-store",

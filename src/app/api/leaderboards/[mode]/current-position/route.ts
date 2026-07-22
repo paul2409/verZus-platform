@@ -1,16 +1,15 @@
-// VERZUS M8.3 INDEPENDENT LEADERBOARD CURRENT-POSITION API
+import type { NextRequest } from "next/server";
 
-import type { NextRequest, NextResponse } from "next/server";
-
-import { handleMockLeaderboardGet } from "@/features/leaderboards/resources/server";
+import { handleProductionLeaderboardGet } from "@/features/leaderboards/resources/server";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+export const runtime = "nodejs";
 
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ mode: string }> },
-): Promise<NextResponse> {
+) {
   const { mode } = await context.params;
-  return handleMockLeaderboardGet(request, mode, "current-position");
+  return handleProductionLeaderboardGet(request, mode, "current-position");
 }

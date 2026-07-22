@@ -1,147 +1,116 @@
-// VERZUS M11.5 PLAYER HISTORY HTTP HANDLERS
+import "server-only";
+
+import { randomUUID } from "node:crypto";
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { getServerAuthSession } from "@/features/auth/server/auth-session.server";
+
 import type {
-  PlayerHistoryResourceName,
-  PlayerHistoryScenario,
+  PlayerHistoryGameFilter,
+  PlayerHistoryResultFilter,
+  PlayerStatisticsWindow,
 } from "../model/player-history.types";
-import {
-  normalizePlayerHistoryGame,
-  normalizePlayerHistoryPage,
-  normalizePlayerHistoryResult,
-  normalizePlayerHistoryScenario,
-  normalizePlayerStatisticsWindow,
-  serializePlayerDetailedStatistics,
-  serializePlayerMatchHistory,
-} from "./player-history.service";
+import { readPlayerMatchHistory, readPlayerStatistics } from "./player-history.service";
 
-function requestId(resource: PlayerHistoryResourceName): string {
-  return `profile-${resource}-${crypto.randomUUID()}`;
+const games: readonly PlayerHistoryGameFilter[] = ["all", "EA FC 26", "Call of Duty", "NBA 2K26"];
+const results: readonly PlayerHistoryResultFilter[] = ["all", "win", "loss", "draw"];
+const windows: readonly PlayerStatisticsWindow[] = ["season", "30d", "7d"];
+
+function game(value: string | null): PlayerHistoryGameFilter {
+  return games.includes(value as PlayerHistoryGameFilter)
+    ? (value as PlayerHistoryGameFilter)
+    : "all";
 }
 
-function failureFor(
-  scenario: PlayerHistoryScenario,
-  resource: PlayerHistoryResourceName,
-): { code: string; message: string; retryable: boolean; status: number } | null {
-  switch (scenario) {
-    case "offline":
-      return {
-        code: "PLAYER_HISTORY_OFFLINE",
-        message: `${resource} is unavailable while offline.`,
-        retryable: true,
-        status: 503,
-      };
-    case "error":
-      return {
-        code: "PLAYER_HISTORY_UNAVAILABLE",
-        message: `${resource} is temporarily unavailable.`,
-        retryable: true,
-        status: 503,
-      };
-    case "unauthorized":
-      return {
-        code: "PLAYER_HISTORY_UNAUTHORIZED",
-        message: `Authentication is required to access ${resource}.`,
-        retryable: false,
-        status: 401,
-      };
-    case "forbidden":
-      return {
-        code: "PLAYER_HISTORY_FORBIDDEN",
-        message: `This profile cannot access ${resource}.`,
-        retryable: false,
-        status: 403,
-      };
-    case "not-found":
-      return {
-        code: "PLAYER_HISTORY_NOT_FOUND",
-        message: `${resource} could not be found.`,
-        retryable: false,
-        status: 404,
-      };
-    case "maintenance":
-      return {
-        code: "PLAYER_HISTORY_MAINTENANCE",
-        message: `${resource} is temporarily under maintenance.`,
-        retryable: true,
-        status: 503,
-      };
-    default:
-      return null;
+function result(value: string | null): PlayerHistoryResultFilter {
+  return results.includes(value as PlayerHistoryResultFilter)
+    ? (value as PlayerHistoryResultFilter)
+    : "all";
+}
+
+function windowValue(value: string | null): PlayerStatisticsWindow {
+  return windows.includes(value as PlayerStatisticsWindow)
+    ? (value as PlayerStatisticsWindow)
+    : "season";
+}
+
+function page(value: string | null): number {
+  const parsed = Number.parseInt(value ?? "1", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+}
+
+async function userId(): Promise<string> {
+  const session = await getServerAuthSession();
+  if (session.state !== "authenticated" || !session.user) {
+    throw Object.assign(new Error("Authentication is required to access player history."), {
+      status: 401,
+      code: "PLAYER_HISTORY_UNAUTHORIZED",
+      retryable: false,
+    });
   }
+  return session.user.id;
 }
 
-function errorResponse(
-  failure: NonNullable<ReturnType<typeof failureFor>>,
-  id: string,
-  scenario: PlayerHistoryScenario,
-) {
+function failure(requestId: string, error: unknown): NextResponse {
+  const value = error as { status?: number; code?: string; message?: string; retryable?: boolean };
   return NextResponse.json(
     {
-      code: failure.code,
-      message: failure.message,
-      request_id: id,
-      retryable: failure.retryable,
+      code: value.code ?? "PLAYER_HISTORY_UNAVAILABLE",
+      message: value.message ?? "Player history could not be loaded.",
+      request_id: requestId,
+      retryable: value.retryable ?? true,
     },
     {
-      status: failure.status,
-      headers: {
-        "cache-control": "no-store",
-        "x-request-id": id,
-        ...(scenario === "maintenance" ? { "retry-after": "60" } : {}),
-      },
+      status: value.status ?? 500,
+      headers: { "cache-control": "no-store", "x-request-id": requestId },
     },
   );
 }
 
 export async function handlePlayerMatchesGet(request: NextRequest): Promise<NextResponse> {
-  const scenario = normalizePlayerHistoryScenario(request.nextUrl.searchParams.get("scenario"));
-  const id = requestId("matches");
-  if (scenario === "slow") await new Promise((resolve) => setTimeout(resolve, 1_200));
-
-  const failure = failureFor(scenario, "matches");
-  if (failure) return errorResponse(failure, id, scenario);
-
-  if (scenario === "malformed") {
+  const requestId = request.headers.get("x-request-id") ?? randomUUID();
+  try {
+    const data = await readPlayerMatchHistory({
+      userId: await userId(),
+      game: game(request.nextUrl.searchParams.get("game")),
+      result: result(request.nextUrl.searchParams.get("result")),
+      page: page(request.nextUrl.searchParams.get("page")),
+      pageSize: 6,
+    });
     return NextResponse.json(
-      { items: "invalid", request_id: id },
-      { headers: { "cache-control": "no-store", "x-request-id": id } },
+      {
+        ...data,
+        request_id: requestId,
+        fetched_at: new Date().toISOString(),
+        freshness: "fresh",
+      },
+      { status: 200, headers: { "cache-control": "no-store", "x-request-id": requestId } },
     );
+  } catch (error) {
+    return failure(requestId, error);
   }
-
-  const game = normalizePlayerHistoryGame(request.nextUrl.searchParams.get("game"));
-  const result = normalizePlayerHistoryResult(request.nextUrl.searchParams.get("result"));
-  const page = normalizePlayerHistoryPage(request.nextUrl.searchParams.get("page"));
-  const pageSize = 6;
-
-  return NextResponse.json(
-    serializePlayerMatchHistory({ scenario, game, result, page, pageSize, requestId: id }),
-    { headers: { "cache-control": "no-store", "x-request-id": id } },
-  );
 }
 
 export async function handlePlayerStatisticsGet(request: NextRequest): Promise<NextResponse> {
-  const scenario = normalizePlayerHistoryScenario(request.nextUrl.searchParams.get("scenario"));
-  const id = requestId("statistics");
-  if (scenario === "slow") await new Promise((resolve) => setTimeout(resolve, 1_200));
-
-  const failure = failureFor(scenario, "statistics");
-  if (failure) return errorResponse(failure, id, scenario);
-
-  if (scenario === "malformed") {
+  const requestId = request.headers.get("x-request-id") ?? randomUUID();
+  try {
+    const data = await readPlayerStatistics({
+      userId: await userId(),
+      game: game(request.nextUrl.searchParams.get("game")),
+      window: windowValue(request.nextUrl.searchParams.get("window")),
+    });
     return NextResponse.json(
-      { matches: -1, win_rate: "invalid", request_id: id },
-      { headers: { "cache-control": "no-store", "x-request-id": id } },
+      {
+        ...data,
+        request_id: requestId,
+        fetched_at: new Date().toISOString(),
+        freshness: "fresh",
+      },
+      { status: 200, headers: { "cache-control": "no-store", "x-request-id": requestId } },
     );
+  } catch (error) {
+    return failure(requestId, error);
   }
-
-  const game = normalizePlayerHistoryGame(request.nextUrl.searchParams.get("game"));
-  const window = normalizePlayerStatisticsWindow(request.nextUrl.searchParams.get("window"));
-
-  return NextResponse.json(
-    serializePlayerDetailedStatistics({ scenario, game, window, requestId: id }),
-    { headers: { "cache-control": "no-store", "x-request-id": id } },
-  );
 }

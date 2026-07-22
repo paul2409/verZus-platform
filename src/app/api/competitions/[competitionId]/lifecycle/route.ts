@@ -1,13 +1,11 @@
 import type { NextRequest } from "next/server";
-import type { NextResponse } from "next/server";
 
-import { handleMockCompetitionLifecycleGet } from "@/features/competitions/lifecycle/server";
+import { handleCompetitionLifecycleGet } from "@/features/competitions/server";
 
-export function GET(
+export async function GET(
   request: NextRequest,
-  context: {
-    params: Promise<{ competitionId: string }> | { competitionId: string };
-  },
-): Promise<NextResponse> {
-  return handleMockCompetitionLifecycleGet(request, context);
+  context: { params: Promise<{ competitionId: string }> },
+) {
+  const { competitionId } = await context.params;
+  return handleCompetitionLifecycleGet(request, competitionId);
 }

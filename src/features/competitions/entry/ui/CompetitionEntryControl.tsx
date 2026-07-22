@@ -232,8 +232,7 @@ function ManageDialog({
           </div>
         </dl>
         <p className={styles.manageNote}>
-          Withdrawal and waitlist operations remain outside M6.5 and are not presented as fake
-          actions.
+          Entry management actions will appear here when the corresponding operation is available.
         </p>
       </div>
     </Modal>

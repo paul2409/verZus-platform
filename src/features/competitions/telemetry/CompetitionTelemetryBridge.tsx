@@ -3,7 +3,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { trackCompetitionEvent } from "./competition-telemetry.client";
 
@@ -22,14 +22,11 @@ export function CompetitionTelemetryBridge({
   release,
 }: CompetitionTelemetryBridgeProps) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const scenario = searchParams.get("scenario") ?? undefined;
 
   useEffect(() => {
     const base = {
       route: pathname,
       competitionId: getCompetitionId(pathname),
-      scenario,
       environment,
       release,
     };
@@ -82,7 +79,7 @@ export function CompetitionTelemetryBridge({
       observer.disconnect();
       document.removeEventListener("click", handleClick);
     };
-  }, [environment, pathname, release, scenario]);
+  }, [environment, pathname, release]);
 
   return null;
 }

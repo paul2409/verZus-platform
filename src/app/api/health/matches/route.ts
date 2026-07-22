@@ -1,30 +1,37 @@
-// VERZUS M7.8 MATCH OPERATIONS HEALTH ENDPOINT
-
 import { NextResponse } from "next/server";
 
-import { getMatchOperationsReleaseMetadata } from "@/features/matches/operations/release";
+import { queryDatabase } from "@/lib/db";
 
-export function GET() {
-  const release = getMatchOperationsReleaseMetadata();
+export const dynamic = "force-dynamic";
 
-  return NextResponse.json(
-    {
-      ok: true,
-      feature: "match-operations",
-      stage: release.stage,
-      enabled: release.enabled,
-      environment: release.environment,
-      release: release.release,
-      controls: {
-        idempotentCheckIn: true,
-        serverTime: true,
-        versionCheckedResults: true,
-        independentEvidence: true,
-        auditableDisputes: true,
-        widgetIsolation: true,
+export async function GET(): Promise<NextResponse> {
+  try {
+    await queryDatabase("SELECT 1 FROM matches LIMIT 1");
+    return NextResponse.json(
+      {
+        ok: true,
+        feature: "match-operations",
+        status: "ready",
+        controls: {
+          idempotentMutations: true,
+          serverAuthoritativeTime: true,
+          optimisticVersionChecks: true,
+          auditableDisputes: true,
+          evidenceUpload: false,
+        },
+        checkedAt: new Date().toISOString(),
       },
-      checkedAt: new Date().toISOString(),
-    },
-    { headers: { "cache-control": "no-store" } },
-  );
+      { status: 200, headers: { "cache-control": "no-store" } },
+    );
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        feature: "match-operations",
+        status: "unavailable",
+        checkedAt: new Date().toISOString(),
+      },
+      { status: 503, headers: { "cache-control": "no-store" } },
+    );
+  }
 }

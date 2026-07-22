@@ -9,7 +9,6 @@ import {
 import type {
   NotificationMutationInput,
   NotificationMutationResult,
-  NotificationMutationScenario,
   NotificationUnreadCount,
 } from "../model/notification-mutation.types";
 
@@ -41,12 +40,10 @@ export async function mutateNotification(
           operation: input.operation,
           expected_state: input.expectedState,
           idempotency_key: input.idempotencyKey,
-          scenario: input.scenario,
         }
       : {
           category: input.category,
           idempotency_key: input.idempotencyKey,
-          scenario: input.scenario,
         };
 
   let response: Response;
@@ -77,18 +74,11 @@ export async function mutateNotification(
 }
 
 export async function getNotificationUnreadCount(input?: {
-  scenario?: NotificationMutationScenario;
   signal?: AbortSignal;
 }): Promise<NotificationUnreadCount> {
-  const params = new URLSearchParams();
-  if (input?.scenario && input.scenario !== "normal") {
-    params.set("scenario", input.scenario);
-  }
-  const query = params.toString();
-
   let response: Response;
   try {
-    response = await fetch(`/api/notifications/unread-count${query ? `?${query}` : ""}`, {
+    response = await fetch("/api/notifications/unread-count", {
       method: "GET",
       cache: "no-store",
       credentials: "same-origin",

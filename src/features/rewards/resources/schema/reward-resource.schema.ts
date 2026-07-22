@@ -18,7 +18,7 @@ const metaSchema = z.object({
   request_id: z.string().min(1),
   fetched_at: z.string().datetime(),
   freshness: freshnessSchema,
-  source: z.literal("mock-reward-resource"),
+  source: z.literal("production-reward-resource"),
 });
 
 const rewardSummarySchema = z.object({

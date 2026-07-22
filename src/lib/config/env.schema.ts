@@ -22,9 +22,18 @@ const publicInputSchema = z.object({
 
 const serverInputSchema = z.object({
   NEXT_PUBLIC_APP_ENV: appEnvironmentSchema.default("local"),
+  NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
   DATABASE_URL: z.union([z.string().url(), z.literal("")]).optional(),
+  DATABASE_SSL_MODE: z.enum(["disable", "require", "verify-full"]).default("disable"),
+  DATABASE_POOL_MAX: z.coerce.number().int().min(1).max(50).default(10),
   AUTH_SECRET: z.string().optional(),
   REDIS_URL: z.union([z.string().url(), z.literal("")]).optional(),
+  SMTP_HOST: z.string().min(1).default("localhost"),
+  SMTP_PORT: z.coerce.number().int().min(1).max(65535).default(1025),
+  SMTP_SECURE: z.string().optional(),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASSWORD: z.string().optional(),
+  SMTP_FROM: z.string().min(3).default("VERZUS <no-reply@verzus.local>"),
 });
 
 function parseBoolean(value: string | undefined, fallback: boolean): boolean {
@@ -36,9 +45,7 @@ function parseBoolean(value: string | undefined, fallback: boolean): boolean {
 
 export function parsePublicEnv(source: EnvSource) {
   const input = publicInputSchema.parse(source);
-  const defaultMocks =
-    input.NEXT_PUBLIC_APP_ENV === "local" || input.NEXT_PUBLIC_APP_ENV === "test";
-  const enableMocks = parseBoolean(input.NEXT_PUBLIC_ENABLE_MOCKS, defaultMocks);
+  const enableMocks = parseBoolean(input.NEXT_PUBLIC_ENABLE_MOCKS, false);
 
   if (["staging", "production"].includes(input.NEXT_PUBLIC_APP_ENV) && enableMocks) {
     throw new Error("Mocks must be disabled in staging and production.");
@@ -58,18 +65,27 @@ export function parseServerEnv(source: EnvSource) {
   const requiresInfrastructure = ["staging", "production"].includes(input.NEXT_PUBLIC_APP_ENV);
 
   if (requiresInfrastructure) {
-    if (!input.DATABASE_URL) {
-      throw new Error("DATABASE_URL is required in staging and production.");
-    }
-
+    if (!input.DATABASE_URL) throw new Error("DATABASE_URL is required in staging and production.");
     if (!input.AUTH_SECRET || input.AUTH_SECRET.length < 32) {
       throw new Error("AUTH_SECRET must contain at least 32 characters in staging and production.");
+    }
+    if (!input.SMTP_HOST || !input.SMTP_FROM) {
+      throw new Error("SMTP_HOST and SMTP_FROM are required in staging and production.");
     }
   }
 
   return {
+    appUrl: input.NEXT_PUBLIC_APP_URL,
     databaseUrl: input.DATABASE_URL || undefined,
+    databaseSslMode: input.DATABASE_SSL_MODE,
+    databasePoolMax: input.DATABASE_POOL_MAX,
     authSecret: input.AUTH_SECRET || undefined,
     redisUrl: input.REDIS_URL || undefined,
+    smtpHost: input.SMTP_HOST,
+    smtpPort: input.SMTP_PORT,
+    smtpSecure: parseBoolean(input.SMTP_SECURE, false),
+    smtpUser: input.SMTP_USER || undefined,
+    smtpPassword: input.SMTP_PASSWORD || undefined,
+    smtpFrom: input.SMTP_FROM,
   } as const;
 }

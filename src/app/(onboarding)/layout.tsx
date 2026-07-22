@@ -1,7 +1,7 @@
-// VERZUS M4 PRODUCTION ONBOARDING ROUTES
-
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+import { requireServerAuthStates } from "@/features/auth/server";
 
 export const metadata: Metadata = {
   title: {
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: "Create and activate your VERZUS competitive player identity.",
 };
 
-export default function OnboardingLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default async function OnboardingLayout({ children }: Readonly<{ children: ReactNode }>) {
+  await requireServerAuthStates(["onboarding_incomplete"]);
   return children;
 }

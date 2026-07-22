@@ -1,5 +1,3 @@
-// VERZUS M9.6 CREW MEMBER ROLE ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleChangeCrewMemberRole } from "@/features/crews/governance/server";

@@ -13,7 +13,7 @@ import {
   crewIntelQueryOptions,
   type CrewIntelResourceScenario,
 } from "@/features/crews/intel-card/resource";
-import { MatchIntelCard, matchIntelMock } from "@/features/matches/intel-card";
+import { MatchIntelCard } from "@/features/matches/intel-card";
 import {
   MatchIntelResourceError,
   matchIntelQueryOptions,
@@ -197,16 +197,17 @@ export function LeaderboardIntelResourceCard({
   }
 
   if (matchQuery.isPending) {
-    return <MatchIntelCard model={{ ...matchIntelMock, id: entityId }} state="loading" />;
+    return (
+      <div className={styles.intelResourceState} role="status">
+        <p>Loading authoritative match intel…</p>
+      </div>
+    );
   }
   if (matchQuery.isError) {
     const requestId = requestIdForError(matchQuery.error);
     return (
       <div className={styles.intelResourceState}>
-        <MatchIntelCard
-          model={{ ...matchIntelMock, id: entityId, matchHref: `/matches/${entityId}` }}
-          state={cardStateForError(matchQuery.error)}
-        />
+        <p>Match intel is unavailable. The leaderboard remains usable.</p>
         <ResourceRecovery
           entityId={entityId}
           entityKind="match"

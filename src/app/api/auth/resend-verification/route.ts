@@ -1,10 +1,7 @@
-// VERZUS M4 STEP 4.5
-
 import { resendVerificationRequestSchema } from "@/features/auth/api";
-import { createMockAuthPostHandler } from "@/features/auth/server/mock-auth.http";
-import { mockResendVerification } from "@/features/auth/server/mock-auth.service";
+import { createAuthPostHandler, readSessionToken } from "@/features/auth/server/auth.http";
+import { resendCurrentVerification } from "@/features/auth/server/auth.identity.service";
 
-export const POST = createMockAuthPostHandler(
-  resendVerificationRequestSchema,
-  mockResendVerification,
+export const POST = createAuthPostHandler(resendVerificationRequestSchema, (input, request) =>
+  resendCurrentVerification(readSessionToken(request), input),
 );

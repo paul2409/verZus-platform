@@ -1,22 +1,17 @@
-// VERZUS M4 STEP 4.9
+import { randomUUID } from "node:crypto";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-import type { NextRequest, NextResponse } from "next/server";
+import { getProductionIdentityOptions } from "@/features/onboarding/server/onboarding.catalog";
+import { onboardingToken } from "@/features/onboarding/server/onboarding.http";
+import { resolveOnboardingUser } from "@/features/onboarding/server/onboarding.service";
 
-import {
-  createMockOnboardingOptionsResponse,
-  readOnboardingMockScenario,
-} from "@/features/onboarding/server/mock-onboarding-options.http";
-import { getMockOnboardingIdentityOptions } from "@/features/onboarding/server/mock-onboarding-options.service";
-import { getOnboardingAccessFailure } from "@/features/onboarding/server/mock-onboarding.http";
-
-export function GET(request: NextRequest): NextResponse {
-  const accessFailure = getOnboardingAccessFailure(request);
-
-  if (accessFailure) {
-    return accessFailure;
-  }
-
-  return createMockOnboardingOptionsResponse(
-    getMockOnboardingIdentityOptions(readOnboardingMockScenario(request)),
-  );
+export async function GET(request: NextRequest): Promise<NextResponse> {
+  const user = await resolveOnboardingUser(onboardingToken(request));
+  if ("status" in user) return NextResponse.json(user.body, { status: user.status });
+  return NextResponse.json({
+    ok: true,
+    data: getProductionIdentityOptions(user.gamerTag),
+    requestId: `onboarding-${randomUUID()}`,
+  });
 }

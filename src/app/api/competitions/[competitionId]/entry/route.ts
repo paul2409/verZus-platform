@@ -1,26 +1,22 @@
-// VERZUS M6.6 ENTRY LIFECYCLE GUARD
-
 import type { NextRequest } from "next/server";
 
 import {
-  guardCompetitionEntryRequest,
-  type CompetitionRouteContext,
-} from "@/features/competitions/lifecycle/server";
-import { POST as m65Post } from "./route.m6-5";
+  handleCompetitionEntryGet,
+  handleCompetitionEntryPost,
+} from "@/features/competitions/server";
 
-type M65Post = (
+export async function GET(
   request: NextRequest,
-  context: CompetitionRouteContext,
-) => Response | Promise<Response>;
-
-const delegateM65Post = m65Post as M65Post;
+  context: { params: Promise<{ competitionId: string }> },
+) {
+  const { competitionId } = await context.params;
+  return handleCompetitionEntryGet(request, competitionId);
+}
 
 export async function POST(
   request: NextRequest,
-  context: CompetitionRouteContext,
-): Promise<Response> {
-  const blocked = await guardCompetitionEntryRequest(request, context);
-  if (blocked) return blocked;
-
-  return delegateM65Post(request, context);
+  context: { params: Promise<{ competitionId: string }> },
+) {
+  const { competitionId } = await context.params;
+  return handleCompetitionEntryPost(request, competitionId);
 }

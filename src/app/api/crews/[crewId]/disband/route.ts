@@ -1,5 +1,3 @@
-// VERZUS M9.7 CREW DISBAND ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleCrewDisband } from "@/features/crews/lifecycle/server";

@@ -12,19 +12,18 @@ export const publicAuthPaths = [
 ] as const;
 
 export const protectedRoutePrefixes = [
-  "/play",
-  "/rankings",
-  "/leaderboards",
-  "/crew",
+  "/activity",
+  "/compete",
   "/crews",
-  "/inbox",
-  "/profile",
-  "/opportunities",
-  "/notifications",
-  "/wallet",
-  "/settings",
+  "/leaderboards",
   "/matches",
-  "/competitions",
+  "/notifications",
+  "/play",
+  "/players",
+  "/profile",
+  "/rewards",
+  "/search",
+  "/settings",
 ] as const;
 
 export const onboardingRoutePrefix = "/onboarding";

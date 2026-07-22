@@ -316,7 +316,7 @@ function NotificationOperationsExperience(props: {
     <main className={styles.page} data-m12-reliability="12.6" data-m12-stage="12.4">
       <header className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>12.4 // Notification operations</p>
+          <p className={styles.eyebrow}>NOTIFICATIONS</p>
           <h1>Signal centre</h1>
           <p className={styles.heroCopy}>
             Review competitive events, confirm outcomes and remove low-value interrupts without losing shell access.
@@ -455,12 +455,12 @@ function NotificationOperationsExperience(props: {
 
           <aside className={styles.sideRail}>
             <section>
-              <p className={styles.eyebrow}>Mutation contract</p>
-              <h2>Replay safe</h2>
+              <p className={styles.eyebrow}>Reliable updates</p>
+              <h2>Safe to retry</h2>
               <p>Retries reuse the original idempotency key. Conflicting state changes are rejected and revalidated.</p>
             </section>
             <section>
-              <p className={styles.eyebrow}>Shell bridge</p>
+              <p className={styles.eyebrow}>Unread ownership</p>
               <h2>One unread count</h2>
               <p>The notification domain owns the badge resource. The application shell only receives the confirmed number.</p>
             </section>
@@ -473,11 +473,6 @@ function NotificationOperationsExperience(props: {
           </aside>
         </div>
       )}
-
-      <footer className={styles.stageNote}>
-        <strong>M12.4 notification mutations</strong>
-        <span>Read, action, dismiss and unread-badge synchronization are server-authoritative and independently recoverable.</span>
-      </footer>
     </main>
   );
 }
@@ -487,8 +482,8 @@ export function NotificationOperationsScreen() {
   const state = readLifecycle(searchParams.get("state"));
   const category = readCategory(searchParams.get("category"));
   const page = readPage(searchParams.get("page"));
-  const scenario = readScenario(searchParams.get("scenario"));
-  const mutationScenario = readMutationScenario(searchParams.get("mutationScenario"));
+  const scenario: NotificationScenario = "normal";
+  const mutationScenario: NotificationMutationScenario = "normal";
 
   return (
     <NotificationOperationsExperience

@@ -6,11 +6,14 @@
 // VERZUS M10.7 RELIABILITY AND OBSERVABILITY COMPOSITION
 // VERZUS M10.8 RELEASE-READY REWARD COMPOSITION
 
-import { rewardAchievementSummaryMock } from "../../achievements";
 import { RewardClaimProvider, type RewardClaimScenario } from "../../claims";
-import { rewardsFoundationMock, RewardsFoundationScreen } from "../../foundation";
-import { rewardInventoryMock } from "../../inventory";
-import { rewardSeasonProgressMock } from "../../progression";
+import {
+  emptyRewardAchievements,
+  emptyRewardInventory,
+  emptyRewardSeason,
+  emptyRewardsFoundation,
+  RewardsFoundationScreen,
+} from "../../foundation";
 import type { RewardWidgetName, RewardWidgetScenario } from "../../reliability";
 import {
   recordRewardTelemetry,
@@ -41,10 +44,10 @@ export function RewardsResourceScreen({
 }) {
   const resources = useRewardResources(targetResource, scenario);
   const model = mergeRewardResourceSnapshots(
-    rewardsFoundationMock,
-    rewardInventoryMock,
-    rewardSeasonProgressMock,
-    rewardAchievementSummaryMock,
+    emptyRewardsFoundation,
+    emptyRewardInventory,
+    emptyRewardSeason,
+    emptyRewardAchievements,
     resources.snapshots,
   );
 
@@ -63,7 +66,7 @@ export function RewardsResourceScreen({
   };
 
   return (
-    <div data-m10-stage="10.8">
+    <div>
       <RewardSurfaceTelemetry />
       <RewardResourceTelemetry health={resources.health} />
       <RewardResourceStatusStrip health={resources.health} onRetry={retryResource} />

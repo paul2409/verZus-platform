@@ -30,7 +30,6 @@ export function CompetitionDiscoveryScreen() {
   const router = useRouter();
   const {
     filters,
-    scenario,
     searchInput,
     isSearchPending,
     isFiltered,
@@ -43,10 +42,8 @@ export function CompetitionDiscoveryScreen() {
     setPage,
     clearFilters,
   } = useCompetitionDiscoveryUrlState();
-  const resources = useCompetitionDiscoveryData(filters, scenario);
-  const [selection, setSelection] = useState(
-    "Select a competition to inspect its M6 preview state.",
-  );
+  const resources = useCompetitionDiscoveryData(filters, "normal");
+  const [selection, setSelection] = useState("Select a competition to view its details.");
 
   const featured = resources.featured.data?.competition ?? null;
   const result = resources.list.data;
@@ -60,19 +57,11 @@ export function CompetitionDiscoveryScreen() {
   };
 
   return (
-    <main className={styles.page} data-m6-stage="6.4">
+    <main className={styles.page}>
       <header className={styles.pageHeader}>
         <div>
           <h1>COMPETE</h1>
           <p>DISCOVER. ENTER. COMPETE.</p>
-        </div>
-        <div className={styles.headerStats} aria-label="Player competition statistics">
-          <span>
-            VS POINTS<strong>2,450</strong>
-          </span>
-          <span>
-            TRUST<strong>98</strong>
-          </span>
         </div>
       </header>
 

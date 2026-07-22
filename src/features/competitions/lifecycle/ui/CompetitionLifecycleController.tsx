@@ -1,40 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import { CompetitionLifecycleApiClientError } from "../api/competition-lifecycle-api.adapter";
 import { useCompetitionLifecycle } from "../hooks/useCompetitionLifecycle";
-import { competitionLifecycleScenarioSchema } from "../model/competition-lifecycle.schema";
-import type { CompetitionLifecycleScenario } from "../model/competition-lifecycle.types";
 import { CompetitionLifecycleState } from "./CompetitionLifecycleState";
 
 export type CompetitionLifecycleControllerProps = {
   competitionId: string;
 };
 
-function resolveScenario(value: string | null): CompetitionLifecycleScenario {
-  const parsed = competitionLifecycleScenarioSchema.safeParse(value ?? "normal");
-  return parsed.success ? parsed.data : "normal";
-}
-
-function scenarioFromLocation(): CompetitionLifecycleScenario {
-  if (typeof window === "undefined") return "normal";
-  return resolveScenario(new URLSearchParams(window.location.search).get("scenario"));
-}
-
 export function CompetitionLifecycleController({
   competitionId,
 }: CompetitionLifecycleControllerProps) {
-  const [scenario, setScenario] = useState<CompetitionLifecycleScenario>("normal");
-
-  useEffect(() => {
-    const syncScenario = () => setScenario(scenarioFromLocation());
-    syncScenario();
-    window.addEventListener("popstate", syncScenario);
-    return () => window.removeEventListener("popstate", syncScenario);
-  }, []);
-
-  const query = useCompetitionLifecycle(competitionId, scenario);
+  const query = useCompetitionLifecycle(competitionId, "normal");
   const error =
     query.error instanceof CompetitionLifecycleApiClientError
       ? {
@@ -52,8 +29,6 @@ export function CompetitionLifecycleController({
           }
         : undefined;
 
-  if (scenario === "normal" && !query.error) return null;
-
   return (
     <CompetitionLifecycleState
       competitionId={competitionId}
@@ -64,7 +39,7 @@ export function CompetitionLifecycleController({
         void query.refetch();
       }}
       resource={query.data}
-      scenario={scenario}
+      scenario="normal"
     />
   );
 }

@@ -43,13 +43,12 @@ export async function getMatchTerminalSnapshot(input: {
   role: MatchTerminalRole;
   signal?: AbortSignal;
 }): Promise<MatchTerminalSnapshot> {
-  const params = new URLSearchParams({ state: input.seedState });
   const response = await fetch(
-    `/api/matches/${encodeURIComponent(input.matchId)}/terminal?${params.toString()}`,
+    `/api/matches/${encodeURIComponent(input.matchId)}/terminal`,
     {
       cache: "no-store",
       credentials: "same-origin",
-      headers: { accept: "application/json", "x-verzus-role": input.role },
+      headers: { accept: "application/json" },
       ...(input.signal ? { signal: input.signal } : {}),
     },
   );
@@ -66,9 +65,8 @@ export async function mutateMatchTerminal(input: {
   role: MatchTerminalRole;
   reason: string;
 }): Promise<MatchTerminalMutationResult> {
-  const params = new URLSearchParams({ state: input.seedState });
   const response = await fetch(
-    `/api/matches/${encodeURIComponent(input.matchId)}/terminal?${params.toString()}`,
+    `/api/matches/${encodeURIComponent(input.matchId)}/terminal`,
     {
       method: "POST",
       credentials: "same-origin",
@@ -77,7 +75,6 @@ export async function mutateMatchTerminal(input: {
         accept: "application/json",
         "content-type": "application/json",
         "idempotency-key": input.idempotencyKey,
-        "x-verzus-role": input.role,
       },
       body: JSON.stringify({
         expected_state: input.expectedState,

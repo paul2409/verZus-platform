@@ -1,117 +1,105 @@
-// VERZUS M11.4 PROFILE RESOURCE HTTP HANDLER
+import { randomUUID } from "node:crypto";
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import type { ProfileResourceName, ProfileResourceScenario } from "../model/profile-resource.types";
-import {
-  normalizeProfileResourceScenario,
-  serializeProfileResource,
-} from "./profile-resource.service";
+import { readSessionToken } from "@/features/auth/server/auth.http";
+import { readAccountSession } from "@/features/auth/server/auth.service";
 
-function requestId(resource: ProfileResourceName): string {
-  return `profile-${resource}-${crypto.randomUUID()}`;
-}
+import type { ProfileResourceName } from "../model/profile-resource.types";
+import { serializeProfileResource } from "./profile-resource.service";
 
-function failureFor(
-  scenario: ProfileResourceScenario,
-  resource: ProfileResourceName,
-): { code: string; message: string; retryable: boolean; status: number } | null {
-  switch (scenario) {
-    case "offline":
-      return {
-        code: "PROFILE_RESOURCE_OFFLINE",
-        message: `${resource} is unavailable while offline.`,
-        retryable: true,
-        status: 503,
-      };
-    case "error":
-      return {
-        code: "PROFILE_RESOURCE_UNAVAILABLE",
-        message: `${resource} is temporarily unavailable.`,
-        retryable: true,
-        status: 503,
-      };
-    case "unauthorized":
-      return {
-        code: "PROFILE_RESOURCE_UNAUTHORIZED",
-        message: `Authentication is required to access ${resource}.`,
-        retryable: false,
-        status: 401,
-      };
-    case "forbidden":
-      return {
-        code: "PROFILE_RESOURCE_FORBIDDEN",
-        message: `This account cannot access ${resource}.`,
-        retryable: false,
-        status: 403,
-      };
-    case "not-found":
-      return {
-        code: "PROFILE_RESOURCE_NOT_FOUND",
-        message: `${resource} could not be found.`,
-        retryable: false,
-        status: 404,
-      };
-    case "maintenance":
-      return {
-        code: "PROFILE_RESOURCE_MAINTENANCE",
-        message: `${resource} is temporarily under maintenance.`,
-        retryable: true,
-        status: 503,
-      };
-    default:
-      return null;
-  }
+function errorResponse(input: {
+  requestId: string;
+  status: number;
+  code: string;
+  message: string;
+  retryable: boolean;
+}): NextResponse {
+  return NextResponse.json(
+    {
+      error: {
+        code: input.code,
+        message: input.message,
+        request_id: input.requestId,
+        retryable: input.retryable,
+      },
+    },
+    {
+      status: input.status,
+      headers: { "cache-control": "no-store", "x-request-id": input.requestId },
+    },
+  );
 }
 
 export async function handleProfileResourceGet(
   request: NextRequest,
   resource: ProfileResourceName,
 ): Promise<NextResponse> {
-  const scenario = normalizeProfileResourceScenario(request.nextUrl.searchParams.get("scenario"));
-  const id = requestId(resource);
+  const requestId = `profile-${resource}-${randomUUID()}`;
+  const session = await readAccountSession(readSessionToken(request));
 
-  if (scenario === "slow") await new Promise((resolve) => setTimeout(resolve, 1_200));
-
-  const failure = failureFor(scenario, resource);
-  if (failure) {
-    return NextResponse.json(
-      {
-        error: {
-          code: failure.code,
-          message: failure.message,
-          request_id: id,
-          retryable: failure.retryable,
-        },
-      },
-      {
-        status: failure.status,
-        headers: {
-          "cache-control": "no-store",
-          "x-request-id": id,
-          ...(scenario === "maintenance" ? { "retry-after": "60" } : {}),
-        },
-      },
-    );
+  if (!session.user || !session.session) {
+    return errorResponse({
+      requestId,
+      status: 401,
+      code: "PROFILE_RESOURCE_UNAUTHORIZED",
+      message: "Authentication is required to access this profile resource.",
+      retryable: false,
+    });
   }
 
-  const data =
-    scenario === "malformed"
-      ? { invalid_profile_resource: resource, payload: false }
-      : serializeProfileResource(resource, scenario);
+  if (session.state !== "authenticated") {
+    return errorResponse({
+      requestId,
+      status: 403,
+      code: "PROFILE_RESOURCE_FORBIDDEN",
+      message: "Complete account verification and onboarding before accessing this profile.",
+      retryable: false,
+    });
+  }
 
-  return NextResponse.json(
-    {
-      data,
-      meta: {
-        request_id: id,
-        fetched_at: new Date().toISOString(),
-        freshness: scenario === "stale" ? "stale" : "fresh",
-        source: "mock-profile-resource",
-        version: 1,
+  try {
+    const data = await serializeProfileResource(session.user.id, resource);
+    if (data === null) {
+      return errorResponse({
+        requestId,
+        status: 404,
+        code: "PROFILE_RESOURCE_NOT_FOUND",
+        message: "The player profile could not be found.",
+        retryable: false,
+      });
+    }
+
+    return NextResponse.json(
+      {
+        data,
+        meta: {
+          request_id: requestId,
+          fetched_at: new Date().toISOString(),
+          freshness: "fresh",
+          source: "postgres-profile-resource",
+          version: 1,
+        },
       },
-    },
-    { headers: { "cache-control": "no-store", "x-request-id": id } },
-  );
+      { headers: { "cache-control": "no-store", "x-request-id": requestId } },
+    );
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        level: "error",
+        feature: "profiles",
+        resource,
+        requestId,
+        message: error instanceof Error ? error.message : "Unknown profile resource failure",
+      }),
+    );
+    return errorResponse({
+      requestId,
+      status: 503,
+      code: "PROFILE_RESOURCE_UNAVAILABLE",
+      message: `${resource} is temporarily unavailable.`,
+      retryable: true,
+    });
+  }
 }

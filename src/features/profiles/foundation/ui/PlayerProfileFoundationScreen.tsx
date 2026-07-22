@@ -1,5 +1,3 @@
-// VERZUS M11.1 APPROVED MOBILE PLAYER PROFILE FOUNDATION
-
 "use client";
 
 import Image from "next/image";
@@ -7,14 +5,12 @@ import Link from "next/link";
 
 import { Badge } from "@/components/primitives/badge";
 
-import { ownPlayerProfileMock } from "../mocks/player-profile.mock";
 import type {
   PlayerAchievementPreview,
   PlayerGameIdentity,
   PlayerProfileViewModel,
   PlayerRecentMatch,
 } from "../model/player-profile.types";
-import { useConfirmedPlayerProfile } from "../../edit";
 import styles from "./PlayerProfileFoundationScreen.module.css";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
@@ -31,7 +27,9 @@ function AvatarIdentity({ model }: { model: PlayerProfileViewModel }) {
     <section aria-labelledby="profile-name" className={styles.identityCard}>
       <div
         className={styles.banner}
-        style={{ backgroundImage: `url(${model.identity.bannerSrc})` }}
+        {...(model.identity.bannerSrc
+          ? { style: { backgroundImage: `url(${model.identity.bannerSrc})` } }
+          : {})}
       />
 
       <div className={styles.identityBody}>
@@ -63,25 +61,28 @@ function AvatarIdentity({ model }: { model: PlayerProfileViewModel }) {
         <div className={styles.identityHeading}>
           <div className={styles.nameRow}>
             <h1 id="profile-name">{model.identity.displayName}</h1>
-            <Badge tone="special" variant="outline">
-              LV 24
-            </Badge>
           </div>
           <p className={styles.handle}>{model.identity.handle}</p>
-          <p className={styles.playerTitle}>{model.identity.title}</p>
+          {model.identity.title ? (
+            <p className={styles.playerTitle}>{model.identity.title}</p>
+          ) : null}
         </div>
 
         <div className={styles.identityBadges}>
-          <Badge tone="positive">Verified</Badge>
-          <Badge tone="information" variant="outline">
-            {model.identity.locationLabel}
-          </Badge>
-          <Badge tone="special" variant="soft">
-            #{model.stats.weeklyRank} weekly
-          </Badge>
+          {model.identity.verified ? <Badge tone="positive">Verified</Badge> : null}
+          {model.identity.locationLabel ? (
+            <Badge tone="information" variant="outline">
+              {model.identity.locationLabel}
+            </Badge>
+          ) : null}
+          {model.stats.weeklyRank > 0 ? (
+            <Badge tone="special" variant="soft">
+              #{model.stats.weeklyRank} weekly
+            </Badge>
+          ) : null}
         </div>
 
-        <p className={styles.bio}>{model.identity.bio}</p>
+        {model.identity.bio ? <p className={styles.bio}>{model.identity.bio}</p> : null}
 
         <dl className={styles.identityMeta}>
           <div>
@@ -102,8 +103,8 @@ function ProfileStatGrid({ model }: { model: PlayerProfileViewModel }) {
   const items = [
     ["Matches", numberFormatter.format(model.stats.matches)],
     ["Win rate", model.stats.winRateLabel],
-    ["Rating", numberFormatter.format(model.stats.rating)],
-    ["Trust", `${model.stats.trustScore}`],
+    ["Rating", model.stats.rating > 0 ? numberFormatter.format(model.stats.rating) : "Unranked"],
+    ["Trust", model.stats.matches > 0 ? `${model.stats.trustScore}` : "Not rated"],
   ] as const;
 
   return (
@@ -113,9 +114,11 @@ function ProfileStatGrid({ model }: { model: PlayerProfileViewModel }) {
           <p>Confirmed performance</p>
           <h2 id="profile-stats-title">Player statistics</h2>
         </div>
-        <Badge tone="positive" variant="soft">
-          {model.stats.currentStreakLabel} streak
-        </Badge>
+        {model.stats.currentStreakLabel !== "No active" ? (
+          <Badge tone="positive" variant="soft">
+            {model.stats.currentStreakLabel} streak
+          </Badge>
+        ) : null}
       </div>
 
       <dl className={styles.statGrid}>
@@ -200,44 +203,22 @@ function AchievementRow({ achievement }: { achievement: PlayerAchievementPreview
   );
 }
 
-// VERZUS M11.8 RELEASE-READY PROFILE FOUNDATION
-export function PlayerProfileFoundationScreen({
-  model: initialModel = ownPlayerProfileMock,
-}: {
-  model?: PlayerProfileViewModel;
-} = {}) {
-  const model = useConfirmedPlayerProfile(initialModel);
-
+export function PlayerProfileFoundationScreen({ model }: { model: PlayerProfileViewModel }) {
   return (
-    <main
-      className={styles.page}
-      data-m11-stage="11.8"
-      data-profile-scope="own"
-      data-profile-edit-integration="11.3"
-      data-reference-viewport="390"
-    >
+    <main className={styles.page} data-profile-scope="own" data-reference-viewport="390">
       <header className={styles.pageHeader}>
         <div>
           <p className={styles.eyebrow}>Season Zero · Own profile</p>
           <h2>Player profile</h2>
         </div>
         <div className={styles.profileHeaderActions}>
-          <Badge tone="positive" variant="outline">
-            Active
-          </Badge>
-          {/* VERZUS M11.3 EDIT PROFILE LINK */}
           <Link className={styles.editProfileLink} href="/profile/edit">
             Edit profile
           </Link>
-          {/* VERZUS M11.7 PRIVACY SETTINGS LINK */}
           <Link className={styles.publicViewLink} href="/profile/settings">
             Privacy
           </Link>
-          {/* VERZUS M11.2 PUBLIC VIEW LINK */}
-          <Link
-            className={styles.publicViewLink}
-            href={`/players/${model.identity.id}?viewer=owner`}
-          >
+          <Link className={styles.publicViewLink} href={`/players/${model.identity.id}`}>
             Public view
           </Link>
         </div>
@@ -261,7 +242,9 @@ export function PlayerProfileFoundationScreen({
               <p>Readiness</p>
               <h2 id="availability-title">Availability</h2>
             </div>
-            <Badge tone="positive">{model.availability.state}</Badge>
+            <Badge tone={model.availability.state === "available" ? "positive" : "neutral"}>
+              {model.availability.state}
+            </Badge>
           </div>
           <div className={styles.availabilityCard}>
             <strong>{model.availability.label}</strong>
@@ -299,16 +282,19 @@ export function PlayerProfileFoundationScreen({
               <p>Connected platforms</p>
               <h2 id="games-title">Game identities</h2>
             </div>
-            {/* VERZUS M11.6 COMPLETE GAME IDENTITY RECORD LINK */}
             <Link className={styles.sectionActionLink} href="/profile/achievements#game-identities">
               {model.games.length} linked
             </Link>
           </div>
-          <ul className={styles.gameList}>
-            {model.games.map((identity) => (
-              <GameIdentityRow identity={identity} key={identity.id} />
-            ))}
-          </ul>
+          {model.games.length > 0 ? (
+            <ul className={styles.gameList}>
+              {model.games.map((identity) => (
+                <GameIdentityRow identity={identity} key={identity.id} />
+              ))}
+            </ul>
+          ) : (
+            <div className={styles.emptyInline}>No game identities linked.</div>
+          )}
         </section>
 
         <section
@@ -321,16 +307,19 @@ export function PlayerProfileFoundationScreen({
               <p>Verified results</p>
               <h2 id="recent-title">Recent matches</h2>
             </div>
-            {/* VERZUS M11.5 COMPLETE MATCH HISTORY LINK */}
             <Link className={styles.sectionActionLink} href="/profile/matches">
               View all
             </Link>
           </div>
-          <ul className={styles.matchList}>
-            {model.recentMatches.map((match) => (
-              <RecentMatchRow key={match.id} match={match} />
-            ))}
-          </ul>
+          {model.recentMatches.length > 0 ? (
+            <ul className={styles.matchList}>
+              {model.recentMatches.map((match) => (
+                <RecentMatchRow key={match.id} match={match} />
+              ))}
+            </ul>
+          ) : (
+            <div className={styles.emptyInline}>No confirmed matches yet.</div>
+          )}
         </section>
 
         <section
@@ -343,27 +332,21 @@ export function PlayerProfileFoundationScreen({
               <p>Progress highlights</p>
               <h2 id="achievements-title">Achievements</h2>
             </div>
-            {/* VERZUS M11.6 COMPLETE ACHIEVEMENT AND TRUST RECORD LINK */}
             <Link className={styles.sectionActionLink} href="/profile/achievements">
               {model.achievements.filter((item) => item.unlocked).length} unlocked
             </Link>
           </div>
-          <ul className={styles.achievementList}>
-            {model.achievements.map((achievement) => (
-              <AchievementRow achievement={achievement} key={achievement.id} />
-            ))}
-          </ul>
+          {model.achievements.length > 0 ? (
+            <ul className={styles.achievementList}>
+              {model.achievements.map((achievement) => (
+                <AchievementRow achievement={achievement} key={achievement.id} />
+              ))}
+            </ul>
+          ) : (
+            <div className={styles.emptyInline}>No achievements unlocked yet.</div>
+          )}
         </section>
       </div>
-
-      <aside className={styles.stageNotice}>
-        <strong>Own-profile foundation</strong>
-        <p>
-          Public permissions, validated editing, independent profile resources and complete match
-          history are active. Complete achievements, game identities and trust history are active.
-          Privacy controls and edge states follow next.
-        </p>
-      </aside>
     </main>
   );
 }

@@ -1,12 +1,5 @@
 "use client";
 
-// VERZUS M10.1 APPROVED 390PX REWARDS FOUNDATION
-// VERZUS M10.4 SERVER-AUTHORITATIVE CLAIM ACTIONS
-// VERZUS M10.5 PROGRESSION TRACK AND SEASON PROGRESS
-// VERZUS M10.6 ACHIEVEMENT DETAIL AND AUDITABLE HISTORY
-// VERZUS M10.7 INDEPENDENT WIDGET FAILURE ISOLATION
-// VERZUS M10.8 RELEASE-READY RESPONSIVE CONTAINMENT
-
 import Image from "next/image";
 import type { ReactNode } from "react";
 
@@ -16,28 +9,26 @@ import { Icon } from "@/components/primitives/icon";
 import { RewardAchievementsPanel, type RewardAchievementSummary } from "../../achievements";
 import { RewardClaimAction, RewardClaimFeedback } from "../../claims";
 import { RewardHistoryAuditPanel } from "../../history";
-import {
-  rewardInventoryMock,
-  RewardInventoryPanel,
-  type RewardInventoryItem,
-} from "../../inventory";
-import {
-  rewardSeasonProgressMock,
-  RewardProgressionPanel,
-  type RewardSeasonProgress,
-} from "../../progression";
+import { RewardInventoryPanel, type RewardInventoryItem } from "../../inventory";
+import { RewardProgressionPanel, type RewardSeasonProgress } from "../../progression";
 import {
   RewardWidgetBoundary,
   RewardWidgetFault,
   type RewardWidgetName,
   type RewardWidgetScenario,
 } from "../../reliability";
-import { rewardsFoundationMock } from "../mocks/reward-foundation.mock";
 import type {
   RewardHistoryItem,
   RewardProgress,
   RewardSummary,
+  RewardsFoundationModel,
 } from "../model/reward-foundation.types";
+import {
+  emptyRewardAchievements,
+  emptyRewardInventory,
+  emptyRewardSeason,
+  emptyRewardsFoundation,
+} from "../reward-empty.model";
 import styles from "./RewardsFoundationScreen.module.css";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
@@ -129,8 +120,8 @@ function ClaimableRewardPanel({ reward }: { reward?: RewardSummary | undefined }
         <div className={styles.noClaimable} role="status">
           <Icon decorative name="check" size="lg" />
           <div>
-            <strong>All available rewards are claimed</strong>
-            <p>New rewards appear after verified matches, progression and season milestones.</p>
+            <strong>No rewards available yet</strong>
+            <p>Verified matches, progression and season milestones will appear here.</p>
           </div>
         </div>
       )}
@@ -146,42 +137,52 @@ function RecentRewardHistory({ history }: { history: RewardHistoryItem[] }) {
         <a href="#reward-audit-history">View history</a>
       </div>
 
-      <ul className={styles.historyList} id="reward-history-list">
-        {history.map((reward) => (
-          <li key={reward.id}>
-            <Image
-              alt={reward.artworkAlt}
-              className={styles.historyArtwork}
-              height={56}
-              src={reward.artworkSrc}
-              width={56}
-            />
-            <div>
-              <strong>{reward.title}</strong>
-              <span>{reward.sourceLabel}</span>
-            </div>
-            <p>
-              <strong>Claimed</strong>
-              <span>{reward.claimedAtLabel}</span>
-            </p>
-          </li>
-        ))}
-      </ul>
+      {history.length > 0 ? (
+        <ul className={styles.historyList} id="reward-history-list">
+          {history.map((reward) => (
+            <li key={reward.id}>
+              <Image
+                alt={reward.artworkAlt}
+                className={styles.historyArtwork}
+                height={56}
+                src={reward.artworkSrc}
+                width={56}
+              />
+              <div>
+                <strong>{reward.title}</strong>
+                <span>{reward.sourceLabel}</span>
+              </div>
+              <p>
+                <strong>Claimed</strong>
+                <span>{reward.claimedAtLabel}</span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className={styles.noClaimable} role="status">
+          <Icon decorative name="clock" size="lg" />
+          <div>
+            <strong>No reward history yet</strong>
+            <p>Confirmed claims will appear here with their server reference.</p>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
 
 export function RewardsFoundationScreen({
-  model = rewardsFoundationMock,
-  inventoryItems = rewardInventoryMock,
-  season = rewardSeasonProgressMock,
-  achievements = [],
+  model = emptyRewardsFoundation,
+  inventoryItems = emptyRewardInventory,
+  season = emptyRewardSeason,
+  achievements = emptyRewardAchievements,
   selectedAchievementId,
   historyPage = 1,
   selectedWidget,
   widgetScenario = "normal",
 }: {
-  model?: typeof rewardsFoundationMock;
+  model?: RewardsFoundationModel;
   inventoryItems?: RewardInventoryItem[];
   season?: RewardSeasonProgress | null;
   achievements?: RewardAchievementSummary[];
@@ -193,7 +194,7 @@ export function RewardsFoundationScreen({
   const primaryReward = model.claimableRewards[0];
 
   return (
-    <main className={styles.page} data-m10-stage="10.8" data-reference-viewport="390">
+    <main className={styles.page} data-reference-viewport="390">
       <header className={styles.pageHeader}>
         <div>
           <p className={styles.eyebrow}>{model.progress.seasonLabel}</p>
@@ -268,11 +269,6 @@ export function RewardsFoundationScreen({
       >
         <RewardHistoryAuditPanel page={historyPage} />
       </IsolatedRewardWidget>
-
-      <p className={styles.foundationNote}>
-        M10.7 isolates reward widgets, retains confirmed data during resource failures and records
-        privacy-safe operational telemetry without weakening server-authoritative claiming.
-      </p>
     </main>
   );
 }

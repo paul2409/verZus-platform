@@ -51,5 +51,5 @@ export function authStateFromMockSession(cookieValue: string | null): SharedSess
 }
 
 export function isMockSessionEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_ENABLE_MOCKS === "true" || process.env.NODE_ENV !== "production";
+  return process.env.NEXT_PUBLIC_ENABLE_MOCKS === "true";
 }

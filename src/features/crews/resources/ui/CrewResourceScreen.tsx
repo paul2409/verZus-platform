@@ -1,50 +1,75 @@
 "use client";
 
-// VERZUS M9.4 RESOURCE-AWARE CREW PROFILE SCREEN
-// VERZUS M9.5 MEMBERSHIP-AWARE RESOURCE COMPOSITION
-// VERZUS M9.6 GOVERNANCE-AWARE RESOURCE COMPOSITION
-// VERZUS M9.7 LIFECYCLE AND ACTIVITY RELIABILITY COMPOSITION
-// VERZUS M9.8 RELEASE TELEMETRY COMPOSITION
-
-import { getCrewFoundationMock } from "../../foundation";
-import type { CrewLifecycleScenario } from "../../lifecycle";
-import { CrewMembershipScreen } from "../../membership";
+import { CrewFoundationScreen, type CrewFoundationViewModel } from "../../foundation";
 import { CrewResourceFailureTelemetry, CrewSurfaceTelemetry } from "../../telemetry";
 import { useCrewResources } from "../hooks/useCrewResources";
 import { mergeCrewResourceSnapshot } from "../model/crew-resource.merge";
-import type { CrewResourceName, CrewResourceScenario } from "../model/crew-resource.types";
 import styles from "./CrewResourceScreen.module.css";
 import { CrewResourceStatusStrip } from "./CrewResourceStatusStrip";
 
-export function CrewResourceScreen({
-  crewId,
-  targetResource,
-  scenario = "normal",
-  lifecycleScenario = "normal",
-}: {
-  crewId: string;
-  targetResource?: CrewResourceName | undefined;
-  scenario?: CrewResourceScenario;
-  lifecycleScenario?: CrewLifecycleScenario;
-}) {
-  const resources = useCrewResources(crewId, targetResource, scenario);
-  const model = mergeCrewResourceSnapshot(getCrewFoundationMock(crewId), resources.snapshots);
+function createBaseModel(
+  identity: CrewFoundationViewModel["identity"],
+): CrewFoundationViewModel {
+  return {
+    identity,
+    members: [],
+    requests: [],
+    activity: [],
+    stats: {
+      rank: 0,
+      movement: 0,
+      points: 0,
+      wins: 0,
+      losses: 0,
+      winRate: 0,
+      streak: 0,
+      trust: 0,
+      activeMembers: 0,
+    },
+    achievements: [],
+    settings: {
+      recruiting: false,
+      primaryGame: identity.games[0] ?? "Not configured",
+      language: "Not configured",
+      minimumRank: "Open",
+      communityLinkLabel: "Not configured",
+    },
+  };
+}
+
+export function CrewResourceScreen({ crewId }: { crewId: string }) {
+  const resources = useCrewResources(crewId);
+  const identity = resources.snapshots.profile?.data.identity;
+
+  if (!identity) {
+    return (
+      <div className={styles.resourceScreen} data-m9-stage="production">
+        <CrewSurfaceTelemetry crewId={crewId} surface="profile" />
+        <CrewResourceFailureTelemetry crewId={crewId} health={resources.health} />
+        <CrewResourceStatusStrip
+          health={resources.health}
+          onRetry={(resource) => void resources.retry(resource)}
+        />
+        <p aria-live="polite" role="status">
+          {resources.health.profile.state === "error"
+            ? "Crew profile is temporarily unavailable."
+            : "Loading Crew profile..."}
+        </p>
+      </div>
+    );
+  }
+
+  const model = mergeCrewResourceSnapshot(createBaseModel(identity), resources.snapshots);
 
   return (
-    <div className={styles.resourceScreen} data-m9-stage="9.8">
+    <div className={styles.resourceScreen} data-m9-stage="production">
       <CrewSurfaceTelemetry crewId={crewId} surface="profile" />
       <CrewResourceFailureTelemetry crewId={crewId} health={resources.health} />
       <CrewResourceStatusStrip
         health={resources.health}
         onRetry={(resource) => void resources.retry(resource)}
       />
-      <CrewMembershipScreen
-        activityHealth={resources.health.activity}
-        crewId={crewId}
-        lifecycleScenario={lifecycleScenario}
-        model={model}
-        onRetryActivity={() => void resources.retry("activity")}
-      />
+      <CrewFoundationScreen managementEnabled={false} model={model} />
     </div>
   );
 }

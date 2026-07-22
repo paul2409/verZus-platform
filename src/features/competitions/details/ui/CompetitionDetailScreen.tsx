@@ -4,16 +4,13 @@ import { CompetitionLifecycleController } from "../../lifecycle/ui";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 import { Icon } from "@/components/primitives/icon";
 import { CompetitionEntryControl } from "../../entry";
 
 import { useCompetitionDetailData } from "../hooks/useCompetitionDetailData";
-import { competitionDetailScenarioSchema } from "../model/competition-detail.schema";
 import type {
   CompetitionBracketViewModel,
-  CompetitionDetailScenario,
   CompetitionEligibilityViewModel,
   CompetitionParticipantsViewModel,
   CompetitionRewardsViewModel,
@@ -251,17 +248,12 @@ function BracketPanel({ bracket }: { bracket: CompetitionBracketViewModel }) {
 }
 
 export function CompetitionDetailScreen({ competitionId }: { competitionId: string }) {
-  const searchParams = useSearchParams();
-  const parsedScenario = competitionDetailScenarioSchema.safeParse(searchParams.get("scenario"));
-  const scenario: CompetitionDetailScenario = parsedScenario.success
-    ? parsedScenario.data
-    : "normal";
-  const resources = useCompetitionDetailData(competitionId, scenario);
+  const resources = useCompetitionDetailData(competitionId, "normal");
   const summary = resources.summary.data?.value;
 
   if (!summary) {
     return (
-      <main className={styles.page} data-m6-stage="6.7">
+      <main className={styles.page}>
         {/* VERZUS M6.6 LIFECYCLE:START */}
         <CompetitionLifecycleController competitionId={competitionId} />
         {/* VERZUS M6.6 LIFECYCLE:END */}
@@ -279,7 +271,7 @@ export function CompetitionDetailScreen({ competitionId }: { competitionId: stri
   }
 
   return (
-    <main className={styles.page} data-m6-stage="6.5">
+    <main className={styles.page}>
       <div className={styles.topRow}>
         <Link className={styles.backLink} href="/compete">
           <Icon decorative name="chevron-right" size="xs" />
@@ -352,7 +344,7 @@ export function CompetitionDetailScreen({ competitionId }: { competitionId: stri
               onRetry={resources.retryRewards}
             />
           )}
-          <CompetitionEntryControl competitionId={competitionId} scenario={scenario} />
+          <CompetitionEntryControl competitionId={competitionId} scenario="normal" />
         </aside>
       </div>
     </main>

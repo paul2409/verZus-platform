@@ -73,7 +73,7 @@ export const rewardClaimEnvelopeRawSchema = z.object({
   meta: z.object({
     request_id: z.string().min(1),
     processed_at: z.string().datetime(),
-    source: z.literal("mock-reward-claim"),
+    source: z.literal("production-reward-claim"),
   }),
 });
 

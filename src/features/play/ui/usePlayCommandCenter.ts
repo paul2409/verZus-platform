@@ -1,8 +1,6 @@
-// VERZUS M5 STEPS 5.5-5.8
 "use client";
 
 import { useSyncExternalStore } from "react";
-
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -14,14 +12,12 @@ import {
   recentActivityQueryOptions,
   recommendedCompetitionsQueryOptions,
 } from "../api";
-import type { PlayScenario } from "../model";
 import { buildPlayCommandCenterViewModel, type PlayCommandCenterViewModel } from "../view-model";
 import { playResourceFromQuery } from "./play-query-resource";
 
 function subscribeToOnlineStatus(onStoreChange: () => void): () => void {
   window.addEventListener("online", onStoreChange);
   window.addEventListener("offline", onStoreChange);
-
   return () => {
     window.removeEventListener("online", onStoreChange);
     window.removeEventListener("offline", onStoreChange);
@@ -51,22 +47,15 @@ export interface PlayCommandCenterController {
   };
 }
 
-export function usePlayCommandCenter(scenario: PlayScenario): PlayCommandCenterController {
-  const playerStatusQuery = useQuery(playerStatusQueryOptions(scenario));
-  const nextMatchQuery = useQuery(nextMatchQueryOptions(scenario));
-  const currentCheckInQuery = useQuery(currentCheckInQueryOptions(scenario));
-  const currentPositionQuery = useQuery(currentPositionQueryOptions(scenario));
-  const crewSummaryQuery = useQuery(crewSummaryQueryOptions(scenario));
-  const recommendedCompetitionsQuery = useQuery(recommendedCompetitionsQueryOptions(scenario));
-  const recentActivityQuery = useQuery(recentActivityQueryOptions(scenario));
-
-  const browserOnline = useSyncExternalStore(
-    subscribeToOnlineStatus,
-    getOnlineSnapshot,
-    getServerOnlineSnapshot,
-  );
-
-  const online = scenario !== "offline" && browserOnline;
+export function usePlayCommandCenter(): PlayCommandCenterController {
+  const playerStatusQuery = useQuery(playerStatusQueryOptions());
+  const nextMatchQuery = useQuery(nextMatchQueryOptions());
+  const currentCheckInQuery = useQuery(currentCheckInQueryOptions());
+  const currentPositionQuery = useQuery(currentPositionQueryOptions());
+  const crewSummaryQuery = useQuery(crewSummaryQueryOptions());
+  const recommendedCompetitionsQuery = useQuery(recommendedCompetitionsQueryOptions());
+  const recentActivityQuery = useQuery(recentActivityQueryOptions());
+  const online = useSyncExternalStore(subscribeToOnlineStatus, getOnlineSnapshot, getServerOnlineSnapshot);
 
   const viewModel = buildPlayCommandCenterViewModel(
     {
@@ -85,27 +74,13 @@ export function usePlayCommandCenter(scenario: PlayScenario): PlayCommandCenterC
   );
 
   const retry = {
-    playerStatus: () => {
-      void playerStatusQuery.refetch();
-    },
-    nextMatch: () => {
-      void nextMatchQuery.refetch();
-    },
-    currentCheckIn: () => {
-      void currentCheckInQuery.refetch();
-    },
-    currentPosition: () => {
-      void currentPositionQuery.refetch();
-    },
-    crewSummary: () => {
-      void crewSummaryQuery.refetch();
-    },
-    recommendedCompetitions: () => {
-      void recommendedCompetitionsQuery.refetch();
-    },
-    recentActivity: () => {
-      void recentActivityQuery.refetch();
-    },
+    playerStatus: () => void playerStatusQuery.refetch(),
+    nextMatch: () => void nextMatchQuery.refetch(),
+    currentCheckIn: () => void currentCheckInQuery.refetch(),
+    currentPosition: () => void currentPositionQuery.refetch(),
+    crewSummary: () => void crewSummaryQuery.refetch(),
+    recommendedCompetitions: () => void recommendedCompetitionsQuery.refetch(),
+    recentActivity: () => void recentActivityQuery.refetch(),
     all: () => {
       void Promise.all([
         playerStatusQuery.refetch(),

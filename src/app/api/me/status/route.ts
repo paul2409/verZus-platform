@@ -1,9 +1,7 @@
-// VERZUS M5 STEPS 5.1-5.4
+import { handlePlayPlayerStatusGet } from "@/features/play/server";
 
-import type { NextRequest, NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 
-import { handleMockPlayGet } from "@/features/play/server/mock-play.http";
-
-export function GET(request: NextRequest): NextResponse {
-  return handleMockPlayGet(request, "player-status");
+export async function GET() {
+  return handlePlayPlayerStatusGet();
 }

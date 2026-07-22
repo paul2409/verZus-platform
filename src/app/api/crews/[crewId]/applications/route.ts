@@ -1,5 +1,3 @@
-// VERZUS M9.5 CREW APPLICATION SUBMISSION ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleSubmitCrewApplication } from "@/features/crews/membership/server";

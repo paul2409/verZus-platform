@@ -1,5 +1,3 @@
-// VERZUS M9.5 CREW LEAVE ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleLeaveCrewMembership } from "@/features/crews/membership/server";

@@ -39,7 +39,7 @@ export type CrewResourceMeta = {
   requestId: string;
   fetchedAt: string;
   freshness: CrewResourceFreshness;
-  source: "mock-crew-resource";
+  source: "postgres-crew-resource";
 };
 
 export type CrewProfileResource = { identity: CrewFoundationIdentity };

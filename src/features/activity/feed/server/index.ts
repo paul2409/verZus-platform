@@ -1,3 +1,2 @@
-// VERZUS M12.5 ACTIVITY FEED SERVER EXPORTS
-
 export { handleActivityFeedGet } from "./activity-feed.http";
+export { handlePlayRecentActivityGet } from "./activity-feed.play.http";

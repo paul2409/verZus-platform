@@ -1,5 +1,3 @@
-// VERZUS M9.6 CREW MEMBER REMOVAL ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleRemoveCrewMember } from "@/features/crews/governance/server";

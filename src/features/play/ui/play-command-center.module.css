@@ -423,7 +423,6 @@
 .matchArea,
 .quickArea,
 .positionArea,
-.modesArea,
 .competitionArea,
 .activityArea,
 .crewArea {
@@ -1361,11 +1360,7 @@
   }
 
   .positionArea {
-    grid-column: 1 / 5;
-  }
-
-  .modesArea {
-    grid-column: 5 / -1;
+    grid-column: 1 / -1;
   }
 
   .competitionArea {

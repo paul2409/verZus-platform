@@ -1,4 +1,2 @@
-// VERZUS M9.4 CREW RESOURCE SERVER EXPORTS
-
-export * from "./crew-resource.http";
-export * from "./crew-resource.service";
+export { handleCrewResourceGet } from "./crew-resource.http";
+export { serializeCrewResource } from "./crew-resource.service";

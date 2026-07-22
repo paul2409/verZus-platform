@@ -49,7 +49,7 @@ export const matchIntelEnvelopeSchema = z.object({
     request_id: z.string().min(1),
     fetched_at: z.string().datetime(),
     freshness: z.enum(["fresh", "stale", "partial"]),
-    source: z.literal("mock-match-intel"),
+    source: z.literal("match-api"),
   }),
 });
 

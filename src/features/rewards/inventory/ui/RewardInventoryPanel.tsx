@@ -9,7 +9,6 @@ import { useMemo, useState } from "react";
 import { Badge } from "@/components/primitives/badge";
 
 import { RewardClaimAction } from "../../claims";
-import { rewardInventoryMock } from "../mocks/reward-inventory.mock";
 import {
   buildRewardInventoryCounts,
   filterRewardInventory,
@@ -117,7 +116,7 @@ function RewardInventoryCard({ item }: { item: RewardInventoryItem }) {
 }
 
 export function RewardInventoryPanel({
-  items = rewardInventoryMock,
+  items = [],
 }: {
   items?: RewardInventoryItem[];
 } = {}) {
@@ -172,8 +171,12 @@ export function RewardInventoryPanel({
         </ul>
       ) : (
         <div className={styles.emptyState} role="status">
-          <strong>No rewards in this state</strong>
-          <p>Choose another filter to inspect the rest of the inventory.</p>
+          <strong>{counts.all === 0 ? "No rewards yet" : "No rewards in this state"}</strong>
+          <p>
+            {counts.all === 0
+              ? "Verified matches, progression and operator-issued rewards will appear here."
+              : "Choose another filter to inspect the rest of the inventory."}
+          </p>
         </div>
       )}
 

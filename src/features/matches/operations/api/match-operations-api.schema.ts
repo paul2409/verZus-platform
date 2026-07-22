@@ -195,7 +195,7 @@ export const clockResponseSchema = z.object({
     mode: z.enum(["countdown", "elapsed", "none"]),
     timezone: z.literal("UTC"),
   }),
-  meta: z.object({ requestId: z.string().min(1), source: z.literal("mock-match-clock") }),
+  meta: z.object({ requestId: z.string().min(1), source: z.literal("match-api") }),
 });
 
 export const matchOperationsResponseSchemas = {

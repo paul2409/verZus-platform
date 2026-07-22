@@ -1,5 +1,3 @@
-// VERZUS M9.6 CREW GOVERNANCE READ ROUTE
-
 import type { NextRequest } from "next/server";
 
 import { handleCrewGovernanceGet } from "@/features/crews/governance/server";

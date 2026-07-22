@@ -1,7 +1,7 @@
-// VERZUS M4 STEP 4.5
-
 import { registerRequestSchema } from "@/features/auth/api";
-import { createMockAuthPostHandler } from "@/features/auth/server/mock-auth.http";
-import { mockRegister } from "@/features/auth/server/mock-auth.service";
+import { createAuthPostHandler, readDeviceId } from "@/features/auth/server/auth.http";
+import { registerAccountWithVerification } from "@/features/auth/server/auth.identity.service";
 
-export const POST = createMockAuthPostHandler(registerRequestSchema, mockRegister);
+export const POST = createAuthPostHandler(registerRequestSchema, (input, request) =>
+  registerAccountWithVerification(input, readDeviceId(request)),
+);

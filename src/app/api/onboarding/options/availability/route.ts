@@ -1,25 +1,14 @@
-// VERZUS M4 STEP 4.9
+import { randomUUID } from "node:crypto";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-import type { NextRequest, NextResponse } from "next/server";
-
-import {
-  createMockOnboardingOptionsResponse,
-  readOnboardingMockScenario,
-} from "@/features/onboarding/server/mock-onboarding-options.http";
-import { getMockOnboardingAvailabilityOptions } from "@/features/onboarding/server/mock-onboarding-options.service";
-import { getOnboardingAccessFailure } from "@/features/onboarding/server/mock-onboarding.http";
+import { getProductionAvailabilityOptions } from "@/features/onboarding/server/onboarding.catalog";
 
 export function GET(request: NextRequest): NextResponse {
-  const accessFailure = getOnboardingAccessFailure(request);
-
-  if (accessFailure) {
-    return accessFailure;
-  }
-
-  return createMockOnboardingOptionsResponse(
-    getMockOnboardingAvailabilityOptions(
-      readOnboardingMockScenario(request),
-      request.nextUrl.searchParams.get("timezone"),
-    ),
-  );
+  const timezone = request.nextUrl.searchParams.get("timezone") || "Africa/Lagos";
+  return NextResponse.json({
+    ok: true,
+    data: getProductionAvailabilityOptions(timezone),
+    requestId: `onboarding-${randomUUID()}`,
+  });
 }

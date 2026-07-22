@@ -31,11 +31,7 @@ const errorTitle: Record<string, string> = {
   invalid_response: "LIFECYCLE STATUS UNAVAILABLE",
 };
 
-function actionHref(
-  action: CompetitionLifecycleAction,
-  competitionId: string,
-  scenario: CompetitionLifecycleScenario,
-): string | null {
+function actionHref(action: CompetitionLifecycleAction, competitionId: string): string | null {
   switch (action) {
     case "view_schedule":
       return "#schedule";
@@ -44,7 +40,7 @@ function actionHref(
     case "view_waitlist":
       return "#entry";
     case "sign_in":
-      return `/login?next=${encodeURIComponent(`/compete/${competitionId}?scenario=${scenario}`)}`;
+      return `/login?next=${encodeURIComponent(`/compete/${competitionId}`)}`;
     case "back_to_discovery":
       return "/compete";
     default:
@@ -73,7 +69,6 @@ function actionLabel(action: CompetitionLifecycleAction): string {
 
 export function CompetitionLifecycleState({
   competitionId,
-  scenario,
   resource,
   error,
   isLoading = false,
@@ -108,7 +103,7 @@ export function CompetitionLifecycleState({
           ? "retry"
           : "none"
     : (resource?.primaryAction ?? "none");
-  const href = actionHref(action, competitionId, scenario);
+  const href = actionHref(action, competitionId);
   const canRetry = action === "retry" && Boolean(onRetry);
 
   return (

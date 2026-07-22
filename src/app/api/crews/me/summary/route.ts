@@ -1,9 +1,10 @@
-// VERZUS M5 STEPS 5.1-5.4
+import type { NextRequest } from "next/server";
 
-import type { NextRequest, NextResponse } from "next/server";
+import { handleCrewSummaryGet } from "@/features/crews/server";
 
-import { handleMockPlayGet } from "@/features/play/server/mock-play.http";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-export function GET(request: NextRequest): NextResponse {
-  return handleMockPlayGet(request, "crew-summary");
+export function GET(request: NextRequest) {
+  return handleCrewSummaryGet(request);
 }

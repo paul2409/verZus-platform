@@ -1,5 +1,3 @@
-// VERZUS M12.5 PERSONALIZED ACTIVITY FEED CLIENT
-
 import {
   adaptActivityFeedError,
   adaptActivityFeedPayload,
@@ -23,7 +21,6 @@ export async function getActivityFeed(input: {
     pageSize: String(input.pageSize),
   });
   if (input.cursor) params.set("cursor", input.cursor);
-  if (input.scenario !== "normal") params.set("scenario", input.scenario);
 
   let response: Response;
   try {

@@ -1,18 +1,13 @@
-// VERZUS M12.6 RELIABILITY EDGE STATES
-// VERZUS M12.4 NOTIFICATION MUTATION HTTP HANDLERS
+import { NextResponse, type NextRequest } from "next/server";
 
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-
+import { getServerAuthSession } from "@/features/auth/server";
 import {
-  applyNotificationMutation,
-  getNotificationUnreadCount,
-  NotificationMutationServiceError,
-  serializeNotification,
-} from "../../center/server/notification-center.service";
-import type { NotificationMutationScenario } from "../model/notification-mutation.types";
+  mutateNotification,
+  getUnreadCount,
+  NotificationRepositoryError,
+} from "../../server/notification.repository";
+import { serializeNotification } from "../../center/server/notification-center.service";
 import {
-  notificationMutationScenarioSchema,
   readAllNotificationsMutationRequestSchema,
   singleNotificationMutationRequestSchema,
 } from "../schema/notification-mutation.schema";
@@ -44,6 +39,23 @@ function errorResponse(input: {
   );
 }
 
+async function authenticatedUserId(requestIdValue: string) {
+  const session = await getServerAuthSession();
+  if (session.state !== "authenticated" || !session.user) {
+    return {
+      response: errorResponse({
+        status: 401,
+        code: "NOTIFICATION_MUTATION_UNAUTHORIZED",
+        message: "Sign in again before updating notifications.",
+        retryable: false,
+        requestId: requestIdValue,
+      }),
+      userId: null,
+    };
+  }
+  return { response: null, userId: session.user.id };
+}
+
 async function parseJson(request: NextRequest, id: string): Promise<unknown | NextResponse> {
   try {
     return await request.json();
@@ -58,35 +70,7 @@ async function parseJson(request: NextRequest, id: string): Promise<unknown | Ne
   }
 }
 
-async function scenarioFailure(
-  scenario: NotificationMutationScenario,
-  id: string,
-): Promise<NextResponse | null> {
-  if (scenario === "slow") {
-    await new Promise((resolve) => setTimeout(resolve, 900));
-    return null;
-  }
-
-  const failures = {
-    error: [503, "NOTIFICATION_MUTATION_UNAVAILABLE", "Notification updates are temporarily unavailable.", true],
-    offline: [503, "NOTIFICATION_MUTATION_OFFLINE", "Notification updates are unavailable while offline.", true],
-    unauthorized: [401, "NOTIFICATION_MUTATION_UNAUTHORIZED", "Sign in again before updating notifications.", false],
-    forbidden: [403, "NOTIFICATION_MUTATION_FORBIDDEN", "You do not have permission to update this notification.", false],
-    maintenance: [503, "NOTIFICATION_MUTATION_MAINTENANCE", "Notification updates are undergoing scheduled maintenance.", true],
-    conflict: [409, "NOTIFICATION_STATE_CONFLICT", "The notification changed before this update could be applied.", true],
-    "not-found": [404, "NOTIFICATION_MUTATION_NOT_FOUND", "The notification no longer exists.", false],
-  } as const;
-
-  if (!(scenario in failures)) return null;
-  const [status, code, message, retryable] = failures[scenario as keyof typeof failures];
-  return errorResponse({ status, code, message, retryable, requestId: id });
-}
-
-function verifyIdempotencyHeader(
-  request: NextRequest,
-  bodyKey: string,
-  id: string,
-): NextResponse | null {
+function verifyIdempotencyHeader(request: NextRequest, bodyKey: string, id: string) {
   const headerKey = request.headers.get("idempotency-key");
   if (!headerKey || headerKey !== bodyKey) {
     return errorResponse({
@@ -100,18 +84,7 @@ function verifyIdempotencyHeader(
   return null;
 }
 
-function successResponse(
-  result: ReturnType<typeof applyNotificationMutation>,
-  id: string,
-  malformed: boolean,
-) {
-  if (malformed) {
-    return NextResponse.json(
-      { data: { invalid: true }, meta: { request_id: id } },
-      { headers: { "cache-control": "no-store", "x-request-id": id } },
-    );
-  }
-
+function successResponse(result: Awaited<ReturnType<typeof mutateNotification>>, id: string) {
   return NextResponse.json(
     {
       data: {
@@ -121,17 +94,14 @@ function successResponse(
         unread_count: result.unreadCount,
         replayed: result.replayed,
       },
-      meta: {
-        request_id: id,
-        idempotency_key: result.idempotencyKey,
-      },
+      meta: { request_id: id, idempotency_key: result.idempotencyKey },
     },
     { headers: { "cache-control": "no-store", "x-request-id": id } },
   );
 }
 
-function serviceError(error: unknown, id: string): NextResponse {
-  if (error instanceof NotificationMutationServiceError) {
+function serviceError(error: unknown, id: string) {
+  if (error instanceof NotificationRepositoryError) {
     return errorResponse({
       status: error.status,
       code: error.code,
@@ -140,7 +110,6 @@ function serviceError(error: unknown, id: string): NextResponse {
       requestId: id,
     });
   }
-
   return errorResponse({
     status: 500,
     code: "NOTIFICATION_MUTATION_UNKNOWN",
@@ -155,9 +124,11 @@ export async function handleSingleNotificationMutation(
   notificationId: string,
 ): Promise<NextResponse> {
   const id = requestId("mutation");
+  const auth = await authenticatedUserId(id);
+  if (auth.response || !auth.userId) return auth.response!;
+
   const payload = await parseJson(request, id);
   if (payload instanceof NextResponse) return payload;
-
   const parsed = singleNotificationMutationRequestSchema.safeParse(payload);
   if (!parsed.success) {
     return errorResponse({
@@ -168,22 +139,21 @@ export async function handleSingleNotificationMutation(
       requestId: id,
     });
   }
-
   const headerFailure = verifyIdempotencyHeader(request, parsed.data.idempotency_key, id);
   if (headerFailure) return headerFailure;
 
-  const injectedFailure = await scenarioFailure(parsed.data.scenario, id);
-  if (injectedFailure) return injectedFailure;
-
   try {
-    const result = applyNotificationMutation({
-      kind: "single",
-      notificationId,
-      operation: parsed.data.operation,
-      expectedState: parsed.data.expected_state,
-      idempotencyKey: parsed.data.idempotency_key,
-    });
-    return successResponse(result, id, parsed.data.scenario === "malformed");
+    return successResponse(
+      await mutateNotification({
+        kind: "single",
+        userId: auth.userId,
+        notificationId,
+        operation: parsed.data.operation,
+        expectedState: parsed.data.expected_state,
+        idempotencyKey: parsed.data.idempotency_key,
+      }),
+      id,
+    );
   } catch (error) {
     return serviceError(error, id);
   }
@@ -193,9 +163,11 @@ export async function handleReadAllNotificationsMutation(
   request: NextRequest,
 ): Promise<NextResponse> {
   const id = requestId("read-all");
+  const auth = await authenticatedUserId(id);
+  if (auth.response || !auth.userId) return auth.response!;
+
   const payload = await parseJson(request, id);
   if (payload instanceof NextResponse) return payload;
-
   const parsed = readAllNotificationsMutationRequestSchema.safeParse(payload);
   if (!parsed.success) {
     return errorResponse({
@@ -206,48 +178,44 @@ export async function handleReadAllNotificationsMutation(
       requestId: id,
     });
   }
-
   const headerFailure = verifyIdempotencyHeader(request, parsed.data.idempotency_key, id);
   if (headerFailure) return headerFailure;
 
-  const injectedFailure = await scenarioFailure(parsed.data.scenario, id);
-  if (injectedFailure) return injectedFailure;
-
   try {
-    const result = applyNotificationMutation({
-      kind: "read-all",
-      category: parsed.data.category,
-      idempotencyKey: parsed.data.idempotency_key,
-    });
-    return successResponse(result, id, parsed.data.scenario === "malformed");
+    return successResponse(
+      await mutateNotification({
+        kind: "read-all",
+        userId: auth.userId,
+        category: parsed.data.category,
+        idempotencyKey: parsed.data.idempotency_key,
+      }),
+      id,
+    );
   } catch (error) {
     return serviceError(error, id);
   }
 }
 
-export async function handleNotificationUnreadCountGet(
-  request: NextRequest,
-): Promise<NextResponse> {
+export async function handleNotificationUnreadCountGet(_request?: NextRequest): Promise<NextResponse> {
   const id = requestId("unread-count");
-  const parsedScenario = notificationMutationScenarioSchema.safeParse(
-    request.nextUrl.searchParams.get("scenario") ?? "normal",
-  );
-  const scenario = parsedScenario.success ? parsedScenario.data : "normal";
-  const injectedFailure = await scenarioFailure(scenario, id);
-  if (injectedFailure) return injectedFailure;
+  const auth = await authenticatedUserId(id);
+  if (auth.response || !auth.userId) return auth.response!;
 
-  if (scenario === "malformed") {
+  try {
     return NextResponse.json(
-      { data: { unread_count: "invalid" }, meta: { request_id: id } },
-      { headers: { "cache-control": "no-store", "x-request-id": id } },
+      {
+        data: { unread_count: await getUnreadCount(auth.userId) },
+        meta: { request_id: id, fetched_at: new Date().toISOString() },
+      },
+      { headers: { "cache-control": "private, no-store", "x-request-id": id } },
     );
+  } catch {
+    return errorResponse({
+      status: 503,
+      code: "NOTIFICATION_COUNT_UNAVAILABLE",
+      message: "The unread notification count is temporarily unavailable.",
+      retryable: true,
+      requestId: id,
+    });
   }
-
-  return NextResponse.json(
-    {
-      data: { unread_count: getNotificationUnreadCount() },
-      meta: { request_id: id, fetched_at: new Date().toISOString() },
-    },
-    { headers: { "cache-control": "no-store", "x-request-id": id } },
-  );
 }

@@ -1,15 +1,8 @@
-// VERZUS M12.7 NOTIFICATION SETTINGS HTTP BOUNDARY
-
 import { NextResponse, type NextRequest } from "next/server";
 
-import type {
-  NotificationSettingsScenario,
-  NotificationSettingsSnapshot,
-} from "../model/notification-settings.types";
-import {
-  notificationSettingsScenarioSchema,
-  notificationSettingsUpdateRequestSchema,
-} from "../schema/notification-settings.schema";
+import { getServerAuthSession } from "@/features/auth/server";
+import type { NotificationSettingsSnapshot } from "../model/notification-settings.types";
+import { notificationSettingsUpdateRequestSchema } from "../schema/notification-settings.schema";
 import {
   getNotificationSettingsSnapshot,
   NotificationSettingsServiceError,
@@ -17,7 +10,7 @@ import {
 } from "./notification-settings.service";
 
 function requestId(scope: string): string {
-  return `m12-7-${scope}-${crypto.randomUUID()}`;
+  return `notifications-settings-${scope}-${crypto.randomUUID()}`;
 }
 
 function rawSettings(snapshot: NotificationSettingsSnapshot) {
@@ -70,29 +63,21 @@ function errorResponse(input: {
   );
 }
 
-async function scenarioFailure(
-  scenario: NotificationSettingsScenario,
-  id: string,
-): Promise<NextResponse | null> {
-  if (scenario === "slow") await new Promise((resolve) => setTimeout(resolve, 900));
-
-  const failures: Partial<Record<NotificationSettingsScenario, [number, string, string, boolean]>> = {
-    error: [503, "NOTIFICATION_SETTINGS_UNAVAILABLE", "Notification settings are temporarily unavailable.", true],
-    offline: [503, "NOTIFICATION_SETTINGS_OFFLINE", "Notification settings are unavailable while offline.", true],
-    unauthorized: [401, "NOTIFICATION_SETTINGS_UNAUTHORIZED", "Sign in again to manage notification settings.", false],
-    forbidden: [403, "NOTIFICATION_SETTINGS_FORBIDDEN", "You do not have permission to change these settings.", false],
-    maintenance: [503, "NOTIFICATION_SETTINGS_MAINTENANCE", "Notification settings are undergoing scheduled maintenance.", true],
-    conflict: [409, "NOTIFICATION_SETTINGS_VERSION_CONFLICT", "Notification settings changed elsewhere. Refresh before saving again.", false],
-  };
-  const failure = failures[scenario];
-  if (!failure) return null;
-  return errorResponse({
-    status: failure[0],
-    code: failure[1],
-    message: failure[2],
-    retryable: failure[3],
-    requestId: id,
-  });
+async function authenticatedUserId(id: string) {
+  const session = await getServerAuthSession();
+  if (session.state !== "authenticated" || !session.user) {
+    return {
+      response: errorResponse({
+        status: 401,
+        code: "NOTIFICATION_SETTINGS_UNAUTHORIZED",
+        message: "Sign in again to manage notification settings.",
+        retryable: false,
+        requestId: id,
+      }),
+      userId: null,
+    };
+  }
+  return { response: null, userId: session.user.id };
 }
 
 function successResponse(input: {
@@ -100,15 +85,7 @@ function successResponse(input: {
   requestId: string;
   idempotencyKey?: string;
   replayed?: boolean;
-  malformed?: boolean;
 }) {
-  if (input.malformed) {
-    return NextResponse.json(
-      { data: { version: "invalid" }, meta: { request_id: input.requestId } },
-      { headers: { "cache-control": "no-store", "x-request-id": input.requestId } },
-    );
-  }
-
   return NextResponse.json(
     {
       data: rawSettings(input.snapshot),
@@ -118,32 +95,38 @@ function successResponse(input: {
         ...(input.replayed === undefined ? {} : { replayed: input.replayed }),
       },
     },
-    { headers: { "cache-control": "no-store", "x-request-id": input.requestId } },
+    { headers: { "cache-control": "private, no-store", "x-request-id": input.requestId } },
   );
 }
 
-export async function handleNotificationSettingsGet(
-  request: NextRequest,
-): Promise<NextResponse> {
+export async function handleNotificationSettingsGet(_request?: NextRequest): Promise<NextResponse> {
   const id = requestId("read");
-  const parsedScenario = notificationSettingsScenarioSchema.safeParse(
-    request.nextUrl.searchParams.get("scenario") ?? "normal",
-  );
-  const scenario = parsedScenario.success ? parsedScenario.data : "normal";
-  const failure = await scenarioFailure(scenario, id);
-  if (failure) return failure;
+  const auth = await authenticatedUserId(id);
+  if (auth.response || !auth.userId) return auth.response!;
 
-  return successResponse({
-    snapshot: getNotificationSettingsSnapshot(id),
-    requestId: id,
-    malformed: scenario === "malformed",
-  });
+  try {
+    return successResponse({
+      snapshot: await getNotificationSettingsSnapshot(auth.userId, id),
+      requestId: id,
+    });
+  } catch {
+    return errorResponse({
+      status: 503,
+      code: "NOTIFICATION_SETTINGS_UNAVAILABLE",
+      message: "Notification settings are temporarily unavailable.",
+      retryable: true,
+      requestId: id,
+    });
+  }
 }
 
 export async function handleNotificationSettingsPatch(
   request: NextRequest,
 ): Promise<NextResponse> {
   const id = requestId("update");
+  const auth = await authenticatedUserId(id);
+  if (auth.response || !auth.userId) return auth.response!;
+
   let payload: unknown;
   try {
     payload = await request.json();
@@ -179,11 +162,9 @@ export async function handleNotificationSettingsPatch(
     });
   }
 
-  const failure = await scenarioFailure(parsed.data.scenario, id);
-  if (failure) return failure;
-
   try {
-    const result = updateNotificationSettingsSnapshot({
+    const result = await updateNotificationSettingsSnapshot({
+      userId: auth.userId,
       expectedVersion: parsed.data.expected_version,
       idempotencyKey: parsed.data.idempotency_key,
       requestId: id,
@@ -216,7 +197,6 @@ export async function handleNotificationSettingsPatch(
       requestId: id,
       idempotencyKey: parsed.data.idempotency_key,
       replayed: result.replayed,
-      malformed: parsed.data.scenario === "malformed",
     });
   } catch (error) {
     if (error instanceof NotificationSettingsServiceError) {

@@ -91,7 +91,7 @@ function CrewCard({
       <dl className={styles.cardStats}>
         <div>
           <dt>Rank</dt>
-          <dd>#{crew.rank}</dd>
+          <dd>{crew.rank > 0 ? `#${crew.rank}` : "Unranked"}</dd>
         </div>
         <div>
           <dt>Points</dt>

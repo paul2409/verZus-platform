@@ -50,7 +50,7 @@ export function CrewMembershipRequestsPanel({
   blockedReason?: string | null;
 }) {
   const queryClient = useQueryClient();
-  const [handle, setHandle] = useState("@orbit");
+  const [handle, setHandle] = useState("");
   const [role, setRole] = useState<"captain" | "manager" | "member" | "trial">("trial");
 
   const updateSnapshot = (next: CrewMembershipSnapshot) => {
@@ -69,7 +69,7 @@ export function CrewMembershipRequestsPanel({
     mutationFn: () =>
       crewMembershipCommands.createInvite(snapshot.crewId, {
         expectedVersion: snapshot.version,
-        playerHandle: handle,
+        playerHandle: handle.trim(),
         role,
       }),
     onSuccess: (result) => updateSnapshot(result.snapshot),
@@ -86,8 +86,8 @@ export function CrewMembershipRequestsPanel({
     <section className={styles.operationsPanel} data-crew-panel="requests" data-m9-stage="9.7">
       <header className={styles.panelHeader}>
         <div>
-          <h2>Applications and invites</h2>
-          <p>Server-authoritative decisions · version {snapshot.version}</p>
+          <h2>Membership inbox</h2>
+          <p>Review applications, send invitations, and track pending membership work in one place · version {snapshot.version}</p>
         </div>
         <Badge tone="warning" variant="solid">
           {pendingApplications.length + pendingInvites.length} pending
@@ -164,7 +164,7 @@ export function CrewMembershipRequestsPanel({
               <option value="trial">Trial</option>
             </Select>
             <Button
-              disabled={!operationsAllowed || invite.isPending}
+              disabled={!operationsAllowed || invite.isPending || handle.trim().length < 2}
               onClick={() => invite.mutate()}
               variant="secondary"
             >

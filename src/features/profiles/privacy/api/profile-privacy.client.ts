@@ -1,28 +1,20 @@
-// VERZUS M11.7 PROFILE PRIVACY API CLIENT
-
 import {
   adaptProfilePrivacyError,
   adaptProfilePrivacyResponse,
 } from "../adapter/profile-privacy.adapter";
 import type {
-  ProfilePrivacySaveScenario,
-  ProfilePrivacyScenario,
   ProfilePrivacySnapshot,
   ProfilePrivacyUpdateCommand,
 } from "../model/profile-privacy.types";
 
 export async function fetchProfilePrivacy(input: {
-  scenario: ProfilePrivacyScenario;
   signal?: AbortSignal;
 }): Promise<ProfilePrivacySnapshot> {
-  const search = new URLSearchParams();
-  if (input.scenario !== "normal") search.set("scenario", input.scenario);
-  const response = await fetch(`/api/profile/privacy?${search.toString()}`, {
+  const response = await fetch("/api/profile/privacy", {
     cache: "no-store",
     headers: { accept: "application/json" },
     signal: input.signal ?? null,
   });
-
   if (!response.ok) throw await adaptProfilePrivacyError(response);
   return adaptProfilePrivacyResponse(await response.json());
 }
@@ -30,13 +22,9 @@ export async function fetchProfilePrivacy(input: {
 export async function updateProfilePrivacy(input: {
   command: ProfilePrivacyUpdateCommand;
   idempotencyKey: string;
-  scenario: ProfilePrivacySaveScenario;
   signal?: AbortSignal;
 }): Promise<ProfilePrivacySnapshot> {
-  const search = new URLSearchParams();
-  if (input.scenario !== "normal") search.set("scenario", input.scenario);
-
-  const response = await fetch(`/api/profile/privacy?${search.toString()}`, {
+  const response = await fetch("/api/profile/privacy", {
     method: "PATCH",
     cache: "no-store",
     headers: {
@@ -60,7 +48,6 @@ export async function updateProfilePrivacy(input: {
     }),
     signal: input.signal ?? null,
   });
-
   if (!response.ok) throw await adaptProfilePrivacyError(response);
   return adaptProfilePrivacyResponse(await response.json());
 }

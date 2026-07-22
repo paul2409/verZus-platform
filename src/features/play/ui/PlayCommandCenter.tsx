@@ -1,30 +1,24 @@
-// VERZUS STAGE 3 RETRO PLAY
-
 "use client";
 
 import { WidgetBoundary } from "@/components/layout/widget-boundary";
 
 import { usePlayCheckIn } from "../actions/use-play-check-in";
-import type { PlayScenario } from "../model";
 import { recordPlayTelemetry } from "../telemetry/play-telemetry";
 import { usePlayCommandCenterTelemetry } from "../telemetry/use-play-telemetry";
 import { CrewPulseWidget } from "./CrewPulseWidget";
 import { CurrentPositionWidget } from "./CurrentPositionWidget";
-import { GameModeGrid } from "./GameModeGrid";
 import { OpportunityRail } from "./OpportunityRail";
-import { PlayActionStrip } from "./PlayActionStrip";
 import { PlayHero } from "./PlayHero";
 import { PlayerStatusStrip } from "./PlayerStatusStrip";
 import { PrimaryActionPanel } from "./PrimaryActionPanel";
 import { QuickActions } from "./QuickActions";
 import { RecentActivityWidget } from "./RecentActivityWidget";
-import { ScenarioToolbar } from "./ScenarioToolbar";
 import { usePlayCommandCenter } from "./usePlayCommandCenter";
 import styles from "./play-command-center.module.css";
 
-export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
-  const controller = usePlayCommandCenter(scenario);
-  const checkInAction = usePlayCheckIn(scenario);
+export function PlayCommandCenter() {
+  const controller = usePlayCommandCenter();
+  const checkInAction = usePlayCheckIn();
   const { viewModel, retry } = controller;
 
   usePlayCommandCenterTelemetry(viewModel);
@@ -47,7 +41,7 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
   const retryWidget = (widget: string, retryAction: () => void) => {
     recordPlayTelemetry("play.widget.retry", {
       route: "/play",
-      scenario,
+      scenario: "normal",
       widget,
     });
     retryAction();
@@ -60,11 +54,9 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
       data-play-ready={playReady ? "true" : "false"}
       data-play-variant={viewModel.variant}
     >
-      <ScenarioToolbar active={viewModel.variant} />
-
       <header className={styles.playPageHeader}>
         <div>
-          <span>{"06.0 /" + "/ PLAY LANE"}</span>
+          <span>PLAYER COMMAND CENTRE</span>
           <h1>PLAY</h1>
         </div>
         <div className={styles.liveStatus} data-online={viewModel.online}>
@@ -72,12 +64,6 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
           <span>{viewModel.online ? "LIVE OPERATIONS" : "OFFLINE MODE"}</span>
         </div>
       </header>
-
-      <PlayActionStrip
-        checkInAction={checkInAction}
-        currentCheckIn={viewModel.currentCheckIn}
-        nextMatch={viewModel.nextMatch}
-      />
 
       <WidgetBoundary
         name="play-player-status"
@@ -109,9 +95,7 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
       {!viewModel.online ? (
         <div className={styles.globalBanner} role="status">
           <strong>OFFLINE MODE</strong>
-          <span>
-            Network actions are disabled. Navigation and saved information remain available.
-          </span>
+          <span>Network actions are disabled. Navigation and saved information remain available.</span>
         </div>
       ) : viewModel.partialFailureCount > 0 ? (
         <div className={styles.globalBanner} data-tone="warning" role="status">
@@ -160,10 +144,6 @@ export function PlayCommandCenter({ scenario }: { scenario: PlayScenario }) {
               onRetry={() => retryWidget("current-position", retry.currentPosition)}
             />
           </WidgetBoundary>
-        </div>
-
-        <div className={styles.modesArea}>
-          <GameModeGrid />
         </div>
 
         <div className={styles.competitionArea}>

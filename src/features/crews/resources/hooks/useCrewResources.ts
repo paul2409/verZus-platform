@@ -1,7 +1,5 @@
 "use client";
 
-// VERZUS M9.4 INDEPENDENT CREW QUERY HOOKS
-
 import { useQuery } from "@tanstack/react-query";
 
 import { CrewResourceError } from "../adapter/crew-resource.adapter";
@@ -17,17 +15,8 @@ import {
 import type {
   CrewResourceHealth,
   CrewResourceName,
-  CrewResourceScenario,
   CrewResourceSnapshotMap,
 } from "../model/crew-resource.types";
-
-function scenarioFor(
-  resource: CrewResourceName,
-  target: CrewResourceName | undefined,
-  scenario: CrewResourceScenario,
-): CrewResourceScenario {
-  return target === resource ? scenario : "normal";
-}
 
 function healthFromQuery(
   name: CrewResourceName,
@@ -63,30 +52,14 @@ function healthFromQuery(
   };
 }
 
-export function useCrewResources(
-  crewId: string,
-  target: CrewResourceName | undefined,
-  scenario: CrewResourceScenario,
-) {
-  const profile = useQuery(
-    crewProfileQueryOptions(crewId, scenarioFor("profile", target, scenario)),
-  );
-  const roster = useQuery(crewRosterQueryOptions(crewId, scenarioFor("roster", target, scenario)));
-  const requests = useQuery(
-    crewRequestsQueryOptions(crewId, scenarioFor("requests", target, scenario)),
-  );
-  const activity = useQuery(
-    crewActivityQueryOptions(crewId, scenarioFor("activity", target, scenario)),
-  );
-  const rankings = useQuery(
-    crewRankingsQueryOptions(crewId, scenarioFor("rankings", target, scenario)),
-  );
-  const achievements = useQuery(
-    crewAchievementsQueryOptions(crewId, scenarioFor("achievements", target, scenario)),
-  );
-  const settings = useQuery(
-    crewSettingsQueryOptions(crewId, scenarioFor("settings", target, scenario)),
-  );
+export function useCrewResources(crewId: string) {
+  const profile = useQuery(crewProfileQueryOptions(crewId));
+  const roster = useQuery(crewRosterQueryOptions(crewId));
+  const requests = useQuery(crewRequestsQueryOptions(crewId));
+  const activity = useQuery(crewActivityQueryOptions(crewId));
+  const rankings = useQuery(crewRankingsQueryOptions(crewId));
+  const achievements = useQuery(crewAchievementsQueryOptions(crewId));
+  const settings = useQuery(crewSettingsQueryOptions(crewId));
 
   const snapshots: CrewResourceSnapshotMap = {
     ...(profile.data ? { profile: profile.data } : {}),
