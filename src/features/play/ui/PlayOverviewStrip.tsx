@@ -9,6 +9,30 @@ function formatNumber(value: number): string {
   return new Intl.NumberFormat("en-GB").format(value);
 }
 
+function OverviewMetric({
+  label,
+  value,
+  unlock,
+}: {
+  label: string;
+  value: string;
+  unlock?: string;
+}) {
+  return (
+    <div>
+      <dt>{label}</dt>
+      <dd
+        className={styles.overviewMetricValue}
+        data-locked={unlock ? "true" : undefined}
+        title={unlock}
+      >
+        <span>{value}</span>
+        {unlock ? <small>{unlock}</small> : null}
+      </dd>
+    </div>
+  );
+}
+
 export function PlayOverviewStrip({
   playerStatus,
   currentPosition,
@@ -50,18 +74,21 @@ export function PlayOverviewStrip({
       </div>
 
       <dl className={styles.overviewFacts}>
-        <div>
-          <dt>WINS</dt>
-          <dd>{position ? formatNumber(position.wins) : "—"}</dd>
-        </div>
-        <div>
-          <dt>WIN RATE</dt>
-          <dd>{position ? `${position.winRate}%` : "—"}</dd>
-        </div>
-        <div>
-          <dt>CURRENT STREAK</dt>
-          <dd>{position?.streak ?? "—"}</dd>
-        </div>
+        <OverviewMetric
+          label="WINS"
+          value={position ? formatNumber(position.wins) : "—"}
+          unlock={position ? undefined : "Play 1 match to reveal"}
+        />
+        <OverviewMetric
+          label="WIN RATE"
+          value={position ? `${position.winRate}%` : "—"}
+          unlock={position ? undefined : "Play 1 match to calculate"}
+        />
+        <OverviewMetric
+          label="CURRENT STREAK"
+          value={position?.streak ?? "—"}
+          unlock={position ? undefined : "Win 1 match to start"}
+        />
       </dl>
 
       {playerStatus.stale || currentPosition.stale ? (

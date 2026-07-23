@@ -20,3 +20,5 @@ export { GameModeGrid } from "./GameModeGrid";
 export { StatusChip } from "./StatusChip";
 
 export { PlayEmptyState } from "./PlayEmptyState";
+export { ActionCentrePanel } from "./ActionCentrePanel";
+export { PlaySectionHeader } from "./PlaySectionHeader";

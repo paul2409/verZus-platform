@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import { readSmartDefaults, rememberSmartDefaults } from "@/shared/composition/smart-defaults";
 
 import {
   defaultCompetitionDiscoveryFilters,
@@ -31,6 +33,11 @@ export function useCompetitionDiscoveryUrlState() {
   );
   const [filters, setFilters] = useState<CompetitionDiscoveryFilters>(initialFilters);
   const [searchInput, setSearchInput] = useState(initialFilters.search);
+  const explicitDefaults = useRef({
+    game: initialParams.has("game"),
+    sort: initialParams.has("sort"),
+  });
+  const requestedDefaults = useRef(false);
 
   const replaceUrl = useCallback(
     (next: CompetitionDiscoveryFilters) => {
@@ -52,6 +59,34 @@ export function useCompetitionDiscoveryUrlState() {
     },
     [replaceUrl],
   );
+
+  useEffect(() => {
+    if (requestedDefaults.current) return;
+    requestedDefaults.current = true;
+
+    void readSmartDefaults()
+      .then((defaults) => {
+        setFilters((current) => {
+          const next: CompetitionDiscoveryFilters = {
+            ...current,
+            game:
+              !explicitDefaults.current.game && current.game === "all"
+                ? defaults.competition.game
+                : current.game,
+            sort:
+              !explicitDefaults.current.sort && current.sort === "starts-soon"
+                ? defaults.competition.sort
+                : current.sort,
+            page: 1,
+          };
+
+          if (next.game === current.game && next.sort === current.sort) return current;
+          replaceUrl(next);
+          return next;
+        });
+      })
+      .catch(() => undefined);
+  }, [replaceUrl]);
 
   useEffect(() => {
     const restoreFromBrowserHistory = () => {
@@ -76,7 +111,11 @@ export function useCompetitionDiscoveryUrlState() {
 
   const setTab = useCallback((tab: CompetitionDiscoveryTab) => commit({ tab, page: 1 }), [commit]);
   const setGame = useCallback(
-    (game: CompetitionDiscoveryGame) => commit({ game, page: 1 }),
+    (game: CompetitionDiscoveryGame) => {
+      explicitDefaults.current.game = true;
+      commit({ game, page: 1 });
+      void rememberSmartDefaults({ competitionGame: game }).catch(() => undefined);
+    },
     [commit],
   );
   const setTeamSize = useCallback(
@@ -88,15 +127,25 @@ export function useCompetitionDiscoveryUrlState() {
     [commit],
   );
   const setSort = useCallback(
-    (sort: CompetitionDiscoverySort) => commit({ sort, page: 1 }),
+    (sort: CompetitionDiscoverySort) => {
+      explicitDefaults.current.sort = true;
+      commit({ sort, page: 1 });
+      void rememberSmartDefaults({ competitionSort: sort }).catch(() => undefined);
+    },
     [commit],
   );
   const setPage = useCallback((page: number) => commit({ page }), [commit]);
 
   const clearFilters = useCallback(() => {
+    explicitDefaults.current.game = true;
+    explicitDefaults.current.sort = true;
     setSearchInput("");
     setFilters(defaultCompetitionDiscoveryFilters);
     replaceUrl(defaultCompetitionDiscoveryFilters);
+    void rememberSmartDefaults({
+      competitionGame: "all",
+      competitionSort: "starts-soon",
+    }).catch(() => undefined);
   }, [replaceUrl]);
 
   return {

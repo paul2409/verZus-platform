@@ -2,13 +2,20 @@
 
 // VERZUS M7.6 VERSION-CHECKED RESULT OPERATIONS PANEL
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import {
+  clearWorkflowResume,
+  readWorkflowResume,
+  saveWorkflowResume,
+} from "@/shared/composition/workflow-resume";
 
 import { MatchOperationsApiClientError } from "../api/match-operations-api.adapter";
 import { useMatchResultMutation } from "../api/match-result.mutations";
 import type { MatchResultViewModel } from "../model/match-resource.types";
 import type { MatchResultAction } from "../model/match-result-operations.types";
 import type { MatchOperationState } from "../model/match-operations.types";
+import { matchResultResumePayloadSchema } from "../resume";
 import styles from "./MatchOperationsScreen.module.css";
 
 export type ResultOperationsPanelProps = {
@@ -38,6 +45,70 @@ export function ResultOperationsPanel({
   const [note, setNote] = useState("");
   const [confirmationHome, setConfirmationHome] = useState(value.score?.home ?? 0);
   const [confirmationAway, setConfirmationAway] = useState(value.score?.away ?? 0);
+  const [resumeReady, setResumeReady] = useState(false);
+  const [draftEdited, setDraftEdited] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    if (currentState !== "submit-result" || !value.canSubmit) {
+      setResumeReady(true);
+      void clearWorkflowResume("match_result", matchId).catch(() => undefined);
+      return () => {
+        active = false;
+      };
+    }
+
+    void readWorkflowResume("match_result", matchId, matchResultResumePayloadSchema)
+      .then((checkpoint) => {
+        if (!active || !checkpoint) return;
+        setHomeScore(checkpoint.payload.homeScore);
+        setAwayScore(checkpoint.payload.awayScore);
+        setNote(checkpoint.payload.note);
+        setDraftEdited(true);
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (active) setResumeReady(true);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [currentState, matchId, value.canSubmit]);
+
+  useEffect(() => {
+    if (!resumeReady || !draftEdited || currentState !== "submit-result" || !value.canSubmit)
+      return;
+    const timeout = window.setTimeout(() => {
+      void saveWorkflowResume(
+        "match_result",
+        matchId,
+        { currentStep: "score", payload: { homeScore, awayScore, note } },
+        matchResultResumePayloadSchema,
+      ).catch(() => undefined);
+    }, 450);
+    return () => window.clearTimeout(timeout);
+  }, [
+    awayScore,
+    currentState,
+    draftEdited,
+    homeScore,
+    matchId,
+    note,
+    resumeReady,
+    value.canSubmit,
+  ]);
+
+  useEffect(() => {
+    if (!mutation.data) return;
+    if (
+      mutation.data.outcome === "result_submitted" ||
+      mutation.data.outcome === "already_applied"
+    ) {
+      setDraftEdited(false);
+      void clearWorkflowResume("match_result", matchId).catch(() => undefined);
+    }
+  }, [matchId, mutation.data]);
 
   if (!value.visible) return null;
 
@@ -78,7 +149,7 @@ export function ResultOperationsPanel({
   }
 
   return (
-    <section className={styles.commandPanel} data-result-operations="m7.6">
+    <section className={styles.commandPanel} data-result-operations="m7.6" id="result-control">
       <p className={styles.commandKicker}>RESULT CONTROL</p>
       <h2>{value.title}</h2>
       <p>{value.description}</p>
@@ -106,7 +177,10 @@ export function ResultOperationsPanel({
               <input
                 max={99}
                 min={0}
-                onChange={(event) => setHomeScore(Number(event.target.value))}
+                onChange={(event) => {
+                  setHomeScore(Number(event.target.value));
+                  setDraftEdited(true);
+                }}
                 type="number"
                 value={homeScore}
               />
@@ -116,7 +190,10 @@ export function ResultOperationsPanel({
               <input
                 max={99}
                 min={0}
-                onChange={(event) => setAwayScore(Number(event.target.value))}
+                onChange={(event) => {
+                  setAwayScore(Number(event.target.value));
+                  setDraftEdited(true);
+                }}
                 type="number"
                 value={awayScore}
               />
@@ -126,12 +203,20 @@ export function ResultOperationsPanel({
             Result note
             <textarea
               maxLength={500}
-              onChange={(event) => setNote(event.target.value)}
+              onChange={(event) => {
+                setNote(event.target.value);
+                setDraftEdited(true);
+              }}
               placeholder="Optional context for the opponent and operations team"
               rows={3}
               value={note}
             />
           </label>
+          {draftEdited ? (
+            <p className={styles.resultStatus} role="status">
+              Result draft saves automatically and can be resumed from Play.
+            </p>
+          ) : null}
           <button
             disabled={mutation.isPending}
             onClick={() => submit("submit_result")}

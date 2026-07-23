@@ -7,6 +7,7 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
     href: "/play",
     label: "Play",
     icon: "gamepad",
+    section: "main",
     offlineSafe: true,
   },
   {
@@ -14,6 +15,7 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
     href: "/compete",
     label: "Compete",
     icon: "swords",
+    section: "main",
     activePrefixes: ["/competitions"],
   },
   {
@@ -21,6 +23,7 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
     href: "/matches",
     label: "Matches",
     icon: "calendar",
+    section: "main",
   },
   {
     id: "leaderboards",
@@ -28,6 +31,7 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
     label: "Leaderboards",
     shortLabel: "Ranks",
     icon: "trophy",
+    section: "main",
     activePrefixes: ["/leaderboards"],
   },
   {
@@ -35,6 +39,7 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
     href: "/crews",
     label: "Crews",
     icon: "users",
+    section: "community",
     featureFlag: "crews",
   },
   {
@@ -42,13 +47,22 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
     href: "/rewards",
     label: "Rewards",
     icon: "gift",
+    section: "community",
     featureFlag: "rewards",
+  },
+  {
+    id: "activity",
+    href: "/activity",
+    label: "Activity",
+    icon: "calendar",
+    section: "community",
   },
   {
     id: "profile",
     href: "/profile",
     label: "Profile",
     icon: "user",
+    section: "account",
     activePrefixes: ["/players"],
     offlineSafe: true,
   },
@@ -57,33 +71,40 @@ export const shellNavigationItems: readonly ShellNavigationItem[] = [
     href: "/notifications",
     label: "Notifications",
     icon: "bell",
-  },
-  {
-    id: "activity",
-    href: "/activity",
-    label: "Activity",
-    icon: "calendar",
+    section: "account",
   },
   {
     id: "search",
     href: "/search",
     label: "Search",
     icon: "search",
+    section: "account",
   },
   {
     id: "settings",
     href: "/settings",
     label: "Settings",
     icon: "settings",
+    section: "account",
     featureFlag: "settings",
     offlineSafe: true,
   },
 ];
 
+function navigationItem(id: string): ShellNavigationItem {
+  const item = shellNavigationItems.find((candidate) => candidate.id === id);
+
+  if (!item) {
+    throw new Error(`Missing shell navigation item: ${id}`);
+  }
+
+  return item;
+}
+
 /** Dock order: Rewards | Leaderboards | Play | Crew | Profile */
 export const mobileShellNavigationItems: readonly ShellNavigationItem[] = [
   {
-    ...shellNavigationItems[5]!,
+    ...navigationItem("rewards"),
     label: "Rewards",
     shortLabel: "Rewards",
   },
@@ -93,20 +114,21 @@ export const mobileShellNavigationItems: readonly ShellNavigationItem[] = [
     label: "Leaderboards",
     shortLabel: "Ranks",
     icon: "trophy",
+    section: "main",
     activePrefixes: ["/compete", "/leaderboards", "/matches"],
   },
   {
-    ...shellNavigationItems[0]!,
+    ...navigationItem("play"),
     label: "Play",
     shortLabel: "Play",
   },
   {
-    ...shellNavigationItems[4]!,
+    ...navigationItem("crews"),
     label: "Crew",
     shortLabel: "Crew",
   },
   {
-    ...shellNavigationItems[6]!,
+    ...navigationItem("profile"),
     label: "Profile",
     shortLabel: "Profile",
   },

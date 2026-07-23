@@ -1,0 +1,318 @@
+.panel {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  padding: 0.85rem;
+  overflow: hidden;
+  border: 1px solid var(--play-line, #1a2a35);
+  border-radius: 0.2rem;
+  background:
+    radial-gradient(circle at 100% 0, rgb(160 92 255 / 12%), transparent 12rem),
+    linear-gradient(150deg, rgb(10 18 25 / 96%), rgb(3 9 14 / 98%));
+  box-shadow: 0 1rem 2.8rem rgb(0 0 0 / 18%);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.header span,
+.actionMeta b,
+.actionMeta em {
+  font-family: var(--vz-font-display);
+  font-size: 0.64rem;
+  font-style: normal;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header > div:first-child > span {
+  color: var(--play-muted, #aab4c0);
+}
+
+.header h2 {
+  margin: 0.2rem 0 0;
+  font-family: var(--vz-font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.035em;
+}
+
+.counts {
+  display: grid;
+  justify-items: end;
+  gap: 0.15rem;
+  color: var(--play-muted, #aab4c0);
+  font-size: 0.72rem;
+}
+
+.counts b {
+  color: var(--play-red, #ff4f5e);
+  font-family: var(--vz-font-display);
+  text-transform: uppercase;
+}
+
+.actionList {
+  display: grid;
+  gap: 0.48rem;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.actionRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.25rem minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  min-height: 4.1rem;
+  padding: 0.62rem 0.68rem;
+  color: var(--play-text, #f7fbff);
+  border: 1px solid color-mix(in srgb, var(--play-line, #1a2a35) 88%, transparent);
+  background: rgb(255 255 255 / 2.5%);
+  text-decoration: none;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease,
+    transform 140ms ease;
+}
+
+.actionRow:hover,
+.actionRow:focus-visible {
+  border-color: color-mix(in srgb, var(--action-tone, #22dff5) 70%, white 5%);
+  background: color-mix(in srgb, var(--action-tone, #22dff5) 8%, transparent);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.actionRow[data-tone="danger"] {
+  --action-tone: var(--play-red, #ff4f5e);
+}
+.actionRow[data-tone="warning"] {
+  --action-tone: var(--play-gold, #ffd84f);
+}
+.actionRow[data-tone="success"] {
+  --action-tone: var(--play-green, #00ff8a);
+}
+.actionRow[data-tone="info"] {
+  --action-tone: var(--play-cyan, #22dff5);
+}
+.actionRow[data-tone="violet"] {
+  --action-tone: var(--play-violet, #a05cff);
+}
+
+.priorityMark {
+  align-self: stretch;
+  border-radius: 99px;
+  background: var(--action-tone, #22dff5);
+  box-shadow: 0 0 0.8rem color-mix(in srgb, var(--action-tone, #22dff5) 55%, transparent);
+}
+
+.actionCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.16rem;
+}
+
+.actionMeta {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.actionMeta b {
+  color: var(--action-tone, #22dff5);
+}
+
+.actionMeta em {
+  overflow: hidden;
+  color: var(--play-muted, #aab4c0);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actionCopy strong {
+  overflow: hidden;
+  font-family: var(--vz-font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.025em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actionCopy small {
+  overflow: hidden;
+  color: color-mix(in srgb, var(--play-text, #f7fbff) 72%, transparent);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actionCta {
+  color: var(--action-tone, #22dff5);
+  font-family: var(--vz-font-display);
+  font-size: 0.66rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.stateCard {
+  display: grid;
+  min-height: 10rem;
+  flex: 1;
+  place-content: center;
+  justify-items: center;
+  gap: 0.45rem;
+  padding: 1rem;
+  color: var(--play-text, #f7fbff);
+  border: 1px dashed color-mix(in srgb, var(--play-cyan, #22dff5) 28%, var(--play-line, #1a2a35));
+  background: rgb(255 255 255 / 2%);
+  text-align: center;
+}
+
+.stateCard strong {
+  font-family: var(--vz-font-display);
+  font-size: 0.92rem;
+  text-transform: uppercase;
+}
+
+.stateCard small {
+  max-width: 23rem;
+  color: var(--play-muted, #aab4c0);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.stateCard button,
+.stateCard a {
+  margin-top: 0.3rem;
+  padding: 0.55rem 0.75rem;
+  color: var(--play-cyan, #22dff5);
+  border: 1px solid currentColor;
+  background: transparent;
+  font-family: var(--vz-font-display);
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.stateCard[data-tone="error"] {
+  border-color: color-mix(in srgb, var(--play-red, #ff4f5e) 48%, transparent);
+}
+
+.stateCard[data-tone="clear"] {
+  border-color: color-mix(in srgb, var(--play-green, #00ff8a) 38%, transparent);
+}
+
+.scanner {
+  width: 4rem;
+  height: 0.2rem;
+  background: var(--play-cyan, #22dff5);
+  box-shadow: 0 0 1.2rem currentColor;
+  animation: scan 1.2s ease-in-out infinite alternate;
+}
+
+.clearMark {
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  color: #00120c;
+  border-radius: 50%;
+  background: var(--play-green, #00ff8a);
+  box-shadow: 0 0 1.4rem rgb(0 255 138 / 28%);
+  font-size: 1.3rem;
+  font-weight: 950;
+}
+
+@keyframes scan {
+  from {
+    transform: translateX(-1.1rem);
+    opacity: 0.55;
+  }
+  to {
+    transform: translateX(1.1rem);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 64rem) {
+  .actionRow {
+    grid-template-columns: 0.22rem minmax(0, 1fr);
+  }
+  .actionCta {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 30rem) {
+  .panel {
+    padding: 0.75rem;
+  }
+  .header h2 {
+    font-size: 0.95rem;
+  }
+  .actionCopy strong {
+    white-space: normal;
+  }
+  .actionCopy small {
+    white-space: normal;
+  }
+}
+
+/* VERZUS ACTION CENTRE LEGIBILITY START */
+.panel {
+  border: 2px solid var(--play-card-border-strong, #4b6e7d);
+  border-radius: 0.25rem;
+}
+
+.actionCopy strong {
+  font-family: var(--vz-font-interface);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+.actionCopy small,
+.stateCard small {
+  color: #c8d2dc;
+  font-family: var(--vz-font-body, var(--vz-font-interface));
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.actionMeta em {
+  color: #b8c4d0;
+}
+
+.actionRow {
+  border-width: 2px;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--play-card-border-strong, #4b6e7d) 94%, transparent);
+  background: rgb(255 255 255 / 1.7%);
+}
+
+.stateCard {
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--play-card-border-strong, #4b6e7d);
+  border-radius: 0.22rem;
+  background: rgb(255 255 255 / 1.6%);
+}
+
+.stateCard a,
+.stateCard button {
+  background: transparent;
+  box-shadow: none;
+}
+/* VERZUS ACTION CENTRE LEGIBILITY END */

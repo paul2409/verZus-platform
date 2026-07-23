@@ -34,6 +34,9 @@ const serverInputSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASSWORD: z.string().optional(),
   SMTP_FROM: z.string().min(3).default("VERZUS <no-reply@verzus.local>"),
+  PROACTIVE_OPERATIONS_ENABLED: z.string().optional(),
+  PROACTIVE_OPERATIONS_TOKEN: z.string().optional(),
+  PROACTIVE_OPERATIONS_BATCH_SIZE: z.coerce.number().int().min(1).max(1000).default(250),
 });
 
 function parseBoolean(value: string | undefined, fallback: boolean): boolean {
@@ -72,6 +75,15 @@ export function parseServerEnv(source: EnvSource) {
     if (!input.SMTP_HOST || !input.SMTP_FROM) {
       throw new Error("SMTP_HOST and SMTP_FROM are required in staging and production.");
     }
+    const proactiveEnabled = parseBoolean(input.PROACTIVE_OPERATIONS_ENABLED, true);
+    if (
+      proactiveEnabled &&
+      (!input.PROACTIVE_OPERATIONS_TOKEN || input.PROACTIVE_OPERATIONS_TOKEN.length < 32)
+    ) {
+      throw new Error(
+        "PROACTIVE_OPERATIONS_TOKEN must contain at least 32 characters when proactive operations are enabled in staging and production.",
+      );
+    }
   }
 
   return {
@@ -87,5 +99,8 @@ export function parseServerEnv(source: EnvSource) {
     smtpUser: input.SMTP_USER || undefined,
     smtpPassword: input.SMTP_PASSWORD || undefined,
     smtpFrom: input.SMTP_FROM,
+    proactiveOperationsEnabled: parseBoolean(input.PROACTIVE_OPERATIONS_ENABLED, true),
+    proactiveOperationsToken: input.PROACTIVE_OPERATIONS_TOKEN || undefined,
+    proactiveOperationsBatchSize: input.PROACTIVE_OPERATIONS_BATCH_SIZE,
   } as const;
 }

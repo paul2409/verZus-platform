@@ -2,7 +2,9 @@
 
 // VERZUS M8.2 LEADERBOARD URL HISTORY SYNCHRONIZATION
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { readSmartDefaults, rememberSmartDefaults } from "@/shared/composition/smart-defaults";
 
 import {
   parseLeaderboardQueryState,
@@ -28,10 +30,47 @@ function updateBrowserUrl(state: LeaderboardQueryState, historyMode: Leaderboard
   }
 }
 
+function hasInputValue(input: LeaderboardQueryInput, key: string): boolean {
+  if (input instanceof URLSearchParams) return input.has(key);
+  const value = input[key];
+  return Array.isArray(value) ? Boolean(value[0]) : Boolean(value);
+}
+
 export function useLeaderboardUrlState(initialInput: LeaderboardQueryInput) {
   const [state, setState] = useState<LeaderboardQueryState>(() =>
     parseLeaderboardQueryState(initialInput),
   );
+  const explicitDefaults = useRef({
+    mode: hasInputValue(initialInput, "mode"),
+    game: hasInputValue(initialInput, "game"),
+  });
+  const requestedDefaults = useRef(false);
+
+  useEffect(() => {
+    if (requestedDefaults.current) return;
+    requestedDefaults.current = true;
+
+    void readSmartDefaults()
+      .then((defaults) => {
+        setState((current) => {
+          const next = patchLeaderboardQueryState(current, {
+            mode:
+              !explicitDefaults.current.mode && current.mode === "weekly"
+                ? defaults.leaderboard.mode
+                : current.mode,
+            game:
+              !explicitDefaults.current.game && current.game === "all"
+                ? defaults.leaderboard.game
+                : current.game,
+          });
+
+          if (next.mode === current.mode && next.game === current.game) return current;
+          updateBrowserUrl(next, "replace");
+          return next;
+        });
+      })
+      .catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -49,6 +88,15 @@ export function useLeaderboardUrlState(initialInput: LeaderboardQueryInput) {
         updateBrowserUrl(next, historyMode);
         return next;
       });
+
+      if (patch.mode !== undefined || patch.game !== undefined) {
+        if (patch.mode !== undefined) explicitDefaults.current.mode = true;
+        if (patch.game !== undefined) explicitDefaults.current.game = true;
+        void rememberSmartDefaults({
+          leaderboardMode: patch.mode,
+          leaderboardGame: patch.game,
+        }).catch(() => undefined);
+      }
     },
     [],
   );

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 
 import { Icon } from "@/components/primitives/icon";
@@ -8,6 +9,7 @@ import type {
   ShellFeatureFlags,
   ShellNavigationItem,
   ShellNavigationRuntimeStates,
+  ShellNavigationSection,
 } from "./shell.types";
 
 export type NavigationListProps = {
@@ -17,6 +19,12 @@ export type NavigationListProps = {
   featureFlags?: ShellFeatureFlags | undefined;
   runtimeStates?: ShellNavigationRuntimeStates | undefined;
   offline?: boolean | undefined;
+};
+
+const sectionLabels: Record<ShellNavigationSection, string> = {
+  main: "MAIN",
+  community: "COMMUNITY",
+  account: "ACCOUNT",
 };
 
 export function NavigationList({
@@ -36,10 +44,12 @@ export function NavigationList({
 
   return (
     <ul className={compact ? styles.navigationListCompact : styles.navigationList}>
-      {resolvedItems.map(({ item, state, current, disabled, reason }) => {
+      {resolvedItems.map(({ item, state, current, disabled, reason }, index) => {
         const count = item.notification?.count ?? item.badgeCount;
         const showCount = count !== undefined && count > 0;
         const showDot = item.notification?.dot === true;
+        const previousSection = resolvedItems[index - 1]?.item.section;
+        const showSection = !compact && item.section && item.section !== previousSection;
         const stateDescription = reason ? <span className={styles.srOnly}>{reason}</span> : null;
 
         const content = (
@@ -82,33 +92,40 @@ export function NavigationList({
         );
 
         return (
-          <li key={item.id}>
-            {disabled ? (
-              <span
-                aria-current={current ? "page" : undefined}
-                aria-disabled="true"
-                className={styles.navigationLink}
-                data-navigation-current={current ? "true" : undefined}
-                data-navigation-id={item.id}
-                data-navigation-state={state}
-                title={reason ?? undefined}
-              >
-                {content}
-              </span>
-            ) : (
-              <Link
-                aria-current={current ? "page" : undefined}
-                className={styles.navigationLink}
-                data-navigation-current={current ? "true" : undefined}
-                data-navigation-id={item.id}
-                data-navigation-state={state}
-                href={item.href}
-                title={reason ?? undefined}
-              >
-                {content}
-              </Link>
-            )}
-          </li>
+          <Fragment key={item.id}>
+            {showSection ? (
+              <li aria-hidden="true" className={styles.navigationSectionLabel}>
+                <span>{sectionLabels[item.section!]}</span>
+              </li>
+            ) : null}
+            <li>
+              {disabled ? (
+                <span
+                  aria-current={current ? "page" : undefined}
+                  aria-disabled="true"
+                  className={styles.navigationLink}
+                  data-navigation-current={current ? "true" : undefined}
+                  data-navigation-id={item.id}
+                  data-navigation-state={state}
+                  title={reason ?? undefined}
+                >
+                  {content}
+                </span>
+              ) : (
+                <Link
+                  aria-current={current ? "page" : undefined}
+                  className={styles.navigationLink}
+                  data-navigation-current={current ? "true" : undefined}
+                  data-navigation-id={item.id}
+                  data-navigation-state={state}
+                  href={item.href}
+                  title={reason ?? undefined}
+                >
+                  {content}
+                </Link>
+              )}
+            </li>
+          </Fragment>
         );
       })}
     </ul>

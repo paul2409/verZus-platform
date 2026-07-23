@@ -8,6 +8,8 @@ export type ShellNavigationMatch = "exact" | "prefix";
 export type ShellFeatureFlags = Readonly<Record<string, boolean>>;
 export type ShellNavigationRuntimeStates = Readonly<Record<string, ShellNavigationAvailability>>;
 
+export type ShellNavigationSection = "main" | "community" | "account";
+
 export type ShellNavigationNotification = {
   count?: number | undefined;
   dot?: boolean | undefined;
@@ -21,6 +23,7 @@ export type ShellNavigationItem = {
   label: string;
   shortLabel?: string | undefined;
   icon: IconName;
+  section?: ShellNavigationSection | undefined;
   match?: ShellNavigationMatch | undefined;
   activePrefixes?: readonly string[] | undefined;
   state?: ShellNavigationState | undefined;

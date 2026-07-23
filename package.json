@@ -280,7 +280,8 @@
     "check:no-runtime-mocks": "node scripts/check-no-runtime-mocks.mjs",
     "check:production-routes": "node scripts/check-production-routes.mjs",
     "check:production-runtime": "node scripts/check-production-runtime.mjs",
-    "check:production-guards": "npm run check:no-runtime-mocks && npm run check:production-routes && npm run check:production-runtime && npm run check:boundaries"
+    "check:production-guards": "npm run check:no-runtime-mocks && npm run check:production-routes && npm run check:production-runtime && npm run check:boundaries",
+    "ops:proactive": "tsx scripts/run-proactive-operations.ts"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [

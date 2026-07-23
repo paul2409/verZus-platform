@@ -7,6 +7,13 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import {
+  clearWorkflowResume,
+  readWorkflowResume,
+  saveWorkflowResume,
+} from "@/shared/composition/workflow-resume";
+import { readSmartDefaults } from "@/shared/composition/smart-defaults";
+
 import { Badge } from "@/components/primitives/badge";
 import { Button } from "@/components/primitives/button";
 import { Icon } from "@/components/primitives/icon";
@@ -32,6 +39,7 @@ import {
   type CrewCreationPersistedState,
   type CrewCreationStep,
 } from "../model/crew-creation.types";
+import { crewCreationResumePayloadSchema } from "../resume";
 import {
   hasCrewCreationErrors,
   normalizeCrewTag,
@@ -184,20 +192,86 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => {
-      const persisted = loadCrewCreationState(window.localStorage);
-      setState(persisted);
-      if (persisted.created && initialStep !== "created") setStep("created");
-      setHydrated(true);
-    }, 0);
+    let active = true;
+    const hydrate = async () => {
+      const local = loadCrewCreationState(window.localStorage);
+      let nextState = local;
+      let nextStep = local.created && initialStep !== "created" ? "created" : initialStep;
+      let restoredCheckpoint = false;
 
-    return () => window.clearTimeout(timeout);
+      try {
+        const checkpoint = await readWorkflowResume(
+          "crew_creation",
+          "current",
+          crewCreationResumePayloadSchema,
+        );
+        if (checkpoint && !local.created) {
+          nextState = { version: 1, draft: checkpoint.payload, created: null };
+          nextStep = checkpoint.currentStep as CrewCreationStep;
+          restoredCheckpoint = true;
+        }
+      } catch {
+        // The versioned local draft remains an offline fallback.
+      }
+
+      const pristineDraft =
+        !nextState.created &&
+        nextStep === "basics" &&
+        !nextState.draft.name.trim() &&
+        !nextState.draft.tag.trim() &&
+        !nextState.draft.description.trim();
+
+      if (!restoredCheckpoint && pristineDraft) {
+        try {
+          const defaults = await readSmartDefaults();
+          if (defaults.crewCreation) {
+            nextState = {
+              ...nextState,
+              draft: {
+                ...nextState.draft,
+                primaryGame: defaults.crewCreation.primaryGame,
+                region: defaults.crewCreation.region,
+              },
+            };
+          }
+        } catch {
+          // Smart defaults are optional. Neutral form defaults remain usable.
+        }
+      }
+
+      if (!active) return;
+      setState(nextState);
+      setStep(nextStep);
+      setHydrated(true);
+    };
+
+    void hydrate();
+    return () => {
+      active = false;
+    };
   }, [initialStep]);
 
   useEffect(() => {
     if (!hydrated) return;
     saveCrewCreationState(window.localStorage, state);
-  }, [hydrated, state]);
+
+    const draft = state.draft;
+    const meaningful =
+      step !== "basics" ||
+      Boolean(draft.name.trim() || draft.tag.trim() || draft.description.trim());
+    if (!meaningful || step === "created") return;
+
+    const timeout = window.setTimeout(() => {
+      void saveWorkflowResume(
+        "crew_creation",
+        "current",
+        { currentStep: step, payload: draft },
+        crewCreationResumePayloadSchema,
+      ).catch(() => undefined);
+    }, 500);
+
+    return () => window.clearTimeout(timeout);
+  }, [hydrated, state, step]);
 
   const navigate = useCallback(
     (nextStep: CrewCreationStep, replace = false) => {
@@ -295,6 +369,7 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
       const nextState = { ...state, created: payload.data };
       setState(nextState);
       saveCrewCreationState(window.localStorage, nextState);
+      void clearWorkflowResume("crew_creation", "current").catch(() => undefined);
       navigate("created", true);
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Crew creation failed.");
@@ -653,8 +728,16 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
               )}
               {step === "review" ? (
                 <div>
-                  {submitError ? <p className={styles.fieldError} role="alert">{submitError}</p> : null}
-                  <Button loading={submitting} loadingLabel="Creating Crew" onClick={() => void submitCreation()}>
+                  {submitError ? (
+                    <p className={styles.fieldError} role="alert">
+                      {submitError}
+                    </p>
+                  ) : null}
+                  <Button
+                    loading={submitting}
+                    loadingLabel="Creating Crew"
+                    onClick={() => void submitCreation()}
+                  >
                     Create Crew
                   </Button>
                 </div>
@@ -673,8 +756,8 @@ export function CrewCreationScreen({ initialStep, membership }: CrewCreationScre
       <footer className={styles.foundationNote}>
         <strong>M9.3 CREATION CONTRACT</strong>
         <span>
-          Draft and success persist through a versioned local repository. The UI boundary remains
-          stable when M9.4 replaces it with schema-validated APIs and TanStack Query resources.
+          Incomplete setup is saved to your account and mirrored locally for offline recovery.
+          Successful creation clears the resumable checkpoint automatically.
         </span>
       </footer>
     </main>

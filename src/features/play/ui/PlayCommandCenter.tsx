@@ -5,12 +5,14 @@ import { WidgetBoundary } from "@/components/layout/widget-boundary";
 import { usePlayCheckIn } from "../actions/use-play-check-in";
 import { recordPlayTelemetry } from "../telemetry/play-telemetry";
 import { usePlayCommandCenterTelemetry } from "../telemetry/use-play-telemetry";
+import { buildPlaySmartActions } from "../decisioning";
 import { CrewPulseWidget } from "./CrewPulseWidget";
 import { CurrentPositionWidget } from "./CurrentPositionWidget";
-import { DailyChallengesPanel } from "./DailyChallengesPanel";
+import { ActionCentrePanel } from "./ActionCentrePanel";
 import { OpportunityRail } from "./OpportunityRail";
 import { PlayModesPanel } from "./PlayModesPanel";
 import { PlayOverviewStrip } from "./PlayOverviewStrip";
+import { PlaySectionHeader } from "./PlaySectionHeader";
 import { PlayStatusFooter } from "./PlayStatusFooter";
 import { PrimaryActionPanel } from "./PrimaryActionPanel";
 import { QuickActions } from "./QuickActions";
@@ -23,6 +25,7 @@ export function PlayCommandCenter() {
   const controller = usePlayCommandCenter();
   const checkInAction = usePlayCheckIn();
   const { viewModel, retry } = controller;
+  const smartActions = buildPlaySmartActions(viewModel);
 
   usePlayCommandCenterTelemetry(viewModel);
 
@@ -108,6 +111,15 @@ export function PlayCommandCenter() {
       ) : null}
 
       <main className={styles.dashboardGrid}>
+        <PlaySectionHeader
+          className={styles.primarySectionHeader}
+          index="01"
+          eyebrow="CURRENT PRIORITY"
+          title="MATCH OPERATIONS"
+          detail="Your next fixture, immediate actions, and schedule intelligence."
+          tone="cyan"
+        />
+
         <div className={styles.matchArea}>
           <WidgetBoundary
             name="play-primary-action"
@@ -125,7 +137,7 @@ export function PlayCommandCenter() {
 
         <div className={styles.quickArea}>
           <WidgetBoundary name="play-quick-actions">
-            <QuickActions />
+            <QuickActions actions={smartActions} />
           </WidgetBoundary>
         </div>
 
@@ -141,6 +153,15 @@ export function PlayCommandCenter() {
             />
           </WidgetBoundary>
         </div>
+
+        <PlaySectionHeader
+          className={styles.progressionSectionHeader}
+          index="02"
+          eyebrow="PERFORMANCE SYSTEMS"
+          title="COMPETITIVE PROGRESSION"
+          detail="Modes, ranking movement, and objectives that shape your season."
+          tone="violet"
+        />
 
         <div className={styles.modesArea}>
           <WidgetBoundary name="play-modes">
@@ -161,10 +182,19 @@ export function PlayCommandCenter() {
         </div>
 
         <div className={styles.challengesArea}>
-          <WidgetBoundary name="play-challenges">
-            <DailyChallengesPanel />
+          <WidgetBoundary name="play-action-centre">
+            <ActionCentrePanel />
           </WidgetBoundary>
         </div>
+
+        <PlaySectionHeader
+          className={styles.intelSectionHeader}
+          index="03"
+          eyebrow="PLATFORM SIGNALS"
+          title="LIVE VERZUS INTEL"
+          detail="Competitions, activity, and Crew information from live platform data."
+          tone="green"
+        />
 
         <div className={styles.opportunitiesArea}>
           <WidgetBoundary

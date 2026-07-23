@@ -1704,3 +1704,52 @@
   box-shadow: var(--vz-shadow-focus);
 }
 /* VERZUS STAGE 2 RETRO SHARED UI:END */
+
+/* VERZUS GROUPED SIDEBAR START */
+.navigationSectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.9rem 0.7rem 0.32rem;
+  color: color-mix(in srgb, var(--vz-color-text-secondary) 82%, transparent);
+  font-family: var(--vz-font-interface);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.navigationSectionLabel:first-child {
+  margin-top: 0.2rem;
+}
+
+.navigationSectionLabel::after {
+  height: 1px;
+  flex: 1;
+  content: "";
+  height: 2px;
+  background: color-mix(in srgb, var(--vz-color-border-subtle) 92%, transparent);
+}
+
+.navigationLink {
+  min-height: 2.72rem;
+}
+
+.navigationListCompact .navigationSectionLabel {
+  display: none;
+}
+
+/* Strong tactical framing for the full desktop shell. */
+.sidebar,
+.desktopSidebar,
+.shellSidebar {
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-right-color: color-mix(in srgb, var(--vz-color-border-subtle) 94%, transparent);
+}
+
+.navigationLink {
+  border-width: 2px;
+}
+/* VERZUS GROUPED SIDEBAR END */

@@ -1,14 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/primitives/button";
 import { Checkbox } from "@/components/primitives/checkbox";
 import { Icon } from "@/components/primitives/icon";
 import { Modal } from "@/components/primitives/overlay";
 
+import {
+  clearWorkflowResume,
+  readWorkflowResume,
+  saveWorkflowResume,
+} from "@/shared/composition/workflow-resume";
+
 import { useCompetitionEntry } from "../hooks";
+import { competitionEntryResumePayloadSchema } from "../resume";
 import type {
   CompetitionEntryControlViewModel,
   CompetitionEntryRecordViewModel,
@@ -102,6 +110,8 @@ function ConfirmationDialog({
   pending,
   errorCode,
   requestId,
+  accepted,
+  onAcceptedChange,
 }: {
   control: CompetitionEntryControlViewModel;
   open: boolean;
@@ -110,9 +120,9 @@ function ConfirmationDialog({
   pending: boolean;
   errorCode: string | null;
   requestId: string | null;
+  accepted: boolean;
+  onAcceptedChange: (accepted: boolean) => void;
 }) {
-  const [accepted, setAccepted] = useState(false);
-
   return (
     <Modal
       description="Review the server-authoritative entry requirements before confirming."
@@ -126,10 +136,7 @@ function ConfirmationDialog({
           </Button>
         </div>
       }
-      onOpenChange={(nextOpen) => {
-        onOpenChange(nextOpen);
-        if (!nextOpen) setAccepted(false);
-      }}
+      onOpenChange={onOpenChange}
       open={open}
       size="md"
       title="CONFIRM COMPETITION ENTRY"
@@ -159,7 +166,7 @@ function ConfirmationDialog({
           checked={accepted}
           description="I understand the roster lock, schedule and competition rules."
           label="CONFIRM ENTRY TERMS"
-          onChange={(event) => setAccepted(event.currentTarget.checked)}
+          onChange={(event) => onAcceptedChange(event.currentTarget.checked)}
         />
         {errorCode ? (
           <div className={styles.mutationError} role="alert">
@@ -247,10 +254,59 @@ export function CompetitionEntryControl({
   scenario: CompetitionEntryScenario;
 }) {
   const entry = useCompetitionEntry(competitionId, scenario);
+  const searchParams = useSearchParams();
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [accepted, setAccepted] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
   const control = entry.resource.data?.value ?? null;
   const confirmed = entry.result?.entry ?? control?.existingEntry ?? null;
+
+  useEffect(() => {
+    if (!control || confirmed || searchParams.get("resume") !== "entry") return;
+    let active = true;
+    void readWorkflowResume("competition_entry", competitionId, competitionEntryResumePayloadSchema)
+      .then((checkpoint) => {
+        if (!active || !checkpoint) return;
+        setAccepted(checkpoint.payload.accepted);
+        setConfirmOpen(true);
+      })
+      .catch(() => undefined);
+    return () => {
+      active = false;
+    };
+  }, [competitionId, confirmed, control, searchParams]);
+
+  useEffect(() => {
+    if (entry.mutationState !== "success") return;
+    setConfirmOpen(false);
+    setAccepted(false);
+    void clearWorkflowResume("competition_entry", competitionId).catch(() => undefined);
+  }, [competitionId, entry.mutationState]);
+
+  const updateConfirmation = (nextAccepted: boolean) => {
+    setAccepted(nextAccepted);
+    void saveWorkflowResume(
+      "competition_entry",
+      competitionId,
+      { currentStep: "confirm", payload: { accepted: nextAccepted } },
+      competitionEntryResumePayloadSchema,
+    ).catch(() => undefined);
+  };
+
+  const changeConfirmationOpen = (open: boolean) => {
+    setConfirmOpen(open);
+    if (open) {
+      void saveWorkflowResume(
+        "competition_entry",
+        competitionId,
+        { currentStep: "confirm", payload: { accepted } },
+        competitionEntryResumePayloadSchema,
+      ).catch(() => undefined);
+      return;
+    }
+    setAccepted(false);
+    void clearWorkflowResume("competition_entry", competitionId).catch(() => undefined);
+  };
 
   if (!control) {
     return (
@@ -282,7 +338,12 @@ export function CompetitionEntryControl({
   }
 
   return (
-    <section className={styles.entryPanel} aria-labelledby="entry-title" data-entry="available">
+    <section
+      className={styles.entryPanel}
+      aria-labelledby="entry-title"
+      data-entry="available"
+      id="entry-control"
+    >
       <span>ENTRY CONTROL</span>
       <div className={styles.entryHeading}>
         <h2 id="entry-title">READY TO COMPETE?</h2>
@@ -295,7 +356,7 @@ export function CompetitionEntryControl({
         fullWidth
         onClick={() => {
           entry.resetMutation();
-          setConfirmOpen(true);
+          changeConfirmationOpen(true);
         }}
       >
         {control.canEnter ? "ENTER COMPETITION" : "ENTRY UNAVAILABLE"}
@@ -304,10 +365,12 @@ export function CompetitionEntryControl({
         REVIEW COMPETITION RULES
       </a>
       <ConfirmationDialog
+        accepted={accepted}
         control={control}
         errorCode={entry.errorCode}
+        onAcceptedChange={updateConfirmation}
         onConfirm={() => entry.confirmEntry(control)}
-        onOpenChange={setConfirmOpen}
+        onOpenChange={changeConfirmationOpen}
         open={confirmOpen}
         pending={entry.mutationState === "pending"}
         requestId={entry.requestId}

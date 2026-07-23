@@ -4,17 +4,14 @@ import type { ReactNode } from "react";
 import styles from "./play-command-center.module.css";
 
 type EmptyVariant =
-  | "match"
-  | "schedule"
-  | "ranking"
-  | "competition"
-  | "activity"
-  | "crew"
-  | "challenge";
+  "match" | "schedule" | "ranking" | "competition" | "activity" | "crew" | "challenge";
+
+type EmptyActionEmphasis = "primary" | "ghost" | "text";
 
 type EmptyAction = {
   href: string;
   label: string;
+  emphasis?: EmptyActionEmphasis;
 };
 
 const variantMeta: Record<EmptyVariant, { glyph: string; eyebrow: string }> = {
@@ -26,6 +23,20 @@ const variantMeta: Record<EmptyVariant, { glyph: string; eyebrow: string }> = {
   crew: { glyph: "C", eyebrow: "FIND YOUR UNIT" },
   challenge: { glyph: "XP", eyebrow: "PROGRESSION AWAITS" },
 };
+
+function EmptyActionLink({
+  action,
+  fallbackEmphasis,
+}: {
+  action: EmptyAction;
+  fallbackEmphasis: EmptyActionEmphasis;
+}) {
+  return (
+    <Link data-emphasis={action.emphasis ?? fallbackEmphasis} href={action.href}>
+      {action.label}
+    </Link>
+  );
+}
 
 export function PlayEmptyState({
   variant,
@@ -47,6 +58,7 @@ export function PlayEmptyState({
   children?: ReactNode;
 }) {
   const meta = variantMeta[variant];
+  const primaryFallback: EmptyActionEmphasis = variant === "match" ? "primary" : "ghost";
 
   return (
     <div
@@ -81,12 +93,10 @@ export function PlayEmptyState({
         {primaryAction || secondaryAction ? (
           <div className={styles.emptyActions}>
             {primaryAction ? (
-              <Link href={primaryAction.href}>{primaryAction.label}</Link>
+              <EmptyActionLink action={primaryAction} fallbackEmphasis={primaryFallback} />
             ) : null}
             {secondaryAction ? (
-              <Link data-secondary="true" href={secondaryAction.href}>
-                {secondaryAction.label}
-              </Link>
+              <EmptyActionLink action={secondaryAction} fallbackEmphasis="text" />
             ) : null}
           </div>
         ) : null}

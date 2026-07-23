@@ -1192,7 +1192,6 @@
   }
 }
 
-
 /* PLAY EMPTY EXPERIENCE START */
 .emptyNextMatchPanel {
   min-height: 21rem;
@@ -1221,16 +1220,32 @@
   padding: clamp(1rem, 2vw, 1.8rem);
   border: 1px solid color-mix(in srgb, var(--empty-accent) 20%, var(--play-line));
   background:
-    linear-gradient(120deg, color-mix(in srgb, var(--empty-accent) 6%, transparent), transparent 42%),
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--empty-accent) 6%, transparent),
+      transparent 42%
+    ),
     rgb(2 8 13 / 56%);
 }
 
-.emptyExperience[data-variant="schedule"] { --empty-accent: var(--play-cyan); }
-.emptyExperience[data-variant="ranking"] { --empty-accent: var(--play-gold); }
-.emptyExperience[data-variant="competition"] { --empty-accent: var(--play-cyan); }
-.emptyExperience[data-variant="activity"] { --empty-accent: var(--play-violet); }
-.emptyExperience[data-variant="crew"] { --empty-accent: var(--play-magenta); }
-.emptyExperience[data-variant="challenge"] { --empty-accent: var(--play-gold); }
+.emptyExperience[data-variant="schedule"] {
+  --empty-accent: var(--play-cyan);
+}
+.emptyExperience[data-variant="ranking"] {
+  --empty-accent: var(--play-gold);
+}
+.emptyExperience[data-variant="competition"] {
+  --empty-accent: var(--play-cyan);
+}
+.emptyExperience[data-variant="activity"] {
+  --empty-accent: var(--play-violet);
+}
+.emptyExperience[data-variant="crew"] {
+  --empty-accent: var(--play-magenta);
+}
+.emptyExperience[data-variant="challenge"] {
+  --empty-accent: var(--play-gold);
+}
 
 .emptyExperience::before,
 .emptyExperience::after {
@@ -1301,10 +1316,29 @@
   content: "";
 }
 
-.emptyVisual::before { width: 10.5rem; height: 10.5rem; }
-.emptyVisual::after { width: 7.2rem; height: 7.2rem; border-style: dashed; animation: playEmptyOrbit 16s linear infinite; }
-.emptyVisual > i { width: 4.9rem; height: 4.9rem; box-shadow: 0 0 2.5rem color-mix(in srgb, var(--empty-accent) 16%, transparent); }
-.emptyVisual > b { width: 0.55rem; height: 0.55rem; border: 0; background: var(--empty-accent); transform: translate(4.2rem, -2.8rem); box-shadow: 0 0 1rem var(--empty-accent); }
+.emptyVisual::before {
+  width: 10.5rem;
+  height: 10.5rem;
+}
+.emptyVisual::after {
+  width: 7.2rem;
+  height: 7.2rem;
+  border-style: dashed;
+  animation: playEmptyOrbit 16s linear infinite;
+}
+.emptyVisual > i {
+  width: 4.9rem;
+  height: 4.9rem;
+  box-shadow: 0 0 2.5rem color-mix(in srgb, var(--empty-accent) 16%, transparent);
+}
+.emptyVisual > b {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 0;
+  background: var(--empty-accent);
+  transform: translate(4.2rem, -2.8rem);
+  box-shadow: 0 0 1rem var(--empty-accent);
+}
 
 .emptyVisual > span {
   position: relative;
@@ -1314,7 +1348,11 @@
   height: 4.7rem;
   place-items: center;
   color: #00110b;
-  background: linear-gradient(145deg, var(--empty-accent), color-mix(in srgb, var(--empty-accent) 55%, #061018));
+  background: linear-gradient(
+    145deg,
+    var(--empty-accent),
+    color-mix(in srgb, var(--empty-accent) 55%, #061018)
+  );
   clip-path: polygon(50% 0, 100% 18%, 87% 82%, 50% 100%, 13% 82%, 0 18%);
   box-shadow: 0 0 2rem color-mix(in srgb, var(--empty-accent) 25%, transparent);
   font-family: var(--vz-font-display);
@@ -1374,8 +1412,15 @@
   background: rgb(255 255 255 / 1.6%);
 }
 
-.emptySteps span { color: var(--empty-accent); font-family: var(--vz-font-display); font-size: 0.55rem; }
-.emptySteps strong { font-size: 0.57rem; line-height: 1.4; }
+.emptySteps span {
+  color: var(--empty-accent);
+  font-family: var(--vz-font-display);
+  font-size: 0.55rem;
+}
+.emptySteps strong {
+  font-size: 0.57rem;
+  line-height: 1.4;
+}
 
 .emptyActions {
   display: flex;
@@ -1405,7 +1450,10 @@
   background: transparent;
 }
 
-.emptyActions a:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.emptyActions a:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
 
 .emptyScheduleSlots,
 .emptyCrewBenefits {
@@ -1426,9 +1474,19 @@
 }
 
 .emptyScheduleSlots b,
-.emptyCrewBenefits b { color: var(--empty-accent); font-family: var(--vz-font-display); font-size: 0.52rem; }
-.emptyScheduleSlots i { color: var(--play-muted); font-size: 0.53rem; font-style: normal; }
-.emptyCrewBenefits strong { font-size: 0.54rem; }
+.emptyCrewBenefits b {
+  color: var(--empty-accent);
+  font-family: var(--vz-font-display);
+  font-size: 0.52rem;
+}
+.emptyScheduleSlots i {
+  color: var(--play-muted);
+  font-size: 0.53rem;
+  font-style: normal;
+}
+.emptyCrewBenefits strong {
+  font-size: 0.54rem;
+}
 
 .emptyStatsDashboard {
   display: grid;
@@ -1456,14 +1514,40 @@
 }
 
 .emptyStatsRing span,
-.emptyStatsRing small { color: var(--play-muted); font-size: 0.48rem; }
-.emptyStatsRing strong { font-family: var(--vz-font-display); font-size: 1.7rem; }
-.emptyStatsCopy h3 { font-size: 0.95rem; }
-.emptyStatsCopy > p { font-size: 0.58rem; }
-.emptyStatsCopy dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem; margin: 0.65rem 0 0; }
-.emptyStatsCopy dl > div { padding: 0.35rem; border: 1px solid var(--play-line); }
-.emptyStatsCopy dt { color: var(--play-muted); font-size: 0.43rem; }
-.emptyStatsCopy dd { margin: 0.12rem 0 0; color: var(--play-gold); font-family: var(--vz-font-display); font-size: 0.72rem; }
+.emptyStatsRing small {
+  color: var(--play-muted);
+  font-size: 0.48rem;
+}
+.emptyStatsRing strong {
+  font-family: var(--vz-font-display);
+  font-size: 1.7rem;
+}
+.emptyStatsCopy h3 {
+  font-size: 0.95rem;
+}
+.emptyStatsCopy > p {
+  font-size: 0.58rem;
+}
+.emptyStatsCopy dl {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.3rem;
+  margin: 0.65rem 0 0;
+}
+.emptyStatsCopy dl > div {
+  padding: 0.35rem;
+  border: 1px solid var(--play-line);
+}
+.emptyStatsCopy dt {
+  color: var(--play-muted);
+  font-size: 0.43rem;
+}
+.emptyStatsCopy dd {
+  margin: 0.12rem 0 0;
+  color: var(--play-gold);
+  font-family: var(--vz-font-display);
+  font-size: 0.72rem;
+}
 
 .emptyOpportunityGrid {
   display: grid;
@@ -1482,9 +1566,18 @@
   background: linear-gradient(145deg, rgb(34 223 245 / 5%), transparent);
 }
 
-.emptyOpportunityGrid b { color: var(--empty-accent); font-family: var(--vz-font-display); font-size: 0.48rem; }
-.emptyOpportunityGrid strong { font-size: 0.55rem; }
-.emptyOpportunityGrid small { color: var(--play-muted); font-size: 0.46rem; }
+.emptyOpportunityGrid b {
+  color: var(--empty-accent);
+  font-family: var(--vz-font-display);
+  font-size: 0.48rem;
+}
+.emptyOpportunityGrid strong {
+  font-size: 0.55rem;
+}
+.emptyOpportunityGrid small {
+  color: var(--play-muted);
+  font-size: 0.46rem;
+}
 
 .emptyActivityPreview {
   display: grid;
@@ -1514,8 +1607,14 @@
   font-weight: 900;
 }
 
-.emptyActivityPreview b { font-size: 0.52rem; }
-.emptyActivityPreview em { color: var(--play-muted); font-size: 0.45rem; font-style: normal; }
+.emptyActivityPreview b {
+  font-size: 0.52rem;
+}
+.emptyActivityPreview em {
+  color: var(--play-muted);
+  font-size: 0.45rem;
+  font-style: normal;
+}
 
 .emptyChallengePreview {
   display: grid;
@@ -1523,9 +1622,24 @@
   margin-top: 0.75rem;
 }
 
-.emptyChallengePreview span { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.5rem; align-items: center; }
-.emptyChallengePreview b { color: var(--play-muted); font-size: 0.48rem; }
-.emptyChallengePreview i { height: 3px; background: linear-gradient(90deg, color-mix(in srgb, var(--empty-accent) 28%, transparent), rgb(255 255 255 / 4%)); }
+.emptyChallengePreview span {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+.emptyChallengePreview b {
+  color: var(--play-muted);
+  font-size: 0.48rem;
+}
+.emptyChallengePreview i {
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--empty-accent) 28%, transparent),
+    rgb(255 255 255 / 4%)
+  );
+}
 
 .globalBanner[data-tone="warning"] {
   border-color: color-mix(in srgb, var(--play-gold) 28%, var(--play-line));
@@ -1533,23 +1647,42 @@
   background: linear-gradient(90deg, rgb(255 216 79 / 6%), rgb(3 9 14 / 94%) 28%);
 }
 
-.globalBanner[data-tone="warning"] strong { font-size: 0.66rem; }
-.globalBanner[data-tone="warning"] span { font-size: 0.68rem; }
-.globalBanner[data-tone="warning"] button { min-height: 2.1rem; padding: 0.4rem 0.7rem; }
+.globalBanner[data-tone="warning"] strong {
+  font-size: 0.66rem;
+}
+.globalBanner[data-tone="warning"] span {
+  font-size: 0.68rem;
+}
+.globalBanner[data-tone="warning"] button {
+  min-height: 2.1rem;
+  padding: 0.4rem 0.7rem;
+}
 
 @keyframes playEmptyOrbit {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .emptyVisual::after { animation: none; }
+  .emptyVisual::after {
+    animation: none;
+  }
 }
 
 @media (max-width: 76rem) {
-  .emptyExperience { grid-template-columns: minmax(8rem, 0.55fr) 1fr; }
-  .emptyVisual { min-height: 10rem; }
-  .emptySteps { grid-template-columns: 1fr; }
-  .emptyOpportunityGrid { grid-template-columns: 1fr; }
+  .emptyExperience {
+    grid-template-columns: minmax(8rem, 0.55fr) 1fr;
+  }
+  .emptyVisual {
+    min-height: 10rem;
+  }
+  .emptySteps {
+    grid-template-columns: 1fr;
+  }
+  .emptyOpportunityGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 48rem) {
@@ -1569,18 +1702,46 @@
     align-self: flex-start;
   }
 
-  .emptyVisual::before { width: 4.2rem; height: 4.2rem; }
-  .emptyVisual::after { width: 3.4rem; height: 3.4rem; }
-  .emptyVisual > i { width: 2.8rem; height: 2.8rem; }
-  .emptyVisual > b { display: none; }
+  .emptyVisual::before {
+    width: 4.2rem;
+    height: 4.2rem;
+  }
+  .emptyVisual::after {
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+  .emptyVisual > i {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+  .emptyVisual > b {
+    display: none;
+  }
   .emptyVisual > span,
-  .emptyExperience[data-compact="true"] .emptyVisual > span { width: 2.4rem; height: 2.6rem; font-size: 0.64rem; }
-  .emptyContent h3 { font-size: 1rem; }
-  .emptyActions { display: grid; grid-template-columns: 1fr; }
-  .emptyActions a { width: 100%; }
-  .emptyStatsDashboard { grid-template-columns: 5.6rem minmax(0, 1fr); }
-  .emptyStatsRing { width: 5rem; }
-  .emptyStatsCopy dl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .emptyExperience[data-compact="true"] .emptyVisual > span {
+    width: 2.4rem;
+    height: 2.6rem;
+    font-size: 0.64rem;
+  }
+  .emptyContent h3 {
+    font-size: 1rem;
+  }
+  .emptyActions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .emptyActions a {
+    width: 100%;
+  }
+  .emptyStatsDashboard {
+    grid-template-columns: 5.6rem minmax(0, 1fr);
+  }
+  .emptyStatsRing {
+    width: 5rem;
+  }
+  .emptyStatsCopy dl {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 /* PLAY EMPTY EXPERIENCE END */
 
@@ -1923,7 +2084,6 @@
   }
 }
 /* PLAY ABOVE-FOLD DENSITY END */
-
 
 /* PLAY READABILITY PASS START */
 /*
@@ -2354,7 +2514,6 @@
   }
 }
 /* PLAY READABILITY PASS END */
-
 
 /* PLAY LARGE TYPE PASS START */
 /*
@@ -2792,3 +2951,982 @@
   }
 }
 /* PLAY LARGE TYPE PASS END */
+
+/* Smart action decision layer */
+.quickActionList a[data-priority="high"] {
+  border-color: color-mix(in srgb, var(--play-green) 58%, var(--play-line));
+  background: linear-gradient(90deg, rgb(0 255 138 / 8%), rgb(255 255 255 / 1.8%));
+}
+
+.quickActionList a[data-tone="gold"] .quickActionIcon {
+  color: var(--play-gold);
+}
+
+.quickActionList em {
+  display: inline-block;
+  margin-top: 0.28rem;
+  color: var(--play-green);
+  font-size: 0.67rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+/* VERZUS COMMAND CENTRE UX REFINEMENT START */
+.playRoot {
+  --play-muted: #bcc8d4;
+  --play-body-text: #d7e0e8;
+  --play-card-border: #385462;
+  --play-card-border-strong: #4b6e7d;
+}
+
+.overviewStrip,
+.widget,
+.globalBanner,
+.playStatusFooter {
+  border: 2px solid var(--play-card-border);
+  border-radius: 0.25rem;
+}
+
+.globalBanner {
+  min-height: 3.25rem;
+  padding: 0.68rem 0.9rem;
+  border-left-width: 4px;
+  box-shadow: 0 0.8rem 2rem rgb(0 0 0 / 16%);
+}
+
+.globalBanner span,
+.playTitleBlock p,
+.quickActionList small,
+.quickActionList em,
+.upNextList b,
+.playModeGrid small,
+.emptyContent > p,
+.emptyStatsCopy > p,
+.activityFeed small,
+.crewRosterSummary small,
+.crewSignalRows span,
+.widgetState p {
+  color: var(--play-body-text);
+  font-family: var(--vz-font-body, var(--vz-font-interface));
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.overviewMetricValue {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.overviewMetricValue > span {
+  font-family: var(--vz-font-numeric, var(--vz-font-display));
+}
+
+.overviewMetricValue > small {
+  overflow: hidden;
+  color: var(--play-muted);
+  font-family: var(--vz-font-body, var(--vz-font-interface));
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.overviewMetricValue[data-locked="true"] > span {
+  color: color-mix(in srgb, var(--play-text) 78%, transparent);
+}
+
+/* Next Match remains the only solid neon-green action anchor. */
+.emptyActions a {
+  color: var(--empty-accent);
+  border-width: 2px;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--empty-accent) 58%, var(--play-card-border-strong));
+  background: color-mix(in srgb, var(--empty-accent) 4%, transparent);
+  box-shadow: none;
+}
+
+.emptyActions a[data-emphasis="primary"] {
+  color: #00110b;
+  border-width: 2px;
+  border-color: var(--play-green);
+  background: var(--play-green);
+  box-shadow: 0 0 1.2rem rgb(0 255 138 / 16%);
+}
+
+.emptyActions a[data-emphasis="ghost"] {
+  color: var(--empty-accent);
+  border-width: 2px;
+  border-color: color-mix(in srgb, var(--empty-accent) 58%, var(--play-card-border-strong));
+  background: transparent;
+}
+
+.emptyActions a[data-emphasis="text"] {
+  min-height: 2.2rem;
+  padding-inline: 0.3rem;
+  color: var(--play-body-text);
+  border-color: transparent;
+  background: transparent;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--play-body-text) 38%, transparent);
+  text-underline-offset: 0.22rem;
+}
+
+/* Smart actions stay useful, but visually defer to Next Match. */
+.quickActionList a,
+.quickActionList a[data-priority="high"] {
+  grid-template-columns: 2.35rem minmax(0, 1fr) auto;
+  border-width: 2px;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--play-card-border-strong) 94%, transparent);
+  background: rgb(255 255 255 / 1.5%);
+  box-shadow: none;
+}
+
+.quickActionList a::after {
+  content: "↗";
+  color: color-mix(in srgb, var(--play-muted) 76%, transparent);
+  font-size: 0.8rem;
+  transition:
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.quickActionList a:hover,
+.quickActionList a:focus-visible,
+.quickActionList a[data-priority="high"]:hover,
+.quickActionList a[data-priority="high"]:focus-visible {
+  border-color: color-mix(in srgb, var(--play-green) 32%, var(--play-card-border));
+  background: rgb(0 255 138 / 2.5%);
+  outline: none;
+  transform: translateX(2px);
+}
+
+.quickActionList a:hover::after,
+.quickActionList a:focus-visible::after {
+  color: var(--play-green);
+  transform: translate(1px, -1px);
+}
+
+.quickActionIcon {
+  color: color-mix(in srgb, var(--play-cyan) 78%, white 5%);
+  background: transparent;
+  box-shadow: none;
+}
+
+.quickActionList strong {
+  color: var(--play-text);
+  font-family: var(--vz-font-interface);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+.quickActionList small {
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.quickActionList em {
+  margin-top: 0.22rem;
+  color: color-mix(in srgb, var(--play-green) 78%, white 6%);
+  font-size: 0.66rem;
+  font-style: normal;
+  line-height: 1.25;
+}
+
+.playModeGrid small,
+.upNextList b,
+.emptyContent > p,
+.emptyStatsCopy > p {
+  text-transform: none;
+}
+
+.widgetState {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  min-height: 7.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem;
+  border: 2px solid var(--play-card-border-strong);
+  border-radius: 0.22rem;
+  background: linear-gradient(145deg, rgb(255 255 255 / 2.2%), rgb(0 0 0 / 8%));
+}
+
+.widgetState[data-state="error"],
+.widgetState[data-state="partial_failure"] {
+  border-color: color-mix(in srgb, var(--play-red) 46%, var(--play-card-border));
+}
+
+.widgetState[data-state="offline"],
+.widgetState[data-state="maintenance"] {
+  border-color: color-mix(in srgb, var(--play-gold) 42%, var(--play-card-border));
+}
+
+.stateGlyph {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  color: var(--play-cyan);
+  border: 2px solid currentColor;
+  border-radius: 0.18rem;
+  background: rgb(34 223 245 / 4%);
+  font-family: var(--vz-font-display);
+  font-weight: 900;
+}
+
+.widgetState strong {
+  display: block;
+  color: var(--play-text);
+  font-family: var(--vz-font-display);
+  font-size: 0.88rem;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.widgetState p {
+  margin: 0.22rem 0 0;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.widgetState small {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--play-muted);
+  font-family: var(--vz-font-numeric, var(--vz-font-interface));
+  font-size: 0.62rem;
+}
+
+.widgetState button {
+  min-height: 2.35rem;
+  padding: 0.5rem 0.72rem;
+  color: var(--play-cyan);
+  border: 2px solid color-mix(in srgb, var(--play-cyan) 66%, var(--play-card-border-strong));
+  background: transparent;
+  font-family: var(--vz-font-display);
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+@media (max-width: 48rem) {
+  .overviewMetricValue > small {
+    white-space: normal;
+  }
+
+  .widgetState {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .widgetState button {
+    grid-column: 1 / -1;
+  }
+}
+/* VERZUS COMMAND CENTRE UX REFINEMENT END */
+
+/* VERZUS PLAY SECTION FRAMING START */
+.playRoot {
+  --play-card-border: #496978;
+  --play-card-border-strong: #7598a7;
+  --play-section-cyan: var(--play-cyan);
+  --play-section-violet: #a878ff;
+  --play-section-green: var(--play-green);
+}
+
+/* Three explicit dashboard groups. */
+.dashboardGrid {
+  grid-template-areas:
+    "primaryHeader primaryHeader primaryHeader"
+    "match quick upnext"
+    "progressionHeader progressionHeader progressionHeader"
+    "modes stats challenges"
+    "intelHeader intelHeader intelHeader"
+    "opportunities activity crew";
+  column-gap: 0.8rem;
+  row-gap: 0.55rem;
+}
+
+.primarySectionHeader {
+  grid-area: primaryHeader;
+}
+
+.progressionSectionHeader {
+  grid-area: progressionHeader;
+  margin-top: 0.2rem;
+}
+
+.intelSectionHeader {
+  grid-area: intelHeader;
+  margin-top: 0.2rem;
+}
+
+.sectionHeader {
+  --section-accent: var(--play-section-cyan);
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 2.9rem;
+  grid-template-columns: 2.6rem minmax(0, 1fr) minmax(4rem, 0.24fr);
+  align-items: center;
+  overflow: hidden;
+  border: 3px solid color-mix(in srgb, var(--section-accent) 52%, var(--play-card-border-strong));
+  border-left-width: 7px;
+  border-radius: 0.28rem;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--section-accent) 10%, transparent),
+      transparent 32%
+    ),
+    linear-gradient(145deg, rgb(12 23 31 / 98%), rgb(3 9 14 / 98%));
+  box-shadow:
+    0 0.75rem 1.6rem rgb(0 0 0 / 18%),
+    inset 0 1px 0 rgb(255 255 255 / 4%);
+}
+
+.sectionHeader[data-tone="violet"] {
+  --section-accent: var(--play-section-violet);
+}
+
+.sectionHeader[data-tone="green"] {
+  --section-accent: var(--play-section-green);
+}
+
+.sectionHeaderIndex {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  color: #00110b;
+  border-right: 3px solid
+    color-mix(in srgb, var(--section-accent) 56%, var(--play-card-border-strong));
+  background: var(--section-accent);
+  font-family: var(--vz-font-display);
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+}
+
+.sectionHeaderCopy {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.38rem 0.75rem;
+}
+
+.sectionHeaderCopy small {
+  grid-column: 1 / -1;
+  color: var(--section-accent);
+  font-family: var(--vz-font-interface);
+  font-size: 0.58rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  line-height: 1.1;
+}
+
+.sectionHeaderCopy h2 {
+  margin: 0.14rem 0 0;
+  color: var(--play-text);
+  font-family: var(--vz-font-display);
+  font-size: 1rem;
+  font-weight: 950;
+  letter-spacing: 0.055em;
+  line-height: 1;
+}
+
+.sectionHeaderCopy p {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--play-body-text, #d7e0e8);
+  font-size: 0.72rem;
+  font-weight: 550;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sectionHeaderRail {
+  width: calc(100% - 0.8rem);
+  height: 3px;
+  justify-self: end;
+  margin-right: 0.8rem;
+  background: linear-gradient(90deg, transparent, var(--section-accent));
+  box-shadow: 0 0 0.8rem color-mix(in srgb, var(--section-accent) 34%, transparent);
+}
+
+/* Every dashboard module receives a strong, consistent outer frame. */
+.widget {
+  --play-widget-padding: 0.8rem;
+  padding: var(--play-widget-padding);
+  border-width: 3px !important;
+  border-style: solid;
+  border-color: var(--play-card-border-strong) !important;
+  border-radius: 0.3rem;
+  box-shadow:
+    0 1rem 2rem rgb(0 0 0 / 22%),
+    inset 0 1px 0 rgb(255 255 255 / 3%);
+}
+
+.nextMatchPanel {
+  --play-widget-padding: 0rem;
+  padding: 0;
+  border-width: 4px !important;
+  border-color: color-mix(in srgb, var(--play-cyan) 58%, var(--play-card-border-strong)) !important;
+}
+
+/* Turn every card title into a real header bar, not floating text. */
+.widgetHeader {
+  position: relative;
+  min-height: 3rem;
+  align-items: center;
+  margin: calc(var(--play-widget-padding) * -1) calc(var(--play-widget-padding) * -1) 0.8rem;
+  padding: 0.64rem 0.8rem;
+  border-bottom: 3px solid var(--play-card-border-strong);
+  background:
+    linear-gradient(90deg, rgb(34 223 245 / 7%), transparent 48%),
+    linear-gradient(180deg, rgb(255 255 255 / 3%), rgb(0 0 0 / 8%));
+}
+
+.widgetHeader::before {
+  position: absolute;
+  width: 5px;
+  inset: 0 auto 0 0;
+  content: "";
+  background: var(--play-cyan);
+  box-shadow: 0 0 0.75rem rgb(34 223 245 / 38%);
+}
+
+.widgetHeader > div {
+  min-width: 0;
+  padding-left: 0.25rem;
+}
+
+.widgetHeader h2 {
+  font-size: 1rem;
+  font-weight: 950;
+  letter-spacing: 0.055em;
+}
+
+.widgetHeader > div > span {
+  margin-bottom: 0.2rem;
+  color: #b9c8d4;
+  font-size: 0.62rem;
+}
+
+.widgetHeader > b,
+.widgetHeader > a {
+  padding: 0.26rem 0.42rem;
+  border: 2px solid color-mix(in srgb, var(--play-green) 42%, var(--play-card-border-strong));
+  border-radius: 0.18rem;
+  background: rgb(0 255 138 / 3%);
+  font-size: 0.66rem;
+}
+
+/* The live Next Match command area has its own dedicated header. */
+.nextMatchCommand > header {
+  margin: -0.8rem -0.8rem 0.8rem;
+  padding: 0.72rem 0.8rem;
+  border-bottom: 3px solid color-mix(in srgb, var(--play-cyan) 58%, var(--play-card-border-strong));
+  background: linear-gradient(90deg, rgb(34 223 245 / 8%), transparent 65%);
+}
+
+.overviewStrip,
+.globalBanner,
+.playStatusFooter {
+  border-width: 3px !important;
+  border-color: var(--play-card-border-strong) !important;
+}
+
+.globalBanner {
+  border-left-width: 7px !important;
+}
+
+.quickActionList a,
+.upNextList article,
+.playModeGrid a,
+.playModeGrid article,
+.activityFeed article,
+.crewSignalRows > div,
+.opportunityCards article,
+.widgetState,
+.actionRow,
+.stateCard {
+  border-width: 2px !important;
+}
+
+@media (max-width: 86rem) {
+  .dashboardGrid {
+    grid-template-areas:
+      "primaryHeader primaryHeader"
+      "match quick"
+      "match upnext"
+      "progressionHeader progressionHeader"
+      "modes stats"
+      "challenges challenges"
+      "intelHeader intelHeader"
+      "opportunities opportunities"
+      "activity crew";
+  }
+}
+
+@media (max-width: 64rem) {
+  .dashboardGrid {
+    grid-template-areas:
+      "primaryHeader primaryHeader"
+      "match match"
+      "quick upnext"
+      "progressionHeader progressionHeader"
+      "modes modes"
+      "stats challenges"
+      "intelHeader intelHeader"
+      "opportunities opportunities"
+      "activity crew";
+  }
+
+  .sectionHeaderCopy p {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 48rem) {
+  .sectionHeader {
+    min-height: 3.2rem;
+    grid-template-columns: 2.45rem minmax(0, 1fr);
+  }
+
+  .sectionHeaderRail {
+    display: none;
+  }
+
+  .sectionHeaderCopy {
+    display: block;
+    padding: 0.48rem 0.65rem;
+  }
+
+  .sectionHeaderCopy h2 {
+    font-size: 0.92rem;
+  }
+
+  .sectionHeaderCopy p {
+    margin-top: 0.2rem;
+    font-size: 0.68rem;
+    white-space: normal;
+  }
+
+  .widget {
+    --play-widget-padding: 0.75rem;
+  }
+
+  .widgetHeader {
+    min-height: 3.1rem;
+  }
+}
+
+@media (min-width: 76.01rem) and (max-height: 62rem) {
+  .sectionHeader {
+    min-height: 2.45rem;
+  }
+
+  .sectionHeaderCopy {
+    padding-block: 0.25rem;
+  }
+
+  .sectionHeaderCopy small {
+    font-size: 0.52rem;
+  }
+
+  .sectionHeaderCopy h2 {
+    font-size: 0.86rem;
+  }
+
+  .sectionHeaderCopy p {
+    font-size: 0.64rem;
+  }
+
+  .widget {
+    --play-widget-padding: 0.62rem;
+  }
+
+  .widgetHeader {
+    min-height: 2.55rem;
+    margin-bottom: 0.5rem;
+    padding-block: 0.48rem;
+  }
+}
+/* VERZUS PLAY SECTION FRAMING END */
+
+/* VERZUS PLAY COLOR BALANCE START */
+.playRoot {
+  --play-frame-neutral: #294451;
+  --play-frame-bright: #4f7788;
+  --play-cyan-soft: #4ce8ff;
+  --play-violet-soft: #b884ff;
+  --play-magenta-soft: #ff66ca;
+  --play-green-soft: #48f5a0;
+  --play-amber-soft: #ffc857;
+}
+
+/*
+ * Separation now comes from spacing, tone and header bands rather than
+ * oversized outlines. Standard cards use 1px; only the primary task uses 2px.
+ */
+.dashboardGrid {
+  column-gap: 0.9rem;
+  row-gap: 0.72rem;
+}
+
+.progressionSectionHeader,
+.intelSectionHeader {
+  margin-top: 0.45rem;
+}
+
+.sectionHeader {
+  min-height: 3.35rem;
+  isolation: isolate;
+  border: 1px solid color-mix(in srgb, var(--section-accent) 48%, var(--play-frame-neutral));
+  border-left-width: 4px;
+  border-radius: 0.55rem;
+  background:
+    radial-gradient(
+      circle at 88% 50%,
+      color-mix(in srgb, var(--section-accent) 19%, transparent),
+      transparent 31%
+    ),
+    linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--section-accent) 14%, #071019),
+      #071018 42%,
+      #03090e 100%
+    );
+  box-shadow:
+    0 0.7rem 1.6rem rgb(0 0 0 / 20%),
+    0 0 1.3rem color-mix(in srgb, var(--section-accent) 10%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 5%);
+}
+
+.sectionHeader::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  opacity: 0.22;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 22px,
+    color-mix(in srgb, var(--section-accent) 17%, transparent) 23px,
+    transparent 24px
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 38%, #000 100%);
+}
+
+.sectionHeader::after {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.38rem;
+  width: 4.8rem;
+  height: 0.18rem;
+  border-radius: 999px;
+  content: "";
+  background: linear-gradient(90deg, transparent, var(--section-accent));
+  box-shadow: 0 0 0.85rem color-mix(in srgb, var(--section-accent) 45%, transparent);
+}
+
+.sectionHeader[data-tone="cyan"] {
+  --section-accent: var(--play-cyan-soft);
+}
+
+.sectionHeader[data-tone="violet"] {
+  --section-accent: var(--play-violet-soft);
+  background:
+    radial-gradient(circle at 84% 42%, rgb(255 102 202 / 12%), transparent 30%),
+    linear-gradient(100deg, rgb(184 132 255 / 15%), #100d1d 43%, #07070d 100%);
+}
+
+.sectionHeader[data-tone="green"] {
+  --section-accent: var(--play-green-soft);
+  background:
+    radial-gradient(circle at 86% 45%, rgb(255 200 87 / 10%), transparent 29%),
+    linear-gradient(100deg, rgb(72 245 160 / 14%), #071712 43%, #040b09 100%);
+}
+
+.sectionHeaderIndex {
+  width: 2.75rem;
+  border-right: 1px solid color-mix(in srgb, var(--section-accent) 45%, var(--play-frame-neutral));
+  color: #f6fbff;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--section-accent) 75%, #ffffff),
+    var(--section-accent) 48%,
+    color-mix(in srgb, var(--section-accent) 54%, #001019)
+  );
+  text-shadow: 0 1px 0 rgb(0 0 0 / 45%);
+  box-shadow: inset -1px 0 0 rgb(255 255 255 / 10%);
+}
+
+.sectionHeaderCopy {
+  column-gap: 0.85rem;
+  padding: 0.52rem 0.85rem;
+}
+
+.sectionHeaderCopy small {
+  color: color-mix(in srgb, var(--section-accent) 88%, white);
+  font-size: 0.61rem;
+  letter-spacing: 0.14em;
+  text-shadow: 0 0 0.75rem color-mix(in srgb, var(--section-accent) 42%, transparent);
+}
+
+.sectionHeaderCopy h2 {
+  margin-top: 0.16rem;
+  color: #f5fbff;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 1rem color-mix(in srgb, var(--section-accent) 19%, transparent);
+}
+
+.sectionHeaderCopy p {
+  color: #c8d7e0;
+  font-size: 0.75rem;
+  font-weight: 580;
+}
+
+.sectionHeaderRail {
+  height: 1px;
+  opacity: 0.75;
+}
+
+/* Section-specific accents make the screen more colorful without visual noise. */
+.matchArea,
+.quickArea,
+.upNextArea {
+  --widget-accent: var(--play-cyan-soft);
+}
+
+.modesArea {
+  --widget-accent: var(--play-violet-soft);
+}
+
+.statsArea {
+  --widget-accent: var(--play-magenta-soft);
+}
+
+.challengesArea {
+  --widget-accent: var(--play-amber-soft);
+}
+
+.opportunitiesArea {
+  --widget-accent: var(--play-green-soft);
+}
+
+.activityArea {
+  --widget-accent: var(--play-cyan-soft);
+}
+
+.crewArea {
+  --widget-accent: var(--play-violet-soft);
+}
+
+.widget {
+  --play-widget-padding: 0.8rem;
+  border-width: 1px !important;
+  border-color: color-mix(
+    in srgb,
+    var(--widget-accent, var(--play-cyan-soft)) 31%,
+    var(--play-frame-neutral)
+  ) !important;
+  border-radius: 0.52rem;
+  background:
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 4%, transparent),
+      transparent 38%
+    ),
+    linear-gradient(180deg, rgb(9 18 25 / 98%), rgb(4 10 15 / 98%));
+  box-shadow:
+    0 0.85rem 1.8rem rgb(0 0 0 / 18%),
+    inset 0 1px 0 rgb(255 255 255 / 4%),
+    inset 0 2px 0 color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 34%, transparent);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+@media (hover: hover) {
+  .widget:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--widget-accent, var(--play-cyan-soft)) 54%,
+      var(--play-frame-bright)
+    ) !important;
+    box-shadow:
+      0 1rem 2rem rgb(0 0 0 / 22%),
+      0 0 1.15rem color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 9%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 5%),
+      inset 0 2px 0 color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 48%, transparent);
+    transform: translateY(-1px);
+  }
+}
+
+.nextMatchPanel {
+  border-width: 2px !important;
+  border-color: color-mix(in srgb, var(--play-cyan-soft) 62%, var(--play-frame-bright)) !important;
+  box-shadow:
+    0 1rem 2.2rem rgb(0 0 0 / 24%),
+    0 0 1.4rem rgb(76 232 255 / 9%),
+    inset 0 2px 0 rgb(76 232 255 / 42%);
+}
+
+.widgetHeader {
+  min-height: 3rem;
+  margin-bottom: 0.72rem;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 34%, var(--play-frame-neutral));
+  background:
+    radial-gradient(
+      circle at 94% 50%,
+      color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 10%, transparent),
+      transparent 28%
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 9%, transparent),
+      transparent 55%
+    );
+}
+
+.widgetHeader::before {
+  width: 3px;
+  background: var(--widget-accent, var(--play-cyan-soft));
+  box-shadow: 0 0 0.8rem
+    color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 48%, transparent);
+}
+
+.widgetHeader h2 {
+  color: #f2f8fb;
+  font-size: 1rem;
+  text-shadow: 0 0 0.8rem
+    color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 12%, transparent);
+}
+
+.widgetHeader > div > span {
+  color: #b8c8d2;
+}
+
+.widgetHeader > b,
+.widgetHeader > a {
+  border-width: 1px;
+  border-color: color-mix(
+    in srgb,
+    var(--widget-accent, var(--play-green-soft)) 48%,
+    var(--play-frame-neutral)
+  );
+  background: color-mix(in srgb, var(--widget-accent, var(--play-green-soft)) 7%, transparent);
+  color: color-mix(in srgb, var(--widget-accent, var(--play-green-soft)) 78%, white);
+}
+
+.nextMatchCommand > header {
+  border-bottom-width: 1px;
+  border-bottom-color: color-mix(in srgb, var(--play-cyan-soft) 45%, var(--play-frame-neutral));
+  background:
+    radial-gradient(circle at 88% 50%, rgb(76 232 255 / 10%), transparent 25%),
+    linear-gradient(90deg, rgb(76 232 255 / 9%), transparent 62%);
+}
+
+.overviewStrip,
+.globalBanner,
+.playStatusFooter {
+  border-width: 1px !important;
+  border-color: var(--play-frame-neutral) !important;
+  border-radius: 0.52rem;
+}
+
+.globalBanner {
+  border-left-width: 4px !important;
+  background: linear-gradient(90deg, rgb(255 200 87 / 9%), transparent 46%), rgb(8 15 20 / 97%);
+}
+
+.quickActionList a,
+.upNextList article,
+.playModeGrid a,
+.playModeGrid article,
+.activityFeed article,
+.crewSignalRows > div,
+.opportunityCards article,
+.widgetState,
+.actionRow,
+.stateCard,
+.inlineError {
+  border-width: 1px !important;
+  border-color: color-mix(
+    in srgb,
+    var(--widget-accent, var(--play-cyan-soft)) 24%,
+    var(--play-frame-neutral)
+  ) !important;
+  border-radius: 0.38rem;
+}
+
+.quickActionList a,
+.playModeGrid a,
+.opportunityCards article {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 6%, transparent),
+      transparent 52%
+    ),
+    rgb(8 16 22 / 88%);
+}
+
+.heroSecondaryButton,
+.fullWidthLink,
+.emptyActions a:not(.heroPrimaryButton) {
+  border-width: 1px;
+}
+
+@media (max-width: 48rem) {
+  .sectionHeader {
+    min-height: 3.45rem;
+    border-left-width: 3px;
+  }
+
+  .sectionHeaderCopy {
+    padding: 0.52rem 0.68rem;
+  }
+
+  .sectionHeaderCopy h2 {
+    font-size: 0.96rem;
+  }
+
+  .sectionHeaderCopy p {
+    color: #bdccd6;
+    font-size: 0.7rem;
+  }
+
+  .widget {
+    border-radius: 0.48rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .widget {
+    transition: none;
+  }
+
+  .widget:hover {
+    transform: none;
+  }
+}
+/* VERZUS PLAY COLOR BALANCE END */
