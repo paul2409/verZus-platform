@@ -316,3 +316,153 @@
   box-shadow: none;
 }
 /* VERZUS ACTION CENTRE LEGIBILITY END */
+
+/* VERZUS TACTICAL TYPOGRAPHY START */
+.panel {
+  font-family: var(--vz-font-interface);
+}
+
+.header h2,
+.header span,
+.actionCta,
+.stateCard strong,
+.stateCard button,
+.stateCard a {
+  font-family: var(--vz-font-display);
+  font-synthesis: none;
+}
+
+.actionCopy strong,
+.actionCopy small,
+.stateCard small {
+  font-family: var(--vz-font-interface);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.actionCopy strong {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.actionCopy small,
+.stateCard small {
+  color: #cbd7df;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.counts,
+.counts b,
+.actionMeta b,
+.actionMeta em {
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  letter-spacing: 0;
+}
+
+.actionMeta b,
+.actionMeta em {
+  font-size: 0.7rem;
+}
+/* VERZUS TACTICAL TYPOGRAPHY END */
+
+/* VERZUS ACTION CENTRE INTERACTIONS START */
+.panel,
+.actionRow,
+.stateCard,
+.stateCard a,
+.stateCard button,
+.priorityMark,
+.actionCta {
+  transition:
+    color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 190ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 190ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 190ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.actionRow:focus-visible,
+.stateCard a:focus-visible,
+.stateCard button:focus-visible {
+  outline: 2px solid var(--action-tone, var(--play-cyan, #22dff5));
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel:hover {
+    border-color: color-mix(in srgb, var(--play-cyan, #22dff5) 46%, var(--play-line, #294451));
+    box-shadow:
+      0 1.1rem 2.2rem rgb(0 0 0 / 25%),
+      0 0 1.2rem rgb(34 223 245 / 9%);
+    transform: translateY(-2px);
+  }
+
+  .actionRow:hover,
+  .actionRow:focus-visible {
+    border-color: color-mix(in srgb, var(--action-tone) 66%, var(--play-line, #294451));
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--action-tone) 10%, transparent),
+        transparent 72%
+      ),
+      rgb(255 255 255 / 2%);
+    box-shadow:
+      0 0.8rem 1.4rem rgb(0 0 0 / 20%),
+      inset 3px 0 0 color-mix(in srgb, var(--action-tone) 76%, transparent);
+    transform: translateX(4px);
+  }
+
+  .actionRow:hover .priorityMark,
+  .actionRow:focus-visible .priorityMark {
+    box-shadow: 0 0 0.9rem color-mix(in srgb, var(--action-tone) 35%, transparent);
+    filter: brightness(1.15) saturate(1.12);
+    transform: scale(1.08);
+  }
+
+  .actionRow:hover .actionCta,
+  .actionRow:focus-visible .actionCta {
+    color: color-mix(in srgb, var(--action-tone) 78%, white);
+    transform: translateX(3px);
+  }
+
+  .stateCard:hover {
+    border-color: color-mix(in srgb, var(--play-cyan, #22dff5) 38%, var(--play-line, #294451));
+    box-shadow: inset 3px 0 0 rgb(34 223 245 / 34%);
+  }
+
+  .stateCard a:hover,
+  .stateCard a:focus-visible,
+  .stateCard button:hover:not(:disabled),
+  .stateCard button:focus-visible:not(:disabled) {
+    border-color: currentColor;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    box-shadow: 0 0 0.9rem color-mix(in srgb, currentColor 18%, transparent);
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .actionRow,
+  .stateCard,
+  .stateCard a,
+  .stateCard button,
+  .priorityMark,
+  .actionCta {
+    transition-duration: 0.01ms !important;
+  }
+
+  .panel:hover,
+  .actionRow:hover,
+  .actionRow:focus-visible,
+  .stateCard a:hover,
+  .stateCard button:hover {
+    transform: none !important;
+  }
+}
+/* VERZUS ACTION CENTRE INTERACTIONS END */

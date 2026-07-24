@@ -78,7 +78,6 @@ export function TopBar({
           onClick={onMenuOpen}
           size="md"
         />
-
         <IconButton icon="search" label="Search" onClick={onSearchOpen} size="md" />
 
         <span className={styles.notificationButtonWrap}>

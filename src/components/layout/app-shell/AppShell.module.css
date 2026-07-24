@@ -1753,3 +1753,51 @@
   border-width: 2px;
 }
 /* VERZUS GROUPED SIDEBAR END */
+
+/* VERZUS TACTICAL TYPOGRAPHY START */
+.navigationLink,
+.profileControl,
+.topBarActionLink,
+.globalStatus,
+.globalStatusCompact,
+.pageHeaderCopy > p:not(.pageEyebrow),
+.breadcrumbs,
+.sidebarProfile span,
+.sidebarStatus span,
+.drawerProfile span {
+  font-family: var(--vz-font-interface);
+}
+
+.navigationLink {
+  font-size: 0.875rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  text-transform: none;
+}
+
+.navigationSectionLabel,
+.pageEyebrow,
+.pageHeader h1,
+.brandWord,
+.brandVersion {
+  font-family: var(--vz-font-display);
+  font-synthesis: none;
+}
+
+.navigationSectionLabel {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.navigationCount,
+.topBarBadge,
+.sidebarMetric strong,
+[data-navigation-state] .navigationPartial,
+[data-navigation-state] .navigationError {
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  letter-spacing: 0;
+}
+/* VERZUS TACTICAL TYPOGRAPHY END */

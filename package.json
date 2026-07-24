@@ -281,7 +281,9 @@
     "check:production-routes": "node scripts/check-production-routes.mjs",
     "check:production-runtime": "node scripts/check-production-runtime.mjs",
     "check:production-guards": "npm run check:no-runtime-mocks && npm run check:production-routes && npm run check:production-runtime && npm run check:boundaries",
-    "ops:proactive": "tsx scripts/run-proactive-operations.ts"
+    "ops:proactive": "tsx scripts/run-proactive-operations.ts",
+    "check:typography": "node scripts/check-typography-system.mjs",
+    "check:play-interactions": "node scripts/check-play-interactions.mjs"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx}": [
@@ -292,6 +294,7 @@
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/jetbrains-mono": "5.2.8",
     "@fontsource/rajdhani": "^5.2.7",
     "@hookform/resolvers": "^5.4.0",
     "@tanstack/react-query": "^5.101.2",

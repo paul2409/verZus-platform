@@ -364,3 +364,74 @@
 }
 
 /* VERZUS STAGE 1 TYPE LOCK:END */
+
+/* VERZUS TACTICAL TYPOGRAPHY START */
+:where(button, input, select, textarea, option) {
+  font-family: var(--vz-font-interface);
+}
+
+:where(code, kbd, samp, pre) {
+  font-family: var(--vz-font-mono);
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+}
+
+.vz-ui-lg,
+.vz-ui-md,
+.vz-ui-sm {
+  margin: 0;
+  color: var(--vz-color-text-secondary);
+  font-family: var(--vz-font-interface);
+  letter-spacing: var(--vz-tracking-ui);
+  text-transform: none;
+}
+
+.vz-ui-lg {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.vz-ui-md {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.vz-ui-sm {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.vz-data-label,
+.vz-metadata {
+  font-family: var(--vz-font-numeric);
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  font-feature-settings:
+    "tnum" 1,
+    "lnum" 1,
+    "zero" 1;
+}
+
+.vz-data-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.vz-metadata {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+:where(.vz-body-lg, .vz-body-md, .vz-body-sm, .vz-caption) {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:where(.vz-display-xl, .vz-display-lg, .vz-heading-lg, .vz-heading-md, .vz-heading-sm) {
+  font-family: var(--vz-font-display);
+  font-synthesis: none;
+}
+/* VERZUS TACTICAL TYPOGRAPHY END */

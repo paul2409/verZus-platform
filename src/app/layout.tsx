@@ -1,9 +1,10 @@
-import "@fontsource/rajdhani/400.css";
 import "@fontsource/rajdhani/300.css";
-import "@fontsource-variable/inter";
+import "@fontsource/rajdhani/400.css";
 import "@fontsource/rajdhani/500.css";
 import "@fontsource/rajdhani/600.css";
 import "@fontsource/rajdhani/700.css";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";

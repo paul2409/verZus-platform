@@ -7,36 +7,50 @@ export PYTHONIOENCODING=utf-8
 REPO="${1:-.}"
 cd "$REPO"
 
-printf '\n==> VERZUS Play visual balance pass\n'
+printf '\n==> VERZUS Play interaction pass\n'
 printf 'Repository: %s\n' "$(pwd)"
-printf 'Borders   : lighter 1px cards / 2px primary panel\n'
-printf 'Headers   : richer cyan / violet / green tactical bands\n'
+printf 'Scope     : Play section headers, widgets, cards, rows, links and buttons\n'
+printf 'Input     : Mouse, keyboard and reduced-motion safe\n\n'
 
 required=(
-  "src/features/play/ui/PlayCommandCenter.tsx"
-  "src/features/play/ui/PlaySectionHeader.tsx"
   "src/features/play/ui/play-command-center.module.css"
+  "src/features/play/ui/action-centre-panel.module.css"
+  "package.json"
 )
 
 for path in "${required[@]}"; do
   if [[ ! -f "$path" ]]; then
     printf 'Missing prerequisite: %s\n' "$path" >&2
-    printf 'Apply the Play section-header step before this refinement.\n' >&2
+    printf 'Apply the Play command-centre and Action Centre steps first.\n' >&2
     exit 1
   fi
 done
 
-backup_root=".git/verzus-backups/play-color-balance"
+backup_root=".git/verzus-backups/play-hover-effects"
 timestamp="$(date +%Y%m%d-%H%M%S)"
 backup_dir="$backup_root/$timestamp"
 mkdir -p "$backup_dir"
 
 paths=(
   "src/features/play/ui/play-command-center.module.css"
+  "src/features/play/ui/action-centre-panel.module.css"
+  "scripts/check-play-interactions.mjs"
+  "package.json"
 )
 
 printf '%s\n' "${paths[@]}" > "$backup_dir/touched-paths.txt"
-tar -czf "$backup_dir/files-before-color-balance.tar.gz" "${paths[@]}"
+existing=()
+for path in "${paths[@]}"; do
+  if [[ -e "$path" ]]; then
+    existing+=("$path")
+  fi
+done
+printf '%s\n' "${existing[@]}" > "$backup_dir/existing-paths.txt"
+if (( ${#existing[@]} > 0 )); then
+  tar -czf "$backup_dir/files-before-play-hover.tar.gz" "${existing[@]}"
+else
+  tar -czf "$backup_dir/files-before-play-hover.tar.gz" --files-from /dev/null
+fi
 
 rollback() {
   status=$?
@@ -44,390 +58,605 @@ rollback() {
     return
   fi
 
-  printf '\nPlay visual balance failed. Restoring files from %s\n' "$backup_dir" >&2
+  printf '\nPlay interaction pass failed. Restoring files from %s\n' "$backup_dir" >&2
   while IFS= read -r path; do
     rm -rf -- "$path"
   done < "$backup_dir/touched-paths.txt"
-  tar -xzf "$backup_dir/files-before-color-balance.tar.gz" -C .
+  tar -xzf "$backup_dir/files-before-play-hover.tar.gz" -C .
   exit "$status"
 }
 trap rollback EXIT
+
+mkdir -p scripts
 
 python -X utf8 - <<'PY'
 from pathlib import Path
 
 path = Path("src/features/play/ui/play-command-center.module.css")
 text = path.read_text(encoding="utf-8")
-start = "/* VERZUS PLAY COLOR BALANCE START */"
-end = "/* VERZUS PLAY COLOR BALANCE END */"
+start = "/* VERZUS PLAY INTERACTIONS START */"
+end = "/* VERZUS PLAY INTERACTIONS END */"
 
 if start in text:
     before, rest = text.split(start, 1)
     if end not in rest:
-        raise SystemExit("Existing Play color-balance CSS marker is malformed")
+        raise SystemExit("Existing Play interaction marker is malformed")
     _, after = rest.split(end, 1)
     text = before.rstrip() + "\n" + after.lstrip("\n")
 
 block = r'''
-/* VERZUS PLAY COLOR BALANCE START */
+/* VERZUS PLAY INTERACTIONS START */
 .playRoot {
-  --play-frame-neutral: #294451;
-  --play-frame-bright: #4f7788;
-  --play-cyan-soft: #4ce8ff;
-  --play-violet-soft: #b884ff;
-  --play-magenta-soft: #ff66ca;
-  --play-green-soft: #48f5a0;
-  --play-amber-soft: #ffc857;
+  --play-motion-fast: 140ms;
+  --play-motion-normal: 190ms;
+  --play-motion-slow: 260ms;
+  --play-motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --play-focus-ring: var(--play-cyan-soft, var(--play-cyan));
 }
 
-/*
- * Separation now comes from spacing, tone and header bands rather than
- * oversized outlines. Standard cards use 1px; only the primary task uses 2px.
- */
-.dashboardGrid {
-  column-gap: 0.9rem;
-  row-gap: 0.72rem;
-}
-
-.progressionSectionHeader,
-.intelSectionHeader {
-  margin-top: 0.45rem;
-}
-
-.sectionHeader {
-  min-height: 3.35rem;
-  isolation: isolate;
-  border: 1px solid color-mix(in srgb, var(--section-accent) 48%, var(--play-frame-neutral));
-  border-left-width: 4px;
-  border-radius: 0.55rem;
-  background:
-    radial-gradient(circle at 88% 50%, color-mix(in srgb, var(--section-accent) 19%, transparent), transparent 31%),
-    linear-gradient(100deg, color-mix(in srgb, var(--section-accent) 14%, #071019), #071018 42%, #03090e 100%);
-  box-shadow:
-    0 0.7rem 1.6rem rgb(0 0 0 / 20%),
-    0 0 1.3rem color-mix(in srgb, var(--section-accent) 10%, transparent),
-    inset 0 1px 0 rgb(255 255 255 / 5%);
-}
-
-.sectionHeader::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  content: "";
-  opacity: 0.22;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0,
-    transparent 22px,
-    color-mix(in srgb, var(--section-accent) 17%, transparent) 23px,
-    transparent 24px
-  );
-  mask-image: linear-gradient(90deg, transparent, #000 38%, #000 100%);
-}
-
-.sectionHeader::after {
-  position: absolute;
-  right: 0.75rem;
-  bottom: 0.38rem;
-  width: 4.8rem;
-  height: 0.18rem;
-  border-radius: 999px;
-  content: "";
-  background: linear-gradient(90deg, transparent, var(--section-accent));
-  box-shadow: 0 0 0.85rem color-mix(in srgb, var(--section-accent) 45%, transparent);
-}
-
-.sectionHeader[data-tone="cyan"] {
-  --section-accent: var(--play-cyan-soft);
-}
-
-.sectionHeader[data-tone="violet"] {
-  --section-accent: var(--play-violet-soft);
-  background:
-    radial-gradient(circle at 84% 42%, rgb(255 102 202 / 12%), transparent 30%),
-    linear-gradient(100deg, rgb(184 132 255 / 15%), #100d1d 43%, #07070d 100%);
-}
-
-.sectionHeader[data-tone="green"] {
-  --section-accent: var(--play-green-soft);
-  background:
-    radial-gradient(circle at 86% 45%, rgb(255 200 87 / 10%), transparent 29%),
-    linear-gradient(100deg, rgb(72 245 160 / 14%), #071712 43%, #040b09 100%);
-}
-
-.sectionHeaderIndex {
-  width: 2.75rem;
-  border-right: 1px solid color-mix(in srgb, var(--section-accent) 45%, var(--play-frame-neutral));
-  color: #f6fbff;
-  background:
-    linear-gradient(150deg, color-mix(in srgb, var(--section-accent) 75%, #ffffff), var(--section-accent) 48%, color-mix(in srgb, var(--section-accent) 54%, #001019));
-  text-shadow: 0 1px 0 rgb(0 0 0 / 45%);
-  box-shadow: inset -1px 0 0 rgb(255 255 255 / 10%);
-}
-
-.sectionHeaderCopy {
-  column-gap: 0.85rem;
-  padding: 0.52rem 0.85rem;
-}
-
-.sectionHeaderCopy small {
-  color: color-mix(in srgb, var(--section-accent) 88%, white);
-  font-size: 0.61rem;
-  letter-spacing: 0.14em;
-  text-shadow: 0 0 0.75rem color-mix(in srgb, var(--section-accent) 42%, transparent);
-}
-
-.sectionHeaderCopy h2 {
-  margin-top: 0.16rem;
-  color: #f5fbff;
-  font-size: 1.05rem;
-  letter-spacing: 0.06em;
-  text-shadow: 0 0 1rem color-mix(in srgb, var(--section-accent) 19%, transparent);
-}
-
-.sectionHeaderCopy p {
-  color: #c8d7e0;
-  font-size: 0.75rem;
-  font-weight: 580;
-}
-
-.sectionHeaderRail {
-  height: 1px;
-  opacity: 0.75;
-}
-
-/* Section-specific accents make the screen more colorful without visual noise. */
-.matchArea,
-.quickArea,
-.upNextArea {
-  --widget-accent: var(--play-cyan-soft);
-}
-
-.modesArea {
-  --widget-accent: var(--play-violet-soft);
-}
-
-.statsArea {
-  --widget-accent: var(--play-magenta-soft);
-}
-
-.challengesArea {
-  --widget-accent: var(--play-amber-soft);
-}
-
-.opportunitiesArea {
-  --widget-accent: var(--play-green-soft);
-}
-
-.activityArea {
-  --widget-accent: var(--play-cyan-soft);
-}
-
-.crewArea {
-  --widget-accent: var(--play-violet-soft);
-}
-
-.widget {
-  --play-widget-padding: 0.8rem;
-  border-width: 1px !important;
-  border-color: color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 31%, var(--play-frame-neutral)) !important;
-  border-radius: 0.52rem;
-  background:
-    linear-gradient(155deg, color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 4%, transparent), transparent 38%),
-    linear-gradient(180deg, rgb(9 18 25 / 98%), rgb(4 10 15 / 98%));
-  box-shadow:
-    0 0.85rem 1.8rem rgb(0 0 0 / 18%),
-    inset 0 1px 0 rgb(255 255 255 / 4%),
-    inset 0 2px 0 color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 34%, transparent);
-  transition:
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
-}
-
-@media (hover: hover) {
-  .widget:hover {
-    border-color: color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 54%, var(--play-frame-bright)) !important;
-    box-shadow:
-      0 1rem 2rem rgb(0 0 0 / 22%),
-      0 0 1.15rem color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 9%, transparent),
-      inset 0 1px 0 rgb(255 255 255 / 5%),
-      inset 0 2px 0 color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 48%, transparent);
-    transform: translateY(-1px);
-  }
-}
-
-.nextMatchPanel {
-  border-width: 2px !important;
-  border-color: color-mix(in srgb, var(--play-cyan-soft) 62%, var(--play-frame-bright)) !important;
-  box-shadow:
-    0 1rem 2.2rem rgb(0 0 0 / 24%),
-    0 0 1.4rem rgb(76 232 255 / 9%),
-    inset 0 2px 0 rgb(76 232 255 / 42%);
-}
-
-.widgetHeader {
-  min-height: 3rem;
-  margin-bottom: 0.72rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 34%, var(--play-frame-neutral));
-  background:
-    radial-gradient(circle at 94% 50%, color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 10%, transparent), transparent 28%),
-    linear-gradient(90deg, color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 9%, transparent), transparent 55%);
-}
-
-.widgetHeader::before {
-  width: 3px;
-  background: var(--widget-accent, var(--play-cyan-soft));
-  box-shadow: 0 0 0.8rem color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 48%, transparent);
-}
-
-.widgetHeader h2 {
-  color: #f2f8fb;
-  font-size: 1rem;
-  text-shadow: 0 0 0.8rem color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 12%, transparent);
-}
-
-.widgetHeader > div > span {
-  color: #b8c8d2;
-}
-
-.widgetHeader > b,
-.widgetHeader > a {
-  border-width: 1px;
-  border-color: color-mix(in srgb, var(--widget-accent, var(--play-green-soft)) 48%, var(--play-frame-neutral));
-  background: color-mix(in srgb, var(--widget-accent, var(--play-green-soft)) 7%, transparent);
-  color: color-mix(in srgb, var(--widget-accent, var(--play-green-soft)) 78%, white);
-}
-
-.nextMatchCommand > header {
-  border-bottom-width: 1px;
-  border-bottom-color: color-mix(in srgb, var(--play-cyan-soft) 45%, var(--play-frame-neutral));
-  background:
-    radial-gradient(circle at 88% 50%, rgb(76 232 255 / 10%), transparent 25%),
-    linear-gradient(90deg, rgb(76 232 255 / 9%), transparent 62%);
-}
-
+/* Consistent motion contract for every major Play surface. */
+.sectionHeader,
+.widget,
 .overviewStrip,
 .globalBanner,
-.playStatusFooter {
-  border-width: 1px !important;
-  border-color: var(--play-frame-neutral) !important;
-  border-radius: 0.52rem;
-}
-
-.globalBanner {
-  border-left-width: 4px !important;
-  background:
-    linear-gradient(90deg, rgb(255 200 87 / 9%), transparent 46%),
-    rgb(8 15 20 / 97%);
-}
-
+.playStatusFooter,
 .quickActionList a,
+.upNextList a,
 .upNextList article,
 .playModeGrid a,
 .playModeGrid article,
-.activityFeed article,
-.crewSignalRows > div,
+.challengeList > div,
 .opportunityCards article,
-.widgetState,
-.actionRow,
-.stateCard,
-.inlineError {
-  border-width: 1px !important;
-  border-color: color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 24%, var(--play-frame-neutral)) !important;
-  border-radius: 0.38rem;
-}
-
-.quickActionList a,
-.playModeGrid a,
-.opportunityCards article {
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--widget-accent, var(--play-cyan-soft)) 6%, transparent), transparent 52%),
-    rgb(8 16 22 / 88%);
-}
-
+.activityFeed article,
+.crewRosterSummary,
+.crewSignalRows > div,
+.statsList > div,
+.emptySteps > *,
+.emptyActivityPreview > *,
+.emptyChallengePreview > *,
+.emptyOpportunityGrid > *,
+.emptyScheduleSlots > *,
+.emptyCrewBenefits > *,
+.emptyStatsDashboard > *,
+.heroPrimaryButton,
 .heroSecondaryButton,
 .fullWidthLink,
-.emptyActions a:not(.heroPrimaryButton) {
-  border-width: 1px;
+.overviewRefresh,
+.globalBanner button,
+.widgetHeader > a,
+.widgetHeader > button,
+.emptyActions a,
+.emptyActions button {
+  transition:
+    color var(--play-motion-fast) var(--play-motion-ease),
+    background-color var(--play-motion-fast) var(--play-motion-ease),
+    border-color var(--play-motion-fast) var(--play-motion-ease),
+    box-shadow var(--play-motion-normal) var(--play-motion-ease),
+    opacity var(--play-motion-fast) var(--play-motion-ease),
+    transform var(--play-motion-normal) var(--play-motion-ease);
 }
 
-@media (max-width: 48rem) {
-  .sectionHeader {
-    min-height: 3.45rem;
-    border-left-width: 3px;
+.sectionHeaderIndex,
+.sectionHeaderRail,
+.widgetHeader::before,
+.quickActionIcon,
+.upNextIcon,
+.playModeGrid span,
+.opportunityBackdrop,
+.opportunityCopy,
+.activityFeed article > span,
+.crewBadge,
+.actionCta {
+  transition:
+    color var(--play-motion-fast) var(--play-motion-ease),
+    background-color var(--play-motion-fast) var(--play-motion-ease),
+    border-color var(--play-motion-fast) var(--play-motion-ease),
+    box-shadow var(--play-motion-normal) var(--play-motion-ease),
+    filter var(--play-motion-normal) var(--play-motion-ease),
+    opacity var(--play-motion-fast) var(--play-motion-ease),
+    transform var(--play-motion-normal) var(--play-motion-ease);
+}
+
+/* Keyboard users receive the same hierarchy as mouse users. */
+.playRoot :where(a, button):focus-visible {
+  outline: 2px solid var(--play-focus-ring);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 1px #031018,
+    0 0 0 4px color-mix(in srgb, var(--play-focus-ring) 30%, transparent);
+}
+
+.playRoot :where(a, button):active:not(:disabled) {
+  transform: translateY(1px) scale(0.99);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* Full-width section headers. */
+  .sectionHeader:hover {
+    border-color: color-mix(in srgb, var(--section-accent) 72%, white);
+    box-shadow:
+      0 1rem 2.2rem rgb(0 0 0 / 28%),
+      0 0 1.7rem color-mix(in srgb, var(--section-accent) 18%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 8%);
+    transform: translateY(-2px);
   }
 
-  .sectionHeaderCopy {
-    padding: 0.52rem 0.68rem;
+  .sectionHeader:hover .sectionHeaderIndex {
+    box-shadow:
+      inset -1px 0 0 rgb(255 255 255 / 18%),
+      0 0 1rem color-mix(in srgb, var(--section-accent) 30%, transparent);
+    filter: saturate(1.18) brightness(1.08);
+    transform: scale(1.035);
   }
 
-  .sectionHeaderCopy h2 {
-    font-size: 0.96rem;
+  .sectionHeader:hover .sectionHeaderRail {
+    filter: brightness(1.3);
+    transform: scaleX(1.06);
+    transform-origin: right center;
   }
 
-  .sectionHeaderCopy p {
-    color: #bdccd6;
-    font-size: 0.7rem;
+  .sectionHeader:hover .sectionHeaderCopy h2 {
+    color: color-mix(in srgb, var(--section-accent) 18%, white);
+    text-shadow: 0 0 1rem color-mix(in srgb, var(--section-accent) 28%, transparent);
   }
 
-  .widget {
-    border-radius: 0.48rem;
+  /* Every dashboard module has an accent-aware lift. */
+  .widget:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--widget-accent, var(--play-cyan-soft, var(--play-cyan))) 62%,
+      var(--play-frame-bright, #5b7f8d)
+    ) !important;
+    box-shadow:
+      0 1.15rem 2.35rem rgb(0 0 0 / 28%),
+      0 0 1.45rem color-mix(
+        in srgb,
+        var(--widget-accent, var(--play-cyan-soft, var(--play-cyan))) 15%,
+        transparent
+      ),
+      inset 0 1px 0 rgb(255 255 255 / 7%),
+      inset 0 2px 0 color-mix(
+        in srgb,
+        var(--widget-accent, var(--play-cyan-soft, var(--play-cyan))) 56%,
+        transparent
+      );
+    transform: translateY(-2px);
   }
+
+  .widget:hover .widgetHeader {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(
+          in srgb,
+          var(--widget-accent, var(--play-cyan-soft, var(--play-cyan))) 13%,
+          transparent
+        ),
+        transparent 62%
+      ),
+      linear-gradient(180deg, rgb(255 255 255 / 5%), rgb(0 0 0 / 10%));
+  }
+
+  .widget:hover .widgetHeader::before {
+    box-shadow: 0 0 1rem var(--widget-accent, var(--play-cyan-soft, var(--play-cyan)));
+    filter: brightness(1.2);
+    transform: scaleY(1.08);
+  }
+
+  .widget:hover .widgetHeader h2 {
+    color: color-mix(
+      in srgb,
+      var(--widget-accent, var(--play-cyan-soft, var(--play-cyan))) 16%,
+      white
+    );
+  }
+
+  /* Top information surfaces. */
+  .overviewStrip:hover,
+  .globalBanner:hover,
+  .playStatusFooter:hover {
+    border-color: color-mix(in srgb, var(--play-cyan) 42%, var(--play-line)) !important;
+    box-shadow:
+      0 0.9rem 1.9rem rgb(0 0 0 / 21%),
+      0 0 1.1rem rgb(34 223 245 / 8%);
+    transform: translateY(-1px);
+  }
+
+  .overviewFacts > div:hover,
+  .playStatusFooter > div:hover {
+    background: rgb(34 223 245 / 5%);
+  }
+
+  /* Quick Actions and Up Next options. */
+  .quickActionList a:hover,
+  .quickActionList a:focus-visible,
+  .upNextList a:hover,
+  .upNextList a:focus-visible,
+  .upNextList article:hover {
+    border-color: color-mix(in srgb, var(--play-green) 58%, var(--play-line));
+    background:
+      linear-gradient(90deg, rgb(0 255 138 / 8%), transparent 72%),
+      rgb(255 255 255 / 2%);
+    box-shadow:
+      0 0.75rem 1.3rem rgb(0 0 0 / 18%),
+      inset 3px 0 0 color-mix(in srgb, var(--play-green) 75%, transparent);
+    transform: translateX(4px);
+  }
+
+  .quickActionList a:hover .quickActionIcon,
+  .quickActionList a:focus-visible .quickActionIcon,
+  .upNextList a:hover .upNextIcon,
+  .upNextList a:focus-visible .upNextIcon,
+  .upNextList article:hover .upNextIcon {
+    border-color: currentColor;
+    box-shadow: 0 0 0.85rem color-mix(in srgb, currentColor 32%, transparent);
+    transform: scale(1.08);
+  }
+
+  /* Play modes behave like selectable game tiles. */
+  .playModeGrid a:hover,
+  .playModeGrid a:focus-visible,
+  .playModeGrid article:hover {
+    background:
+      radial-gradient(circle at 50% 80%, color-mix(in srgb, currentColor 14%, transparent), transparent 55%),
+      linear-gradient(180deg, color-mix(in srgb, currentColor 11%, transparent), transparent);
+    box-shadow:
+      0 0.9rem 1.6rem rgb(0 0 0 / 24%),
+      0 0 1.15rem color-mix(in srgb, currentColor 14%, transparent),
+      inset 0 1px 0 color-mix(in srgb, currentColor 24%, transparent);
+    transform: translateY(-4px);
+  }
+
+  .playModeGrid a:hover span,
+  .playModeGrid a:focus-visible span,
+  .playModeGrid article:hover span {
+    filter: brightness(1.16) saturate(1.14);
+    box-shadow: 0 0 1rem color-mix(in srgb, currentColor 25%, transparent);
+    transform: translateY(-2px) scale(1.055);
+  }
+
+  /* Stats, challenges and empty-state guidance. */
+  .statsList > div:hover,
+  .challengeList > div:hover,
+  .emptySteps > *:hover,
+  .emptyActivityPreview > *:hover,
+  .emptyChallengePreview > *:hover,
+  .emptyOpportunityGrid > *:hover,
+  .emptyScheduleSlots > *:hover,
+  .emptyCrewBenefits > *:hover,
+  .emptyStatsDashboard > *:hover {
+    border-color: color-mix(in srgb, var(--widget-accent, var(--play-cyan)) 42%, var(--play-line));
+    background: color-mix(in srgb, var(--widget-accent, var(--play-cyan)) 7%, transparent);
+    box-shadow: inset 3px 0 0 color-mix(in srgb, var(--widget-accent, var(--play-cyan)) 56%, transparent);
+    transform: translateX(3px);
+  }
+
+  .statsList > div:hover dd,
+  .challengeList > div:hover strong {
+    color: color-mix(in srgb, var(--widget-accent, var(--play-green)) 22%, white);
+  }
+
+  /* Competition cards. */
+  .opportunityCards article:hover {
+    border-color: color-mix(in srgb, var(--widget-accent, var(--play-green)) 62%, var(--play-line)) !important;
+    box-shadow:
+      0 1rem 1.9rem rgb(0 0 0 / 30%),
+      0 0 1.25rem color-mix(in srgb, var(--widget-accent, var(--play-green)) 14%, transparent);
+    transform: translateY(-4px);
+  }
+
+  .opportunityCards article:hover .opportunityBackdrop {
+    filter: brightness(1.12) saturate(1.14);
+    transform: scale(1.045);
+  }
+
+  .opportunityCards article:hover .opportunityCopy {
+    transform: translateY(-2px);
+  }
+
+  .opportunityCards article > a:hover,
+  .opportunityCards article > a:focus-visible {
+    color: #00130c;
+    border-color: var(--play-green);
+    background: var(--play-green);
+    box-shadow: 0 0 1rem rgb(0 255 138 / 24%);
+    transform: translateY(-1px);
+  }
+
+  /* Activity and Crew intelligence rows. */
+  .activityFeed article:hover,
+  .crewRosterSummary:hover,
+  .crewSignalRows > div:hover {
+    border-color: color-mix(in srgb, var(--widget-accent, var(--play-cyan)) 44%, var(--play-line));
+    background: color-mix(in srgb, var(--widget-accent, var(--play-cyan)) 7%, transparent);
+    box-shadow: inset 3px 0 0 color-mix(in srgb, var(--widget-accent, var(--play-cyan)) 56%, transparent);
+    transform: translateX(3px);
+  }
+
+  .activityFeed article:hover > span,
+  .crewRosterSummary:hover .crewBadge {
+    box-shadow: 0 0 0.9rem color-mix(in srgb, currentColor 30%, transparent);
+    transform: scale(1.08);
+  }
+
+  .crewSignalRows > div:hover strong,
+  .activityFeed article:hover strong {
+    color: color-mix(in srgb, var(--widget-accent, var(--play-cyan)) 18%, white);
+  }
+
+  /* Buttons and supporting links. */
+  .heroPrimaryButton:hover:not(:disabled),
+  .heroPrimaryButton:focus-visible:not(:disabled) {
+    filter: brightness(1.08) saturate(1.08);
+    box-shadow:
+      0 0.75rem 1.35rem rgb(0 0 0 / 22%),
+      0 0 1.2rem rgb(0 255 138 / 30%);
+    transform: translateY(-2px);
+  }
+
+  .heroSecondaryButton:hover:not(:disabled),
+  .heroSecondaryButton:focus-visible:not(:disabled),
+  .fullWidthLink:hover,
+  .fullWidthLink:focus-visible,
+  .emptyActions a:hover,
+  .emptyActions a:focus-visible,
+  .emptyActions button:hover:not(:disabled),
+  .emptyActions button:focus-visible:not(:disabled),
+  .overviewRefresh:hover:not(:disabled),
+  .overviewRefresh:focus-visible:not(:disabled),
+  .globalBanner button:hover:not(:disabled),
+  .globalBanner button:focus-visible:not(:disabled),
+  .widgetHeader > a:hover,
+  .widgetHeader > a:focus-visible,
+  .widgetHeader > button:hover:not(:disabled),
+  .widgetHeader > button:focus-visible:not(:disabled) {
+    border-color: currentColor;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    box-shadow: 0 0 0.95rem color-mix(in srgb, currentColor 17%, transparent);
+    transform: translateY(-2px);
+  }
+}
+
+/* Never leave disabled controls looking interactive. */
+.playRoot :where(a, button)[aria-disabled="true"],
+.playRoot button:disabled {
+  cursor: not-allowed;
+  transform: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .widget {
-    transition: none;
+  .playRoot *,
+  .playRoot *::before,
+  .playRoot *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 
-  .widget:hover {
-    transform: none;
+  .sectionHeader:hover,
+  .widget:hover,
+  .overviewStrip:hover,
+  .globalBanner:hover,
+  .playStatusFooter:hover,
+  .quickActionList a:hover,
+  .upNextList a:hover,
+  .upNextList article:hover,
+  .playModeGrid a:hover,
+  .playModeGrid article:hover,
+  .challengeList > div:hover,
+  .opportunityCards article:hover,
+  .activityFeed article:hover,
+  .crewRosterSummary:hover,
+  .crewSignalRows > div:hover {
+    transform: none !important;
   }
 }
-/* VERZUS PLAY COLOR BALANCE END */
+/* VERZUS PLAY INTERACTIONS END */
 '''
 
 path.write_text(text.rstrip() + "\n\n" + block.strip() + "\n", encoding="utf-8", newline="\n")
 PY
 
-printf '\n==> Formatting Play stylesheet\n'
-./node_modules/.bin/prettier \
-  src/features/play/ui/play-command-center.module.css \
-  --write
-
-printf '\n==> Running narrow section-header test\n'
-./node_modules/.bin/vitest run \
-  src/features/play/ui/PlaySectionHeader.test.tsx \
-  --pool=threads \
-  --maxWorkers=1 \
-  --no-file-parallelism \
-  --no-isolate
-
-printf '\n==> Verifying balanced-border and color contracts\n'
 python -X utf8 - <<'PY'
 from pathlib import Path
 
-css = Path("src/features/play/ui/play-command-center.module.css").read_text(encoding="utf-8")
-required = [
-    "/* VERZUS PLAY COLOR BALANCE START */",
-    "border-width: 1px !important",
-    "border-width: 2px !important",
-    "--widget-accent: var(--play-violet-soft)",
-    "--widget-accent: var(--play-magenta-soft)",
-    "--widget-accent: var(--play-green-soft)",
-    '.sectionHeader[data-tone="cyan"]',
-    '.sectionHeader[data-tone="violet"]',
-    '.sectionHeader[data-tone="green"]',
-]
-missing = [token for token in required if token not in css]
-if missing:
-    raise SystemExit("Missing Play visual-balance contract: " + ", ".join(missing))
+path = Path("src/features/play/ui/action-centre-panel.module.css")
+text = path.read_text(encoding="utf-8")
+start = "/* VERZUS ACTION CENTRE INTERACTIONS START */"
+end = "/* VERZUS ACTION CENTRE INTERACTIONS END */"
 
-print("Balanced borders and colorful section headers verified.")
+if start in text:
+    before, rest = text.split(start, 1)
+    if end not in rest:
+        raise SystemExit("Existing Action Centre interaction marker is malformed")
+    _, after = rest.split(end, 1)
+    text = before.rstrip() + "\n" + after.lstrip("\n")
+
+block = r'''
+/* VERZUS ACTION CENTRE INTERACTIONS START */
+.panel,
+.actionRow,
+.stateCard,
+.stateCard a,
+.stateCard button,
+.priorityMark,
+.actionCta {
+  transition:
+    color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 190ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 190ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 190ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.actionRow:focus-visible,
+.stateCard a:focus-visible,
+.stateCard button:focus-visible {
+  outline: 2px solid var(--action-tone, var(--play-cyan, #22dff5));
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel:hover {
+    border-color: color-mix(in srgb, var(--play-cyan, #22dff5) 46%, var(--play-line, #294451));
+    box-shadow:
+      0 1.1rem 2.2rem rgb(0 0 0 / 25%),
+      0 0 1.2rem rgb(34 223 245 / 9%);
+    transform: translateY(-2px);
+  }
+
+  .actionRow:hover,
+  .actionRow:focus-visible {
+    border-color: color-mix(in srgb, var(--action-tone) 66%, var(--play-line, #294451));
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--action-tone) 10%, transparent), transparent 72%),
+      rgb(255 255 255 / 2%);
+    box-shadow:
+      0 0.8rem 1.4rem rgb(0 0 0 / 20%),
+      inset 3px 0 0 color-mix(in srgb, var(--action-tone) 76%, transparent);
+    transform: translateX(4px);
+  }
+
+  .actionRow:hover .priorityMark,
+  .actionRow:focus-visible .priorityMark {
+    box-shadow: 0 0 0.9rem color-mix(in srgb, var(--action-tone) 35%, transparent);
+    filter: brightness(1.15) saturate(1.12);
+    transform: scale(1.08);
+  }
+
+  .actionRow:hover .actionCta,
+  .actionRow:focus-visible .actionCta {
+    color: color-mix(in srgb, var(--action-tone) 78%, white);
+    transform: translateX(3px);
+  }
+
+  .stateCard:hover {
+    border-color: color-mix(in srgb, var(--play-cyan, #22dff5) 38%, var(--play-line, #294451));
+    box-shadow: inset 3px 0 0 rgb(34 223 245 / 34%);
+  }
+
+  .stateCard a:hover,
+  .stateCard a:focus-visible,
+  .stateCard button:hover:not(:disabled),
+  .stateCard button:focus-visible:not(:disabled) {
+    border-color: currentColor;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    box-shadow: 0 0 0.9rem color-mix(in srgb, currentColor 18%, transparent);
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .actionRow,
+  .stateCard,
+  .stateCard a,
+  .stateCard button,
+  .priorityMark,
+  .actionCta {
+    transition-duration: 0.01ms !important;
+  }
+
+  .panel:hover,
+  .actionRow:hover,
+  .actionRow:focus-visible,
+  .stateCard a:hover,
+  .stateCard button:hover {
+    transform: none !important;
+  }
+}
+/* VERZUS ACTION CENTRE INTERACTIONS END */
+'''
+
+path.write_text(text.rstrip() + "\n\n" + block.strip() + "\n", encoding="utf-8", newline="\n")
 PY
 
+cat > scripts/check-play-interactions.mjs <<'JS'
+import { readFileSync } from "node:fs";
+
+const playCss = readFileSync(
+  "src/features/play/ui/play-command-center.module.css",
+  "utf8",
+);
+const actionCss = readFileSync(
+  "src/features/play/ui/action-centre-panel.module.css",
+  "utf8",
+);
+
+const requiredPlayFragments = [
+  "VERZUS PLAY INTERACTIONS START",
+  "@media (hover: hover) and (pointer: fine)",
+  ".sectionHeader:hover",
+  ".widget:hover",
+  ".quickActionList a:hover",
+  ".playModeGrid a:hover",
+  ".opportunityCards article:hover",
+  ".activityFeed article:hover",
+  ".crewSignalRows > div:hover",
+  ":focus-visible",
+  "prefers-reduced-motion: reduce",
+];
+
+const requiredActionFragments = [
+  "VERZUS ACTION CENTRE INTERACTIONS START",
+  ".panel:hover",
+  ".actionRow:hover",
+  ".actionRow:focus-visible",
+  ".stateCard a:hover",
+  "prefers-reduced-motion: reduce",
+];
+
+const missing = [
+  ...requiredPlayFragments
+    .filter((fragment) => !playCss.includes(fragment))
+    .map((fragment) => `Play CSS: ${fragment}`),
+  ...requiredActionFragments
+    .filter((fragment) => !actionCss.includes(fragment))
+    .map((fragment) => `Action Centre CSS: ${fragment}`),
+];
+
+if (missing.length > 0) {
+  console.error("Play interaction contract failed. Missing:");
+  for (const item of missing) console.error(`- ${item}`);
+  process.exit(1);
+}
+
+console.log("VERZUS Play interaction contract passed.");
+JS
+
+python -X utf8 - <<'PY'
+import json
+from pathlib import Path
+
+path = Path("package.json")
+data = json.loads(path.read_text(encoding="utf-8"))
+scripts = data.setdefault("scripts", {})
+scripts["check:play-interactions"] = "node scripts/check-play-interactions.mjs"
+path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8", newline="\n")
+PY
+
+printf '==> Formatting scoped files\n'
+if [[ -x ./node_modules/.bin/prettier ]]; then
+  ./node_modules/.bin/prettier --write \
+    src/features/play/ui/play-command-center.module.css \
+    src/features/play/ui/action-centre-panel.module.css \
+    scripts/check-play-interactions.mjs \
+    package.json
+else
+  printf 'Prettier is not installed locally; skipping format step.\n'
+fi
+
+printf '\n==> Running Play interaction contract\n'
+npm run check:play-interactions
+
 trap - EXIT
-printf '\nVERZUS PLAY VISUAL BALANCE COMPLETE\n'
-printf 'Backup: %s\n' "$backup_dir"
+
+printf '\nVERZUS PLAY HOVER EFFECTS COMPLETE\n'
+printf 'Sections : accent-aware lift and glow\n'
+printf 'Widgets  : border, header and elevation response\n'
+printf 'Options  : rows, cards, links and buttons respond\n'
+printf 'Keyboard : focus-visible parity included\n'
+printf 'Motion   : reduced-motion preference respected\n'
+printf 'Backup   : %s\n' "$backup_dir"
